@@ -1,17 +1,15 @@
+import { ReactNode } from "react";
+
 type Props = {
   label: string
-  imageUrl: string
+  icon: ReactNode
 }
 const OAuthButton = (props: Props) => {
   return (
     <button
-      className="btn w-full space-x-3 border border-slate-300 font-medium text-slate-100 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90"
+      className="btn w-full space-x-3 border border-slate-300 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90"
     >
-      <img
-        className="h-5.5 w-5.5"
-        src={props.imageUrl}
-        alt="logo"
-      />
+      {props.icon}
       <span>{props.label}</span>
     </button>
   );

@@ -1,10 +1,11 @@
-import AuthHeader from "../components/header";
-import AuthImage from "../components/auth-image";
-import OAuthButton from "../components/oauth-button";
-import {Link} from "react-router-dom";
+import { EmailIcon, PasswordIcon } from "../svg";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthHeader, AuthImage, OAuthButton, Input, Button } from "../components";
+import {GithubIcon, GoogleIcon} from "../svg/"
 
-function Login () {
+function Login() {
 
+  const navigate = useNavigate()
 
   return (
     <>
@@ -34,12 +35,12 @@ function Login () {
             </div>
 
             <div className="mt-10 flex space-x-4">
-              <OAuthButton
-                imageUrl="images/100x100.png"
+            <OAuthButton
+                icon={<GoogleIcon />}
                 label="Google"
               />
               <OAuthButton
-                imageUrl="images/100x100.png"
+                icon={<GithubIcon />}
                 label="Github"
               />
             </div>
@@ -50,62 +51,21 @@ function Login () {
               <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
             </div>
             <div className="mt-4 space-y-4">
-              <label className="relative flex">
-                <input
-                  className="form-input peer w-full rounded-lg bg-slate-150 px-3 py-2 pl-9 ring-primary/50 placeholder:text-slate-400 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:placeholder:text-navy-300 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
-                  placeholder="Email"
-                  type="email"
-                />
-                <span
-                  className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 transition-colors duration-200"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.5"
-                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
-                </span>
-              </label>
-              <label className="relative flex">
-                <input
-                  className="form-input peer w-full rounded-lg bg-slate-150 px-3 py-2 pl-9 ring-primary/50 placeholder:text-slate-400 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:placeholder:text-navy-300 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
-                  placeholder="Password"
-                  type="password"
-                />
-                <span
-                  className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 transition-colors duration-200"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.5"
-                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                    />
-                  </svg>
-                </span>
-              </label>
+              <Input
+                placeholder="Johndoe@gmail.com"
+                type="email"
+                icon={<EmailIcon />}
+              />
+              <Input
+                placeholder="Password"
+                type="password"
+                icon={<PasswordIcon />}
+              />
             </div>
-            <button
-              className="btn mt-10 h-10 w-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
-            >
-              Sign In
-            </button>
+            <Button 
+              label="Sign In"
+              action={() => navigate('/')}
+            />
             <div className="mt-4 text-center text-xs+">
               <p className="line-clamp-1">
                 <span>Don't have an account? </span>
