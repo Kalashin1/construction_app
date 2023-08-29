@@ -43,7 +43,10 @@ function Login() {
             </div>
             <div className="my-7 flex items-center space-x-3">
               <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
-              <p className="text-tiny+ uppercase">or sign in with email</p>
+              <p className="text-tiny+">
+                {/* or sign in with email */}
+                Oder mit E-Mail Anmelden
+              </p>
 
               <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
             </div>
@@ -54,22 +57,28 @@ function Login() {
                 icon={<EmailIcon />}
               />
               <Input
-                placeholder="Password"
+                placeholder="Passwort"
                 type="password"
                 icon={<PasswordIcon />}
               />
             </div>
             <Button 
-              label="Sign In"
+              label="Anmelden"
               action={() => navigate('/dashboard')}
             />
             <div className="mt-4 text-center text-xs+">
               <p className="line-clamp-1">
-                <span>Don't have an account? </span>
+                <span>
+                  {/* Don't have an account?  */}
+                  Kein Konto?
+                </span>
                 <Link
                   className="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent"
                   to={`/`}
-                >Sign up</Link>
+                >
+                  {/* Sign up */}
+                  bitte hier registrieren
+                </Link>
               </p>
             </div>
           </div>

@@ -23,10 +23,10 @@ function Signup() {
                 Willkommen in MAGGA
               </h2>
               <p className="text-slate-400 dark:text-navy-300">
-                Bitte registrieren Sie sich um Fortzufahren
+                Bitte melden Sie sich an, um fortzufahren
               </p>
             </div>
-
+            
             <div className="mt-10 flex space-x-4">
               <OAuthButton
                 icon={<GoogleIcon />}
@@ -36,7 +36,10 @@ function Signup() {
             </div>
             <div className="my-7 flex items-center space-x-3">
               <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
-              <p className="text-tiny+ uppercase">or sign up with email</p>
+              <p className="text-tiny+">
+                {/* or sign up with email */}
+                Oder mit E-Mail registrieren
+              </p>
 
               <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
             </div>
@@ -47,17 +50,17 @@ function Signup() {
                 icon={<UserIcon />}
               />
               <Input
-                placeholder="Johndoe@gmail.com"
+                placeholder="magga@magga.de"
                 type="email"
                 icon={<EmailIcon />}
               />
               <Input
-                placeholder="Password"
+                placeholder="Passwort"
                 type="password"
                 icon={<PasswordIcon />}
               />
               <Input
-                placeholder="Confirm Password"
+                placeholder="Passwort bestätigen"
                 type="password"
                 icon={<PasswordIcon />}
               />
@@ -71,22 +74,29 @@ function Signup() {
                     to={'/login'}
                     className="text-slate-400 hover:underline dark:text-navy-300"
                   >
-                    I agree
+                    {/* I agree */}
+                    Allgemeine Geschäftsbedingungen akzeptieren
                   </Link>
                 </p>
               </div>
             </div>
             <Button
-              label="Create Account"
+              label="Konto erstellen"
               action={() => navigate('/login')}
             />
             <div className="mt-4 text-center text-xs+">
               <p className="line-clamp-1">
-                <span>Already have an account? </span>
+                <span>
+                  {/* Already have an account?  */}
+                  Ich habe bereits ein Konto
+                </span>
                 <Link
                   className="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent"
                   to={'/login'}
-                >Sign In</Link>
+                >
+                  {/* Sign In */}
+                  Anmelden
+                </Link>
               </p>
             </div>
           </div>
