@@ -1,7 +1,7 @@
 import { EmailIcon, PasswordIcon } from "../svg";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthHeader, AuthImage, OAuthButton, Input, Button } from "../components";
-import {GithubIcon, GoogleIcon} from "../svg/"
+import {GoogleIcon} from "../svg/"
 
 function Login() {
 
@@ -26,10 +26,10 @@ function Login() {
                 <h2
                   className="text-2xl font-semibold text-slate-600 dark:text-navy-100"
                 >
-                  Welcome To Lineone
+                  Willkommen in MAGGA
                 </h2>
                 <p className="text-slate-400 dark:text-navy-300">
-                  Please sign up to continue
+                  Bitte registrieren Sie sich um Fortzufahren
                 </p>
               </div>
             </div>
@@ -39,10 +39,7 @@ function Login() {
                 icon={<GoogleIcon />}
                 label="Google"
               />
-              <OAuthButton
-                icon={<GithubIcon />}
-                label="Github"
-              />
+              
             </div>
             <div className="my-7 flex items-center space-x-3">
               <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>

@@ -10,6 +10,7 @@ const AppWrapper = () => {
         <button className="focus:border-2 p-2 rounded-md">
           <MenuIcon />
         </button>
+        
       </div>
     </nav>
   )

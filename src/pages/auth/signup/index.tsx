@@ -1,10 +1,9 @@
 import { AuthHeader, AuthImage, OAuthButton, Input, Button } from "../components";
 import { EmailIcon, PasswordIcon, UserIcon } from "../svg";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GoogleIcon from "../svg/google";
-import GithubIcon from "../svg/github";
 
-function Signup () {
+function Signup() {
 
   const navigate = useNavigate();
 
@@ -17,22 +16,15 @@ function Signup () {
           className="flex w-full flex-col items-center bg-white dark:bg-navy-700"
         >
           <div className="flex w-full max-w-sm grow flex-col justify-center p-5">
-            <div className="text-center">
-              <img
-                className="mx-auto h-16 w-16 lg:hidden"
-                src="/images/app-logo.svg"
-                alt="logo"
-              />
-              <div className="mt-4">
-                <h2
-                  className="text-2xl font-semibold text-slate-600 dark:text-navy-100"
-                >
-                  Welcome To Lineone
-                </h2>
-                <p className="text-slate-400 dark:text-navy-300">
-                  Please sign up to continue
-                </p>
-              </div>
+            <div className="mt-4">
+              <h2
+                className="text-2xl font-semibold text-slate-600 dark:text-navy-100"
+              >
+                Willkommen in MAGGA
+              </h2>
+              <p className="text-slate-400 dark:text-navy-300">
+                Bitte registrieren Sie sich um Fortzufahren
+              </p>
             </div>
 
             <div className="mt-10 flex space-x-4">
@@ -40,10 +32,7 @@ function Signup () {
                 icon={<GoogleIcon />}
                 label="Google"
               />
-              <OAuthButton
-                icon={<GithubIcon />}
-                label="Github"
-              />
+              
             </div>
             <div className="my-7 flex items-center space-x-3">
               <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
