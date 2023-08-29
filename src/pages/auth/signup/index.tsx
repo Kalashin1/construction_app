@@ -23,7 +23,7 @@ function Signup() {
                 Willkommen in MAGGA
               </h2>
               <p className="text-slate-400 dark:text-navy-300">
-                Bitte melden Sie sich an, um fortzufahren
+                Bitte registrieren Sie sich um Fortzufahren
               </p>
             </div>
             
