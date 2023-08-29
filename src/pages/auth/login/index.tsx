@@ -64,7 +64,7 @@ function Login() {
             </div>
             <Button 
               label="Sign In"
-              action={() => navigate('/')}
+              action={() => navigate('/dashboard')}
             />
             <div className="mt-4 text-center text-xs+">
               <p className="line-clamp-1">
