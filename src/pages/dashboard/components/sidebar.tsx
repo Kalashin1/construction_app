@@ -106,7 +106,7 @@ const Sidebar = ({
           <div className="flex pt-4">
             <a href="/">
               <img
-                className="h-11 w-11 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
+                className="h-20 w-20 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
                 src="images/magga-logo.png"
                 alt="logo"
               />

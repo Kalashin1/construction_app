@@ -18,8 +18,8 @@ function Login() {
           <div className="flex w-full max-w-sm grow flex-col justify-center p-5">
             <div className="text-center">
               <img
-                className="mx-auto h-16 w-16 lg:hidden"
-                src="/images/app-logo.svg"
+                className="mx-auto h-36 w-36 lg:hidden"
+                src="/images/magga-logo.svg"
                 alt="logo"
               />
               <div className="mt-4">

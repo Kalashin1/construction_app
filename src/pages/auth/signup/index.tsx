@@ -16,7 +16,12 @@ function Signup() {
           className="flex w-full flex-col items-center bg-white dark:bg-navy-700"
         >
           <div className="flex w-full max-w-sm grow flex-col justify-center p-5">
-            <div className="mt-4">
+            <img
+              className="mx-auto h-36 w-36 lg:hidden"
+              src="/images/magga-logo.svg"
+              alt="logo"
+            />
+            <div className="mt-4 text-center">
               <h2
                 className="text-2xl font-semibold text-slate-600 dark:text-navy-100"
               >
@@ -26,13 +31,13 @@ function Signup() {
                 Bitte registrieren Sie sich um Fortzufahren
               </p>
             </div>
-            
+
             <div className="mt-10 flex space-x-4">
               <OAuthButton
                 icon={<GoogleIcon />}
                 label="Google"
               />
-              
+
             </div>
             <div className="my-7 flex items-center space-x-3">
               <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
