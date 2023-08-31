@@ -6,7 +6,7 @@ import SquareIcon from "../svg/square";
 
 const AppWrapper = () => {
   return (
-    <nav className="header print:hidden">
+    <nav className="header print:hidden relative z-0">
       {/* <!-- App Header  --> */}
       <div
         className="px-2 md:px-8 relative items-center justify-between flex-row space-x-4 flex w-full bg-white dark:bg-navy-700 print:hidden"

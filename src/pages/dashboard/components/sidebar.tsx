@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { ReactNode, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   AppIcon,
   ComponentsIcon,
@@ -8,6 +8,7 @@ import {
   Settings,
 } from "../svg";
 import { SCREENS } from "../../../navigation/constants";
+import SidebarPanel from "./sidebar-panel";
 
 const sidebarLinksArray = [
   {
@@ -80,8 +81,16 @@ const SidebarLink = ({
 }
 
 const Sidebar = () => {
+  const location = useLocation();
+
+  const [showProjectMenu, updateShowProjectMenu] = useState(false)
+
+  useEffect(() => {
+    if (location.pathname === '/projects') updateShowProjectMenu(true)
+  }, [location])
   return (
-    <div className="sidebar hidden sm:block">
+    <div className="sidebar hidden sm:block relative">
+
       {/* <!-- Main Sidebar --> */}
       <div className="main-sidebar">
         <div
@@ -108,6 +117,7 @@ const Sidebar = () => {
                 link={sidebarLink.link}
                 svg={(<sidebarLink.icon />)}
               />
+
             ))}
           </div>
 
@@ -126,7 +136,10 @@ const Sidebar = () => {
         </div>
       </div>
 
-
+      {/* Sidebar Panel */}
+      <div>
+        {showProjectMenu && (<SidebarPanel headerText="Projects" links={sidebarLinksArray[2].children!} />)}
+      </div>
     </div>
   )
 }
