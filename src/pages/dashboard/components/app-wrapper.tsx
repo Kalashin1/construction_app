@@ -3,15 +3,22 @@ import SearchIcon from "../svg/search";
 import LightModeIcon from "../svg/light";
 import NotificationIcon from "../svg/notificaiton";
 import SquareIcon from "../svg/square";
+import {FC} from 'react';
 
-const AppWrapper = () => {
+type Props = {
+  toggleSidebar: (...args: unknown[]) => void
+}
+
+const AppWrapper: FC<Props> = ({
+  toggleSidebar
+}) => {
   return (
     <nav className="header print:hidden relative z-0">
       {/* <!-- App Header  --> */}
       <div
         className="px-2 md:px-8 relative items-center justify-between flex-row space-x-4 flex w-full bg-white dark:bg-navy-700 print:hidden"
       >
-        <button className="focus:border-2 p-2 rounded-md">
+        <button className="focus:border-2 p-2 rounded-md" onClick={toggleSidebar}>
           <MenuIcon />
         </button>
 

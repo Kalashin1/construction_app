@@ -1,4 +1,4 @@
-import { ReactNode, FC } from "react";
+import { ReactNode, FC, useState, useEffect } from "react";
 import AppWrapper from "./components/app-wrapper";
 import Sidebar from "./components/sidebar";
 
@@ -10,10 +10,21 @@ type Props = {
 const Layout: FC<Props> = ({
   children,
 }) => {
+  const [showSidebar, updateShowSidebar] = useState(true);
+  const deviceWidth = window.innerWidth;
+
+  useEffect(() => {
+    if (deviceWidth < 560) updateShowSidebar(false)
+  }, [deviceWidth])
+
   return (
     <>
-      <Sidebar />
-      <AppWrapper />
+      {showSidebar && (
+        <Sidebar 
+          closeSidebar={() => updateShowSidebar(false)}
+        />
+      )}
+      <AppWrapper toggleSidebar={() => updateShowSidebar(!showSidebar)} />
       <main className="main-content w-full pb-8">
         {children}
       </main>

@@ -1,11 +1,13 @@
 import {Link} from 'react-router-dom';
 
 type SidebarPanelHeaderProps = {
-  headerText?: string
+  headerText?: string;
+  closeSidebar: (...args: unknown[]) => void
 }
 
 const SidebarPanelHeader = ({
-  headerText = 'Projects'
+  headerText = 'Projects',
+  closeSidebar
 }: SidebarPanelHeaderProps) => {
   return (
     <div
@@ -17,6 +19,7 @@ const SidebarPanelHeader = ({
         {headerText}
       </p>
       <button
+        onClick={closeSidebar}
         className="sidebar-close btn h-7 w-7 rounded-full p-0 text-primary hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:text-accent-light/80 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25 xl:hidden"
       >
         <svg
@@ -72,16 +75,16 @@ type SidebarPanelProps = SidebarPanelHeaderProps & SidebarPanelBodyProps
 
 const SidebarPanel = ({
   headerText,
-  links
+  links,
+  closeSidebar
 }: SidebarPanelProps) => {
   return (
-    <div className="w-1/3 absolute shadow-md -top-16 z-50">
+    <div className="w-3/4 sm:w-1/3 absolute shadow-md -top-16 z-40">
       <div
         className="flex h-full grow flex-col bg-white pl-[var(--main-sidebar-width)] dark:bg-navy-750"
       >
         {/* <!-- Sidebar Panel Header --> */}
-
-        <SidebarPanelHeader headerText={headerText} />
+        <SidebarPanelHeader headerText={headerText} closeSidebar={closeSidebar} />
         {/* <!-- Sidebar Panel Body --> */}
         <SidebarPanelBody links={links} />
       </div>

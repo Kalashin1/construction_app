@@ -32,7 +32,7 @@ const sidebarLinksArray = [
       },
       {
         text: 'Performance Reports',
-        link: SCREENS.PERFORMANCE,
+        link: SCREENS.REPORTS,
       },
       {
         text: 'Bills',
@@ -80,7 +80,13 @@ const SidebarLink = ({
   )
 }
 
-const Sidebar = () => {
+type Props = {
+  closeSidebar: (...args: unknown[]) => void;
+}
+
+const Sidebar = ({
+  closeSidebar
+}: Props) => {
   const location = useLocation();
 
   const [showProjectMenu, updateShowProjectMenu] = useState(false)
@@ -89,10 +95,10 @@ const Sidebar = () => {
     if (location.pathname === '/projects') updateShowProjectMenu(true)
   }, [location])
   return (
-    <div className="sidebar hidden sm:block relative">
+    <div className="sidebar relative">
 
       {/* <!-- Main Sidebar --> */}
-      <div className="main-sidebar">
+      <div className="absolute z-50 w-20 -top-16 h-screen">
         <div
           className="flex h-full w-full flex-col items-center border-r border-slate-150 bg-white dark:border-navy-700 dark:bg-navy-800"
         >
@@ -101,7 +107,7 @@ const Sidebar = () => {
             <a href="/">
               <img
                 className="h-11 w-11 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
-                src="images/MAGGA.svg"
+                src="images/magga-logo.png"
                 alt="logo"
               />
             </a>
@@ -138,7 +144,12 @@ const Sidebar = () => {
 
       {/* Sidebar Panel */}
       <div>
-        {showProjectMenu && (<SidebarPanel headerText="Projects" links={sidebarLinksArray[2].children!} />)}
+        {showProjectMenu && (
+          <SidebarPanel 
+            headerText="Projects" 
+            links={sidebarLinksArray[2].children!} 
+            closeSidebar={closeSidebar}
+          />)}
       </div>
     </div>
   )
