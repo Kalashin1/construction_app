@@ -1,16 +1,39 @@
 import MenuIcon from "../svg/menu";
+import SearchIcon from "../svg/search";
+import LightModeIcon from "../svg/light";
+import NotificationIcon from "../svg/notificaiton";
+import SquareIcon from "../svg/square";
+
 const AppWrapper = () => {
   return (
     <nav className="header print:hidden">
       {/* <!-- App Header  --> */}
       <div
-        className="header-container relative items-center flex w-full bg-white dark:bg-navy-700 print:hidden"
+        className="px-2 md:px-8 relative items-center justify-between flex-row space-x-4 flex w-full bg-white dark:bg-navy-700 print:hidden"
       >
-        {/* <!-- Header Items --> */}
         <button className="focus:border-2 p-2 rounded-md">
           <MenuIcon />
         </button>
-        
+
+        <div className="flex flex-row relative items-center justify-between">
+          <div>
+            <input
+              className="py-2 pl-8 rounded-3xl bg-slate-200"
+              placeholder="Search Here"
+            />
+            <div className="absolute left-3 top-3">
+              <SearchIcon />
+            </div>
+          </div>
+          <div className="flex ml-4 space-x-2 flex-row justify-between items-center">
+            <LightModeIcon />
+         
+            <NotificationIcon />
+          
+            <SquareIcon />
+          </div>
+        </div>
+
       </div>
     </nav>
   )

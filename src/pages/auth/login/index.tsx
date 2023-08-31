@@ -13,7 +13,7 @@ function Login() {
       <div className="flex flex-row w-screen">
         <AuthImage />
         <main
-          className="flex w-full flex-col items-center bg-white dark:bg-navy-700"
+          className="flex w-full flex-col h-screen items-center bg-white dark:bg-navy-700"
         >
           <div className="flex w-full max-w-sm grow flex-col justify-center p-5">
             <div className="text-center">
