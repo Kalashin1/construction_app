@@ -17,11 +17,11 @@ function Signup() {
         >
           <div className="flex w-full max-w-sm grow flex-col justify-center p-5">
             <img
-              className="mx-auto h-36 w-36 lg:hidden"
+              className="mx-auto h-48 w-48 lg:hidden relative top-12"
               src="/images/magga-logo.svg"
               alt="logo"
             />
-            <div className="mt-4 text-center">
+            <div className="text-center">
               <h2
                 className="text-2xl font-semibold text-slate-600 dark:text-navy-100"
               >

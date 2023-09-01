@@ -1,7 +1,7 @@
 import { EmailIcon, PasswordIcon } from "../svg";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthHeader, AuthImage, OAuthButton, Input, Button } from "../components";
-import {GoogleIcon} from "../svg/"
+import { GoogleIcon } from "../svg/"
 
 function Login() {
 
@@ -18,11 +18,11 @@ function Login() {
           <div className="flex w-full max-w-sm grow flex-col justify-center p-5">
             <div className="text-center">
               <img
-                className="mx-auto h-36 w-36 lg:hidden"
+                className="mx-auto h-48 w-48 lg:hidden relative top-12"
                 src="/images/magga-logo.svg"
                 alt="logo"
               />
-              <div className="mt-4">
+              <div>
                 <h2
                   className="text-2xl font-semibold text-slate-600 dark:text-navy-100"
                 >
@@ -35,11 +35,11 @@ function Login() {
             </div>
 
             <div className="mt-10 flex space-x-4">
-            <OAuthButton
+              <OAuthButton
                 icon={<GoogleIcon />}
                 label="Google"
               />
-              
+
             </div>
             <div className="my-7 flex items-center space-x-3">
               <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
@@ -62,7 +62,7 @@ function Login() {
                 icon={<PasswordIcon />}
               />
             </div>
-            <Button 
+            <Button
               label="Anmelden"
               action={() => navigate('/dashboard')}
             />

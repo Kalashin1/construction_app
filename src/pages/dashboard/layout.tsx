@@ -25,7 +25,7 @@ const Layout: FC<Props> = ({
         />
       )}
       <AppWrapper toggleSidebar={() => updateShowSidebar(!showSidebar)} />
-      <main className="main-content w-full pb-8">
+      <main className="main-content pb-8">
         {children}
       </main>
     </>
