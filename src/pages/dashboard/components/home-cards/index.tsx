@@ -15,22 +15,22 @@ type CardProps = {
 const cards = [
   {
     svg: IncomeIcon,
-    text: 'Incoming Projects',
+    text: 'New Tasks',
     figure: '16.0'
   },
   {
     svg: PendingIcon,
-    text: 'Accepted Projects',
+    text: 'Tasks Due',
     figure: '16.0'
   },
   {
     svg: CompletedIcon,
-    text: 'Completed Projects',
+    text: 'Over Due Tasks',
     figure: '16.0'
   },
   {
     svg: DispatchIcon,
-    text: 'Total Projects',
+    text: 'All Tasks',
     figure: '16.0'
   }
 ]
