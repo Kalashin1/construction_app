@@ -1,6 +1,7 @@
 import Layout from "./layout";
 import HomeCards from "./components/home-cards";
 import CurrentProjects from "./components/current-projects";
+import ProjectInformation from "./components/project-information";
 
 const Dashboard = () => {
   return (
@@ -9,7 +10,8 @@ const Dashboard = () => {
       <div>
         <HomeCards />
       </div>
-      <div className="my-12 flex md:flex-row justify-between">
+      <div className="my-12 flex flex-col md:flex-row justify-between items-start">
+        <ProjectInformation />
         <CurrentProjects />
       </div>
     </div>
