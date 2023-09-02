@@ -94,7 +94,7 @@ const Sidebar = ({
   const deviceWidth = window.innerWidth;
   
   return (
-    <div className="sidebar relative">
+    <div className="sidebar fixed z-50">
 
       {/* <!-- Main Sidebar --> */}
       <div className="absolute z-50 w-20 -top-16 h-screen">

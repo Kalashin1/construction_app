@@ -47,7 +47,7 @@ function Login() {
         </div>
         <div className="mt-4 space-y-4">
           <Input
-            placeholder="Johndoe@gmail.com"
+            placeholder="magga@magga.de"
             type="email"
             icon={<EmailIcon />}
           />
