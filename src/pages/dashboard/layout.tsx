@@ -41,8 +41,8 @@ const Layout: FC<Props> = ({
       />
       <main className="main-content pb-8 min-h-screen" onClick={
         deviceWidth < 560 ?
-        () => updateShowSidebar(!showSidebar):
-        () => console.log('desktop')
+        () => updateShowSidebar(false):
+        () => {}
       }>
         {children}
       </main>

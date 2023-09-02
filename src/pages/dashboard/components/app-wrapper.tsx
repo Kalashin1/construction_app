@@ -16,23 +16,23 @@ const AppWrapper: FC<Props> = ({
     <nav className="header print:hidden relative z-0">
       {/* <!-- App Header  --> */}
       <div
-        className="px-2 md:px-8 relative items-center justify-between flex-row space-x-4 flex w-full bg-white dark:bg-navy-700 print:hidden"
+        className="px md:px-8 px-2 relative items-center justify-between flex-row space-x md:space-x-4 flex w-full bg-white dark:bg-navy-700 print:hidden"
       >
-        <button className="focus:border-2 p-2 rounded-md" onClick={toggleSidebar}>
+        <button className="focus:border-2 py-2 px md:p-2 rounded-md" onClick={toggleSidebar}>
           <MenuIcon />
         </button>
 
         <div className="flex flex-row relative items-center justify-between">
           <div>
             <input
-              className="py-2 pl-8 rounded-3xl bg-slate-200"
+              className="py-2 pl-8 rounded-3xl w-5/6 bg-slate-200"
               placeholder="Search Here"
             />
             <div className="absolute left-3 top-3">
               <SearchIcon />
             </div>
           </div>
-          <div className="flex ml-4 space-x-2 flex-row justify-between items-center">
+          <div className="flex md:ml-4 space-x-1 md:space-x-2 flex-row justify-between items-center">
             <LightModeIcon />
          
             <NotificationIcon />
