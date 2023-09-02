@@ -1,5 +1,5 @@
-import { ReactNode, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { ReactNode } from "react";
+import { Link } from "react-router-dom";
 import {
   AppIcon,
   ComponentsIcon,
@@ -82,18 +82,17 @@ const SidebarLink = ({
 
 type Props = {
   closeSidebar: (...args: unknown[]) => void;
+  updateShowProjectMenu: (...args: unknown[]) => void;
+  showProjectMenu: boolean;
 }
 
 const Sidebar = ({
-  closeSidebar
+  closeSidebar,
+  showProjectMenu,
+  updateShowProjectMenu
 }: Props) => {
-  const location = useLocation();
-
-  const [showProjectMenu, updateShowProjectMenu] = useState(false)
-
-  useEffect(() => {
-    if (location.pathname === '/projects') updateShowProjectMenu(true)
-  }, [location])
+  const deviceWidth = window.innerWidth;
+  
   return (
     <div className="sidebar relative">
 
@@ -145,10 +144,14 @@ const Sidebar = ({
       {/* Sidebar Panel */}
       <div>
         {showProjectMenu && (
-          <SidebarPanel 
-            headerText="Projects" 
-            links={sidebarLinksArray[2].children!} 
-            closeSidebar={closeSidebar}
+          <SidebarPanel
+            headerText="Projects"
+            links={sidebarLinksArray[2].children!}
+            closeSidebar={
+              deviceWidth < 560 ? 
+              closeSidebar: 
+              () => updateShowProjectMenu(!showProjectMenu)
+            }
           />)}
       </div>
     </div>
