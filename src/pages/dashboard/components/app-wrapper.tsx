@@ -22,7 +22,7 @@ const AppWrapper: FC<Props> = ({
           <MenuIcon />
         </button>
 
-        <div className="flex flex-row relative items-center justify-between">
+        <div className="ml-10 flex flex-row relative items-center justify-between">
           <div>
             <input
               className="py-2 pl-8 rounded-3xl w-5/6 bg-slate-200"

@@ -79,9 +79,9 @@ const SidebarPanel = ({
   closeSidebar
 }: SidebarPanelProps) => {
   return (
-    <div className="w-3/4 sm:w-1/3 absolute shadow-md -top-16 z-40">
+    <div className="w-72 py-2 shadow-md absolute" style={{top: '-.45rem'}}>
       <div
-        className="flex h-full grow flex-col bg-white pl-[var(--main-sidebar-width)] dark:bg-navy-750"
+        className="flex h-full w-full grow flex-col bg-white pl-[var(--main-sidebar-width)] dark:bg-navy-750"
       >
         {/* <!-- Sidebar Panel Header --> */}
         <SidebarPanelHeader headerText={headerText} closeSidebar={closeSidebar} />

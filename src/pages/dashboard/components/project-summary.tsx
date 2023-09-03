@@ -67,8 +67,7 @@ const ProjectSummary = () => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="w-3/6">
-        <h3>System summary</h3>
-        <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+        <h3 className="text-md font-bold">System Tasks(0)</h3>
       </div>
 
       <ProjectSummaryTable />
