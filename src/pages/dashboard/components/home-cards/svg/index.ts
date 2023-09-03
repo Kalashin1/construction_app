@@ -4,7 +4,8 @@ import PendingIcon from './pending';
 import CompletedIcon from './completed';
 
 export type Props = {
-  width: number
+  width: number;
+  fill: string;
 }
 
 export {

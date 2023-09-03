@@ -71,7 +71,7 @@ const HomeCards = () => {
        {cards.map((card, index) => (
         <Card 
           figure={card.figure}
-          svg={(<card.svg width={50} />)}
+          svg={(<card.svg width={50} fill="#fff" />)}
           text={card.text}
           color={card.color}
           key={index}
