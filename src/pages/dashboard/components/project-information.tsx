@@ -37,10 +37,10 @@ const ProjectInfoChild = () => (
 const ProjectInformation = () => {
   return (
     <div
-      className="rounded-sm shadow-md bg-white py-2 sm:w-2/4 w-full my-4 sm:my-0 sm:mx-4"
+      className="rounded-sm shadow-md h-80 bg-white py-2 sm:w-2/4 w-full my-4 sm:my-0 sm:mx-4"
     >
       <div className="flex flex-row justify-between px-2">
-        <h3 className="text-md font-bold mt-2 mb-2">Current Projects</h3>
+        <h3 className="text-md font-bold mt-2 mb-2">Info</h3>
 
         <CheckBox label="All Information checked" />
       </div>

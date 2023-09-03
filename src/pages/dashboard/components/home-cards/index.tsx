@@ -9,48 +9,54 @@ import {
 type CardProps = {
   svg: ReactNode;
   figure: string;
-  text: string
+  text: string;
+  color: string;
 }
 
 const cards = [
   {
     svg: IncomeIcon,
     text: 'New Tasks',
-    figure: '16.0'
+    figure: '16.0',
+    color: 'bg-blue-500'
   },
   {
     svg: PendingIcon,
     text: 'Tasks Due',
-    figure: '16.0'
+    figure: '16.0',
+    color: 'bg-yellow-500'
   },
   {
     svg: CompletedIcon,
     text: 'Over Due Tasks',
-    figure: '16.0'
+    figure: '16.0',
+    color: 'bg-red-500'
   },
   {
     svg: DispatchIcon,
     text: 'All Tasks',
-    figure: '16.0'
+    figure: '16.0',
+    color: 'bg-green-500'
   }
 ]
 
 const Card = ({
   svg,
   figure,
-  text
+  text,
+  color
 }: CardProps) => {
   return (
-    <div className="rounded-lg bg-slate-150 p-4 dark:bg-navy-700">
+    <div className={`rounded-lg ${color} p-4 dark:bg-navy-700`}>
       <div className="flex justify-between space-x-1">
         <p
-          className="text-xl font-semibold text-slate-700 dark:text-navy-100"
+          className="text-xl text-white font-bold dark:text-navy-100"
         >
-          ${figure}
+          {figure}
         </p>
         {svg}
       </div>
-      <p className="mt-1 text-xs+">{text}</p>
+      <p className="mt-1 text-xs+ text-white">{text}</p>
     </div>
   )
 }
@@ -65,8 +71,9 @@ const HomeCards = () => {
        {cards.map((card, index) => (
         <Card 
           figure={card.figure}
-          svg={(<card.svg />)}
+          svg={(<card.svg width={50} />)}
           text={card.text}
+          color={card.color}
           key={index}
           />
        ))}

@@ -1,4 +1,8 @@
-const DispatchIcon = () => {
+import { Props } from ".";
+
+const DispatchIcon = ({
+  width=15
+}: Props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -7,6 +11,7 @@ const DispatchIcon = () => {
       viewBox="0 0 24 24"
       stroke="currentColor"
       stroke-width="2"
+      width={width}
     >
       <path
         d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"

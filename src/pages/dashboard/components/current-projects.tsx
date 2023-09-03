@@ -27,7 +27,7 @@ type ButtonProps = {
   action: (...args: unknown[]) => void;
 }
 
-const Button = ({
+export const Button = ({
   label,
   action
 }: ButtonProps) => (
@@ -86,7 +86,7 @@ const CurrentProjects = () => {
         ))}
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
-      <div className="flex flex-row py-4 px-4 items-center">
+      <div className="flex flex-row justify-end py-4 px-4 items-center">
         <Button 
           label="Filter Positions"
           action={() => {}}

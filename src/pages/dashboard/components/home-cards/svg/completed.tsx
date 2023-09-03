@@ -1,4 +1,8 @@
-const CompletedIcon = () => {
+import { Props } from ".";
+
+const CompletedIcon = ({
+  width=15
+}: Props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -7,6 +11,7 @@ const CompletedIcon = () => {
       viewBox="0 0 24 24"
       stroke="currentColor"
       stroke-width="2"
+      width={width}
     >
       <path
         strokeLinecap="round"
