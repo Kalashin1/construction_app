@@ -10,5 +10,6 @@ export enum SCREENS {
   REPORTS = '/reports',
   SHORTAGES = '/shortages',
   SHOP = '/shop',
-  CREATE_PROJECT ='/create-project'
+  CREATE_PROJECT ='/create-project',
+  OPS_ADMINISTRATION = '/ops'
 }

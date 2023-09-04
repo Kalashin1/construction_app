@@ -1,11 +1,13 @@
-import { ReactNode } from "react";
-import { Link } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+import { ReactNode, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   AppIcon,
   ComponentsIcon,
   HomeIcon,
   FormIcon,
   Settings,
+  ElementsIcons
 } from "../svg";
 import { SCREENS } from "../../../navigation/constants";
 import SidebarPanel from "./sidebar-panel";
@@ -36,17 +38,22 @@ const sidebarLinksArray = [
       },
       {
         text: 'Performance Reports',
-        link: SCREENS.REPORTS,
-      },
-      {
-        text: 'Bills',
-        link: SCREENS.BILLS,
+        link: SCREENS.PERFORMANCE,
       },
       {
         text: 'Reports',
-        link: SCREENS.PERFORMANCE,
+        link: SCREENS.REPORTS,
       },
     ]
+  },
+  {
+    text: 'Bills',
+    link: SCREENS.BILLS,
+    icon: ElementsIcons,
+    children: [{
+      text: 'OPS Performance',
+      link: SCREENS.OPS_ADMINISTRATION
+    }]
   },
 
 ]
@@ -96,6 +103,18 @@ const Sidebar = ({
   updateShowProjectMenu
 }: Props) => {
   const deviceWidth = window.innerWidth;
+  const location = useLocation()
+
+  useEffect(() => {
+    const sidebarLink = sidebarLinksArray.find(
+      (sbL) => sbL.link.toLowerCase().includes(location.pathname.slice(0))
+    )
+    if (sidebarLink?.children) {
+      updateSubMenu(sidebarLink);
+    }
+  }, [location.pathname])
+
+  const [subMenu, updateSubMenu] = useState<typeof sidebarLinksArray[number]>()
   
   return (
     <div className="sidebar fixed z-50">
@@ -149,8 +168,8 @@ const Sidebar = ({
       <div>
         {showProjectMenu && (
           <SidebarPanel
-            headerText="Projects"
-            links={sidebarLinksArray[2].children!}
+            headerText={subMenu?.text}
+            links={subMenu?.children!}
             closeSidebar={
               deviceWidth < 560 ? 
               closeSidebar: 
