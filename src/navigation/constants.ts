@@ -9,5 +9,6 @@ export enum SCREENS {
   PERFORMANCE = '/performance',
   REPORTS = '/reports',
   SHORTAGES = '/shortages',
-  SHOP = '/shop'
+  SHOP = '/shop',
+  CREATE_PROJECT ='/create-project'
 }
