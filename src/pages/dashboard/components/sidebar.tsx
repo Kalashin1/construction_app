@@ -168,7 +168,7 @@ const Sidebar = ({
       <div>
         {showProjectMenu && (
           <SidebarPanel
-            headerText="Projects"
+            headerText={subMenu?.text}
             links={subMenu?.children!}
             closeSidebar={
               deviceWidth < 560 ? 
