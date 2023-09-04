@@ -36,7 +36,7 @@ const cards = [
     svg: DispatchIcon,
     text: 'All Tasks',
     figure: '16.0',
-    color: 'bg-green-500'
+    color: 'bg-gray-800'
   }
 ]
 

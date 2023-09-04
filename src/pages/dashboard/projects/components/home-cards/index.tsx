@@ -30,13 +30,13 @@ const cards = [
     svg: DoubleCheckIcon,
     text: 'Completed',
     figure: '16.0',
-    color: 'bg-red-500'
+    color: 'bg-green-500'
   },
   {
     svg: RectangleListIcon,
     text: 'All Projects',
     figure: '16.0',
-    color: 'bg-green-500'
+    color: 'bg-gray-800'
   }
 ]
 
