@@ -106,15 +106,13 @@ const Sidebar = ({
   const location = useLocation()
 
   useEffect(() => {
-    console.log(location.pathname)
     const sidebarLink = sidebarLinksArray.find(
       (sbL) => sbL.link.toLowerCase().includes(location.pathname.slice(0))
     )
-    console.log(sidebarLink)
     if (sidebarLink?.children) {
       updateSubMenu(sidebarLink);
     }
-  }, [])
+  }, [location.pathname])
 
   const [subMenu, updateSubMenu] = useState<typeof sidebarLinksArray[number]>()
   

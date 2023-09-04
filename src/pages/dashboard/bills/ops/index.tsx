@@ -10,7 +10,7 @@ const OPSAdministration = () => {
           pageName="OPS Administration"
           firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard'}}
           secondLevel={{ link: SCREENS.BILLS, text: 'Bills'}}
-          thirdLevel={{ link: '', text: 'OPS Administration'}}
+          thirdLevel={{ link: SCREENS.OPS_ADMINISTRATION, text: 'OPS Administration'}}
         />
       </main>
     </Layout>
