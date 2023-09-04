@@ -1,9 +1,9 @@
 import {ReactNode} from 'react';
 import {
-  CompletedIcon,
-  DispatchIcon,
-  PendingIcon,
-  IncomeIcon
+  DoubleCheckIcon,
+  CheckIcon,
+  ToolsIcon,
+  RectangleListIcon
 } from './svg';
 
 type CardProps = {
@@ -15,26 +15,26 @@ type CardProps = {
 
 const cards = [
   {
-    svg: IncomeIcon,
-    text: 'New Tasks',
+    svg: ToolsIcon,
+    text: 'Instructed',
     figure: '16.0',
     color: 'bg-blue-500'
   },
   {
-    svg: PendingIcon,
-    text: 'Tasks Due',
+    svg: CheckIcon,
+    text: 'Performance Tested',
     figure: '16.0',
     color: 'bg-yellow-500'
   },
   {
-    svg: CompletedIcon,
-    text: 'Over Due Tasks',
+    svg: DoubleCheckIcon,
+    text: 'Completed',
     figure: '16.0',
     color: 'bg-red-500'
   },
   {
-    svg: DispatchIcon,
-    text: 'All Tasks',
+    svg: RectangleListIcon,
+    text: 'All Projects',
     figure: '16.0',
     color: 'bg-green-500'
   }
@@ -65,7 +65,7 @@ const HomeCards = () => {
   return (
     <div className="col-span-12 lg:col-span-11">
       <div
-        className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4"
+        className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4"
       >
 
        {cards.map((card, index) => (
