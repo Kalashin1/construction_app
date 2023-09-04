@@ -27,7 +27,7 @@ const ProjectInfoChild = () => (
       <div>
         <h3>08/23/2023 - 1:28 p.m</h3>
         <Link to="/">Addendum rejected</Link>
-        <Link to={'/'}>(LWS-34439)</Link>
+        <Link to={'/'}>(MAGGA-34439)</Link>
       </div>
     </div>
     <CheckBox />
