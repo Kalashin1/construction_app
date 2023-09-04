@@ -27,6 +27,10 @@ const sidebarLinksArray = [
     icon: FormIcon,
     children: [
       {
+        text: 'Create Project',
+        link: SCREENS.CREATE_PROJECT,
+      },
+      {
         text: 'Shortage Orders',
         link: SCREENS.SHORTAGES,
       },
