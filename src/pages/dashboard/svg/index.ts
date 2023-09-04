@@ -5,6 +5,7 @@ import ElementsIcons from "./elements";
 import Settings from "./settings";
 import PagesIcon from "./pages";
 import HomeIcon from "./home";
+import ForwardIcon from "./forward";
 
 export {
   ComponentsIcon,
@@ -14,4 +15,5 @@ export {
   Settings,
   PagesIcon,
   HomeIcon,
+  ForwardIcon,
 }
