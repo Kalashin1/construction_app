@@ -19,8 +19,8 @@ const Layout: FC<Props> = ({
 
 
   useEffect(() => {
-    const sidePanelLinks = [SCREENS.PROJECTS, SCREENS.SHORTAGES, SCREENS.REPORTS, SCREENS.BILLS, SCREENS.PERFORMANCE]
-    if (sidePanelLinks.find((sl) => sl === location.pathname)) updateShowProjectMenu(true)
+    const projectSidePanelLinks = [SCREENS.PROJECTS, SCREENS.SHORTAGES, SCREENS.REPORTS, SCREENS.BILLS, SCREENS.PERFORMANCE]
+    if (projectSidePanelLinks.find((sl) => sl === location.pathname)) updateShowProjectMenu(true)
   }, [location])
 
   return (

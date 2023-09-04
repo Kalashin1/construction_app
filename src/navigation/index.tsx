@@ -5,12 +5,13 @@ import Dashboard from '../pages/dashboard';
 import Projects from '../pages/dashboard/projects';
 import Contractors from '../pages/dashboard/settings/contactors';
 import Support from '../pages/dashboard/settings/support';
-import Bills from '../pages/dashboard/projects/bills';
+import Bills from '../pages/dashboard/bills';
 import Performance from '../pages/dashboard/projects/performance';
 import Reports from '../pages/dashboard/projects/reports';
 import Shortage from '../pages/dashboard/projects/shortages';
 import Shop from '../pages/dashboard/shop';
 import CreateProjectPage from '../pages/dashboard/projects/create-project';
+import OPSAdministration from '../pages/dashboard/bills/ops';
 import { SCREENS } from './constants';
 
 const router = createBrowserRouter([
@@ -62,6 +63,11 @@ const router = createBrowserRouter([
     path: SCREENS.CREATE_PROJECT,
     element: (<CreateProjectPage />)
   },
+  {
+    path: SCREENS.OPS_ADMINISTRATION,
+    element: (<OPSAdministration />)
+  },
+  
 ]);
 
 export default router;
