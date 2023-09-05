@@ -6,7 +6,7 @@ import {
   NewInvoiceIcon
 } from './svg';
 
-type CardProps = {
+export type CardProps = {
   svg: ReactNode;
   figure: string;
   text: string;
@@ -40,7 +40,7 @@ const cards = [
   }
 ]
 
-const Card = ({
+export const Card = ({
   svg,
   figure,
   text,
