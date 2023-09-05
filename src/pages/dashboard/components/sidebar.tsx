@@ -31,18 +31,22 @@ const sidebarLinksArray = [
       {
         text: 'Create Project',
         link: SCREENS.CREATE_PROJECT,
+        parent: SCREENS.PROJECTS
       },
       {
         text: 'Shortage Orders',
         link: SCREENS.SHORTAGES,
+        parent: SCREENS.PROJECTS
       },
       {
         text: 'Performance Reports',
         link: SCREENS.PERFORMANCE,
+        parent: SCREENS.PROJECTS
       },
       {
         text: 'Reports',
         link: SCREENS.REPORTS,
+        parent: SCREENS.PROJECTS
       },
     ]
   },
@@ -52,7 +56,8 @@ const sidebarLinksArray = [
     icon: ElementsIcons,
     children: [{
       text: 'OPS Performance',
-      link: SCREENS.OPS_ADMINISTRATION
+      link: SCREENS.OPS_ADMINISTRATION,
+      parent: SCREENS.BILLS
     }]
   },
 
@@ -107,8 +112,17 @@ const Sidebar = ({
 
   useEffect(() => {
     const sidebarLink = sidebarLinksArray.find(
-      (sbL) => sbL.link.toLowerCase().includes(location.pathname.slice(0))
+      (sbL) => {
+        const isSidebarLink = sbL.link.toLowerCase().includes(location.pathname.slice(0));
+        if (!isSidebarLink) {
+          const parentLinks = sbL.children?.find((child) => child.link.includes(location.pathname.slice(0)))
+          return parentLinks
+        } else {
+          return isSidebarLink;
+        }
+      }
     )
+    console.log(sidebarLink)
     if (sidebarLink?.children) {
       updateSubMenu(sidebarLink);
     }
