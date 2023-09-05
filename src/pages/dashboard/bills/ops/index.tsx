@@ -5,7 +5,7 @@ import Layout from "../../layout";
 const OPSAdministration = () => {
   return (
     <Layout>
-      <main className="p-4 md:p-8">
+      <main className="py-4 md:py-8">
         <BreadCrumb
           pageName="OPS Administration"
           firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard'}}
