@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { SCREENS } from "../../../../../../navigation/constants";
 
 const ProjectListTable = () => {
   const dataTitles = ['Project', 'Status', 'Info', 'Completion']
@@ -22,7 +23,7 @@ const ProjectListTable = () => {
         <tbody>
           <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-              <Link to={'/'} className="text-red-600">MAGGA-34087</Link>
+              <Link to={SCREENS.DETAIL} className="text-red-600">MAGGA-34087</Link>
               <p className="text-xs my-2">(beauftragt)</p>
               <p>Eppmannsweg 9, 45896 Gelsenkirchen</p>
               <p className="text-xs my-2">Lage: Erdgeschoss links, Wohnung 1 Vermietungstatus: leer</p>

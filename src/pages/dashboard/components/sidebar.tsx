@@ -122,9 +122,10 @@ const Sidebar = ({
         }
       }
     )
-    console.log(sidebarLink)
-    if (sidebarLink?.children) {
+    if (sidebarLink && sidebarLink?.children) {
       updateSubMenu(sidebarLink);
+    } else {
+      updateSubMenu(sidebarLinksArray[2])
     }
   }, [location.pathname])
 

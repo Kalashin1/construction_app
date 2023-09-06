@@ -18,7 +18,7 @@ const AppWrapper: FC<Props> = ({
       <div
         className="px md:px-8 px-2 relative items-center justify-between flex-row space-x md:space-x-4 flex w-full bg-white dark:bg-navy-700 print:hidden"
       >
-        <button className="focus:border-2 py-2 px md:p-2 rounded-md" onClick={toggleSidebar}>
+        <button className="py-2 px md:p-2 rounded-md" onClick={toggleSidebar}>
           <MenuIcon />
         </button>
 
