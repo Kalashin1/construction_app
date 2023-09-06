@@ -35,17 +35,28 @@ const Layout: FC<Props> = ({
       <AppWrapper
         toggleSidebar={
           deviceWidth < 560 ?
-          () => updateShowSidebar(!showSidebar):
-          () => updateShowProjectMenu(!showProjectMenu)
+            () => updateShowSidebar(!showSidebar) :
+            () => updateShowProjectMenu(!showProjectMenu)
         }
       />
-      <main className="main-content pb-8 min-h-screen" onClick={
-        deviceWidth < 560 ?
-        () => updateShowSidebar(false):
-        () => {}
-      }>
-        {children}
-      </main>
+      {showProjectMenu ? (
+        <main className="main-content relative md:left-48 md:w-9/12 pb-8 min-h-screen" onClick={
+          deviceWidth < 560 ?
+            () => updateShowSidebar(false) :
+            () => { }
+        }>
+          {children}
+        </main>
+      ) : (
+        <main className="main-content relative pb-8 min-h-screen" onClick={
+          deviceWidth < 560 ?
+            () => updateShowSidebar(false) :
+            () => { }
+        }>
+          {children}
+        </main>
+      )
+      }
     </>
   );
 }

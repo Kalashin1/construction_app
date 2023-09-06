@@ -2,6 +2,9 @@ import Layout from "../../layout";
 import BreadCrumb from "../../components/bread-crumb";
 import { SCREENS } from "../../../../navigation/constants";
 import ProjectCard from "./components/project-card";
+import ConstructionSchedule from "./components/construction-schedule";
+import Documents from "./components/documents";
+import ScopeOfService from "./components/scope-of-service";
 
 const ProjectDetails = () => {
   return (
@@ -15,6 +18,9 @@ const ProjectDetails = () => {
         />
 
         <ProjectCard />
+        <ConstructionSchedule />
+        <Documents />
+        <ScopeOfService />
       </main>
     </Layout>
   )

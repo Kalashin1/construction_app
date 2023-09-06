@@ -4,10 +4,10 @@ import { AdminIcon, CaretakerIcon, ContactPersonIcon, HouseIcon, PDFIcon } from 
 const ProjectCard = () => {
   return (
     <div className="bg-white rounded-md py-6 shadow">
-      <div className="flex flex-row justify-between px-6 mb-4">
+      <div className="flex flex-col md:flex-row md:justify-between px-6 mb-4">
         <h2>MAGGA-34087 (instructed)</h2>
 
-        <div className="w-1/2">
+        <div className="md:w-1/2 my-4 md:my-0">
           <div className="progress h-6 bg-slate-150 dark:bg-navy-500">
             <div
               className="w-full py-1 text-white rounded-full bg-success dark:bg-accent text-right px-4"
@@ -16,8 +16,8 @@ const ProjectCard = () => {
         </div>
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
-      <div className="w-full flex md:flex-row justify-between">
-        <div className="w-2/6 p-6">
+      <div className="w-full flex flex-col md:flex-row justify-between">
+        <div className="md:w-2/6 p-6">
           <h3>
             Eppmannsweg 9, 45896 Gelsenkirchen
           </h3>
@@ -52,7 +52,7 @@ const ProjectCard = () => {
           </span>
         </div>
       </div>
-      <div className="w-2/6 p-6">
+      <div className="md:w-2/6 p-6">
         <span className="py-1 px-4 bg-gray-950 text-white rounded shadow">LEG-97666-0</span>
         <p className="text-md my-4">LEG LWS LV - (as of January 1st, 2023)</p>
 
@@ -67,7 +67,7 @@ const ProjectCard = () => {
 
       <div className="w-full p-6">
         <div className="flex fex-row w-full">
-          <div className="bg-gray-950 py-2 px-4 w-1/12">
+          <div className="bg-gray-950 py-2 px-6 md:px-4 w-1/12">
             <EuroIcon width={20} color="gray" />
           </div>
           <div className="bg-gray-300 w-11/12 flex items-center flex-row justify-between py-1 px-4">
