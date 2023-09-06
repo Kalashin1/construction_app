@@ -129,7 +129,7 @@ const Sidebar = ({
     }
   }, [location.pathname])
 
-  const [subMenu, updateSubMenu] = useState<typeof sidebarLinksArray[number]>()
+  const [subMenu, updateSubMenu] = useState<typeof sidebarLinksArray[number]>(sidebarLinksArray[2])
   
   return (
     <div className="sidebar fixed z-50">

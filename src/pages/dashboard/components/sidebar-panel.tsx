@@ -48,6 +48,7 @@ type SidebarPanelBodyProps = {
 const SidebarPanelBody = ({
   links
 }: SidebarPanelBodyProps) => {
+  console.log(links)
   return (
     <div
       className="nav-wrapper h-[calc(100%-4.5rem)] min-h-screen overflow-x-hidden pb-6"

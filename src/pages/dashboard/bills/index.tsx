@@ -8,11 +8,14 @@ const Bills = () => {
   return (
     <Layout>
       <main className="p-4 md:p-8">
-        <BreadCrumb
-          pageName="Outgoing Invoices"
-          firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard'}}
-          secondLevel={{ link: SCREENS.BILLS, text: 'Bills'}}
-        />
+        <div className="px-8">
+          <BreadCrumb
+            pageName="Outgoing Invoices"
+            firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard'}}
+            secondLevel={{ link: SCREENS.BILLS, text: 'Bills'}}
+          />
+
+        </div>
 
         <section className="p-4 md:p-8">
           <HomeCards
