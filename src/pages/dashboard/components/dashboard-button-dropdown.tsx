@@ -1,5 +1,7 @@
 import {ReactNode} from "react"
 import {UserIcon} from "../svg"
+import { Link } from "react-router-dom";
+import { SCREENS } from "../../../navigation/constants";
 
 type DropdownItemProps = {
   svg: ReactNode;
@@ -16,13 +18,13 @@ const DropdownItem = ({
   text
 }: DropdownItemProps) => (
   <li>
-    <a
+    <Link
       className="flex items-center space-x-2 rounded-lg bg-primary px-4 py-2.5 tracking-wide text-white outline-none transition-all dark:bg-accent"
-      href="#"
+      to={SCREENS.PROFILE}
     >
       {svg}
       <span>{text}</span>
-    </a>
+    </Link>
   </li>
 )
 

@@ -12,5 +12,6 @@ export enum SCREENS {
   SHOP = '/shop',
   CREATE_PROJECT ='/create-project',
   OPS_ADMINISTRATION = '/ops',
-  DETAIL = '/detail'
+  DETAIL = '/detail',
+  PROFILE = '/profile'
 }
