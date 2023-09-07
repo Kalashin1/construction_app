@@ -12,10 +12,10 @@ const ConstructionSchedule = () => {
               <p
                 className="pb-2 font-medium leading-none text-slate-600 dark:text-navy-100 sm:pb-0"
               >
-                User Photo Changed
+                Electricity
               </p>
               <span className="text-xs text-slate-400 dark:text-navy-300"
-              >12 minute ago</span>
+              >7th September - 9th September</span>
             </div>
             <p className="py-1">John Doe changed his avatar photo</p>
           </div>
@@ -29,10 +29,10 @@ const ConstructionSchedule = () => {
               <p
                 className="pb-2 font-medium leading-none text-slate-600 dark:text-navy-100 sm:pb-0"
               >
-                Video Added
+                Plumbing
               </p>
               <span className="text-xs text-slate-400 dark:text-navy-300"
-              >1 hour ago</span>
+              >10th September - 14th September</span>
             </div>
             <p className="py-1">Mores Clarke added new video</p>
           </div>

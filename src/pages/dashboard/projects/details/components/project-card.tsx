@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import EuroIcon from "../../../bills/ops/svg/euro";
 import { AdminIcon, CaretakerIcon, ContactPersonIcon, HouseIcon, PDFIcon } from "../svgs";
 
@@ -18,9 +19,10 @@ const ProjectCard = () => {
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="w-full flex flex-col md:flex-row justify-between">
         <div className="md:w-2/6 p-6">
-          <h3>
-            Eppmannsweg 9, 45896 Gelsenkirchen
-          </h3>
+          { /* // TODO: This should link to the house address https://maps.google.com/?q=address */}
+          <Link to={'https://maps.google.com/?q=N0%2019%20Mike%20Amadi%20Street%20Rukpokwu%20Port%20Harcourt%20Rivers,%20Nigeria'} className="text-blue-400 font-bold cursor-pointer" target="blank">
+            Musterstraße. XXXXX, Stadt
+          </Link>
           <h3>Location: Location: Ground floor on the left, apartment 1</h3>
           <h3>Rental Status: Empty</h3>
           <h3 className="font-bold">5270.9035.049.00211</h3>
@@ -36,25 +38,25 @@ const ProjectCard = () => {
         <div className="p-6">
           <span className="flex flex-row my-2">
             <AdminIcon width={15} color="#000" />
-            <h3 className="ml-4">Dirk Onufrejow</h3>
+            <h3 className="ml-4">Bauleiter</h3>
           </span>
           <span className="flex flex-row my-2">
             <HouseIcon width={15} color="#000" />
-            <h3 className="ml-4">Nils Grude</h3>
+            <h3 className="ml-4">Innendienst</h3>
           </span>
           <span className="flex flex-row my-2">
             <CaretakerIcon width={15} color="#000" />
-            <h3 className="ml-4">Armando FERREIRA</h3>
+            <h3 className="ml-4">Hauswart</h3>
           </span>
           <span className="flex flex-row my-2">
             <ContactPersonIcon width={15} color="#000" />
-            <h3 className="ml-4">Armando FERREIRA</h3>
+            <h3 className="ml-4">Ansprechpartner</h3>
           </span>
         </div>
       </div>
       <div className="md:w-2/6 p-6">
-        <span className="py-1 px-4 bg-gray-950 text-white rounded shadow">LEG-97666-0</span>
-        <p className="text-md my-4">LEG LWS LV - (as of January 1st, 2023)</p>
+        <span className="py-1 px-4 bg-gray-950 text-white rounded shadow">MAGGA-97666-0</span>
+        <p className="text-md my-4">MAGGA LV - (as of January 1st, 2023)</p>
 
         <div className="flex flex-row">
           <span className="bg-gray-200 py-1 px-2 text-black text-center rounded mx-1">5</span>
