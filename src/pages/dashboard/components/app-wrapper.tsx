@@ -3,7 +3,8 @@ import SearchIcon from "../svg/search";
 import LightModeIcon from "../svg/light";
 import NotificationIcon from "../svg/notificaiton";
 import SquareIcon from "../svg/square";
-import {FC} from 'react';
+import DashboardButtonDropdown from "./dashboard-button-dropdown";
+import {FC, useState} from 'react';
 
 type Props = {
   toggleSidebar: (...args: unknown[]) => void
@@ -12,6 +13,7 @@ type Props = {
 const AppWrapper: FC<Props> = ({
   toggleSidebar
 }) => {
+  const [showDashboardDropdown, updateShowDashboardDropdown] = useState(false);
   return (
     <nav className="header print:hidden relative z-0">
       {/* <!-- App Header  --> */}
@@ -32,12 +34,19 @@ const AppWrapper: FC<Props> = ({
               <SearchIcon />
             </div>
           </div>
-          <div className="flex md:ml-4 space-x-1 md:space-x-2 flex-row justify-between items-center">
-            <LightModeIcon />
-         
-            <NotificationIcon />
-          
-            <SquareIcon />
+          <div className="flex md:ml-4 space-x-1 md:space-x-2 flex-row justify-between items-center relative">
+            <span className="cursor-pointer">
+              <LightModeIcon />
+            </span>
+            <span className="cursor-pointer">
+              <NotificationIcon />
+            </span>
+            <span className="cursor-pointer" 
+              onClick={() => updateShowDashboardDropdown(!showDashboardDropdown)}
+            >
+              <SquareIcon />
+            </span>
+            {showDashboardDropdown && (<DashboardButtonDropdown />)}
           </div>
         </div>
 
