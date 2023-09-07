@@ -6,6 +6,7 @@ import ConstructionSchedule from "./components/construction-schedule";
 import Documents from "./components/documents";
 import ScopeOfService from "./components/scope-of-service";
 import MainOrderItem from "./components/main-order-item";
+import ExtraOrders from "./components/extra-orders";
 
 const ProjectDetails = () => {
   return (
@@ -23,6 +24,7 @@ const ProjectDetails = () => {
         <Documents />
         <ScopeOfService />
         <MainOrderItem />
+        <ExtraOrders />
       </main>
     </Layout>
   )
