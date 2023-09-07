@@ -32,8 +32,8 @@ export const ProjectDetailCard = () => (
         <div className="flex flex-row my-2 justify-between">
           <h3>psh&nbsp;|&nbsp;</h3>
           <h3>&nbsp;1.00&nbsp;|&nbsp;</h3>
-          <h3>2517.40 €&nbsp;|&nbsp;</h3>
-          <h3>&nbsp;2517.40 €</h3>
+          <h3>00.00 €&nbsp;|&nbsp;</h3>
+          <h3>&nbsp;00.00 €</h3>
         </div>
       </div>
     </div>

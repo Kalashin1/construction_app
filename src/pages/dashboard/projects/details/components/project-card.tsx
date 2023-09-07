@@ -75,7 +75,7 @@ const ProjectCard = () => {
           </div>
           <div className="bg-gray-300 w-11/12 flex items-center flex-row justify-between py-1 px-4">
             <h3 className="text-black">Order Value:</h3>
-            <h3 className="text-black">&euro;15,813.44</h3>
+            <h3 className="text-black">&euro;00.00</h3>
           </div>
         </div>
       </div>
