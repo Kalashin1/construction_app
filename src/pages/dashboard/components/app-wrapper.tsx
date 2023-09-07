@@ -5,6 +5,7 @@ import NotificationIcon from "../svg/notificaiton";
 import SquareIcon from "../svg/square";
 import DashboardButtonDropdown from "./dashboard-button-dropdown";
 import {FC, useState} from 'react';
+import NotificationDropdown from "./notification-dropdown";
 
 type Props = {
   toggleSidebar: (...args: unknown[]) => void
@@ -14,6 +15,7 @@ const AppWrapper: FC<Props> = ({
   toggleSidebar
 }) => {
   const [showDashboardDropdown, updateShowDashboardDropdown] = useState(false);
+  const [showNotifications, updateShowNotifications] = useState(false);
   return (
     <nav className="header print:hidden relative z-0">
       {/* <!-- App Header  --> */}
@@ -38,9 +40,12 @@ const AppWrapper: FC<Props> = ({
             <span className="cursor-pointer">
               <LightModeIcon />
             </span>
-            <span className="cursor-pointer">
+            <span className="cursor-pointer"
+              onClick={() => updateShowNotifications(!showNotifications)}
+            >
               <NotificationIcon />
             </span>
+            {showNotifications && (<NotificationDropdown />)}
             <span className="cursor-pointer" 
               onClick={() => updateShowDashboardDropdown(!showDashboardDropdown)}
             >
