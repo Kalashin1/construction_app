@@ -13,6 +13,7 @@ import Shop from '../pages/dashboard/shop';
 import CreateProjectPage from '../pages/dashboard/projects/create-project';
 import OPSAdministration from '../pages/dashboard/bills/ops';
 import ProjectDetails from '../pages/dashboard/projects/details';
+import Profile from '../pages/dashboard/profie';
 import { SCREENS } from './constants';
 
 const router = createBrowserRouter([
@@ -72,7 +73,10 @@ const router = createBrowserRouter([
     path: SCREENS.DETAIL,
     element: (<ProjectDetails />)
   },
-  
+  {
+    path: SCREENS.PROFILE,
+    element: (<Profile />)
+  }
 ]);
 
 export default router;

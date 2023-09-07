@@ -27,8 +27,8 @@ export const ProjectDetailCard = () => (
     </div>
     <div className="md:col-span-3 col-span-4 my-2">
       <div className="flex flex-col md:flex-row justify-between md:ml-8 md:items-center px-4">
-        <h3 className="mr-2 md:mr-0 mt-2">MAGGA</h3>
-        <h3>Apartment</h3>
+        <h3 className="mr-2 md:mr-0 mt-2 font-bold">MAGGA</h3>
+        <h3 className="font-bold">Apartment</h3>
         <div className="flex flex-row my-2 justify-between">
           <h3>psh&nbsp;|&nbsp;</h3>
           <h3>&nbsp;1.00&nbsp;|&nbsp;</h3>

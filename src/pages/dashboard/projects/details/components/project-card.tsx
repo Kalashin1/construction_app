@@ -36,22 +36,23 @@ const ProjectCard = () => {
           <span>Rented</span><span className="font-bold">-</span>
         </div>
         <div className="p-6">
-          <span className="flex flex-row my-2">
+          {/* // TODO: OPEN A MODAL TO SHOW THE USER DETAILS */}
+          <Link  className="flex flex-row my-2 cursor" to={'/'}>
             <AdminIcon width={15} color="#000" />
             <h3 className="ml-4">Bauleiter</h3>
-          </span>
-          <span className="flex flex-row my-2">
+          </Link >
+          <Link  className="flex flex-row my-2" to={'/'}>
             <HouseIcon width={15} color="#000" />
             <h3 className="ml-4">Innendienst</h3>
-          </span>
-          <span className="flex flex-row my-2">
+          </Link>
+          <Link className="flex flex-row my-2" to={'/'}>
             <CaretakerIcon width={15} color="#000" />
             <h3 className="ml-4">Hauswart</h3>
-          </span>
-          <span className="flex flex-row my-2">
+          </Link>
+          <Link className="flex flex-row my-2" to={'/'}>
             <ContactPersonIcon width={15} color="#000" />
             <h3 className="ml-4">Ansprechpartner</h3>
-          </span>
+          </Link>
         </div>
       </div>
       <div className="md:w-2/6 p-6">
