@@ -1,9 +1,18 @@
 import Layout from "../layout";
+import Heading from "./components/heading";
+import SidebarHeading from "./components/sidebar-Heading";
 
 const Shop = () => {
   return (
     <Layout>
-      <h3>Shop</h3>
+      <main className="p-6 grid grid-cols-6">
+        <div className="col-span-4">
+          <Heading />
+        </div>
+        <div className="col-span-2">
+          <SidebarHeading />
+        </div>
+      </main>
     </Layout>
   );
 };
