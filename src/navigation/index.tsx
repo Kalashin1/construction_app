@@ -3,7 +3,7 @@ import Signup from '../pages/auth/signup';
 import Login from '../pages/auth/login';
 import Dashboard from '../pages/dashboard';
 import Projects from '../pages/dashboard/projects';
-import Contractors from '../pages/dashboard/settings/contactors';
+import Contractors from '../pages/dashboard/settings/contractors';
 import Support from '../pages/dashboard/settings/support';
 import Bills from '../pages/dashboard/bills';
 import Performance from '../pages/dashboard/projects/performance';
@@ -14,6 +14,7 @@ import CreateProjectPage from '../pages/dashboard/projects/create-project';
 import OPSAdministration from '../pages/dashboard/bills/ops';
 import ProjectDetails from '../pages/dashboard/projects/details';
 import Profile from '../pages/dashboard/profie';
+import ContractorDetails from '../pages/dashboard/settings/contractors/details';
 import { SCREENS } from './constants';
 
 const router = createBrowserRouter([
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
   {
     path: SCREENS.PROFILE,
     element: (<Profile />)
+  },
+  {
+    path: SCREENS.CONTRACTOR_DETAILS,
+    element: (<ContractorDetails />)
   }
 ]);
 
