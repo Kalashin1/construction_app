@@ -11,8 +11,11 @@ import FloatingActionButton from "./components/floating-action-button";
 import AcceptProjectFloatingActionButton from "./components/accept-project";
 import DeclineProjectFloatingActionButton from "./components/decline-project";
 import DownloadProjectActionButton from "./components/download-button";
+import ProjectDownloadAction from "./components/project-download-action";
+import { useState } from "react";
 
 const ProjectDetails = () => {
+  const [showDownloadOption, updateShowDownloadOption] = useState(false);
   return (
     <Layout>
       <main className="p-4 md:p-8 relative">
@@ -31,9 +34,13 @@ const ProjectDetails = () => {
         <ScopeOfService />
         <MainOrderItem />
         <ExtraOrders />
-
+        { showDownloadOption && (<ProjectDownloadAction />)}
         <FloatingActionButton />
-        <DownloadProjectActionButton />
+        <DownloadProjectActionButton 
+          action={
+            () => updateShowDownloadOption(!showDownloadOption)
+          }
+        />
       </main>
     </Layout>
   )

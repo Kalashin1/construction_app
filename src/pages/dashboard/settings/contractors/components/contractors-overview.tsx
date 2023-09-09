@@ -30,17 +30,17 @@ const ConstractorsTable = () => {
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">1</td>
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">
               <Link className="text-red-500" to={SCREENS.CONTRACTOR_DETAILS}>
-                LWS Plus GmbH
+                Ibrahim
               </Link>
             </td>
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-              Schnieringshof 10
+              Musterstraße. XXXXX, Stadt
             </td>
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">45329</td>
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">Eat</td>
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">&nbsp;</td>
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-              info@lwsplus.de
+              magga@gmail.com
               {/* <span className="bg-green-700 py-1 px-4 rounded text-white">success</span> */}
             </td>
           </tr>
