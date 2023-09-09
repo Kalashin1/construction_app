@@ -6,6 +6,9 @@ import Settings from "./settings";
 import PagesIcon from "./pages";
 import HomeIcon from "./home";
 import ForwardIcon from "./forward";
+import UserIcon from "./user";
+import Chat from "./chat";
+import ChatNew from "./chat-new";
 
 export {
   ComponentsIcon,
@@ -16,4 +19,7 @@ export {
   PagesIcon,
   HomeIcon,
   ForwardIcon,
+  UserIcon,
+  Chat,
+  ChatNew,
 }

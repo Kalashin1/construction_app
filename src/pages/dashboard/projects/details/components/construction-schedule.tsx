@@ -12,12 +12,12 @@ const ConstructionSchedule = () => {
               <p
                 className="pb-2 font-medium leading-none text-slate-600 dark:text-navy-100 sm:pb-0"
               >
-                User Photo Changed
+                Electricity
               </p>
               <span className="text-xs text-slate-400 dark:text-navy-300"
-              >12 minute ago</span>
+              >7th September - 9th September</span>
             </div>
-            <p className="py-1">John Doe changed his avatar photo</p>
+            <p className="py-1">Ibrahim Balde changed his avatar photo</p>
           </div>
         </li>
         <li className="timeline-item">
@@ -29,12 +29,12 @@ const ConstructionSchedule = () => {
               <p
                 className="pb-2 font-medium leading-none text-slate-600 dark:text-navy-100 sm:pb-0"
               >
-                Video Added
+                Plumbing
               </p>
               <span className="text-xs text-slate-400 dark:text-navy-300"
-              >1 hour ago</span>
+              >10th September - 14th September</span>
             </div>
-            <p className="py-1">Mores Clarke added new video</p>
+            <p className="py-1">Ibrahim Balde added new video</p>
           </div>
         </li>
         <li className="timeline-item">
@@ -48,13 +48,13 @@ const ConstructionSchedule = () => {
               <p
                 className="pb-2 font-medium leading-none text-slate-600 dark:text-navy-100 sm:pb-0"
               >
-                Design Completed
+                Concrete Floor Completed
               </p>
               <span className="text-xs text-slate-400 dark:text-navy-300"
               >3 hours ago</span>
             </div>
             <p className="py-1">
-              Robert Nolan completed the design of the CRM application
+              Ibrahim Balde completed the concrete floor
             </p>
           </div>
         </li>
@@ -65,12 +65,12 @@ const ConstructionSchedule = () => {
               <p
                 className="pb-2 font-medium leading-none text-slate-600 dark:text-navy-100 sm:pb-0"
               >
-                ER Diagram
+                Plumbing
               </p>
               <span className="text-xs text-slate-400 dark:text-navy-300"
               >a day ago</span>
             </div>
-            <p className="py-1">Team completed the ER diagram app</p>
+            <p className="py-1">Team completed the Plumbing</p>
           </div>
         </li>
         <li className="timeline-item">
@@ -80,11 +80,11 @@ const ConstructionSchedule = () => {
               <p
                 className="pb-2 font-medium leading-none text-slate-600 dark:text-navy-100 sm:pb-0"
               >
-                Weekly Report
+                Tiling
               </p>
               <span className="text-xs text-slate-400 dark:text-navy-300">a day ago</span>
             </div>
-            <p className="py-1">The weekly report was uploaded</p>
+            <p className="py-1">The tiling was completed</p>
           </div>
         </li>
       </ol>
