@@ -18,14 +18,14 @@ const TabNav = ({
         <nav>
           <ul>
             <li className="py-1 px-4">
-              <h3 className="font-bold my-2">LWS Plus GmbH</h3>
+              <h3 className="font-bold my-2">MAGGA</h3>
             </li>
             <li className="py-1 px-4">
               <p>
                 <span className="mr-2">
                   <i className="fas fa-location-dot" />
                 </span>
-                Schnieringshof 1045329 Essen
+                Musterstraße. XXXXX, Stadt
               </p>
             </li>
             <li className="py-1 px-4 mb-12">
@@ -33,7 +33,7 @@ const TabNav = ({
                 <span className="mr-2">
                   <i className="fas fa-envelope" />
                 </span>
-                info@lwsplus.de
+                magga@gmail.com
               </p>
             </li>
             {links.map((sbL, index) => (
