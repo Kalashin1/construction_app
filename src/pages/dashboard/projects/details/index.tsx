@@ -8,6 +8,9 @@ import ScopeOfService from "./components/scope-of-service";
 import MainOrderItem from "./components/main-order-item";
 import ExtraOrders from "./components/extra-orders";
 import FloatingActionButton from "./components/floating-action-button";
+import AcceptProjectFloatingActionButton from "./components/accept-project";
+import DeclineProjectFloatingActionButton from "./components/decline-project";
+import DownloadProjectActionButton from "./components/download-button";
 
 const ProjectDetails = () => {
   return (
@@ -19,6 +22,8 @@ const ProjectDetails = () => {
           secondLevel={{ link: SCREENS.PROJECTS, text: 'Project' }}
           thirdLevel={{ link: '', text: 'Detail' }}
         />
+        <AcceptProjectFloatingActionButton />
+        <DeclineProjectFloatingActionButton />
 
         <ProjectCard />
         <ConstructionSchedule />
@@ -28,6 +33,7 @@ const ProjectDetails = () => {
         <ExtraOrders />
 
         <FloatingActionButton />
+        <DownloadProjectActionButton />
       </main>
     </Layout>
   )
