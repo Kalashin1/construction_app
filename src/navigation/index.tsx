@@ -15,6 +15,7 @@ import OPSAdministration from '../pages/dashboard/bills/ops';
 import ProjectDetails from '../pages/dashboard/projects/details';
 import Profile from '../pages/dashboard/profie';
 import ContractorDetails from '../pages/dashboard/settings/contractors/details';
+import ChatApp from '../pages/dashboard/projects/chat';
 import { SCREENS } from './constants';
 
 const router = createBrowserRouter([
@@ -81,7 +82,11 @@ const router = createBrowserRouter([
   {
     path: SCREENS.CONTRACTOR_DETAILS,
     element: (<ContractorDetails />)
-  }
+  },
+  {
+    path: SCREENS.CHAT,
+    element: (<ChatApp />)
+  },
 ]);
 
 export default router;

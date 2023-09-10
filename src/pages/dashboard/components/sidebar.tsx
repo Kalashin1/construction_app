@@ -100,12 +100,14 @@ type Props = {
   closeSidebar: (...args: unknown[]) => void;
   updateShowProjectMenu: (...args: unknown[]) => void;
   showProjectMenu: boolean;
+  CustomSidebarPanel?: ReactNode;
 }
 
 const Sidebar = ({
   closeSidebar,
   showProjectMenu,
-  updateShowProjectMenu
+  updateShowProjectMenu,
+  CustomSidebarPanel
 }: Props) => {
   const deviceWidth = window.innerWidth;
   const location = useLocation()
@@ -180,8 +182,9 @@ const Sidebar = ({
       </div>
 
       {/* Sidebar Panel */}
+      {showProjectMenu &&  CustomSidebarPanel && CustomSidebarPanel }
       <div>
-        {showProjectMenu && (
+        {showProjectMenu && !CustomSidebarPanel && (
           <SidebarPanel
             headerText={subMenu?.text}
             links={subMenu?.children!}
