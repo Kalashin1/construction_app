@@ -1,28 +1,36 @@
-import {ReactNode} from "react"
-import {UserIcon} from "../svg"
 import { Link } from "react-router-dom";
 import { SCREENS } from "../../../navigation/constants";
 
 type DropdownItemProps = {
-  svg: ReactNode;
+  svg: string;
   text: string;
+  link: string
 }
 
 const links = [{
   text: 'Account',
-  svg: (<UserIcon width={10} color="#000" />)
+  svg: 'fas fa-user',
+  link: SCREENS.PROFILE
+},
+{
+  text: 'Todos',
+  svg: 'fas fa-cog',
+  link: SCREENS.TODO
 }]
 
 const DropdownItem = ({
   svg,
-  text
+  text,
+  link
 }: DropdownItemProps) => (
   <li>
     <Link
       className="flex items-center space-x-2 rounded-lg bg-primary px-4 py-2.5 tracking-wide text-white outline-none transition-all dark:bg-accent"
-      to={SCREENS.PROFILE}
+      to={link}
     >
-      {svg}
+      <span>
+        <i className={svg} />
+      </span>
       <span>{text}</span>
     </Link>
   </li>
@@ -50,12 +58,14 @@ const DashboardButtonDropdown = () => {
           </div>
         </div>
         <ul className="mt-6 space-y-1.5 font-inter font-medium">
-         {links.map((l) => (
+          {links.map((l, i) => (
             <DropdownItem
+              key={i}
               svg={l.svg}
+              link={l.link}
               text={l.text}
             />
-         ))}
+          ))}
         </ul>
       </div>
     </div>

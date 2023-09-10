@@ -6,11 +6,13 @@ import Sidebar from "./components/sidebar";
 
 type Props = {
   children: ReactNode;
+  sidePanel?: ReactNode;
   lang?: string
 }
 
 const Layout: FC<Props> = ({
   children,
+  sidePanel
 }) => {
   const [showSidebar, updateShowSidebar] = useState(true);
   const [showProjectMenu, updateShowProjectMenu] = useState(false)
@@ -30,6 +32,7 @@ const Layout: FC<Props> = ({
           closeSidebar={() => updateShowSidebar(false)}
           showProjectMenu={showProjectMenu}
           updateShowProjectMenu={() => updateShowProjectMenu(!showProjectMenu)}
+          CustomSidebarPanel={sidePanel && sidePanel}
         />
       )}
       <AppWrapper
