@@ -97,7 +97,7 @@ const SidebarPanelBody = ({
           </div>
         </li>
         <div className="overflow-y-scroll example">
-          {links.map((link, index) => (
+          {links.map((_, index) => (
 
             <li key={index}>
               <ListItem
