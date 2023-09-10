@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
 
 const Message = () => (
-  <div className="chat-footer fixed bottom-0 flex h-12 w-full shrink-0 items-center justify-between border-t border-slate-150 bg-white px-[calc(var(--margin-x)-.25rem)] transition-[padding,width] duration-[.25s] dark:border-navy-600 dark:bg-navy-800">
-    <div className="-ml-1.5 flex flex-1 space-x-2">
-      <button className="btn h-9 w-9 shrink-0 rounded-full p-0 text-slate-500 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:text-navy-200 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
+  <div className="chat-footer fixed bottom-0 flex w-full h-12 shrink-0 items-center justify-between border-t border-slate-150 bg-white px-[calc(var(--margin-x)-.25rem)] transition-[padding,width] duration-[.25s] dark:border-navy-600 dark:bg-navy-800 left-0 md:left-64">
+    <div className="-ml-1.5 flex flex-1 space-x-2 pl-4">
+      <button className="btn h-9 w-9 shrink-0 mt-1.5 rounded-full p-0 text-slate-500 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:text-navy-200 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
         <i className="fas fa-paperclip" />
       </button>
 
-      <input type="text" className="form-input h-12 w-10/12 bg-transparent placeholder:text-slate-400/70" placeholder="Write the message" />
+      <input type="text" className="form-input h-12 w-10/12 md:w-7/12 lg:w-8/12 xl:w-9/12 bg-transparent placeholder:text-slate-400/70" placeholder="Write the message" />
       
       <div className="-mr-1.5 flex mt-1.5">
         
@@ -107,7 +107,7 @@ const Assets = () => (
 
 const Chat = () => {
   return (
-    <div className="scrollbar-sm grow overflow-y-auto px-[calc(var(--margin-x)-.5rem)] py-5 transition-all duration-[.25s]">
+    <div className="scrollbar-sm grow overflow-y-auto px-[calc(var(--margin-x)-.5rem)] md:px-12 lg:px-8 py-5 transition-all duration-[.25s]">
       <div className="space-y-5"></div>
       <div className="mx-4 flex items-center space-x-3">
         <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
