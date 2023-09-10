@@ -11,10 +11,16 @@ const SidebarPanelHeader = ({
     <div
       className="flex h-10 w-full items-center justify-between pl-4 pr-1"
     >
+
       <p
         className="text-base tracking-wider text-slate-800 dark:text-navy-100"
       >
-        {headerText}
+        <span className="mr-2 pt-8">
+          <i className="fas fa-message text-gray-300" />
+        </span>
+        <span className="text-lg">
+          {headerText}
+        </span>
       </p>
       <button
         onClick={closeSidebar}
@@ -41,6 +47,7 @@ const SidebarPanelHeader = ({
 
 type SidebarPanelBodyProps = {
   links: Array<number>
+  closeSidebar: (...args: unknown[]) => void;
 }
 
 const ListItem = () => (
@@ -73,7 +80,8 @@ const ListItem = () => (
 )
 
 const SidebarPanelBody = ({
-  links
+  links,
+  closeSidebar
 }: SidebarPanelBodyProps) => {
   console.log(links)
   return (
@@ -81,33 +89,29 @@ const SidebarPanelBody = ({
       className="nav-wrapper h-[calc(100%-4.5rem)] min-h-screen overflow-x-hidden pb-6"
       data-simplebar
     >
-      <ul className="flex flex-1 flex-col px font-inter">
-        <li>
-          <div className="mt-4 flex px-4">
-            <label className="relative mr-1.5 flex">
-              <input className="form-input peer h-8 w-full rounded-lg bg-slate-150 px-3 py-2 pl-9 text-xs+ ring-primary/50 placeholder:text-slate-400 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:placeholder:text-navy-300 dark:hover:bg-navy-900 dark:focus:bg-navy-900" placeholder="Search chats" type="text" />
-              <span className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent">
-                <i className='fas fa-search' />
-              </span>
-            </label>
+      <div className="mt-4 flex px-4 pb-4 shadow-sm">
+        <label className="relative mr-1.5 flex">
+          <input className="form-input peer h-8 w-full rounded-lg bg-slate-150 px-3 py-2 pl-9 text-xs+ ring-primary/50 placeholder:text-slate-400 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:placeholder:text-navy-300 dark:hover:bg-navy-900 dark:focus:bg-navy-900" placeholder="Search chats" type="text" />
+          <span className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent">
+            <i className='fas fa-search' />
+          </span>
+        </label>
 
-            <button className="btn -mr-2 h-8 w-8 shrink-0 rounded-full p-0 text-slate-500 hover:bg-slate-300/20 hover:text-primary focus:bg-slate-300/20 focus:text-primary active:bg-slate-300/25 dark:text-navy-200 dark:hover:bg-navy-300/20 dark:hover:text-accent dark:focus:bg-navy-300/20 dark:focus:text-accent dark:active:bg-navy-300/25">
-              <i className='fas fa-sliders' />
-            </button>
-          </div>
-        </li>
-        <div className="overflow-y-scroll example">
-          {links.map((_, index) => (
-
-            <li key={index}>
-              <ListItem
-
-              />
-            </li>
-          ))}
-        </div>
+        <button className="btn -mr-2 h-8 w-8 shrink-0 rounded-full p-0 text-slate-500 hover:bg-slate-300/20 hover:text-primary focus:bg-slate-300/20 focus:text-primary active:bg-slate-300/25 dark:text-navy-200 dark:hover:bg-navy-300/20 dark:hover:text-accent dark:focus:bg-navy-300/20 dark:focus:text-accent dark:active:bg-navy-300/25">
+          <i className='fas fa-sliders' />
+        </button>
+      </div>
+      <ul
+        className="flex flex-1 flex-col px font-inter overflow-auto example"
+        style={{ height: '30rem' }}
+      >
+        {links.map((_, index) => (
+          <li key={index} onClick={closeSidebar}>
+            <ListItem />
+          </li>
+        ))}
       </ul>
-      <div className="mt-8 fixed bottom-0 bg-white">
+      <div className="mt-8 fixed bottom-0 w-52 left-20 bg-white">
         <SidebarPanelFooter />
       </div>
     </div>
@@ -116,7 +120,7 @@ const SidebarPanelBody = ({
 
 
 const SidebarPanelFooter = () => (
-  <div className="flex h-12 shrink-0 justify-between border-t border-slate-150 px-1.5 py-1 dark:border-navy-600">
+  <div className="flex h-12 shrink-0 justify-between border-t border-slate-150 px-1.5 py-1 dark:border-navy-600 w-full">
     <a href="#" data-tooltip="All Chats" className="btn h-9 w-9 rounded-full p-0 text-primary hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:text-accent dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
       <i className='fas fa-message' />
     </a>
@@ -152,7 +156,7 @@ const SidebarPanel = ({
         {/* <!-- Sidebar Panel Header --> */}
         <SidebarPanelHeader headerText={headerText} closeSidebar={closeSidebar} />
         {/* <!-- Sidebar Panel Body --> */}
-        <SidebarPanelBody links={links} />
+        <SidebarPanelBody closeSidebar={closeSidebar} links={links} />
         <SidebarPanelFooter />
       </div>
     </div>

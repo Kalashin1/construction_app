@@ -9,7 +9,7 @@ const Message = () => (
 
       <input type="text" className="form-input h-12 w-10/12 bg-transparent placeholder:text-slate-400/70" placeholder="Write the message" />
       
-      <div className="-mr-1.5 flex">
+      <div className="-mr-1.5 flex mt-1.5">
         
         <button className="btn h-9 w-9 shrink-0 rounded-full p-0 text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:text-accent-light dark:hover:bg-accent-light/20 dark:focus:bg-accent-light/20 dark:active:bg-accent-light/25">
           <i className="far fa-paper-plane" />

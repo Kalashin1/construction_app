@@ -38,6 +38,8 @@ const ChatApp = () => {
             () => updateShowSidebar(!showSidebar) :
             () => updateShowProjectMenu(!showProjectMenu)
         }
+        deviceWidth={deviceWidth}
+        isSidePanelOpen={showSidebar}
       />
       {showProjectMenu ? (
         <main className="main-content relative md:left-48 md:w-9/12 pb-8 min-h-screen" onClick={
