@@ -23,7 +23,7 @@ const Layout: FC<Props> = ({
     if (projectSidePanelLinks.find((sl) => sl === location.pathname)) updateShowProjectMenu(true)
   }, [location])
 
-  return (
+  return (  
     <>
       {showSidebar && (
         <Sidebar
