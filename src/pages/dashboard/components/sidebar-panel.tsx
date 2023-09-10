@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 type SidebarPanelHeaderProps = {
   headerText?: string;
@@ -55,12 +55,12 @@ const SidebarPanelBody = ({
       data-simplebar
     >
       <ul className="flex flex-1 flex-col px-4 font-inter">
-        {links.map((link, index) => (  
+        {links.map((link, index) => (
           <li key={index}>
             <Link
               to={link.link}
-              data-default-class="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
-              data-active-class="font-medium text-primary dark:text-accent-light"
+              data-default-className="text-slate-600 hover:text-slate-800 dark:text-navy-200 dark:hover:text-navy-50"
+              data-active-className="font-medium text-primary dark:text-accent-light"
               className="nav-link flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out"
             >
               {link.text}
@@ -80,7 +80,7 @@ const SidebarPanel = ({
   closeSidebar
 }: SidebarPanelProps) => {
   return (
-    <div className="w-72 py-2 shadow-md absolute" style={{top: '-.45rem'}}>
+    <div className="w-72 py-2 shadow-md absolute" style={{ top: '-.45rem' }}>
       <div
         className="flex h-full w-full grow flex-col bg-white pl-[var(--main-sidebar-width)] dark:bg-navy-750"
       >
@@ -88,6 +88,7 @@ const SidebarPanel = ({
         <SidebarPanelHeader headerText={headerText} closeSidebar={closeSidebar} />
         {/* <!-- Sidebar Panel Body --> */}
         <SidebarPanelBody links={links} />
+
       </div>
     </div>
   );

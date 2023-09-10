@@ -13,9 +13,13 @@ import DeclineProjectFloatingActionButton from "./components/decline-project";
 import DownloadProjectActionButton from "./components/download-button";
 import ProjectDownloadAction from "./components/project-download-action";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProjectDetails = () => {
+  
+  const navigate = useNavigate();
   const [showDownloadOption, updateShowDownloadOption] = useState(false);
+
   return (
     <Layout>
       <main className="p-4 md:p-8 relative">
@@ -35,7 +39,9 @@ const ProjectDetails = () => {
         <MainOrderItem />
         <ExtraOrders />
         { showDownloadOption && (<ProjectDownloadAction />)}
-        <FloatingActionButton />
+        <FloatingActionButton 
+          action={() => navigate(SCREENS.CHAT)}
+        />
         <DownloadProjectActionButton 
           action={
             () => updateShowDownloadOption(!showDownloadOption)
