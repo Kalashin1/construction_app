@@ -31,7 +31,7 @@ const Shop = () => {
             <div className="hidden md:block">
               <SidebarHeading />
             </div>
-            <div className="relative top-20 md:-top-8">
+            <div className="relative top-64 md:-top-8">
               <Cart closeCart={() => isMobile ? updateShowCart(false): () => {}} />
             </div>
           </div>

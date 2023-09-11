@@ -18,9 +18,9 @@ const Product = () => (
 const Products = () => {
   return (
     <div className="my-6 grid md:grid-cols-4 grid-cols-2" >
-      {[0, 1, 2, 3, 4, 5].map(() => (
+      {[0, 1, 2, 3, 4, 5].map((v) => (
         <Product
-
+          key={v}
         />
       ))}
     </div>

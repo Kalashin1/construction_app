@@ -1,3 +1,7 @@
+
+import {Link} from 'react-router-dom';
+import { SCREENS } from '../../../navigation/constants';
+
 type SidebarHeadingProps = {
   closeSidebar: (...args: unknown[]) => void;
 }
@@ -13,7 +17,7 @@ const SidebarHeading = ({
         </svg>
         <span className="text-xs">25 May, 2022</span>
       </p>
-      <button 
+      <button
         onClick={closeSidebar}
         data-close-drawer="" className="btn -mr-1 h-6 w-6 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
         <i className="fas fa-times" />
@@ -21,6 +25,36 @@ const SidebarHeading = ({
     </div>
   )
 }
+
+const Apps = () => (
+  <div className="mt-2 px-3">
+    <h2 className="line-clamp-1 text-xs+ font-medium tracking-wide text-slate-700 dark:text-navy-100">
+      Pinned Apps
+    </h2>
+    <div className="mt-3 flex space-x-3">
+      <Link to={SCREENS.SHOP} className="w-12 text-center">
+        <div className="avatar h-10 w-10">
+          <div className="is-initial mask is-squircle bg-success text-white">
+            <i className='fas fa-cart-shopping' />
+          </div>
+        </div>
+        <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+          Shop
+        </p>
+      </Link>
+      <Link to={SCREENS.TODO} className="w-12 text-center">
+        <div className="avatar h-10 w-10">
+          <div className="is-initial mask is-squircle bg-warning text-white">
+            <i className='fas fa-list-ul' />
+          </div>
+        </div>
+        <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+          Todos
+        </p>
+      </Link>
+    </div>
+  </div>
+)
 
 type LeftSidePanelProps = SidebarHeadingProps;
 
@@ -33,6 +67,8 @@ const LeftSidePanel = ({
       <div className="drawer-content fixed right-0 top-0 z-[151] h-full w-full sm:w-80">
         <div className="right-sidebar-tab-wrapper w-ful relative flex h-full flex-col bg-white dark:bg-navy-750">
           <SidebarHeading closeSidebar={closeSidebar} />
+
+          <Apps />
         </div>
       </div>
     </div>
