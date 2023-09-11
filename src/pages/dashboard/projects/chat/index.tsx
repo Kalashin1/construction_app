@@ -33,7 +33,7 @@ const ChatApp = () => {
                 closeSidebar={
                   deviceWidth > 560 ?
                     () => updateShowProjectMenu(!showProjectMenu) :
-                    () => updateShowSidebar(true)
+                    () => updateShowSidebar(!showSidebar)
                 }
               />
             )
