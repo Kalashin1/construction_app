@@ -19,9 +19,26 @@ const sidebarLinksArray = [
     icon: HomeIcon
   },
   {
-    text: 'Shop',
-    link: SCREENS.SHOP,
-    icon: AppIcon
+    text: 'APPS',
+    link: SCREENS.APPS,
+    icon: AppIcon,
+    children: [
+      {
+        text: 'Chat',
+        link: SCREENS.CHAT,
+        parent: SCREENS.APPS
+      },
+      {
+        text: 'Todo',
+        link: SCREENS.TODO,
+        parent: SCREENS.APPS
+      },
+      {
+        text: 'Shop',
+        link: SCREENS.SHOP,
+        parent: SCREENS.APPS
+      }
+    ]
   },
   {
     text: 'Projects',

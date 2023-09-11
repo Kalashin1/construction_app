@@ -18,6 +18,7 @@ import ContractorDetails from '../pages/dashboard/settings/contractors/details';
 import ChatApp from '../pages/dashboard/projects/chat';
 import { SCREENS } from './constants';
 import Todos from '../pages/dashboard/apps/todos';
+import AppPage from '../pages/dashboard/apps';
 
 const router = createBrowserRouter([
   {
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
     path: SCREENS.TODO,
     element: (<Todos />)
   },
+  {
+    path: SCREENS.APPS,
+    element: (<AppPage />)
+  }
 ]);
 
 export default router;
