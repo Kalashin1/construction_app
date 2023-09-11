@@ -4,6 +4,7 @@ import Header from "./components/header";
 import TodosOverview from "./components/todos-overview";
 import SidePanel from './components/sidepanel';
 import { SidebarContext } from "../../../../App";
+import LeftSidePanel from "./components/left-side-panel";
 
 const Todos = () => {
   const {
@@ -15,22 +16,25 @@ const Todos = () => {
   } = useContext(SidebarContext);
   const [showTodoDropdown, updateShowTodoDropdown] = useState(false);
   return (
-    <Layout sidePanel={
-      (
-        <SidePanel
+    <Layout
+      sidePanel={
+        (
+          <SidePanel
 
-          closeSidebar={
-            deviceWidth && deviceWidth > 560 ?
-              () => updateShowProjectMenu && updateShowProjectMenu(!showProjectMenu) :
-              () => updateShowSidebar && updateShowSidebar(!showSidebar)
-          }
-          links={[0, 1, 2, 3]}
-          headerText="Todos"
-        />
-      )
-    }>
+            closeSidebar={
+              deviceWidth && deviceWidth > 560 ?
+                () => updateShowProjectMenu && updateShowProjectMenu(!showProjectMenu) :
+                () => updateShowSidebar && updateShowSidebar(!showSidebar)
+            }
+            links={[0, 1, 2, 3]}
+            headerText="Todos"
+          />
+        )
+      }
+      leftSidePanelChildren={<LeftSidePanel />}
+    >
       <main onClick={() => updateShowTodoDropdown(false)} className="p-6">
-        <Header 
+        <Header
           showTodoDropdown={showTodoDropdown}
           updateShowTodoDropdown={updateShowTodoDropdown}
         />

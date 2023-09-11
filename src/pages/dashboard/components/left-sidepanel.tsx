@@ -1,4 +1,5 @@
 
+import { ReactNode } from 'react';
 import {Link} from 'react-router-dom';
 import { SCREENS } from '../../../navigation/constants';
 
@@ -56,19 +57,24 @@ const Apps = () => (
   </div>
 )
 
-type LeftSidePanelProps = SidebarHeadingProps;
+type LeftSidePanelProps = SidebarHeadingProps & {
+  children?: ReactNode
+};
 
 const LeftSidePanel = ({
-  closeSidebar
+  closeSidebar,
+  children
 }: LeftSidePanelProps) => {
   return (
     <div id="right-sidebar" className="drawer drawer-right">
-      <div className="drawer-overlay fixed inset-0 z-[150] bg-slate-900/60"></div>
+      <div className="drawer-overlay fixed inset-0 z-[150] bg-slate-900/60" onClick={closeSidebar}></div>
       <div className="drawer-content fixed right-0 top-0 z-[151] h-full w-full sm:w-80">
         <div className="right-sidebar-tab-wrapper w-ful relative flex h-full flex-col bg-white dark:bg-navy-750">
           <SidebarHeading closeSidebar={closeSidebar} />
 
           <Apps />
+
+          {children}
         </div>
       </div>
     </div>

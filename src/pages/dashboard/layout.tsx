@@ -9,14 +9,16 @@ import LeftSidePanel from "./components/left-sidepanel";
 type Props = {
   children: ReactNode;
   sidePanel?: ReactNode;
-  lang?: string
+  leftSidePanelChildren?: ReactNode;
+  lang?: string;
 }
 
 
 
 const Layout: FC<Props> = ({
   children,
-  sidePanel
+  sidePanel,
+  leftSidePanelChildren,
 }) => {
   const {
     showProjectMenu,
@@ -72,7 +74,12 @@ const Layout: FC<Props> = ({
         </main>
       )
     }
-    { showLeftSidebar && (<LeftSidePanel closeSidebar={() => updateShowLeftSidebar!(false)} />)}
+    { showLeftSidebar && (
+      <LeftSidePanel 
+        closeSidebar={() => updateShowLeftSidebar!(false)} 
+        children={leftSidePanelChildren}
+      />
+    )}
     </>
   );
 }
