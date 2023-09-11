@@ -8,26 +8,25 @@ const responsive = {
     slidesToSlide: 6,
   },
   tablet: {
-    breakpoint: { max: 1024, min: 464 },
+    breakpoint: { max: 1024, min: 560 },
     items: 4,
     slidesToSlide: 4,
   },
   mobile: {
-    breakpoint: { max: 464, min: 0 },
+    breakpoint: { max: 560, min: 0 },
     items: 3,
     slidesToSlide: 3,
   }
 };
 
 const categories = [
-  'Plumbing',
-  'Painting',
-  'Electricity',
-  'Carpentary',
-  'Tiling',
+  'Plumbery',
+  'Paint',
+  'Power',
+  'Floor',
   'Furniture',
   'Masonry',
-  'Brick Laying'
+  'Kitchen'
 ]
 
 const SlideItem = ({item}: {
@@ -35,7 +34,8 @@ const SlideItem = ({item}: {
 }) => (
   <div className="flex flex-col items-center rounded-lg px-2 py-4 bg-white shadow-md m-2 md:m-4" >
     <img className="w-12" src="images/100x100.png" alt="image" />
-    <h3 className="line-clamp-1 pt-2 font-medium tracking-wide">
+    <h3 className="line-clamp-1 pt-2 font-medium tracking-wide text-xs
+    ">
       {item}
     </h3>
   </div>

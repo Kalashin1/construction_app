@@ -33,7 +33,7 @@ const Layout: FC<Props> = ({
     const projectSidePanelLinks = [SCREENS.PROJECTS, SCREENS.SHORTAGES, SCREENS.REPORTS, SCREENS.BILLS, SCREENS.PERFORMANCE]
     if (projectSidePanelLinks.find((sl) => sl === location.pathname)) updateShowProjectMenu!(true)
     if (deviceWidth! < 560) updateShowProjectMenu!(true)
-    updateShowLeftSidebar!(!showLeftSidebar);
+    updateShowLeftSidebar!(false);
   }, [deviceWidth, location])
 
   return (
