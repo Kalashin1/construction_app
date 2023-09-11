@@ -4,6 +4,7 @@ import { SidebarContext } from "../../App";
 import { SCREENS } from "../../navigation/constants";
 import AppWrapper from "./components/app-wrapper";
 import Sidebar from "./components/sidebar";
+import LeftSidePanel from "./components/left-sidepanel";
 
 type Props = {
   children: ReactNode;
@@ -23,6 +24,8 @@ const Layout: FC<Props> = ({
     deviceWidth,
     updateShowProjectMenu,
     updateShowSidebar,
+    showLeftSidebar,
+    updateShowLeftSidebar,
   } = useContext(SidebarContext);
   const location = useLocation();
 
@@ -67,7 +70,8 @@ const Layout: FC<Props> = ({
           {children}
         </main>
       )
-      }
+    }
+    { showLeftSidebar && (<LeftSidePanel closeSidebar={() => updateShowLeftSidebar!(false)} />)}
     </>
   );
 }
