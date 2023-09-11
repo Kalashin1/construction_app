@@ -1,6 +1,18 @@
-const Header = () => {
+import {Dispatch, SetStateAction, useRef} from "react";
+import TodosDropdown from "./todos-dropdown";
+
+type Props = {
+  showTodoDropdown: boolean
+  updateShowTodoDropdown: Dispatch<SetStateAction<boolean>>;
+}
+
+const Header = ({
+  showTodoDropdown,
+  updateShowTodoDropdown
+}: Props) => {
+  const dropdownRef = useRef<HTMLDivElement | null>(null)
   return (
-    <div className="flex items-center justify-between py-5">
+    <div className="flex items-center justify-between py-5 relative">
       <div>
         <div className="flex space-x-2">
           <p className="text-xl font-medium text-slate-800 dark:text-navy-50">
@@ -8,11 +20,22 @@ const Header = () => {
           </p>
 
           <div id="top-header-menu" className="inline-flex">
-            <button className="popper-ref btn h-7 w-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
+            <button
+              className="popper-ref btn h-7 w-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
+              onClick={(e) => {
+                e.stopPropagation()
+                updateShowTodoDropdown(true)
+              }}
+            >
               <i className="fas fa-ellipsis" />
             </button>
+            {showTodoDropdown && (
+              <div ref={dropdownRef} onClick={e => e.stopPropagation()}>
+                <TodosDropdown />
+              </div>
+            )}
 
-            <div className="popper-root" data-popper-placement="bottom-start" style={{ position: 'absolute', inset: '0px auto auto 0px', margin: '0px', transform: 'translate(98px, 112px)'}}>
+            <div className="popper-root" data-popper-placement="bottom-start" style={{ position: 'absolute', inset: '0px auto auto 0px', margin: '0px', transform: 'translate(98px, 112px)' }}>
               <div className="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
                 <ul>
                   <li>
@@ -40,9 +63,9 @@ const Header = () => {
       <div className="flex items-center space-x-2">
         <label className="relative hidden sm:flex">
           <input className="form-input peer h-9 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:z-10 hover:border-slate-400 focus:z-10 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent" placeholder="Search todos..." type="text" />
-            <span className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent">
-              <i className="fa fas-search" />
-            </span>
+          <span className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent">
+            <i className="fa fas-search" />
+          </span>
         </label>
         <div className="flex">
           <button data-tooltip="Search" className="btn h-9 w-9 p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25 sm:hidden">

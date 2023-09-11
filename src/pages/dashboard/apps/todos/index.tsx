@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Layout from "../../layout";
 import Header from "./components/header";
 import TodosOverview from "./components/todos-overview";
@@ -13,6 +13,7 @@ const Todos = () => {
     updateShowProjectMenu,
     updateShowSidebar,
   } = useContext(SidebarContext);
+  const [showTodoDropdown, updateShowTodoDropdown] = useState(false);
   return (
     <Layout sidePanel={
       (
@@ -28,8 +29,11 @@ const Todos = () => {
         />
       )
     }>
-      <main className="p-6">
-        <Header />
+      <main onClick={() => updateShowTodoDropdown(false)} className="p-6">
+        <Header 
+          showTodoDropdown={showTodoDropdown}
+          updateShowTodoDropdown={updateShowTodoDropdown}
+        />
 
         <TodosOverview />
       </main>
