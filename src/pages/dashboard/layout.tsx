@@ -1,4 +1,4 @@
-import { ReactNode, FC, useState, useEffect } from "react";
+import { ReactNode, FC, useState, useEffect, createContext, Dispatch, SetStateAction } from "react";
 import { useLocation } from "react-router-dom";
 import { SCREENS } from "../../navigation/constants";
 import AppWrapper from "./components/app-wrapper";
@@ -9,6 +9,14 @@ type Props = {
   sidePanel?: ReactNode;
   lang?: string
 }
+
+export const SidebarContext = createContext<Partial<{
+  showSidebar: boolean;
+  updateShowSidebar: Dispatch<SetStateAction<boolean>>;
+  showProjectMenu: boolean; 
+  updateShowProjectMenu: Dispatch<SetStateAction<boolean>>;
+  deviceWidth: number;
+}>>({})
 
 const Layout: FC<Props> = ({
   children,
@@ -25,42 +33,45 @@ const Layout: FC<Props> = ({
     if (projectSidePanelLinks.find((sl) => sl === location.pathname)) updateShowProjectMenu(true)
   }, [location])
 
-  return (  
-    <>
-      {showSidebar && (
-        <Sidebar
-          closeSidebar={() => updateShowSidebar(false)}
-          showProjectMenu={showProjectMenu}
-          updateShowProjectMenu={() => updateShowProjectMenu(!showProjectMenu)}
-          CustomSidebarPanel={sidePanel && sidePanel}
+  return (
+    <SidebarContext.Provider 
+      value={{ showSidebar, updateShowSidebar, showProjectMenu, updateShowProjectMenu, deviceWidth}}>
+      <>
+        {showSidebar && (
+          <Sidebar
+            closeSidebar={() => updateShowSidebar(false)}
+            showProjectMenu={showProjectMenu}
+            updateShowProjectMenu={() => updateShowProjectMenu(!showProjectMenu)}
+            CustomSidebarPanel={sidePanel && sidePanel}
+          />
+        )}
+        <AppWrapper
+          toggleSidebar={
+            deviceWidth < 560 ?
+              () => updateShowSidebar(!showSidebar) :
+              () => updateShowProjectMenu(!showProjectMenu)
+          }
         />
-      )}
-      <AppWrapper
-        toggleSidebar={
-          deviceWidth < 560 ?
-            () => updateShowSidebar(!showSidebar) :
-            () => updateShowProjectMenu(!showProjectMenu)
+        {showProjectMenu ? (
+          <main className="main-content relative md:left-48 md:w-9/12 pb-8 min-h-screen" onClick={
+            deviceWidth < 560 ?
+              () => updateShowSidebar(false) :
+              () => { }
+          }>
+            {children}
+          </main>
+        ) : (
+          <main className="main-content relative pb-8 min-h-screen" onClick={
+            deviceWidth < 560 ?
+              () => updateShowSidebar(false) :
+              () => { }
+          }>
+            {children}
+          </main>
+        )
         }
-      />
-      {showProjectMenu ? (
-        <main className="main-content relative md:left-48 md:w-9/12 pb-8 min-h-screen" onClick={
-          deviceWidth < 560 ?
-            () => updateShowSidebar(false) :
-            () => { }
-        }>
-          {children}
-        </main>
-      ) : (
-        <main className="main-content relative pb-8 min-h-screen" onClick={
-          deviceWidth < 560 ?
-            () => updateShowSidebar(false) :
-            () => { }
-        }>
-          {children}
-        </main>
-      )
-      }
-    </>
+      </>
+    </SidebarContext.Provider>
   );
 }
 
