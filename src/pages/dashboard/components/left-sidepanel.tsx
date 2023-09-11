@@ -1,6 +1,6 @@
 
 import { ReactNode } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { SCREENS } from '../../../navigation/constants';
 
 type SidebarHeadingProps = {
@@ -30,7 +30,7 @@ const SidebarHeading = ({
 const Apps = () => (
   <div className="mt-2 px-3">
     <h2 className="line-clamp-1 text-xs+ font-medium tracking-wide text-slate-700 dark:text-navy-100">
-      Pinned Apps
+      Apps
     </h2>
     <div className="mt-3 flex space-x-3">
       <Link to={SCREENS.SHOP} className="w-12 text-center">
@@ -51,6 +51,18 @@ const Apps = () => (
         </div>
         <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
           Todos
+        </p>
+      </Link>
+      <Link to={SCREENS.CHAT} className="w-12 text-center">
+        <div className="avatar h-10 w-10">
+          <div className="is-initial mask is-squircle bg-info text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+          </div>
+        </div>
+        <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+          Chat
         </p>
       </Link>
     </div>
