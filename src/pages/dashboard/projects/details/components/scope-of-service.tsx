@@ -2,7 +2,6 @@ const ScopeOfService = () => {
   return (
     <div>
       <h3 className="my-6 text-lg font-bold">Scope of services</h3>
-
       <div className="bg-white rounded-md shadow w-full">
         <div className="p-6 flex flex-col md:flex-row justify-between">
           <h3>Actions & Filters</h3>

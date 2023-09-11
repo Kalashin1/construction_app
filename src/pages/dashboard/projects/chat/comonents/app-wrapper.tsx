@@ -3,11 +3,16 @@ import { FC } from 'react';
 
 type Props = {
   toggleSidebar: (...args: unknown[]) => void;
+  isSidePanelOpen: boolean;
+  deviceWidth: number;
 }
 
 const AppWrapper: FC<Props> = ({
-  toggleSidebar
+  toggleSidebar,
+  isSidePanelOpen,
+  deviceWidth,
 }) => {
+  const isMobile = deviceWidth < 560;
   return (
     <nav className="header print:hidden relative z-0">
       {/* <!-- App Header  --> */}
@@ -19,7 +24,7 @@ const AppWrapper: FC<Props> = ({
             <MenuIcon />
           </button>
 
-          <div data-toggle="drawer" data-target="#chat-detail" className="flex cursor-pointer items-center space-x-4 font-inter">
+          <div data-toggle="drawer" data-target="#chat-detail" className={`flex cursor-pointer items-center space-x-4 font-inter ${isMobile && isSidePanelOpen ? 'relative left-8': ''}`}>
             <div className="avatar">
               <img className="rounded-full" src="images/100x100.png" alt="avatar" />
             </div>

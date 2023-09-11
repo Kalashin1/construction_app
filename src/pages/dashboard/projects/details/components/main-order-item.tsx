@@ -52,7 +52,7 @@ const MainOrderItem = () => {
       <div className="bg-white shadow-md rounded py-6">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-4 px-4 md:px-6">
           <div className="flex flex-row items-center justify-evenly w-3/6 md:w-1/6 my-4">
-            <ChevronRightIcon />
+            <ChevronRightIcon width={10} color="#000" />
             <h3 className="font-bold">Main order items</h3>
           </div>
           <div>

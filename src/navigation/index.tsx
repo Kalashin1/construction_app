@@ -17,6 +17,7 @@ import Profile from '../pages/dashboard/profie';
 import ContractorDetails from '../pages/dashboard/settings/contractors/details';
 import ChatApp from '../pages/dashboard/projects/chat';
 import { SCREENS } from './constants';
+import Todos from '../pages/dashboard/apps/todos';
 
 const router = createBrowserRouter([
   {
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
   {
     path: SCREENS.CHAT,
     element: (<ChatApp />)
+  },
+  {
+    path: SCREENS.TODO,
+    element: (<Todos />)
   },
 ]);
 
