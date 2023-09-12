@@ -35,12 +35,14 @@ const Dropdown = () => (
 
 type HeadingProps = {
   showDropdown: boolean;
+  showLeftSidePanel: (...args: unknown[]) => void;
   updateShowDropdown: Dispatch<SetStateAction<boolean>>;
 }
 
 const Heading = ({
   showDropdown,
   updateShowDropdown,
+  showLeftSidePanel,
 }: HeadingProps) => (
   <div className="flex items-center justify-between space-x-2 px-[var(--margin-x)] pb-4 pt-5 transition-all duration-[.25s] relative">
     <div className="flex items-center space-x-1">
@@ -63,7 +65,9 @@ const Heading = ({
     {showDropdown && (<Dropdown />)}
 
     <div className="flex">
-      <button data-toggle="drawer" data-target="#filemanager-activity-drawer" className="btn h-8 w-8 rounded-full p-0 hover:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25">
+      <button data-toggle="drawer" data-target="#filemanager-activity-drawer"
+        onClick={showLeftSidePanel}
+        className="btn h-8 w-8 rounded-full p-0 hover:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
@@ -80,13 +84,15 @@ type MaiSectionProps = HeadingProps;
 
 const MainSection = ({
   showDropdown,
-  updateShowDropdown
+  updateShowDropdown,
+  showLeftSidePanel,
 }: MaiSectionProps) => {
   return (
     <>
       <Heading
         showDropdown={showDropdown}
         updateShowDropdown={updateShowDropdown}
+        showLeftSidePanel={showLeftSidePanel}
       />
     </>
   )

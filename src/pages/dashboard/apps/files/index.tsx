@@ -3,6 +3,7 @@ import SidebarPanel from "./components/sidepanel";
 import { useContext, useState } from "react";
 import { SidebarContext } from "../../../../App";
 import MainSection from "./components/main-section";
+import LeftSidePanel from "./components/left-side-panel";
 
 const FileManager = () => {
   const {
@@ -10,7 +11,8 @@ const FileManager = () => {
     showProjectMenu,
     updateShowProjectMenu,
     showSidebar,
-    updateShowSidebar
+    updateShowSidebar,
+    updateShowLeftSidebar
   } = useContext(SidebarContext);
   const [showDropdown, updateDropDown] = useState(false);
   return (
@@ -29,11 +31,13 @@ const FileManager = () => {
           />
         )
       }
+      leftSidePanelChildren={(<LeftSidePanel  />)}
     >
       <main className="file-manager-app relative" onClick={() => updateDropDown(false)}>
         <MainSection 
           showDropdown={showDropdown}
           updateShowDropdown={updateDropDown}
+          showLeftSidePanel={() => updateShowLeftSidebar!(true)}
         />
       </main>
     </Layout>
