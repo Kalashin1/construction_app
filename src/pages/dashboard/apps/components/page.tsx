@@ -91,10 +91,26 @@ const Apps = () => (
         File Manager
       </h2>
       <p className="mt-1">
-        Lineone File Manager UI Kit is designed with modern design trends.
+        MAGGA File Manager UI Kit is designed with modern design trends.
       </p>
       <div className="mt-5 pb-1">
         <Link to={SCREENS.FILE_MANAGER} className="border-b border-dashed border-current pb-0.5 font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70">View Application</Link>
+      </div>
+    </div>
+    <div className="card p-4 sm:p-5">
+      <div className="avatar h-12 w-12">
+        <div className="is-initial rounded-full bg-secondary text-white">
+          <i className="fas fa-envelope" />
+        </div>
+      </div>
+      <h2 className="mt-5 line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100">
+        Mail
+      </h2>
+      <p className="mt-1">
+        MAGGA Email UI Kit is designed with modern design trends.
+      </p>
+      <div className="mt-5 pb-1">
+        <Link to={SCREENS.MAIL} className="border-b border-dashed border-current pb-0.5 font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70">View Application</Link>
       </div>
     </div>
   </div>
