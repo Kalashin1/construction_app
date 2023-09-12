@@ -1,4 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
+import FoldersOverview from "./folders-overview";
+import TabFolders from "./tab-folders";
 
 const Dropdown = () => (
   <div>
@@ -94,6 +96,8 @@ const MainSection = ({
         updateShowDropdown={updateShowDropdown}
         showLeftSidePanel={showLeftSidePanel}
       />
+      <TabFolders />
+      <FoldersOverview />
     </>
   )
 };
