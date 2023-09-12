@@ -36,9 +36,10 @@ const Cart = ({
   closeCart
 }: CartProps) => {
   return (
-    <div className="card mt-5 p-4 sm:p-5">
+    <div className="card mt-5 p-4 pb-6 sm:p-5">
       {[0, 1, 2, 3, 4].map(() => (<CartItem />))}
-      <div className="bg-white md:hidden h-36 w-full"></div>
+      <div className="bg-white md:hidden h-14
+       w-full"></div>
       <div className="my-4 h-px bg-slate-200 dark:bg-navy-500"></div>
       <div className="space-y-2 font-inter">
         <div className="flex justify-between text-slate-600 dark:text-navy-100">

@@ -5,6 +5,8 @@ import NotificationIcon from "../svg/notificaiton";
 import SquareIcon from "../svg/square";
 import DashboardButtonDropdown from "./dashboard-button-dropdown";
 import {FC, useState} from 'react';
+import { useContext } from "react";
+import { SidebarContext } from "../../../App";
 import NotificationDropdown from "./notification-dropdown";
 
 type Props = {
@@ -16,6 +18,10 @@ const AppWrapper: FC<Props> = ({
 }) => {
   const [showDashboardDropdown, updateShowDashboardDropdown] = useState(false);
   const [showNotifications, updateShowNotifications] = useState(false);
+  const {
+    updateShowLeftSidebar,
+    showLeftSidebar
+  } = useContext(SidebarContext);
   return (
     <nav className="header print:hidden relative z-0">
       {/* <!-- App Header  --> */}
@@ -49,9 +55,14 @@ const AppWrapper: FC<Props> = ({
             <span className="cursor-pointer" 
               onClick={() => updateShowDashboardDropdown(!showDashboardDropdown)}
             >
-              <SquareIcon />
+              <i className="fas fa-user-alt" />
             </span>
             {showDashboardDropdown && (<DashboardButtonDropdown />)}
+            <span className="cursor-pointer" 
+              onClick={() => updateShowLeftSidebar!(!showLeftSidebar)}
+            >
+              <SquareIcon />
+            </span>
           </div>
         </div>
 

@@ -33,7 +33,7 @@ const ChatApp = () => {
                 closeSidebar={
                   deviceWidth > 560 ?
                     () => updateShowProjectMenu(!showProjectMenu) :
-                    () => updateShowSidebar(true)
+                    () => updateShowSidebar(!showSidebar)
                 }
               />
             )
@@ -69,7 +69,7 @@ const ChatApp = () => {
           <Chat />
         </main>
       ) : (
-        <main className="main-content relative pb-8 min-h-screen" onClick={
+        <main className="main-content md:hidden relative pb-8 min-h-screen" onClick={
           deviceWidth < 560 ?
             () => updateShowSidebar(false) :
             () => { }

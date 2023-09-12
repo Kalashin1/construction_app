@@ -17,4 +17,6 @@ export enum SCREENS {
   CONTRACTOR_DETAILS = '/contractor-detail',
   CHAT = '/chat',
   TODO = '/todo',
+  APPS = '/apps',
+  FILE_MANAGER = '/files'
 }

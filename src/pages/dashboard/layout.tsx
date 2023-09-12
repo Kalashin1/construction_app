@@ -1,65 +1,85 @@
-import { ReactNode, FC, useState, useEffect } from "react";
+import { ReactNode, FC, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { SidebarContext } from "../../App";
 import { SCREENS } from "../../navigation/constants";
 import AppWrapper from "./components/app-wrapper";
 import Sidebar from "./components/sidebar";
+import LeftSidePanel from "./components/left-sidepanel";
 
 type Props = {
   children: ReactNode;
   sidePanel?: ReactNode;
-  lang?: string
+  leftSidePanelChildren?: ReactNode;
+  lang?: string;
 }
+
+
 
 const Layout: FC<Props> = ({
   children,
-  sidePanel
+  sidePanel,
+  leftSidePanelChildren,
 }) => {
-  const [showSidebar, updateShowSidebar] = useState(true);
-  const [showProjectMenu, updateShowProjectMenu] = useState(false)
-  const deviceWidth = window.innerWidth;
+  const {
+    showProjectMenu,
+    showSidebar,
+    deviceWidth,
+    updateShowProjectMenu,
+    updateShowSidebar,
+    showLeftSidebar,
+    updateShowLeftSidebar,
+  } = useContext(SidebarContext);
   const location = useLocation();
-
 
   useEffect(() => {
     const projectSidePanelLinks = [SCREENS.PROJECTS, SCREENS.SHORTAGES, SCREENS.REPORTS, SCREENS.BILLS, SCREENS.PERFORMANCE]
-    if (projectSidePanelLinks.find((sl) => sl === location.pathname)) updateShowProjectMenu(true)
-  }, [location])
+    if (projectSidePanelLinks.find((sl) => sl === location.pathname)) updateShowProjectMenu!(true)
+    if (deviceWidth! < 560) updateShowProjectMenu!(true)
+    updateShowLeftSidebar!(false);
+  }, [deviceWidth, location])
 
-  return (  
+  return (
+
     <>
       {showSidebar && (
         <Sidebar
-          closeSidebar={() => updateShowSidebar(false)}
-          showProjectMenu={showProjectMenu}
-          updateShowProjectMenu={() => updateShowProjectMenu(!showProjectMenu)}
+          closeSidebar={() => updateShowSidebar && updateShowSidebar(false)}
+          showProjectMenu={showProjectMenu!}
+          updateShowProjectMenu={() => updateShowProjectMenu && updateShowProjectMenu(!showProjectMenu)}
           CustomSidebarPanel={sidePanel && sidePanel}
         />
       )}
       <AppWrapper
         toggleSidebar={
-          deviceWidth < 560 ?
-            () => updateShowSidebar(!showSidebar) :
-            () => updateShowProjectMenu(!showProjectMenu)
+          deviceWidth && deviceWidth < 560 ?
+            () => updateShowSidebar && updateShowSidebar(!showSidebar) :
+            () => updateShowProjectMenu && updateShowProjectMenu(!showProjectMenu)
         }
       />
       {showProjectMenu ? (
         <main className="main-content relative md:left-48 md:w-9/12 pb-8 min-h-screen" onClick={
-          deviceWidth < 560 ?
-            () => updateShowSidebar(false) :
+          deviceWidth && deviceWidth < 560 ?
+            () => updateShowSidebar && updateShowSidebar(false) :
             () => { }
         }>
           {children}
         </main>
       ) : (
         <main className="main-content relative pb-8 min-h-screen" onClick={
-          deviceWidth < 560 ?
-            () => updateShowSidebar(false) :
+          deviceWidth && deviceWidth < 560 ?
+            () => updateShowSidebar && updateShowSidebar(false) :
             () => { }
         }>
           {children}
         </main>
       )
-      }
+    }
+    { showLeftSidebar && (
+      <LeftSidePanel 
+        closeSidebar={() => updateShowLeftSidebar!(false)} 
+        children={leftSidePanelChildren}
+      />
+    )}
     </>
   );
 }
