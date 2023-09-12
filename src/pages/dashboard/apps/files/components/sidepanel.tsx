@@ -190,7 +190,7 @@ const SidebarPanelBody = ({
             )
           } else {
             return (
-              <li key={index} className="ac [&.is-active>.tree-header>.ac-trigger>.ac-icon]:rotate-90 [&.is-active>.tree-header]:text-slate-800 dark:[&.is-active>.tree-header]:text-navy-100 js-enabled">
+              <li key={index} onClick={closeSidebar} className="ac [&.is-active>.tree-header>.ac-trigger>.ac-icon]:rotate-90 [&.is-active>.tree-header]:text-slate-800 dark:[&.is-active>.tree-header]:text-navy-100 js-enabled">
                 <ListItem />
               </li>
             )
