@@ -19,5 +19,6 @@ export enum SCREENS {
   TODO = '/todo',
   APPS = '/apps',
   FILE_MANAGER = '/files',
-  MAIL = '/mail'
+  MAIL = '/mail',
+  KANBAN = '/kanban',
 }

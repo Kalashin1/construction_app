@@ -32,8 +32,8 @@ const Apps = () => (
     <h2 className="line-clamp-1 text-xs+ font-medium tracking-wide text-slate-700 dark:text-navy-100">
       Apps
     </h2>
-    <div className="mt-3 flex space-x-3">
-      <Link to={SCREENS.SHOP} className="w-12 text-center">
+    <div className="mt-3 flex md:grid md:grid-cols-5 space-x-3 md:space-x-0 px-2">
+      <Link to={SCREENS.SHOP} className="w-12 text-center md:mb-2">
         <div className="avatar h-10 w-10">
           <div className="is-initial mask is-squircle bg-success text-white">
             <i className='fas fa-cart-shopping' />
@@ -87,6 +87,19 @@ const Apps = () => (
         </div>
         <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
           File Manager
+        </p>
+      </Link>
+      <Link to={SCREENS.KANBAN} className="w-12 text-center">
+
+        <div className="avatar h-10 w-10">
+          <div className="is-initial mask is-squircle bg-success text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path>
+            </svg>
+          </div>
+        </div>
+        <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+          Kanban
         </p>
       </Link>
     </div>
