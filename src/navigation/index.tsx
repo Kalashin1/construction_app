@@ -20,6 +20,8 @@ import { SCREENS } from './constants';
 import Todos from '../pages/dashboard/apps/todos';
 import AppPage from '../pages/dashboard/apps';
 import FileManager from '../pages/dashboard/apps/files';
+import Mail from '../pages/dashboard/apps/mail';
+import KanbanBoard from '../pages/dashboard/apps/kanban';
 
 const router = createBrowserRouter([
   {
@@ -101,6 +103,14 @@ const router = createBrowserRouter([
   {
     path: SCREENS.FILE_MANAGER,
     element: (<FileManager />)
+  },
+  {
+    path: SCREENS.MAIL,
+    element: (<Mail />)
+  },
+  {
+    path: SCREENS.KANBAN,
+    element: (<KanbanBoard />)
   },
 ]);
 

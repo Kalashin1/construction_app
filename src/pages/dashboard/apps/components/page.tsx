@@ -91,10 +91,44 @@ const Apps = () => (
         File Manager
       </h2>
       <p className="mt-1">
-        Lineone File Manager UI Kit is designed with modern design trends.
+        MAGGA File Manager UI Kit is designed with modern design trends.
       </p>
       <div className="mt-5 pb-1">
         <Link to={SCREENS.FILE_MANAGER} className="border-b border-dashed border-current pb-0.5 font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70">View Application</Link>
+      </div>
+    </div>
+    <div className="card p-4 sm:p-5">
+      <div className="avatar h-12 w-12">
+        <div className="is-initial rounded-full bg-secondary text-white">
+          <i className="fas fa-envelope" />
+        </div>
+      </div>
+      <h2 className="mt-5 line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100">
+        Mail
+      </h2>
+      <p className="mt-1">
+        MAGGA Email UI Kit is designed with modern design trends.
+      </p>
+      <div className="mt-5 pb-1">
+        <Link to={SCREENS.MAIL} className="border-b border-dashed border-current pb-0.5 font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70">View Application</Link>
+      </div>
+    </div>
+    <div className="card p-4 sm:p-5">
+      <div className="avatar h-12 w-12">
+        <div className="is-initial rounded-full bg-warning text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path>
+          </svg>
+        </div>
+      </div>
+      <h2 className="mt-5 line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100">
+        Kanban Board
+      </h2>
+      <p className="mt-1">
+        The Kanban Board to keep track of your personal and work tasks.
+      </p>
+      <div className="mt-5 pb-1">
+        <Link to={SCREENS.KANBAN} className="border-b border-dashed border-current pb-0.5 font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70">View Application</Link>
       </div>
     </div>
   </div>
