@@ -78,6 +78,17 @@ const Apps = () => (
           File Manager
         </p>
       </Link>
+      <Link to={SCREENS.MAIL} className="w-12 text-center">
+
+        <div className="avatar h-10 w-10">
+          <div className="is-initial mask is-squircle bg-secondary text-white">
+            <i className='fas fa-envelope' />
+          </div>
+        </div>
+        <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+          File Manager
+        </p>
+      </Link>
     </div>
   </div>
 )
