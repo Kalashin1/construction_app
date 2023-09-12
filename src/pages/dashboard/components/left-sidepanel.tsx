@@ -65,6 +65,19 @@ const Apps = () => (
           Chat
         </p>
       </Link>
+      <Link to={SCREENS.FILE_MANAGER} className="w-12 text-center">
+
+        <div className="avatar h-10 w-10">
+          <div className="is-initial mask is-squircle bg-error text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+            </svg>
+          </div>
+        </div>
+        <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
+          File Manager
+        </p>
+      </Link>
     </div>
   </div>
 )

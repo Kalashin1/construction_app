@@ -18,4 +18,5 @@ export enum SCREENS {
   CHAT = '/chat',
   TODO = '/todo',
   APPS = '/apps',
+  FILE_MANAGER = '/files'
 }

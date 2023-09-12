@@ -79,6 +79,24 @@ const Apps = () => (
         <Link to={SCREENS.TODO} className="border-b border-dashed border-current pb-0.5 font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70">View Application</Link>
       </div>
     </div>
+    <div className="card p-4 sm:p-5">
+      <div className="avatar h-12 w-12">
+        <div className="is-initial rounded-full bg-secondary text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+          </svg>
+        </div>
+      </div>
+      <h2 className="mt-5 line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100">
+        File Manager
+      </h2>
+      <p className="mt-1">
+        Lineone File Manager UI Kit is designed with modern design trends.
+      </p>
+      <div className="mt-5 pb-1">
+        <Link to={SCREENS.FILE_MANAGER} className="border-b border-dashed border-current pb-0.5 font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70">View Application</Link>
+      </div>
+    </div>
   </div>
 )
 
