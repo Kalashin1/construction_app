@@ -15,6 +15,7 @@ const FileManager = () => {
     updateShowLeftSidebar
   } = useContext(SidebarContext);
   const [showDropdown, updateDropDown] = useState(false);
+  const [showSecondDropdown, updateShowSecondDropDown] = useState(false);
   return (
     <Layout
       sidePanel={
@@ -33,11 +34,16 @@ const FileManager = () => {
       }
       leftSidePanelChildren={(<LeftSidePanel  />)}
     >
-      <main className="file-manager-app relative" onClick={() => updateDropDown(false)}>
+      <main className="file-manager-app relative" onClick={() => {
+        updateDropDown(false)
+        updateShowSecondDropDown(false)
+      }}>
         <MainSection 
           showDropdown={showDropdown}
           updateShowDropdown={updateDropDown}
           showLeftSidePanel={() => updateShowLeftSidebar!(true)}
+          showSecondDropdown={showSecondDropdown}
+          updateShowSecondDropdown={() => updateShowSecondDropDown(!showSecondDropdown)}
         />
       </main>
     </Layout>

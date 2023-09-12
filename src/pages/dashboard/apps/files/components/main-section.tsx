@@ -82,12 +82,17 @@ const Heading = ({
     </div>
   </div>
 )
-type MaiSectionProps = HeadingProps;
+type MaiSectionProps = HeadingProps & {
+  showSecondDropdown: boolean;
+  updateShowSecondDropdown:(...args: unknown[]) => void;
+};
 
 const MainSection = ({
   showDropdown,
   updateShowDropdown,
   showLeftSidePanel,
+  showSecondDropdown,
+  updateShowSecondDropdown,
 }: MaiSectionProps) => {
   return (
     <>
@@ -97,7 +102,10 @@ const MainSection = ({
         showLeftSidePanel={showLeftSidePanel}
       />
       <TabFolders />
-      <FoldersOverview />
+      <FoldersOverview
+        showDropdown={showSecondDropdown}
+        updateShowDropdown={updateShowSecondDropdown}
+      />
     </>
   )
 };
