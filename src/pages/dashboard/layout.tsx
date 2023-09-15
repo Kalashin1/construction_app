@@ -6,6 +6,7 @@ import AppWrapper from "./components/app-wrapper";
 import Sidebar from "./components/sidebar";
 import LeftSidePanel from "./components/left-sidepanel";
 
+
 type Props = {
   children: ReactNode;
   sidePanel?: ReactNode;
@@ -46,6 +47,7 @@ const Layout: FC<Props> = ({
           closeSidebar={() => updateShowSidebar && updateShowSidebar(false)}
           showProjectMenu={showProjectMenu!}
           updateShowProjectMenu={() => updateShowProjectMenu && updateShowProjectMenu(!showProjectMenu)}
+          // @ts-ignore
           CustomSidebarPanel={sidePanel && sidePanel}
         />
       )}
