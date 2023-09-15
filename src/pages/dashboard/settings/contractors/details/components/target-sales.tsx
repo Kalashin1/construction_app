@@ -2,7 +2,7 @@ import { Button } from "../../../../components/current-projects";
 
 const TargetSales = () => {
   return (
-    <div className="bg-white rounded-md shadow-md">
+    <div className="bg-white rounded-md shadow-md dark:border-navy-700 dark:bg-navy-800">
       <div className="p-8 flex flex-row justify-between">
         <h3>
           <span className="mr-2">

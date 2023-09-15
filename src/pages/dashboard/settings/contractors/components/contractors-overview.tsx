@@ -55,7 +55,7 @@ const ConstractorsTable = () => {
 const ConstructorsOverview = () => {
   const [numRows, setNumRows] = useState(0)
   return (
-    <div className="bg-white rounded-lg shadow-md">
+    <div className="bg-white rounded-lg shadow-md dark:border-navy-700 dark:bg-navy-800 dark:text-accent">
       <div className="flex flex-row justify-between items-center p-3">
         <h3 className="text-md font-bold flex flex-row">
           <UserIcon 

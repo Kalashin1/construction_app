@@ -43,16 +43,7 @@ const Apps = () => (
           Shop
         </p>
       </Link>
-      <Link to={SCREENS.TODO} className="w-12 text-center">
-        <div className="avatar h-10 w-10">
-          <div className="is-initial mask is-squircle bg-warning text-white">
-            <i className='fas fa-list-ul' />
-          </div>
-        </div>
-        <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
-          Todos
-        </p>
-      </Link>
+      
       <Link to={SCREENS.CHAT} className="w-12 text-center">
         <div className="avatar h-10 w-10">
           <div className="is-initial mask is-squircle bg-info text-white">
@@ -86,7 +77,7 @@ const Apps = () => (
           </div>
         </div>
         <p className="mt-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-700 dark:text-navy-100">
-          File Manager
+          Mail
         </p>
       </Link>
       <Link to={SCREENS.KANBAN} className="w-12 text-center">

@@ -16,7 +16,7 @@ const Input = () => {
 
 const Form = () => {
   return (
-    <div className="bg-white shadow-md rounded-md px-6 py-2">
+    <div className="bg-white shadow-md rounded-md px-6 py-2 dark:border-navy-700 dark:bg-navy-800">
       outstanding balance
       <div className="flex flex-row my-2 space-x-2">
         <Input />

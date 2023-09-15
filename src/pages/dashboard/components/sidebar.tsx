@@ -37,14 +37,35 @@ const sidebarLinksArray = [
         text: 'Shop',
         link: SCREENS.SHOP,
         parent: SCREENS.APPS
-      }
+      },
+      {
+        text: 'Mail',
+        link: SCREENS.MAIL,
+        parent: SCREENS.APPS
+      },
+      {
+        text: 'File Manager',
+        link: SCREENS.FILE_MANAGER,
+        parent: SCREENS.APPS
+      },
+      {
+        text: 'Kanban Board',
+        link: SCREENS.KANBAN,
+        parent: SCREENS.APPS
+      },
     ]
   },
   {
-    text: 'Projects',
+    text: 'Projects Summary',
     link: SCREENS.PROJECTS,
     icon: FormIcon,
     children: [
+      
+      {
+        text: 'Projects',
+        link: SCREENS.PROJECTS,
+        parent: SCREENS.PROJECTS
+      },
       {
         text: 'Create Project',
         link: SCREENS.CREATE_PROJECT,
