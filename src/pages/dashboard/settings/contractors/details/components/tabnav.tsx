@@ -14,7 +14,7 @@ const TabNav = ({
 }) => {
   return (
     <div className="md:col-span-4">
-      <div className="bg-white rounded-md shadow-md p-4 dark:border-navy-700 dark:bg-navy-800 dark:text-accent">
+      <div className="bg-white rounded-md shadow-md p-4 dark:border-navy-700 dark:bg-navy-800 dark:text-white">
         <nav>
           <ul>
             <li className="py-1 px-4">

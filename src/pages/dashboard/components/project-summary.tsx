@@ -75,7 +75,7 @@ export const TableSearch = () => (
 const ProjectSummary = () => {
   const [numRows, setNumRows] = useState(0)
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md dark:border-navy-700 dark:bg-navy-800 dark:text-accent">
+    <div className="bg-white p-6 rounded-lg shadow-md dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="md:w-3/6 my-4">
         <h3 className="text-md font-bold underline">System Tasks(0)</h3>
       </div>

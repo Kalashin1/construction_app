@@ -6,7 +6,7 @@ import ProjectListTable from "./components/project-list-table";
 const ProjectLists = () => {
   const [numRows, setNumRows] = useState(0)
   return (
-    <div className="bg-white shadow-md rounded-md my-4 py-6 dark:border-navy-700 dark:bg-navy-800 dark:text-accent">
+    <div className="bg-white shadow-md rounded-md my-4 py-6 dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="flex flex-col sm:flex-row justify-between my-4 px-6 ">
         <h3 className="text-xl font-semibold">Projects</h3>
 

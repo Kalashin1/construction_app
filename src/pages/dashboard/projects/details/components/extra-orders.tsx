@@ -2,7 +2,7 @@ import {ProjectDetailCard} from "./main-order-item";
 
 const ExtraOrders = () => {
   return (
-    <div className="bg-white rounded-lg shadow-md my-8 py-6">
+    <div className="bg-white rounded-lg shadow-md my-8 py-6 dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="p-6 m">
         <h3>
           <span>Addendum</span>(main order items) - <span>ARMEN AVOIAN</span>

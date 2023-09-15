@@ -11,6 +11,8 @@ import {
 } from "../svg";
 import { SCREENS } from "../../../navigation/constants";
 import SidebarPanel from "./sidebar-panel";
+import { motion, AnimatePresence } from 'framer-motion';
+
 
 const sidebarLinksArray = [
   {
@@ -60,7 +62,7 @@ const sidebarLinksArray = [
     link: SCREENS.PROJECTS,
     icon: FormIcon,
     children: [
-      
+
       {
         text: 'Projects',
         link: SCREENS.PROJECTS,
@@ -170,70 +172,98 @@ const Sidebar = ({
   }, [location.pathname])
 
   const [subMenu, updateSubMenu] = useState<typeof sidebarLinksArray[number]>(sidebarLinksArray[2])
-  
+
   return (
-    <div className="sidebar fixed z-50">
+    <AnimatePresence>
+      <motion.div 
+        className="sidebar fixed z-50"
+        initial={{ x: -1000}}
+        animate={{x: 0}}
+        transition={{ }}
+        exit={{x: -1000}}
+        layout
+      >
 
-      {/* <!-- Main Sidebar --> */}
-      <div className="absolute z-50 w-20 -top-16 h-screen">
-        <div
-          className="flex h-full w-full flex-col items-center border-r border-slate-150 bg-white dark:border-navy-700 dark:bg-navy-800"
-        >
-          {/* <!-- Application Logo --> */}
-          <div className="flex pt-4">
-            <a href="/">
-              <img
-                className="h-20 w-20 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
-                src="images/magga-logo.png"
-                alt="logo"
-              />
-            </a>
-          </div>
-
-          {/* <!-- Main Sections Links --> */}
+        {/* <!-- Main Sidebar --> */}
+        <div className="absolute z-50 w-20 -top-16 h-screen">
           <div
-            className="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6"
+            className="flex h-full w-full flex-col items-center border-r border-slate-150 bg-white dark:border-navy-700 dark:bg-navy-800"
           >
-            {sidebarLinksArray.map((sidebarLink, index) => (
-              <SidebarLink
-                key={index}
-                link={sidebarLink.link}
-                svg={(<sidebarLink.icon />)}
-              />
+            {/* <!-- Application Logo --> */}
+            <div className="flex pt-4">
+              <a href="/">
+                <img
+                  className="h-20 w-20 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
+                  src="images/magga-logo.png"
+                  alt="logo"
+                />
+              </a>
+            </div>
 
-            ))}
-          </div>
+            {/* <!-- Main Sections Links --> */}
+            <div
+              className="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6"
+            >
+              {sidebarLinksArray.map((sidebarLink, index) => (
+                <SidebarLink
+                  key={index}
+                  link={sidebarLink.link}
+                  svg={(<sidebarLink.icon />)}
+                />
 
-          <div className="flex flex-col items-center space-y-3 py-3">
+              ))}
+            </div>
 
-            {bottomLinks.map((bottomLink, index) => (
-              <SidebarLink
-                key={index}
-                link={bottomLink.link}
-                svg={(<bottomLink.icon />)}
-              />
-            ))}
+            <div className="flex flex-col items-center space-y-3 py-3">
+
+              {bottomLinks.map((bottomLink, index) => (
+                <SidebarLink
+                  key={index}
+                  link={bottomLink.link}
+                  svg={(<bottomLink.icon />)}
+                />
+              ))}
 
 
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Sidebar Panel */}
-      {showProjectMenu &&  CustomSidebarPanel && CustomSidebarPanel }
-      <div>
-        {showProjectMenu && !CustomSidebarPanel && (
-          <SidebarPanel
-            headerText={subMenu?.text}
-            links={subMenu?.children!}
-            closeSidebar={
-              deviceWidth < 560 ? 
-              closeSidebar: 
-              () => updateShowProjectMenu(!showProjectMenu)
-            }
-          />)}
-      </div>
-    </div>
+        {/* Sidebar Panel */}
+        <AnimatePresence>
+          {showProjectMenu && CustomSidebarPanel && (
+            <motion.div
+              exit={{ x: -10000 }}
+              initial={{  x: -1000}}
+              animate={{ x: 0 }}
+              transition={{ type: "tween" }}
+            >
+              {CustomSidebarPanel}
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {showProjectMenu && !CustomSidebarPanel && (
+            <motion.div
+              exit={{ x: -10000 }}
+              initial={{x: -1000}}
+              animate={{ x: 0 }}
+              transition={{ type: 'tween' }}
+            >
+              <SidebarPanel
+                headerText={subMenu?.text}
+                links={subMenu?.children!}
+                closeSidebar={
+                  deviceWidth < 560 ?
+                    closeSidebar :
+                    () => updateShowProjectMenu(!showProjectMenu)
+                }
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </AnimatePresence>
   )
 }
 

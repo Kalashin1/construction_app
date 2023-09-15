@@ -74,7 +74,7 @@ const projectStatsData = [
 const CurrentProjects = () => {
   return (
     <div
-      className="rounded-sm shadow-md bg-white py-2 lg:w-2/4 my-2 lg:my-0 dark:border-navy-700 dark:bg-navy-800 dark:text-accent"
+      className="rounded-sm shadow-md bg-white py-2 lg:w-2/4 my-2 lg:my-0 dark:border-navy-700 dark:bg-navy-800 dark:text-white"
     >
       <h3 className="text-md font-bold mx-4 mt-2 mb-2">Current Projects</h3>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
