@@ -38,7 +38,7 @@ const ReportsTable = () => {
 
 const ReportsOverview = () => {
   return (
-    <div className="bg-white rounded-lg shadow-md">
+    <div className="bg-white rounded-lg shadow-md dark:border-navy-700 dark:bg-navy-800 dark:text-accent">
       <div className="my-4 pt-4 px-6 items-center flex flex-row justify-between">
         <h3 className="text-md font-bold">All Reports</h3>
 

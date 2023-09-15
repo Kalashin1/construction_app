@@ -19,7 +19,7 @@ const Button = ({
 const CreateCard = () => {
   return (
     <div className="bg-white rounded-sm shadow p-4 md:p-8 flex flex-col md:flex-row justify-between items-center
-    space-y-4 space-x-4">
+    space-y-4 space-x-4 dark:border-navy-700 dark:bg-navy-800 dark:text-accent">
       <div>
         <Button
           label="PDF File"

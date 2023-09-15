@@ -1,6 +1,6 @@
 const Profile = () => {
   return (
-    <div className="bg-white rounded-md shadow-md p-6">
+    <div className="bg-white rounded-md shadow-md p-6 dark:border-navy-700 dark:bg-navy-800">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className="block">
           <span>Display name </span>

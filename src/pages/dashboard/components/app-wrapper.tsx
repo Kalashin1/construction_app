@@ -22,6 +22,12 @@ const AppWrapper: FC<Props> = ({
     updateShowLeftSidebar,
     showLeftSidebar
   } = useContext(SidebarContext);
+
+  const switchMode = () => {
+    const html = window.document.querySelector('html');
+    html?.classList.toggle('dark')
+  }
+
   return (
     <nav className="header print:hidden relative z-0">
       {/* <!-- App Header  --> */}
@@ -43,7 +49,7 @@ const AppWrapper: FC<Props> = ({
             </div>
           </div>
           <div className="flex md:ml-4 space-x-1 md:space-x-2 flex-row justify-between items-center relative">
-            <span className="cursor-pointer">
+            <span className="cursor-pointer" onClick={switchMode}>
               <LightModeIcon />
             </span>
             <span className="cursor-pointer"

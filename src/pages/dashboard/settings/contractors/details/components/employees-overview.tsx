@@ -23,7 +23,7 @@ const EmployeesTable = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
+          <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500 dark:border-navy-700 dark:bg-navy-800">
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">Balde</td>
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">Ibrahim</td>
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">
@@ -46,7 +46,7 @@ const EmployeesTable = () => {
 const EmployeesOverview = () => {
   const [numRows, setNumRows] = useState(0)
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
+    <div className="bg-white p-6 rounded-lg shadow-md dark:border-navy-700 dark:bg-navy-800 dark:text-accent">
       <div className="md:w-3/6 my-4">
         <h3 className="text-md font-bold">
           <span className="mr-4">

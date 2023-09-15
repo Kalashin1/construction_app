@@ -32,7 +32,7 @@ const categories = [
 const SlideItem = ({item}: {
   item: string;
 }) => (
-  <div className="flex flex-col items-center rounded-lg px-2 py-4 bg-white shadow-md m-2 md:m-4" >
+  <div className="flex flex-col items-center rounded-lg px-2 py-4 bg-white shadow-md m-2 md:m-4 dark:border-navy-700 dark:bg-navy-800" >
     <img className="w-12" src="images/100x100.png" alt="image" />
     <h3 className="line-clamp-1 pt-2 font-medium tracking-wide text-xs
     ">

@@ -111,7 +111,7 @@ const SidebarPanelBody = ({
           </li>
         ))}
       </ul>
-      <div className="mt-8 fixed bottom-0 w-52 left-20 bg-white">
+      <div className="mt-8 fixed bottom-0 w-52 left-20 bg-white dark:border-navy-700 dark:bg-navy-800">
         <SidebarPanelFooter />
       </div>
     </div>
