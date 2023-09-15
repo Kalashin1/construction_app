@@ -4,6 +4,7 @@ import CurrentProjects from "./components/current-projects";
 import ProjectInformation from "./components/project-information";
 import ProjectSummary from "./components/project-summary";
 import BreadCrumb from "./components/bread-crumb";
+import DashboardNotification from "./components/dashboard-notification";
 import { SCREENS } from "../../navigation/constants";
 
 const Dashboard = () => {
@@ -23,6 +24,9 @@ const Dashboard = () => {
       <div className="my-12 lg:flex flex-col lg:flex-row justify-between items-start">
         <ProjectInformation />
         <CurrentProjects />
+      </div>
+      <div className="my-12">
+        <DashboardNotification />
       </div>
       <div className="my-12">
         <ProjectSummary />

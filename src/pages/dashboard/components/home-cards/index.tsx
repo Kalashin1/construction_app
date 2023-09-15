@@ -48,7 +48,7 @@ const Card = ({
 }: CardProps) => {
   return (
     <div className={`rounded-lg ${color} p-4 dark:bg-navy-700`}>
-      <div className="flex justify-between space-x-1">
+      <div className="flex justify-between space-x-1 dark:border-l-2 border-green-500">
         <p
           className="text-xl text-white font-bold dark:text-navy-100"
         >

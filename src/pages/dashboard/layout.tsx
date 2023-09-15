@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ReactNode, FC, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { SidebarContext } from "../../App";
@@ -48,7 +47,6 @@ const Layout: FC<Props> = ({
           closeSidebar={() => updateShowSidebar && updateShowSidebar(false)}
           showProjectMenu={showProjectMenu!}
           updateShowProjectMenu={() => updateShowProjectMenu && updateShowProjectMenu(!showProjectMenu)}
-          // @ts-ignore
           CustomSidebarPanel={sidePanel && sidePanel}
         />
       )}

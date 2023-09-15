@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-import { FC, ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   AppIcon,
@@ -140,7 +140,7 @@ type Props = {
   closeSidebar: (...args: unknown[]) => void;
   updateShowProjectMenu: (...args: unknown[]) => void;
   showProjectMenu: boolean;
-  CustomSidebarPanel?: FC;
+  CustomSidebarPanel?: ReactNode;
 }
 
 const Sidebar = ({
@@ -236,9 +236,9 @@ const Sidebar = ({
               exit={{ x: -10000 }}
               initial={{  x: -1000}}
               animate={{ x: 0 }}
-              transition={{ type: "linear", delay: 5}}
+              transition={{ type: "tween" }}
             >
-              <CustomSidebarPanel />
+              {CustomSidebarPanel}
             </motion.div>
           )}
         </AnimatePresence>

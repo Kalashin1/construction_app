@@ -6,7 +6,7 @@ const Documents = () => {
     <div>
       <h3 className="my-6 text-lg font-bold">Documents</h3>
 
-      <div className="bg-white rounded-md w-full shadow-md p-8">
+      <div className="bg-white rounded-md w-full shadow-md p-8 dark:border-navy-700 dark:bg-navy-800 dark:text-white">
         <div className="grid grid-cols-2 md:grid-cols-5 justify-between">
           <div className="cursor-pointer my-4 md:my-0 mr-2 md:mr-0" onClick={() => updateCurrentTab(1)}>files (1)</div>
           <div className="cursor-pointer my-4 md:my-0 mr-2 md:mr-0" onClick={() => updateCurrentTab(2)}>Images (89)</div>

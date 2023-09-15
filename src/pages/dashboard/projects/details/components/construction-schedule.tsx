@@ -2,7 +2,7 @@ const ConstructionSchedule = () => {
   return (
     <div className="w-full">
       <h3 className="my-6 text-lg font-bold">Construction schedule</h3>
-      <ol className="timeline bg-white rounded-md shadow p-6 w-full">
+      <ol className="timeline bg-white rounded-md shadow p-6 w-full dark:border-navy-700 dark:bg-navy-800 dark:text-white">
         <li className="timeline-item">
           <div
             className="timeline-item-point rounded-full bg-slate-300 dark:bg-navy-400"

@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import EuroIcon from "../../../bills/ops/svg/euro";
-import { AdminIcon, CaretakerIcon, ContactPersonIcon, HouseIcon, PDFIcon } from "../svgs";
+import { AdminIcon, CaretakerIcon, ContactPersonIcon, HouseIcon } from "../svgs";
 
 const ProjectCard = () => {
   return (
-    <div className="bg-white rounded-md py-6 shadow">
+    <div className="bg-white rounded-md py-6 shadow dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="flex flex-col md:flex-row md:justify-between px-6 mb-4">
         <h2>MAGGA-34087 (instructed)</h2>
 
@@ -83,14 +83,14 @@ const ProjectCard = () => {
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="p-6">
         <h3>
-          <span className="text-black mr-2">Details:</span>
+          <span className="text-black mr-2 dark:text-white">Details:</span>
           <span>62.77 m², bathroom (3.10 m²), kitchen (4.50 m²), entrance hallway, living room, bedroom, balcony, children's room</span>
         </h3>
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="p-6">
         <h3>
-          <span className="text-black mr-2">Noted:</span>
+          <span className="text-black mr-2 dark:text-white">Noted:</span>
           <span>If central heating system is present:
             Please ensure that after the heating or plumbing work, any lines that have been shut off are reopened and the
             Heating system is filled with water.
@@ -115,8 +115,8 @@ const ProjectCard = () => {
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="p-6">
-        <button className="border-2 rounded-md border-gray-800 py-2 px-4 flex flex-row">
-          <PDFIcon width={20} color="#000" />
+        <button className="border-2 rounded-md border-gray-800 py-2 px-4 flex flex-row dark:border-gray-50 dark:border-2">
+          <i className="fas fa-file-pdf" />
           <span className="ml-4">Download PDF</span>
         </button>
       </div>
