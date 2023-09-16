@@ -18,7 +18,14 @@ const sidebarLinksArray = [
   {
     text: 'DASHBOARD',
     link: SCREENS.DASHBOARD,
-    icon: HomeIcon
+    icon: HomeIcon,
+    children: [
+      {
+        text: 'Home',
+        link: SCREENS.DASHBOARD,
+        parent: SCREENS.DASHBOARD
+      },
+    ]
   },
   {
     text: 'APPS',
@@ -108,12 +115,12 @@ const bottomLinks = [
   {
     text: 'General Contractors',
     link: SCREENS.CONTRACTORS,
-    icon: Settings
+    icon: ComponentsIcon
   },
   {
     text: 'Support',
     link: SCREENS.SUPPORT,
-    icon: ComponentsIcon
+    icon: Settings
   },
 ]
 
@@ -124,12 +131,13 @@ const SidebarLink = ({
   svg: ReactNode;
   link: string
 }) => {
+  const location = useLocation()
   return (
     <Link
       to={link}
       data-tooltip="Dashboards"
       data-placement="right"
-      className="tooltip-main-sidebar flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-navy-600 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90"
+      className={`tooltip-main-sidebar ${location.pathname.includes(link) ? 'bg-primary/10 dark:bg-navy-600': ''} flex h-11 w-11 items-center justify-center rounded-lg text-primary outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90`}
     >
       {svg}
     </Link>
