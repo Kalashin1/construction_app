@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import { SidebarContext } from "../../../../../App";
-import { SCREENS } from "../../../../../navigation/constants";
-import BreadCrumb from "../../../components/bread-crumb";
-import Layout from "../../../layout";
-import AccountSettings from "../account-setting";
-import Sidebar from '../sidebar'
+import { SidebarContext } from "../../../../App";
+import { SCREENS } from "../../../../navigation/constants";
+import BreadCrumb from "../../components/bread-crumb";
+import Layout from "../../layout";
+import Sidebar from '../components/sidebar'
+import NumberRangeComponent from "./components/number-range";
 
 const NumberRanges = () => {
   const {
@@ -38,7 +38,7 @@ const NumberRanges = () => {
         />
 
         <section>
-          <AccountSettings />
+          <NumberRangeComponent />
         </section>
       </main>
     </Layout>

@@ -22,6 +22,7 @@ import AppPage from '../pages/dashboard/apps';
 import FileManager from '../pages/dashboard/apps/files';
 import Mail from '../pages/dashboard/apps/mail';
 import KanbanBoard from '../pages/dashboard/apps/kanban';
+import NumberRanges from '../pages/dashboard/profie/number-ranges';
 
 const router = createBrowserRouter([
   {
@@ -111,6 +112,10 @@ const router = createBrowserRouter([
   {
     path: SCREENS.KANBAN,
     element: (<KanbanBoard />)
+  },
+  {
+    path: SCREENS.NUMBER_RANGES,
+    element: (<NumberRanges />)
   },
 ]);
 
