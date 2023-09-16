@@ -1,19 +1,19 @@
-import Layout from "../layout";
-import BreadCrumb from "../components/bread-crumb";
-import { SCREENS } from "../../../navigation/constants";
-import Sidebar from "./components/sidebar";
 import { useContext } from "react";
-import { SidebarContext } from "../../../App";
-import AccountSettings from "./components/account-setting";
+import { SidebarContext } from "../../../../../App";
+import { SCREENS } from "../../../../../navigation/constants";
+import BreadCrumb from "../../../components/bread-crumb";
+import Layout from "../../../layout";
+import AccountSettings from "../account-setting";
+import Sidebar from '../sidebar'
 
-const Profile = () => {
+const NumberRanges = () => {
   const {
-    deviceWidth,
-    showProjectMenu,
-    updateShowProjectMenu,
-    showSidebar,
-    updateShowSidebar,
-  } = useContext(SidebarContext);
+  deviceWidth,
+  showProjectMenu,
+  updateShowProjectMenu,
+  showSidebar,
+  updateShowSidebar,
+} = useContext(SidebarContext);
   return (
     <Layout
       sidePanel={
@@ -45,4 +45,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default NumberRanges;
