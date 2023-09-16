@@ -137,7 +137,7 @@ const SidebarLink = ({
       to={link}
       data-tooltip="Dashboards"
       data-placement="right"
-      className={`tooltip-main-sidebar ${location.pathname.includes(link) ? 'bg-primary/10 dark:bg-navy-600': ''} flex h-11 w-11 items-center justify-center rounded-lg text-primary outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90`}
+      className={`tooltip-main-sidebar ${location.pathname.includes(link) ? 'bg-primary/10 dark:bg-navy-600' : ''} flex h-11 w-11 items-center justify-center rounded-lg text-primary outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90`}
     >
       {svg}
     </Link>
@@ -182,96 +182,90 @@ const Sidebar = ({
   const [subMenu, updateSubMenu] = useState<typeof sidebarLinksArray[number]>(sidebarLinksArray[2])
 
   return (
-    <AnimatePresence>
-      <motion.div 
-        className="sidebar fixed z-50"
-        initial={{ x: -1000}}
-        animate={{x: 0}}
-        transition={{ }}
-        exit={{x: -1000}}
-        layout
-      >
+    <div
+      className="sidebar fixed z-50"
 
-        {/* <!-- Main Sidebar --> */}
-        <div className="absolute z-50 w-20 -top-16 h-screen">
+    >
+
+      {/* <!-- Main Sidebar --> */}
+      <div className="absolute z-50 w-20 -top-16 h-screen">
+        <div
+          className="flex h-full w-full flex-col items-center border-r border-slate-150 bg-white dark:border-navy-700 dark:bg-navy-800"
+        >
+          {/* <!-- Application Logo --> */}
+          <div className="flex pt-4">
+            <a href="/">
+              <img
+                className="h-20 w-20 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
+                src="images/magga-logo.png"
+                alt="logo"
+              />
+            </a>
+          </div>
+
+          {/* <!-- Main Sections Links --> */}
           <div
-            className="flex h-full w-full flex-col items-center border-r border-slate-150 bg-white dark:border-navy-700 dark:bg-navy-800"
+            className="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6"
           >
-            {/* <!-- Application Logo --> */}
-            <div className="flex pt-4">
-              <a href="/">
-                <img
-                  className="h-20 w-20 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
-                  src="images/magga-logo.png"
-                  alt="logo"
-                />
-              </a>
-            </div>
+            {sidebarLinksArray.map((sidebarLink, index) => (
+              <SidebarLink
+                key={index}
+                link={sidebarLink.link}
+                svg={(<sidebarLink.icon />)}
+              />
 
-            {/* <!-- Main Sections Links --> */}
-            <div
-              className="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6"
-            >
-              {sidebarLinksArray.map((sidebarLink, index) => (
-                <SidebarLink
-                  key={index}
-                  link={sidebarLink.link}
-                  svg={(<sidebarLink.icon />)}
-                />
+            ))}
+          </div>
 
-              ))}
-            </div>
+          <div className="flex flex-col items-center space-y-3 py-3">
 
-            <div className="flex flex-col items-center space-y-3 py-3">
-
-              {bottomLinks.map((bottomLink, index) => (
-                <SidebarLink
-                  key={index}
-                  link={bottomLink.link}
-                  svg={(<bottomLink.icon />)}
-                />
-              ))}
+            {bottomLinks.map((bottomLink, index) => (
+              <SidebarLink
+                key={index}
+                link={bottomLink.link}
+                svg={(<bottomLink.icon />)}
+              />
+            ))}
 
 
-            </div>
           </div>
         </div>
+      </div>
 
-        {/* Sidebar Panel */}
-        <AnimatePresence>
-          {showProjectMenu && CustomSidebarPanel && (
-            <motion.div
-              exit={{ x: -10000 }}
-              initial={{  x: -1000}}
-              animate={{ x: 0 }}
-              transition={{ type: "tween" }}
-            >
-              {CustomSidebarPanel}
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
-          {showProjectMenu && !CustomSidebarPanel && (
-            <motion.div
-              exit={{ x: -10000 }}
-              initial={{x: -1000}}
-              animate={{ x: 0 }}
-              transition={{ type: 'tween' }}
-            >
-              <SidebarPanel
-                headerText={subMenu?.text}
-                links={subMenu?.children!}
-                closeSidebar={
-                  deviceWidth < 560 ?
-                    closeSidebar :
-                    () => updateShowProjectMenu(!showProjectMenu)
-                }
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
-    </AnimatePresence>
+      {/* Sidebar Panel */}
+      <AnimatePresence>
+        {showProjectMenu && CustomSidebarPanel && (
+          <motion.div
+            exit={{ x: -10000 }}
+            initial={{ x: -1000 }}
+            animate={{ x: 0 }}
+            transition={{ type: "tween" }}
+          >
+            {CustomSidebarPanel}
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {showProjectMenu && !CustomSidebarPanel && (
+          <motion.div
+            exit={{ x: -10000 }}
+            initial={{ x: -1000 }}
+            animate={{ x: 0 }}
+            transition={{ type: 'tween' }}
+          >
+            <SidebarPanel
+              headerText={subMenu?.text}
+              links={subMenu?.children!}
+              closeSidebar={
+                deviceWidth < 560 ?
+                  closeSidebar :
+                  () => updateShowProjectMenu(!showProjectMenu)
+              }
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   )
 }
 
