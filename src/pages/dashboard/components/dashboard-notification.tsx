@@ -124,7 +124,6 @@ const NotificationItem = () => (
 const RightSide = () => (
   <div className="is-scrollbar-hidden col-span-12 flex space-x-4 overflow-x-auto px-[var(--margin-x)] transition-all duration-[.25s] lg:col-span-9 lg:pl-0">
     <NotificationItem />
-    <NotificationItem />
   </div>
 )
 
