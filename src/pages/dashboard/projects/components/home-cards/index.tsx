@@ -16,13 +16,13 @@ type CardProps = {
 const cards = [
   {
     svg: ToolsIcon,
-    text: 'Instructed',
+    text: 'New Project',
     figure: '16.0',
     color: 'bg-blue-500'
   },
   {
     svg: CheckIcon,
-    text: 'Performance Tested',
+    text: 'Assigned',
     figure: '16.0',
     color: 'bg-yellow-500'
   },
