@@ -1,6 +1,165 @@
+export const HeaderBar = () => (
+  <>
+    <div className="my-4 px-4 bg-white rounded shadow-sm font-bold py-4 dark:bg-navy-600 dark:text-white">
+      <h3>MAGGA ID: 49288928</h3>
+    </div>
+    <div className="bg-white rounded-md shadow-sm my-4 dark:bg-navy-600">
+      <div className="flex flex-row justify-between p-4">
+        <h3 className="px-2">
+          <span>
+            <i className="far fa-image" />
+          </span>
+          <span className="pl-2">
+            Logo & Icon
+          </span>
+        </h3>
+
+        <div className="grid grid-cols-3 gap-x-0">
+          <span>
+            <i className="fas fa-pen-to-square mr-2" />
+            <span className="ml-2">
+              Logo
+            </span>
+          </span>
+
+          <span>
+            <i className="fas fa-pen-to-square" />
+            <span className="ml-2">
+              Icon
+            </span>
+          </span>
+
+          <span>
+            <i className="fas fa-pen-to-square" />
+            <span className="ml-2">
+              Invoice logo
+            </span>
+          </span>
+
+        </div>
+      </div>
+      <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+
+      <div className="grid grid-cols-3 px-6 py-4 gap-x-4 justify-between w-full">
+        <h3>Logo</h3>
+        <h3>Icon</h3>
+        <h3>Invoice Logo</h3>
+      </div>
+      <div className="grid grid-cols-3 px-6 py-4 gap-x-4 justify-between">
+        <span>
+          No Image
+        </span>
+        <span>
+          No Image
+        </span>
+        <span>
+          No Image
+        </span>
+
+      </div>
+    </div>
+  </>
+
+)
+
+export const FooterBar = () => (
+  <div className="bg-white dark:bg-navy-600 my-4 rounded-md shadow-sm">
+    <div className="flex flex-row justify-between px-4 py-4">
+      <h3 className="text-lg font-medium tracking-wide text-slate-700 dark:text-navy-100">
+        <span>
+          <i className="fas fa-users" />
+        </span>
+        <span className="ml-4">
+          Managing Directiors
+        </span>
+      </h3>
+
+
+      <button>
+        <i className="fas fa-plus text-lg font-medium" />
+      </button>
+    </div>
+    <div className="p-6">
+      <h3 className="text-lg font-medium tracking-wide text-center text-slate-700 dark:text-navy-100 dark:text-black dark:bg-transparent bg-gray-300 py-2 my-1">Surname</h3>
+      <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+      <div className="flex flex-row justify-between">
+        <h3>Ibrahim</h3>
+
+        <div>
+          <button
+            className="py-1 px-2 my-2 rounded-md bg-gray-500"
+          >
+            <i className="fas fa-pen-to-square text-white" />
+          </button>
+          <button className="ml-2 py-1 px-2 my-2 rounded-md bg-red-600">
+            <i className="fas fa-times text-white" />
+          </button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+)
+export const BankDetails = () => (
+  <div className="bg-white dark:bg-navy-600 my-4 rounded-md shadow-sm">
+    <div className="flex flex-row justify-between px-4 py-4">
+      <h3 className="text-lg font-medium tracking-wide text-slate-700 dark:text-navy-100">
+        <span>
+          <i className="fas fa-credit-card" />
+        </span>
+        <span className="ml-4">
+          Bank Details
+        </span>
+      </h3>
+
+
+      <button>
+        <i className="fas fa-plus text-lg font-medium" />
+      </button>
+    </div>
+    <div className="p-6">
+      <div className="text-lg font-medium tracking-wide text-center text-slate-700 dark:text-navy-100 dark:text-black dark:bg-transparent bg-gray-300 py-2 my-1 flex flex-row justify-between px-2">
+        <span>
+          Surname
+        </span>
+        <span>
+          Iban
+        </span>
+        <span>
+          BIC
+        </span>
+        <span>
+          &nbsp;
+        </span>
+      </div>
+      <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+      <div className="flex flex-row justify-between py-2 px-2">
+        <h3>Sparkasse Vest Recklinghausen</h3>
+
+        <h3>DE13426501501001079977</h3>
+        
+        <h3>WELADED1REK</h3>
+
+        <div>
+          <button
+            className="py-1 px-2 my-2 rounded-md bg-gray-500"
+          >
+            <i className="fas fa-pen-to-square text-white" />
+          </button>
+          <button className="ml-2 py-1 px-2 my-2 rounded-md bg-red-600">
+            <i className="fas fa-times text-white" />
+          </button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+)
+
 const AccountSettings = () => {
   return (
     <div className="col-span-12 lg:col-span-8">
+      <HeaderBar />
       <div className="card">
         <div
           className="flex flex-col items-center space-y-4 border-b border-slate-200 p-4 dark:border-navy-500 sm:flex-row sm:justify-between sm:space-y-0 sm:px-5"
@@ -145,6 +304,8 @@ const AccountSettings = () => {
           </div>
         </div>
       </div>
+      <FooterBar />
+      <BankDetails />
     </div>
   );
 };
