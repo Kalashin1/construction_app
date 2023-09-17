@@ -126,7 +126,7 @@ const bottomLinks = [
   },
   {
     text: 'Support',
-    link: SCREENS.SUPPORT,
+    link: SCREENS.PROFILE,
     icon: Settings
   },
 ]
