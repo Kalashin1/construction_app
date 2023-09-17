@@ -23,4 +23,5 @@ export enum SCREENS {
   KANBAN = '/kanban',
   NUMBER_RANGES = '/number-ranges',
   BILLING_DETAILS = '/billing-details',
+  TRADES = '/trades',
 }
