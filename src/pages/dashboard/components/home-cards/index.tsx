@@ -18,25 +18,25 @@ const cards = [
     svg: IncomeIcon,
     text: 'New Tasks',
     figure: '16.0',
-    color: 'bg-blue-500'
+    color: 'bg-blue-500 border-blue-500',
   },
   {
     svg: PendingIcon,
     text: 'Tasks Due',
     figure: '16.0',
-    color: 'bg-yellow-500'
+    color: 'bg-yellow-500 border-yellow-500',
   },
   {
     svg: CompletedIcon,
     text: 'Over Due Tasks',
     figure: '16.0',
-    color: 'bg-red-500'
+    color: 'bg-red-500 border-red-500',
   },
   {
     svg: DispatchIcon,
     text: 'All Tasks',
     figure: '16.0',
-    color: 'bg-gray-800'
+    color: 'bg-gray-800 border-gray-800',
   }
 ]
 
@@ -47,7 +47,7 @@ const Card = ({
   color
 }: CardProps) => {
   return (
-    <div className={`rounded-lg ${color} p-4 dark:bg-navy-700`}>
+    <div className={`rounded-lg ${color} p-4 dark:bg-navy-700 border-l-4`}>
       <div className="flex justify-between space-x-1">
         <p
           className="text-xl text-white font-bold dark:text-navy-100"

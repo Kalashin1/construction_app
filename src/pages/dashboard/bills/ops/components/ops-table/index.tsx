@@ -53,7 +53,7 @@ const BillsTable = () => {
 const BillsOverview = () => {
   const [numRows, setNumRows] = useState(0)
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md my-12 dark:border-navy-700 dark:bg-navy-800 dark:text-accent">
+    <div className="bg-white p-6 rounded-lg shadow-md my-12 dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="my-4 mb-12 flex flex-col md:flex-row justify-between md:items-center">
         <div className=" flex flex-row items-center my-2 md:my-0">
           <DownloadIcon width={20} color="gray" />

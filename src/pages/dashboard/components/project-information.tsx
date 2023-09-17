@@ -37,7 +37,7 @@ const ProjectInfoChild = () => (
 const ProjectInformation = () => {
   return (
     <div
-      className="rounded-sm shadow-md bg-white py-2 lg:w-2/4 my-4 md:my-0 lg:mx-4 dark:border-navy-700 dark:bg-navy-800 dark:text-accent-light"
+      className="rounded-sm shadow-md bg-white py-2 lg:w-2/4 my-4 md:my-0 lg:mx-4 dark:border-navy-700 dark:bg-navy-800 dark:text-white"
     >
       <div className="flex flex-row justify-between px-2">
         <h3 className="text-md font-bold mt-2 mb-2">Info</h3>

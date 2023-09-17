@@ -11,12 +11,21 @@ import {
 } from "../svg";
 import { SCREENS } from "../../../navigation/constants";
 import SidebarPanel from "./sidebar-panel";
+import { motion, AnimatePresence } from 'framer-motion';
+
 
 const sidebarLinksArray = [
   {
     text: 'DASHBOARD',
     link: SCREENS.DASHBOARD,
-    icon: HomeIcon
+    icon: HomeIcon,
+    children: [
+      {
+        text: 'Home',
+        link: SCREENS.DASHBOARD,
+        parent: SCREENS.DASHBOARD
+      },
+    ]
   },
   {
     text: 'APPS',
@@ -60,7 +69,7 @@ const sidebarLinksArray = [
     link: SCREENS.PROJECTS,
     icon: FormIcon,
     children: [
-      
+
       {
         text: 'Projects',
         link: SCREENS.PROJECTS,
@@ -106,12 +115,12 @@ const bottomLinks = [
   {
     text: 'General Contractors',
     link: SCREENS.CONTRACTORS,
-    icon: Settings
+    icon: ComponentsIcon
   },
   {
     text: 'Support',
     link: SCREENS.SUPPORT,
-    icon: ComponentsIcon
+    icon: Settings
   },
 ]
 
@@ -122,12 +131,13 @@ const SidebarLink = ({
   svg: ReactNode;
   link: string
 }) => {
+  const location = useLocation()
   return (
     <Link
       to={link}
       data-tooltip="Dashboards"
       data-placement="right"
-      className="tooltip-main-sidebar flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:bg-navy-600 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90"
+      className={`tooltip-main-sidebar ${location.pathname.includes(link) ? 'bg-primary/10 dark:bg-navy-600' : ''} flex h-11 w-11 items-center justify-center rounded-lg text-primary outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:text-accent-light dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90`}
     >
       {svg}
     </Link>
@@ -170,9 +180,12 @@ const Sidebar = ({
   }, [location.pathname])
 
   const [subMenu, updateSubMenu] = useState<typeof sidebarLinksArray[number]>(sidebarLinksArray[2])
-  
+
   return (
-    <div className="sidebar fixed z-50">
+    <div
+      className="sidebar fixed z-50"
+
+    >
 
       {/* <!-- Main Sidebar --> */}
       <div className="absolute z-50 w-20 -top-16 h-screen">
@@ -220,19 +233,38 @@ const Sidebar = ({
       </div>
 
       {/* Sidebar Panel */}
-      {showProjectMenu &&  CustomSidebarPanel && CustomSidebarPanel }
-      <div>
+      <AnimatePresence>
+        {showProjectMenu && CustomSidebarPanel && (
+          <motion.div
+            exit={{ x: -10000 }}
+            initial={{ x: -1000 }}
+            animate={{ x: 0 }}
+            transition={{ type: "tween" }}
+          >
+            {CustomSidebarPanel}
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
         {showProjectMenu && !CustomSidebarPanel && (
-          <SidebarPanel
-            headerText={subMenu?.text}
-            links={subMenu?.children!}
-            closeSidebar={
-              deviceWidth < 560 ? 
-              closeSidebar: 
-              () => updateShowProjectMenu(!showProjectMenu)
-            }
-          />)}
-      </div>
+          <motion.div
+            exit={{ x: -10000 }}
+            initial={{ x: -1000 }}
+            animate={{ x: 0 }}
+            transition={{ type: 'tween' }}
+          >
+            <SidebarPanel
+              headerText={subMenu?.text}
+              links={subMenu?.children!}
+              closeSidebar={
+                deviceWidth < 560 ?
+                  closeSidebar :
+                  () => updateShowProjectMenu(!showProjectMenu)
+              }
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

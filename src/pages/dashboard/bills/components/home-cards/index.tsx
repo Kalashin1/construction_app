@@ -18,25 +18,25 @@ const cards = [
     svg: NewInvoiceIcon,
     text: 'New Invoices',
     figure: '16.0',
-    color: 'bg-gray-600'
+    color: 'bg-gray-600 border-blue-500'
   },
   {
     svg: RejectedInvoiceIcon,
     text: 'Reject & Reduced',
     figure: '16.0',
-    color: 'bg-gray-700'
+    color: 'bg-gray-700 border-red-500'
   },
   {
     svg: NewBillsIcon,
     text: 'New Bills',
     figure: '16.0',
-    color: 'bg-slate-800'
+    color: 'bg-slate-800 border-blue-500'
   },
   {
     svg: AllInvoiceIcon,
     text: 'All Bills',
     figure: '16.0',
-    color: 'bg-gray-900'
+    color: 'bg-gray-900 border-green-500'
   }
 ]
 
@@ -47,7 +47,7 @@ export const Card = ({
   color
 }: CardProps) => {
   return (
-    <div className={`rounded-lg ${color} p-4 dark:bg-navy-700`}>
+    <div className={`rounded-lg ${color} p-4 dark:bg-navy-700 border-l-4`}>
       <div className="flex justify-between space-x-1">
         <p
           className="text-xl text-white font-bold dark:text-navy-100"
