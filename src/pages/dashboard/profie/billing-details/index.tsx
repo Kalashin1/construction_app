@@ -6,7 +6,7 @@ import Layout from "../../layout";
 import Sidebar from '../components/sidebar'
 import BillingDetails from "./component/billing-details";
 
-const NumberRanges = () => {
+const BillingDetailsPage = () => {
   const {
   deviceWidth,
   showProjectMenu,
@@ -45,4 +45,4 @@ const NumberRanges = () => {
   );
 };
 
-export default NumberRanges;
+export default BillingDetailsPage;

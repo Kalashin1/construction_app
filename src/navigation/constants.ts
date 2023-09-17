@@ -24,4 +24,5 @@ export enum SCREENS {
   NUMBER_RANGES = '/number-ranges',
   BILLING_DETAILS = '/billing-details',
   TRADES = '/trades',
+  DOCUMENTS = '/documents',
 }

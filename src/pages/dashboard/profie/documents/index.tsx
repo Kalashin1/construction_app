@@ -4,9 +4,9 @@ import { SCREENS } from "../../../../navigation/constants";
 import BreadCrumb from "../../components/bread-crumb";
 import Layout from "../../layout";
 import Sidebar from '../components/sidebar';
-import Trades from "./components/trades";
+import DocumentsOverview from "./components/documents";
 
-const TradesPage = () => {
+const DocumentsPage = () => {
   const {
   deviceWidth,
   showProjectMenu,
@@ -36,13 +36,12 @@ const TradesPage = () => {
           firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard' }}
           secondLevel={{ link: '', text: '' }}
         />
-
         <section>
-          <Trades />
+          <DocumentsOverview />
         </section>
       </main>
     </Layout>
   );
 };
 
-export default TradesPage;
+export default DocumentsPage;
