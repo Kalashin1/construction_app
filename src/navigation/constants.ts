@@ -21,4 +21,8 @@ export enum SCREENS {
   FILE_MANAGER = '/files',
   MAIL = '/mail',
   KANBAN = '/kanban',
+  NUMBER_RANGES = '/number-ranges',
+  BILLING_DETAILS = '/billing-details',
+  TRADES = '/trades',
+  DOCUMENTS = '/documents',
 }

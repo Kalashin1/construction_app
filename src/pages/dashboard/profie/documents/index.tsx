@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import { SidebarContext } from "../../../../../App";
-import { SCREENS } from "../../../../../navigation/constants";
-import BreadCrumb from "../../../components/bread-crumb";
-import Layout from "../../../layout";
-import AccountSettings from "../account-setting";
-import Sidebar from '../sidebar'
+import { SidebarContext } from "../../../../App";
+import { SCREENS } from "../../../../navigation/constants";
+import BreadCrumb from "../../components/bread-crumb";
+import Layout from "../../layout";
+import Sidebar from '../components/sidebar';
+import DocumentsOverview from "./components/documents";
 
-const NumberRanges = () => {
+const DocumentsPage = () => {
   const {
   deviceWidth,
   showProjectMenu,
@@ -36,13 +36,12 @@ const NumberRanges = () => {
           firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard' }}
           secondLevel={{ link: '', text: '' }}
         />
-
         <section>
-          <AccountSettings />
+          <DocumentsOverview />
         </section>
       </main>
     </Layout>
   );
 };
 
-export default NumberRanges;
+export default DocumentsPage;

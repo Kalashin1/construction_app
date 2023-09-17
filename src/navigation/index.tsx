@@ -22,6 +22,10 @@ import AppPage from '../pages/dashboard/apps';
 import FileManager from '../pages/dashboard/apps/files';
 import Mail from '../pages/dashboard/apps/mail';
 import KanbanBoard from '../pages/dashboard/apps/kanban';
+import NumberRanges from '../pages/dashboard/profie/number-ranges';
+import BillingDetails from '../pages/dashboard/profie/billing-details';
+import Trades from '../pages/dashboard/profie/trades';
+import Documents from '../pages/dashboard/profie/documents';
 
 const router = createBrowserRouter([
   {
@@ -111,6 +115,22 @@ const router = createBrowserRouter([
   {
     path: SCREENS.KANBAN,
     element: (<KanbanBoard />)
+  },
+  {
+    path: SCREENS.NUMBER_RANGES,
+    element: (<NumberRanges />)
+  },
+  {
+    path: SCREENS.BILLING_DETAILS,
+    element: (<BillingDetails />)
+  },
+  {
+    path: SCREENS.TRADES,
+    element: (<Trades />)
+  },
+  {
+    path: SCREENS.DOCUMENTS,
+    element: (<Documents />)
   },
 ]);
 
