@@ -1,4 +1,4 @@
-const DisabledInput = ({
+export const DisabledInput = ({
   label
 }: {
   label: string

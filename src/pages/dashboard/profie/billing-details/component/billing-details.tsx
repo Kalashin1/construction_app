@@ -1,4 +1,5 @@
 import { Button } from "../../../components/current-projects";
+import { DisabledInput } from "../../number-ranges/components/number-range";
 
 const BillingDetails = () => {
   return (
@@ -6,22 +7,26 @@ const BillingDetails = () => {
       <div className="p-8 flex flex-row justify-between">
         <h3>
           <span className="mr-2">
-            <i className="fas fa-file-lines" />
+            <i className="fas fa-file-lines text-xl" />
           </span>
           <span className="text-md">
-            Agreed terms of payment
+          Billing details & payment terms
           </span>
         </h3>
 
         <div>
-          <span className="bg-green-400 px-4 py-1 rounded-md text-white">checked</span>
+          <span className="bg-green-400 px-4 py-1 rounded-md text-white">
+            <i className="fas fa-pen-to-square" />
+          </span>
         </div>
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
-      <div className="grid grid-cols-2 p-6 space-y-8 justify-between items-center">
-        <span>Cash Discount</span><span>-</span>
-        <span>Discount Period</span><span>-</span>
-        <span>Payment Deadline</span><span>7 days</span>
+      <div className="p-6">
+        <DisabledInput label="tax number" />
+        <DisabledInput label="Tax ID" />
+        <DisabledInput label="Cash Discount" />
+        <DisabledInput label="Discount Period" />
+        <DisabledInput label="Payment Deadline" />
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="p-8">
