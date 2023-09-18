@@ -21,7 +21,10 @@ export enum SCREENS {
   FILE_MANAGER = '/files',
   MAIL = '/mail',
   KANBAN = '/kanban',
-  NUMBER_RANGES = '/number_ranges'
+  NUMBER_RANGES = '/number-ranges',
+  BILLING_DETAILS = '/billing-details',
+  TRADES = '/trades',
+  DOCUMENTS = '/documents',
 }
 
 export const API_BASE_URL = 'https://magga-676xiecbma-uc.a.run.app';

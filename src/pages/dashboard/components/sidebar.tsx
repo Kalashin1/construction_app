@@ -115,11 +115,18 @@ const bottomLinks = [
   {
     text: 'General Contractors',
     link: SCREENS.CONTRACTORS,
-    icon: ComponentsIcon
+    icon: ComponentsIcon,
+    children: [
+      {
+        text: 'Contractors',
+        link: SCREENS.CONTRACTORS,
+        parent: SCREENS.CONTRACTORS
+      }
+    ]
   },
   {
     text: 'Support',
-    link: SCREENS.SUPPORT,
+    link: SCREENS.PROFILE,
     icon: Settings
   },
 ]
@@ -175,7 +182,23 @@ const Sidebar = ({
     if (sidebarLink && sidebarLink?.children) {
       updateSubMenu(sidebarLink);
     } else {
-      updateSubMenu(sidebarLinksArray[2])
+      const sidebarBottomLink = bottomLinks.find(
+        (sbL) => {
+          const isSidebarLink = sbL.link.toLowerCase().includes(location.pathname.slice(0));
+          if (!isSidebarLink) {
+            const parentLinks = sbL.children?.find((child) => child.link.includes(location.pathname.slice(0)))
+            return parentLinks
+          } else {
+            return isSidebarLink;
+          }
+        }
+      )
+
+      if (sidebarBottomLink && sidebarBottomLink?.children) {
+        updateSubMenu(sidebarBottomLink)
+      } else {
+        updateSubMenu(sidebarLinksArray[2])
+      }
     }
   }, [location.pathname])
 

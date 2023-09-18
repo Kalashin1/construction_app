@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { SCREENS } from "../../../../../../navigation/constants";
 
 const ProjectListTable = () => {
-  const dataTitles = ['Project', 'Status', 'Info', 'Completion']
+  const dataTitles = ['Project', 'Status', 'Info', 'Completion', 'Action']
   return (
     <div className="is-scrollbar-hidden min-w-full overflow-x-auto my-4">
       <table className="w-full text-left">
@@ -60,6 +60,11 @@ const ProjectListTable = () => {
             </td>
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">
               <p className="font-bold">vor 38 Tagen</p>
+            </td>
+            <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+              <p className="font-bold">
+                <i className="fas fa-chevron-down" />
+              </p>
             </td>
           </tr>
         </tbody>

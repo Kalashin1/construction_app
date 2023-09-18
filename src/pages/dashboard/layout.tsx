@@ -2,6 +2,7 @@ import { ReactNode, FC, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { SidebarContext } from "../../App";
 import { SCREENS } from "../../navigation/constants";
+import { motion, AnimatePresence } from 'framer-motion';
 import AppWrapper from "./components/app-wrapper";
 import Sidebar from "./components/sidebar";
 import LeftSidePanel from "./components/left-sidepanel";
@@ -46,12 +47,18 @@ const Layout: FC<Props> = ({
 
     <>
       {showSidebar && (
-        <Sidebar
-          closeSidebar={() => updateShowSidebar && updateShowSidebar(false)}
-          showProjectMenu={showProjectMenu!}
-          updateShowProjectMenu={() => updateShowProjectMenu && updateShowProjectMenu(!showProjectMenu)}
-          CustomSidebarPanel={sidePanel && sidePanel}
-        />
+        <AnimatePresence>
+          <motion.div
+            exit={{ opacity: 0 }}
+          >
+            <Sidebar
+              closeSidebar={() => updateShowSidebar && updateShowSidebar(false)}
+              showProjectMenu={showProjectMenu!}
+              updateShowProjectMenu={() => updateShowProjectMenu && updateShowProjectMenu(!showProjectMenu)}
+              CustomSidebarPanel={sidePanel && sidePanel}
+            />
+          </motion.div>
+        </AnimatePresence>
       )}
       <AppWrapper
         toggleSidebar={
@@ -77,13 +84,13 @@ const Layout: FC<Props> = ({
           {children}
         </main>
       )
-    }
-    { showLeftSidebar && (
-      <LeftSidePanel 
-        closeSidebar={() => updateShowLeftSidebar!(false)} 
-        children={leftSidePanelChildren}
-      />
-    )}
+      }
+      {showLeftSidebar && (
+        <LeftSidePanel
+          closeSidebar={() => updateShowLeftSidebar!(false)}
+          children={leftSidePanelChildren}
+        />
+      )}
     </>
   );
 }
