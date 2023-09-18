@@ -1,4 +1,4 @@
-import {API_BASE_URL, CLIENT_BASE_URL} from "../../navigation/constants";
+import {API_BASE_URL} from "../../navigation/constants";
 
 export type LoginParam = {
   email: string;
@@ -11,7 +11,7 @@ export type SignupParam = {
 } & LoginParam;
 
 export const login = async (payload: LoginParam) => {
-  const res = await fetch(`${CLIENT_BASE_URL}/register`, {
+  const res = await fetch(`${API_BASE_URL}/login`, {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {
@@ -29,7 +29,7 @@ export const login = async (payload: LoginParam) => {
 
 export const createAccount = async (payload: SignupParam) => {
   console.log(payload.email)
-  const res = await fetch(`${CLIENT_BASE_URL}/register`, {
+  const res = await fetch(`${API_BASE_URL}/register`, {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {

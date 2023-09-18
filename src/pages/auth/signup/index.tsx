@@ -179,7 +179,7 @@ function Signup() {
             </span>
             <Link
               className="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent"
-              to={'/login'}
+              to={SCREENS.LOGIN}
             >
               {/* Sign In */}
               Anmelden
