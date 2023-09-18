@@ -26,3 +26,6 @@ export enum SCREENS {
   TRADES = '/trades',
   DOCUMENTS = '/documents',
 }
+
+export const API_BASE_URL = 'https://magga-676xiecbma-uc.a.run.app';
+export const CLIENT_BASE_URL = 'http://localhost:8080';
