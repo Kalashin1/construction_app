@@ -1,12 +1,38 @@
 import { EmailIcon, PasswordIcon } from "../svg";
-import { Link, useNavigate } from "react-router-dom";
+import { 
+  Link,
+  // useNavigate
+} from "react-router-dom";
 import { OAuthButton, Input, Button } from "../components";
 import { GoogleIcon } from "../svg/"
 import Layout from "../layout";
+import { useState } from "react";
+import { login, LoginParam } from "../action";
 
 function Login() {
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const loginUser = async (params: LoginParam, e: Event) => {
+    e.preventDefault()
+    setIsLoading(true);
+    // setError(false)
+    const [err, user] = await login(params);
+    setIsLoading(false)
+    if (err) {
+      alert('oops something happened');
+      console.log(err);
+    } else if (user) {
+      alert('login successfull!')
+      console.log(user)
+    }
+  }
+
+  const [isLoading, setIsLoading] = useState(false);
+  // const [error, setError] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState('');
 
   return (
     <Layout>
@@ -49,17 +75,22 @@ function Login() {
           <Input
             placeholder="magga@magga.de"
             type="email"
+            value={email}
+            handleChange={setEmail}
             icon={<EmailIcon />}
           />
           <Input
             placeholder="Passwort"
             type="password"
+            value={password}
+            handleChange={setPassword}
             icon={<PasswordIcon />}
           />
         </div>
         <Button
           label="Anmelden"
-          action={() => navigate('/dashboard')}
+          disabled={isLoading}
+          action={(e: unknown) => loginUser({email, password}, e as Event)}
         />
         <div className="mt-4 text-center text-xs+">
           <p className="line-clamp-1">

@@ -23,3 +23,6 @@ export enum SCREENS {
   KANBAN = '/kanban',
   NUMBER_RANGES = '/number_ranges'
 }
+
+export const API_BASE_URL = 'https://magga-676xiecbma-uc.a.run.app';
+export const CLIENT_BASE_URL = 'http://localhost:8080';
