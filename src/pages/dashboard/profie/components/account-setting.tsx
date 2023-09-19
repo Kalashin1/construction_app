@@ -1,3 +1,7 @@
+import { useNavigate } from "react-router-dom";
+import { useGetUserFromToken } from "../../hooks/getUser";
+import { SCREENS } from "../../../../navigation/constants";
+
 export const HeaderBar = () => (
   <>
     <div className="my-4 px-4 bg-white rounded shadow-sm font-bold py-4 dark:bg-navy-600 dark:text-white">
@@ -157,6 +161,21 @@ export const BankDetails = () => (
 )
 
 const AccountSettings = () => {
+  
+  const navigate = useNavigate()
+  
+  const token = sessionStorage.getItem('userToken')
+
+  const {user, error} = useGetUserFromToken(token!)
+
+  if (error) {
+    navigate(SCREENS.LOGIN)
+  }
+
+  if (user) {
+    console.log(user)
+  }
+  
   return (
     <div className="col-span-12 lg:col-span-8">
       <HeaderBar />

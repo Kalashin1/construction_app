@@ -19,18 +19,18 @@ const EmployeesComponent = () => {
           <img className="rounded-full" src="images/100x100.png" alt="avatar" />
         </div>
         <h3 className="pt-3 text-lg font-medium text-slate-700 dark:text-navy-100">
-          Konnor Guzman
+          Ibrahim Balde
         </h3>
-        <p className="text-xs+">Senior Developer</p>
+        <p className="text-xs+">Chief Plumber</p>
         <div className="inline-space mt-3 flex grow flex-wrap items-start">
           <a href="#" className="tag rounded-full bg-success/10 text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
-            PHP
+            Toilet
           </a>
           <a href="#" className="tag rounded-full bg-success/10 text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
-            Nodejs
+            Kitchen
           </a>
           <a href="#" className="tag rounded-full bg-success/10 text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
-            ReactJS
+            Bathroom
           </a>
         </div>
         <div className="mt-6 grid w-full grid-cols-2 gap-2">

@@ -28,7 +28,7 @@ const ProjectListTable = () => {
               <p>Eppmannsweg 9, 45896 Gelsenkirchen</p>
               <p className="text-xs my-2">Lage: Erdgeschoss links, Wohnung 1 Vermietungstatus: leer</p>
               <p className="text-xs my-2">5270.9035.049.00211</p>
-              <span className="text-white px-4 rounded bg-gray-700">LEG-97666-0</span>
+              <span className="text-white px-4 rounded bg-gray-700">MAGGA-97666-0</span>
             </td>
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">
               <span>100% Completed</span>
@@ -55,7 +55,7 @@ const ProjectListTable = () => {
               </p>
               <p className="text-sm flex flex-row justify-between">
                 <span>Bauleiter:</span>
-                <span>Dirk Onufrejow</span>
+                <span>Ibrahim Balde</span>
               </p>
             </td>
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">

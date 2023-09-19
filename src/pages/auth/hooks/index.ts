@@ -34,6 +34,7 @@ export const useLogin = () => {
       }
     } else if (_user) {
       setUser(_user);
+      return _user
     }
   };
 
@@ -101,6 +102,7 @@ export const useCreateUserAccount = () => {
       setUser(_user);
       setEmail('')
       setPassword('');
+      return _user
     }
   }
 

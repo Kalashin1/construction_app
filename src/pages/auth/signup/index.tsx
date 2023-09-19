@@ -25,15 +25,14 @@ function Signup() {
     createUserAccount,
     isLoading,
     setIsLoading,
-    user,
   } = useCreateUserAccount();
 
   const createAccount = async (e: Event) => {
     e.preventDefault();
-    await createUserAccount({ email, password, type: "EMAIL", role: 'admin' })
-    if (user) {
+    const _user = await createUserAccount({ email, password, type: "EMAIL", role: 'admin' })
+    if (_user) {
       alert('account created successfully');
-      sessionStorage.setItem('userToken', user.token)
+      sessionStorage.setItem('userToken', _user.token)
       navigate(SCREENS.PROFILE);
     }
     setIsLoading(false)

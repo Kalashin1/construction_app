@@ -22,16 +22,18 @@ function Login() {
     passwordError,
     errorMessage,
     funcWrapper,
-    isLoading,
-    user
+    isLoading
   } = useLogin();
 
   const loginUser = async (e: Event) => {
     e.preventDefault();
-    await funcWrapper();
-    if (user) {
+    const _user = await funcWrapper();
+    if (_user) {
       alert('login successful');
+      sessionStorage.setItem('userToken', _user.token)
       navigate(SCREENS.DASHBOARD)
+    } else {
+      console.log('something happened', errorMessage)
     }
   }
 
