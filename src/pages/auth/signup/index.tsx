@@ -1,68 +1,42 @@
 import { OAuthButton, Input, Button } from "../components";
-import { EmailIcon, PasswordIcon, UserIcon } from "../svg";
+import { EmailIcon, PasswordIcon } from "../svg";
 import { Link, useNavigate } from "react-router-dom";
 import GoogleIcon from "../svg/google";
 import Layout from "../layout";
-import { useState } from "react";
-import {createAccount, SignupParam} from '../action';
 import { SCREENS } from "../../../navigation/constants";
+import { useCreateUserAccount } from "../hooks";
 
 function Signup() {
 
   const navigate = useNavigate();
 
-  const [name, setName] = useState('');
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    iAccept,
+    setIAccept,
+    error,
+    setPasswordConfirm,
+    passwordConfirm,
+    passwordError,
+    emailError,
+    createUserAccount,
+    isLoading,
+    setIsLoading,
+    user,
+  } = useCreateUserAccount();
 
-  const [email, setEmail] = useState('')
-  const [emailError, setEmailError] = useState(false)
-
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState(true)
-  const [passwordConfirm, setPasswordConfirm] = useState('')
-
-  const [iAccept, setIAccept] = useState(true)
-
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  const createUserAccount = async (e: Event, param: SignupParam) => {
-    console.log(param.email)
-    setIsLoading(true);
-    setEmailError(false);
-    setPasswordError(false);
-    setError('')
-
+  const createAccount = async (e: Event) => {
     e.preventDefault();
-
-    if(password !== passwordConfirm) {
-      setIsLoading(false)
-      setPasswordError(true)
-      setError('passwords do not match!')
-      return;
-    }
-
-    if (!iAccept) {
-      setIsLoading(false);
-      setError('Please accept the terms and conditions')
-      return;
-    }
-
-    const [err, user] = await createAccount(param);
-    setIsLoading(false);
-    
-    if (err) {
-      alert('oops something happened, please try again');
-      console.log(err.message)
-      if (err.message == `${param.type.toLocaleLowerCase()} already exits`) {
-        setEmailError(true)
-        setError(err.message);
-        return;
-      }
-    } else if (user) {
-      alert('account created successfully!')
+    await createUserAccount({ email, password, type: "EMAIL", role: 'admin' })
+    if (user) {
+      alert('account created successfully');
       sessionStorage.setItem('userToken', user.token)
-      navigate(SCREENS.DASHBOARD)
+      navigate(SCREENS.PROFILE);
     }
+    setIsLoading(false)
   }
 
   return (
@@ -101,13 +75,7 @@ function Signup() {
           <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
         </div>
         <div className="mt-4 space-y-4">
-          <Input
-            placeholder="First Name"
-            type="text"
-            value={name}
-            handleChange={setName}
-            icon={<UserIcon />}
-          />
+         
           <Input
             placeholder="magga@magga.de"
             type="email"
@@ -163,12 +131,7 @@ function Signup() {
         </div>
         <Button
           label="Konto erstellen"
-          action={(e: unknown) => createUserAccount(e as Event, {
-            email, 
-            password, 
-            role: 'admin',
-            type: 'EMAIL'
-          })}
+          action={(e: unknown) => createAccount(e as Event)}
           disabled={isLoading}
         />
         <div className="mt-4 text-center text-xs+">

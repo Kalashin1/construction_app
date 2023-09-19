@@ -1,4 +1,5 @@
-import {API_BASE_URL} from "../../navigation/constants";
+import {CLIENT_BASE_URL} from "../../navigation/constants";
+import { User } from "../../types";
 
 export type LoginParam = {
   email: string;
@@ -10,8 +11,13 @@ export type SignupParam = {
   type: string
 } & LoginParam;
 
-export const login = async (payload: LoginParam) => {
-  const res = await fetch(`${API_BASE_URL}/login`, {
+type AppError = {
+  message: string;
+  errorMessage: string;
+}
+
+export const login = async (payload: LoginParam): Promise<[AppError | null, User|null]> => {
+  const res = await fetch(`${CLIENT_BASE_URL}/login`, {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {
@@ -27,9 +33,9 @@ export const login = async (payload: LoginParam) => {
   }
 }
 
-export const createAccount = async (payload: SignupParam) => {
+export const createAccount = async (payload: SignupParam): Promise<[AppError | null, User|null]> => {
   console.log(payload.email)
-  const res = await fetch(`${API_BASE_URL}/register`, {
+  const res = await fetch(`${CLIENT_BASE_URL}/register`, {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {

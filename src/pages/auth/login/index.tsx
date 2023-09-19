@@ -6,52 +6,34 @@ import {
 import { OAuthButton, Input, Button } from "../components";
 import { GoogleIcon } from "../svg/"
 import Layout from "../layout";
-import { useState } from "react";
-import { login, LoginParam } from "../action";
 import { SCREENS } from "../../../navigation/constants";
+import { useLogin } from "../hooks";
 
 function Login() {
 
   const navigate = useNavigate()
-  const [email, setEmail] = useState('');
-  const [emailError, updateEmailError] = useState(false)
 
-  const [password, setPassword] = useState('');
-  const [passwordError, updatePasswordError] = useState(false)
+  const {
+    email,
+    setEmail,
+    emailError,
+    password,
+    setPassword,
+    passwordError,
+    errorMessage,
+    funcWrapper,
+    isLoading,
+    user
+  } = useLogin();
 
-  const [errorMessage, updateErrorMessage] = useState('')
-
-  const loginUser = async (params: LoginParam, e: Event) => {
-
-    e.preventDefault()
-    updateEmailError(false)
-    updatePasswordError(false)
-    setIsLoading(true);
-    updateErrorMessage('')
-    // 
-    const [err, user] = await login(params);
-    setIsLoading(false)
-
-    if (err) {
-      alert('oops something happened');
-      console.log(err);
-      if (err.errorMessage.includes('incorrect password')) {
-        updatePasswordError(true);
-        updateErrorMessage(err.errorMessage);
-        return;
-      } else if (err.errorMessage.includes('no user with that email')) {
-        updateEmailError(true);
-        updateErrorMessage(err.errorMessage);
-      }
-    } else if (user) {
-      alert('login successfull!')
-      console.log(user)
-      sessionStorage.setItem('userToken', user.token);
+  const loginUser = async (e: Event) => {
+    e.preventDefault();
+    await funcWrapper();
+    if (user) {
+      alert('login successful');
       navigate(SCREENS.DASHBOARD)
     }
   }
-
-  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <Layout>
@@ -113,7 +95,7 @@ function Login() {
         <Button
           label="Anmelden"
           disabled={isLoading}
-          action={(e: unknown) => loginUser({email, password}, e as Event)}
+          action={(e: unknown) => loginUser(e as Event)}
         />
         <div className="mt-4 text-center text-xs+">
           <p className="line-clamp-1">
