@@ -34,7 +34,7 @@ const NotificationItem = () => (
         </div>
         <div>
           <p className="line-clamp-1 font-medium text-slate-700 dark:text-navy-100">
-            Travis Fuller
+            Balde Ibrahim
           </p>
           <p className="text-xs text-slate-400 dark:text-navy-300">
             Employee

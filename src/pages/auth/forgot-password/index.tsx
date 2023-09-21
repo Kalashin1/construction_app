@@ -1,4 +1,4 @@
-import { EmailIcon, PasswordIcon } from "../svg";
+import { EmailIcon} from "../svg";
 import { 
   Link,
   useNavigate
@@ -6,36 +6,32 @@ import {
 import { OAuthButton, Input, Button } from "../components";
 import { GoogleIcon } from "../svg/"
 import Layout from "../layout";
-import { SCREENS } from "../../../navigation/constants";
-import { useLogin } from "../hooks";
+import { SCREENS } from "../../../navigation/constants";2
+import {useState } from "react";
+import { forgotPassword } from "../action";
 
-function Login() {
+function ForgotPassword() {
 
   const navigate = useNavigate()
 
-  const {
-    email,
-    setEmail,
-    emailError,
-    password,
-    setPassword,
-    passwordError,
-    errorMessage,
-    funcWrapper,
-    isLoading
-  } = useLogin();
+  const [email, setEmail] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
-  const loginUser = async (e: Event) => {
-    e.preventDefault();
-    const _user = await funcWrapper();
-    if (_user) {
-      alert('login successful');
-      sessionStorage.setItem('userToken', _user.token)
-      navigate(SCREENS.DASHBOARD)
-    } else {
-      console.log('something happened', errorMessage)
+  const requestPasswordResetToken = async (e: Event) => {
+    setIsLoading(true)
+    e.preventDefault()
+    const [error, code] = await forgotPassword({ email })
+    setIsLoading(false)
+    if (error) {
+      alert('oops something happened!, try again')
+      console.log(error)
+    } else if (code) {
+      alert('Password reset successfully!')
+      console.log(code);
+      navigate(SCREENS.RESET_PASSWORD);
     }
   }
+
 
   return (
     <Layout>
@@ -53,7 +49,7 @@ function Login() {
               Willkommen in MAGGA
             </h2>
             <p className="text-slate-400 dark:text-navy-300">
-              Bitte melden Sie sich an, um fortzufahren
+              Enter your email or phone number to proceed
             </p>
           </div>
         </div>
@@ -69,7 +65,7 @@ function Login() {
           <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
           <p className="text-tiny+">
             {/* or sign in with email */}
-            Oder mit E-Mail Anmelden
+            Any of them is fine, email or phone
           </p>
 
           <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
@@ -79,25 +75,15 @@ function Login() {
             placeholder="magga@magga.de"
             type="email"
             value={email}
-            errorMessage={errorMessage}
-            showError={emailError}
             handleChange={setEmail}
             icon={<EmailIcon />}
           />
-          <Input
-            placeholder="Passwort"
-            type="password"
-            value={password}
-            showError={passwordError}
-            errorMessage={errorMessage}
-            handleChange={setPassword}
-            icon={<PasswordIcon />}
-          />
+         
         </div>
         <Button
           label="Anmelden"
           disabled={isLoading}
-          action={(e: unknown) => loginUser(e as Event)}
+          action={(e: unknown) => requestPasswordResetToken(e as Event)}
         />
         <div className="mt-4 text-center text-xs+">
           <p className="line-clamp-1">
@@ -114,24 +100,9 @@ function Login() {
             </Link>
           </p>
         </div>
-        <div className="mt-4 text-center text-xs+">
-          <p className="line-clamp-1">
-            <span>
-              {/* Don't have an account?  */}
-              Forgot Password?
-            </span>
-            <Link
-              className="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent"
-              to={`${SCREENS.FORGOT_PASSWORD}`}
-            >
-              {/* Sign up */}
-             Reset Password
-            </Link>
-          </p>
-        </div>
       </div>
     </Layout>
   );
 }
 
-export default Login;
+export default ForgotPassword;

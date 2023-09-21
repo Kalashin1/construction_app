@@ -13,7 +13,7 @@ const Header = () => {
         MAGGA Applications
       </h3>
       <p className="mt-0.5 text-base">
-        List of prebuilt applications of Magga
+        List of prebuilt applications of MAGGA
       </p>
     </div>
   )
@@ -34,7 +34,7 @@ const Apps = () => (
         Chat App
       </h2>
       <p className="mt-1">
-        Magga prebuilt Messaging UI kit includes designs for social
+        MAGGA prebuilt Messaging UI kit includes designs for social
         chat.
       </p>
       <div className="mt-5 pb-1">
@@ -53,7 +53,7 @@ const Apps = () => (
         Shop
       </h2>
       <p className="mt-1">
-        Magga Shop is responsive and high-quality UI design kit
+        MAGGA Shop is responsive and high-quality UI design kit
       </p>
       <div className="mt-5 pb-1">
         <Link to={SCREENS.SHOP} className="border-b border-dashed border-current pb-0.5 font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70">View Application</Link>
@@ -72,7 +72,7 @@ const Apps = () => (
         Todo App
       </h2>
       <p className="mt-1">
-        Lineone Todo UI kit is a simple to-do list and an task management
+        MAGGA Todo UI kit is a simple to-do list and an task management
         app.
       </p>
       <div className="mt-5 pb-1">

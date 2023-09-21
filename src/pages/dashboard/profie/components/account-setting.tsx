@@ -1,3 +1,11 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+import { useNavigate } from "react-router-dom";
+import { SCREENS } from "../../../../navigation/constants";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { useUpateProfile } from "../hooks";
+import { User } from "../../../../types";
+import { getUserFromToken } from "../../helper/user";
+
 export const HeaderBar = () => (
   <>
     <div className="my-4 px-4 bg-white rounded shadow-sm font-bold py-4 dark:bg-navy-600 dark:text-white">
@@ -62,6 +70,7 @@ export const HeaderBar = () => (
 
 )
 
+
 export const FooterBar = () => (
   <div className="bg-white dark:bg-navy-600 my-4 rounded-md shadow-sm">
     <div className="flex flex-row justify-between px-4 py-4">
@@ -97,7 +106,7 @@ export const FooterBar = () => (
         </div>
       </div>
     </div>
-    
+
   </div>
 )
 export const BankDetails = () => (
@@ -137,7 +146,7 @@ export const BankDetails = () => (
         <h3>Sparkasse Vest Recklinghausen</h3>
 
         <h3>DE13426501501001079977</h3>
-        
+
         <h3>WELADED1REK</h3>
 
         <div>
@@ -152,15 +161,68 @@ export const BankDetails = () => (
         </div>
       </div>
     </div>
-    
+
   </div>
 )
 
 const AccountSettings = () => {
+
+  const navigate = useNavigate()
+
+
+  const [email, setEmail] = useState('');
+
+  const formRef = useRef<HTMLFormElement | null>(null)
+
+  const token = sessionStorage.getItem('userToken')
+  const [user, setUser] = useState<User | null>(null);
+  
+  const {
+    makeUpdate,
+  } = useUpateProfile();
+
+  useEffect(() => {
+    const setUp = async () => {
+      const abCnt = new AbortController();
+      const [err, _user] = await getUserFromToken(token!, abCnt);
+      if (err) {
+        return navigate(SCREENS.LOGIN)
+      }
+
+      if (_user) {
+        setEmail(_user.email)
+        setUser(_user);
+        console.log(_user)
+      }
+    }
+
+    setUp()
+  }, [navigate, token])
+
+  const updateUserProfile = async (e: FormEvent, form: HTMLFormElement) => {
+    e.preventDefault()
+    const { username: { value: username }, phone: { value: phone }, first_name: { value: first_name }, last_name: { value: last_name } } = form;
+    const [error, _user] = await makeUpdate({
+      _id: user?._id,
+      username,
+      phone,
+      first_name,
+      last_name
+    });
+
+    if (error) {
+      alert('oops something happened, try again!')
+      console.log(error)
+    } else if (_user) {
+      alert('profile updated successfully!')
+      console.log(_user);
+    }
+  }
+
   return (
     <div className="col-span-12 lg:col-span-8">
       <HeaderBar />
-      <div className="card">
+      <form className="card" ref={formRef} onSubmit={(e) => updateUserProfile(e, formRef.current!)}>
         <div
           className="flex flex-col items-center space-y-4 border-b border-slate-200 p-4 dark:border-navy-500 sm:flex-row sm:justify-between sm:space-y-0 sm:px-5"
         >
@@ -190,7 +252,7 @@ const AccountSettings = () => {
             <div className="avatar mt-1.5 h-20 w-20">
               <img
                 className="mask is-squircle"
-                src="images/100x100.png"
+                src={user?.avatar ? user?.avatar : "images/100x100.png"}
                 alt="avatar"
               />
               <div
@@ -216,10 +278,13 @@ const AccountSettings = () => {
           <div className="my-7 h-px bg-slate-200 dark:bg-navy-500"></div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label className="block">
-              <span>Display name </span>
+              <span>First name </span>
               <span className="relative mt-1.5 flex">
                 <input
                   className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                  name="first_name"
+                  value={user?.first_name}
+                  defaultValue={user?.first_name}
                   placeholder="Enter name"
                   type="text"
                 />
@@ -231,11 +296,13 @@ const AccountSettings = () => {
               </span>
             </label>
             <label className="block">
-              <span>Full Name </span>
+              <span>Last Name </span>
               <span className="relative mt-1.5 flex">
                 <input
                   className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                  placeholder="Enter full name"
+                  placeholder="Enter Last name"
+                  name="last_name"
+                  defaultValue={user?.last_name}
                   type="text"
                 />
                 <span
@@ -251,6 +318,9 @@ const AccountSettings = () => {
                 <input
                   className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   placeholder="Enter email address"
+                  defaultValue={email}
+                  readOnly
+                  name="email"
                   type="text"
                 />
                 <span
@@ -266,12 +336,31 @@ const AccountSettings = () => {
                 <input
                   className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                   placeholder="Enter phone number"
+                  name="phone"
+                  defaultValue={user?.phone}
                   type="text"
                 />
                 <span
                   className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent"
                 >
                   <i className="fa fa-phone"></i>
+                </span>
+              </span>
+            </label>
+            <label className="block">
+              <span>Username</span>
+              <span className="relative mt-1.5 flex">
+                <input
+                  className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                  placeholder="Enter Username"
+                  name="username"
+                  defaultValue={user?.username}
+                  type="text"
+                />
+                <span
+                  className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent"
+                >
+                  <i className="fa-regular fa-user text-base"></i>
                 </span>
               </span>
             </label>
@@ -303,7 +392,7 @@ const AccountSettings = () => {
             </div>
           </div>
         </div>
-      </div>
+      </form>
       <FooterBar />
       <BankDetails />
     </div>

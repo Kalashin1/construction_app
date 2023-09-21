@@ -20,7 +20,7 @@ const Frameworks = () => {
             <i className="fas fa-check text-green-700 text-2xl" />
           </span>
           <div className="col-span-6 col-start-3">
-            <h3>LEG LWS LV - (Status: 01.01.2023) - Other (i)</h3>
+            <h3>MAGGA - (Status: 01.01.2023) - Other (i)</h3>
             <h5 className="text-xs">Valid since: January 23, 2023</h5>
           </div>
 

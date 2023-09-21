@@ -1,4 +1,4 @@
-import { EmailIcon, PasswordIcon } from "../svg";
+import { PasswordIcon, UserIcon} from "../svg";
 import { 
   Link,
   useNavigate
@@ -7,35 +7,60 @@ import { OAuthButton, Input, Button } from "../components";
 import { GoogleIcon } from "../svg/"
 import Layout from "../layout";
 import { SCREENS } from "../../../navigation/constants";
-import { useLogin } from "../hooks";
+import {useEffect, useState } from "react";
+import { resetPassword} from "../action";
+import { getUserFromToken } from "../../dashboard/helper/user";
+import { User } from "../../../types";
 
-function Login() {
+const ResetPassword = () => {
 
   const navigate = useNavigate()
 
-  const {
-    email,
-    setEmail,
-    emailError,
-    password,
-    setPassword,
-    passwordError,
-    errorMessage,
-    funcWrapper,
-    isLoading
-  } = useLogin();
+  const [code, setCode] = useState('')
+  const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
-  const loginUser = async (e: Event) => {
-    e.preventDefault();
-    const _user = await funcWrapper();
-    if (_user) {
-      alert('login successful');
-      sessionStorage.setItem('userToken', _user.token)
-      navigate(SCREENS.DASHBOARD)
-    } else {
-      console.log('something happened', errorMessage)
+  const [user, updateUser] = useState<User|null>(null)
+  const jwt = sessionStorage.getItem('userToken');
+
+  
+  useEffect(() => {
+    const abtCnt = new AbortController()
+    const setUp = async () => {
+      const [err, _user] = await getUserFromToken(jwt!, abtCnt);
+      if (err) {
+        setIsLoading(false)
+        alert('You are not logged in, please log in to continue');
+        return;
+      } else if (_user) {
+        console.log(_user);
+        updateUser(_user)
+      }
+    }
+
+    setUp();
+    return () => abtCnt.abort()
+  }, [jwt])
+
+  const requestPasswordResetToken = async (e: Event) => {
+    setIsLoading(true)
+    e.preventDefault()
+    const [error, _user] = await resetPassword({
+      email: user?.email,
+      token: code,
+      password,
+    })
+    setIsLoading(false)
+    if (error) {
+      alert('oops something happened!, try again')
+      console.log(error)
+    } else if (_user) {
+      alert('Password reset successfully!')
+      updateUser(_user);
+      navigate(SCREENS.LOGIN)
     }
   }
+
 
   return (
     <Layout>
@@ -50,10 +75,10 @@ function Login() {
             <h2
               className="text-2xl font-semibold text-slate-600 dark:text-navy-100"
             >
-              Willkommen in MAGGA
+              Reset Password
             </h2>
             <p className="text-slate-400 dark:text-navy-300">
-              Bitte melden Sie sich an, um fortzufahren
+              Enter the code that was sent to your email
             </p>
           </div>
         </div>
@@ -69,35 +94,32 @@ function Login() {
           <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
           <p className="text-tiny+">
             {/* or sign in with email */}
-            Oder mit E-Mail Anmelden
+            Any of them is fine, email or phone
           </p>
 
           <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
         </div>
         <div className="mt-4 space-y-4">
           <Input
-            placeholder="magga@magga.de"
-            type="email"
-            value={email}
-            errorMessage={errorMessage}
-            showError={emailError}
-            handleChange={setEmail}
-            icon={<EmailIcon />}
+            placeholder="1234"
+            type="text"
+            value={code}
+            handleChange={setCode}
+            icon={<UserIcon />}
           />
           <Input
-            placeholder="Passwort"
+            placeholder=""
             type="password"
             value={password}
-            showError={passwordError}
-            errorMessage={errorMessage}
             handleChange={setPassword}
             icon={<PasswordIcon />}
           />
+         
         </div>
         <Button
           label="Anmelden"
           disabled={isLoading}
-          action={(e: unknown) => loginUser(e as Event)}
+          action={(e: unknown) => requestPasswordResetToken(e as Event)}
         />
         <div className="mt-4 text-center text-xs+">
           <p className="line-clamp-1">
@@ -114,24 +136,9 @@ function Login() {
             </Link>
           </p>
         </div>
-        <div className="mt-4 text-center text-xs+">
-          <p className="line-clamp-1">
-            <span>
-              {/* Don't have an account?  */}
-              Forgot Password?
-            </span>
-            <Link
-              className="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent"
-              to={`${SCREENS.FORGOT_PASSWORD}`}
-            >
-              {/* Sign up */}
-             Reset Password
-            </Link>
-          </p>
-        </div>
       </div>
     </Layout>
   );
 }
 
-export default Login;
+export default ResetPassword;

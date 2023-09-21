@@ -2,7 +2,7 @@ import Layout from "../layout";
 import BreadCrumb from "../components/bread-crumb";
 import { SCREENS } from "../../../navigation/constants";
 import Sidebar from "./components/sidebar";
-import { useContext } from "react";
+import {useContext} from "react";
 import { SidebarContext } from "../../../App";
 import AccountSettings from "./components/account-setting";
 
@@ -14,6 +14,7 @@ const Profile = () => {
     showSidebar,
     updateShowSidebar,
   } = useContext(SidebarContext);
+ 
   return (
     <Layout
       sidePanel={

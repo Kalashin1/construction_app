@@ -1,6 +1,8 @@
 export enum SCREENS {
   HOME = '/',
   LOGIN = '/login',
+  FORGOT_PASSWORD = '/forgot-password',
+  RESET_PASSWORD ='/reset-password',
   DASHBOARD = '/dashboard',
   PROJECTS = '/projects',
   CONTRACTORS = '/contractors',
@@ -27,5 +29,9 @@ export enum SCREENS {
   DOCUMENTS = '/documents',
 }
 
-export const API_BASE_URL = 'https://magga-676xiecbma-uc.a.run.app';
-export const CLIENT_BASE_URL = 'http://localhost:8080';
+export const API_BASE_URL = 
+
+// 'http://localhost:8080'
+
+'https://magga-676xiecbma-uc.a.run.app';
+// export const CLIENT_BASE_URL = 'http://localhost:8080';
