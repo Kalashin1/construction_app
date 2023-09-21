@@ -26,6 +26,8 @@ import NumberRanges from '../pages/dashboard/profie/number-ranges';
 import BillingDetails from '../pages/dashboard/profie/billing-details';
 import Trades from '../pages/dashboard/profie/trades';
 import Documents from '../pages/dashboard/profie/documents';
+import ForgotPassword from '../pages/auth/forgot-password';
+import ResetPassword from '../pages/auth/reset-password';
 
 const router = createBrowserRouter([
   {
@@ -132,6 +134,14 @@ const router = createBrowserRouter([
     path: SCREENS.DOCUMENTS,
     element: (<Documents />)
   },
+  {
+    path: SCREENS.FORGOT_PASSWORD,
+    element: (<ForgotPassword />)
+  },
+  {
+    path: SCREENS.RESET_PASSWORD,
+    element: (<ResetPassword />)
+  }
 ]);
 
 export default router;

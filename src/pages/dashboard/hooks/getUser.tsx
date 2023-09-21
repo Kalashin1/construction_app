@@ -1,24 +1,13 @@
-import { useEffect, useState } from "react";
 import { getUserFromToken } from "../helper/user";
+import { User } from "../../../types";
 
 export const useGetUserFromToken = (token: string) => {
-  const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
-  
-  useEffect(() => {
-    const abortController = new AbortController()
-    const setUp = async () => {
-      const [err, _user] = await getUserFromToken(token, abortController)
-      if (err) setError(err);
-      if (_user) setUser(_user); 
-    }
-
-    setUp()
-    return () => abortController.abort();
-  }, [token])
+  const getUser = async (abCnt?: AbortController): Promise<[Error | null, User | null]> => {
+    const [err, _user] = await getUserFromToken(token, abCnt);
+    return [err, _user]
+  }
 
   return {
-    user,
-    error
+    getUser,
   }
 }

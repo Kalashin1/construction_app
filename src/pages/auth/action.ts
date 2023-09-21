@@ -51,3 +51,35 @@ export const createAccount = async (payload: SignupParam): Promise<[AppError | n
     return [await res.json(), null];
   }
 }
+
+export const forgotPassword = async ({email}: { email?: string, phone?: string } ) => {
+  const res = await fetch(`${API_BASE_URL}/request-password-reset`, {
+    method: 'POST',
+    body: JSON.stringify({email}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (res.ok) {
+    const code = await res.json();
+    return [null, code] 
+  } else {
+    return [await res.json(), null]
+  }
+}
+
+export const resetPassword = async ({ email, password, token }: Partial<User>) => {
+  const res = await fetch(`${API_BASE_URL}/reset-password`, {
+    method: 'POST',
+    body: JSON.stringify({ email, password, token: parseFloat(token!)}),
+    headers: {'Content-Type': 'application/json'}
+  });
+
+  if (res.ok) {
+    const user = await res.json();
+    return [null, user];
+  } else {
+    return [await res.json(), null];
+  }
+}
