@@ -1,5 +1,5 @@
 import { OAuthButton, Input, Button } from "../components";
-import { EmailIcon, PasswordIcon } from "../svg";
+import { EmailIcon, PasswordIcon, UserIcon } from "../svg";
 import { Link, useNavigate } from "react-router-dom";
 import GoogleIcon from "../svg/google";
 import Layout from "../layout";
@@ -22,6 +22,10 @@ function Signup() {
     passwordConfirm,
     passwordError,
     emailError,
+    token,
+    tokenError,
+    setToken,
+    // updateTokenError,
     createUserAccount,
     isLoading,
     setIsLoading,
@@ -104,6 +108,16 @@ function Signup() {
             showError={passwordError}
             handleChange={setPasswordConfirm}
             icon={<PasswordIcon />}
+          />
+          <Input
+            placeholder="Enter the token that was generated for you"
+            type="text"
+            value={token}
+            errorMessage={error}
+            showError={tokenError}
+            required={true}
+            handleChange={setToken}
+            icon={<UserIcon />}
           />
           <div className="mt-4 flex items-center space-x-2">
             <input
