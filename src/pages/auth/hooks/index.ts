@@ -56,6 +56,9 @@ export const useCreateUserAccount = () => {
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState(false)
 
+  const [token, setToken] = useState('');
+  const [tokenError, updateTokenError] = useState(false)
+
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(true)
   const [passwordConfirm, setPasswordConfirm] = useState('')
@@ -122,5 +125,9 @@ export const useCreateUserAccount = () => {
     iAccept,
     user,
     createUserAccount,
+    token,
+    updateTokenError,
+    tokenError,
+    setToken,
   }
 }

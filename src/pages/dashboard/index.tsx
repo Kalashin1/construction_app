@@ -5,34 +5,65 @@ import ProjectInformation from "./components/project-information";
 import ProjectSummary from "./components/project-summary";
 import BreadCrumb from "./components/bread-crumb";
 import DashboardNotification from "./components/dashboard-notification";
+import CreateAccountButton, {
+  CreateAccountDropdown,
+  CreateAccountModal,
+  CopyTokenModal
+} from "./components/create-account";
 import { SCREENS } from "../../navigation/constants";
+import { useState } from "react";
 
 const Dashboard = () => {
+  const [showAccountDropdown, updateShowAccountDropDown] = useState(false)
+  const [showAccountModal, updateShowAccountModal] = useState(false)
+  const [showCopyTokenModal, updateShowCopyTokenModal] = useState(false)
+  const links = [{
+    text: 'Create Account',
+    svg: 'fas fa-user',
+    action: () => updateShowAccountModal(true)
+  },
+  {
+    text: 'Generate ID',
+    svg: 'fas fa-cog',
+    action: () => updateShowCopyTokenModal(true)
+  }]
   return (
-   <Layout>
-    <div className="py-10 px-6">
-      <div className="m-4">
-        <BreadCrumb
-          pageName="Dashboard"
-          firstLevel={{link: SCREENS.DASHBOARD, text: 'Dashboard'}}
-          secondLevel={{link: '', text: ''}}
-        />
+    <Layout>
+      <div className="py-10 px-6" onClick={() => updateShowAccountDropDown(false)}>
+        <div className="m-4">
+          <BreadCrumb
+            pageName="Dashboard"
+            firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard' }}
+            secondLevel={{ link: '', text: '' }}
+          />
+        </div>
+        <div>
+          <HomeCards />
+        </div>
+        <div className="relative" onClick={(e) => e.stopPropagation()}>
+          <CreateAccountButton action={() => updateShowAccountDropDown(!showAccountDropdown)} />
+          {showAccountModal && (<CreateAccountModal action={() => {
+            updateShowAccountModal(false)
+            updateShowAccountDropDown(false)
+          }} />)}
+          {showCopyTokenModal && (<CopyTokenModal action={() => {
+            updateShowCopyTokenModal(false)
+            updateShowAccountDropDown(false)
+          }} />)}
+          {showAccountDropdown && (<CreateAccountDropdown links={links} />)}
+        </div>
+        <div className="my-12 lg:flex flex-col lg:flex-row justify-between items-start">
+          <ProjectInformation />
+          <CurrentProjects />
+        </div>
+        <div className="my-12">
+          <DashboardNotification />
+        </div>
+        <div className="my-12">
+          <ProjectSummary />
+        </div>
       </div>
-      <div>
-        <HomeCards />
-      </div>
-      <div className="my-12 lg:flex flex-col lg:flex-row justify-between items-start">
-        <ProjectInformation />
-        <CurrentProjects />
-      </div>
-      <div className="my-12">
-        <DashboardNotification />
-      </div>
-      <div className="my-12">
-        <ProjectSummary />
-      </div>
-    </div>
-   </Layout>
+    </Layout>
   )
 }
 
