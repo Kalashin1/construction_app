@@ -18,7 +18,7 @@ export const getUserFromToken = async (
 };
 
 export const updateUserProfile = async (
-  { _id, avatar, phone, username, first_name, last_name, bankDetails }: Partial<User>,
+  { _id, avatar, phone, username, first_name, last_name, bankDetails, billingDetails }: Partial<User>,
   abortController?: AbortController
 ): Promise<[Error | null, User | null]> => {
   console.log(bankDetails)
@@ -31,6 +31,7 @@ export const updateUserProfile = async (
       first_name,
       last_name,
       bankDetails,
+      billingDetails,
     }),
     headers: {
       'Content-Type': 'application/json'

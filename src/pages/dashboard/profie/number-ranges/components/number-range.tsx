@@ -1,7 +1,19 @@
+import { Dispatch, SetStateAction } from "react";
+
 export const DisabledInput = ({
-  label
+  label,
+  disabled,
+  name,
+  value,
+  handleChange,
+  defaultValue,
 }: {
-  label: string
+  label: string;
+  disabled?:boolean;
+  name?: string;
+  value?: string;
+  defaultValue?: string;
+  handleChange?: Dispatch<SetStateAction<string>>
 }) => (
   <div className="my-2">
     <label className="flex flex-row items-center">
@@ -9,10 +21,14 @@ export const DisabledInput = ({
         {label}
       </span>
       <input
-        disabled
+        disabled={disabled}
         className="form-input w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary disabled:pointer-events-none disabled:select-none disabled:border-none disabled:bg-zinc-100 dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent dark:disabled:bg-navy-600"
         placeholder="Disabled"
         type="text"
+        value={value}
+        name={name}
+        defaultValue={defaultValue}
+        onChange={(e) => handleChange && handleChange(e.target.value)}
       />
     </label>
   </div>

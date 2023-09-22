@@ -27,17 +27,20 @@ type ButtonProps = {
   action: (...args: unknown[]) => void;
   color?: string;
   textColor?: string;
+  disabled?: boolean
 }
 
 export const Button = ({
   label,
   action,
   color='bg-slate-150',
-  textColor='text-slate-800'
+  textColor='text-slate-800',
+  disabled
 }: ButtonProps) => (
   <button
     className={`btn ${color} font-medium ${textColor} hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90 mr-4 my-2`}
     onClick={action}
+    disabled={disabled}
   >
     {label}
   </button>
