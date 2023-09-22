@@ -3,8 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { SCREENS } from "../../../../navigation/constants";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useUpateProfile } from "../hooks";
-import { User } from "../../../../types";
-import { getUserFromToken } from "../../helper/user";
+import { UserBankDetails, User } from "../../../../types";
+import { getUserFromToken, updateUserProfile } from "../../helper/user";
+import { Button } from '../../../auth/components/index';
+import { Input } from "../../../auth/components";
+
+
 
 export const HeaderBar = () => (
   <>
@@ -109,61 +113,138 @@ export const FooterBar = () => (
 
   </div>
 )
-export const BankDetails = () => (
-  <div className="bg-white dark:bg-navy-600 my-4 rounded-md shadow-sm">
-    <div className="flex flex-row justify-between px-4 py-4">
-      <h3 className="text-lg font-medium tracking-wide text-slate-700 dark:text-navy-100">
-        <span>
-          <i className="fas fa-credit-card" />
-        </span>
-        <span className="ml-4">
-          Bank Details
-        </span>
-      </h3>
 
 
-      <button>
-        <i className="fas fa-plus text-lg font-medium" />
-      </button>
-    </div>
-    <div className="p-6">
-      <div className="text-lg font-medium tracking-wide text-center text-slate-700 dark:text-navy-100 dark:text-black dark:bg-transparent bg-gray-300 py-2 my-1 flex flex-row justify-between px-2">
-        <span>
-          Surname
-        </span>
-        <span>
-          Iban
-        </span>
-        <span>
-          BIC
-        </span>
-        <span>
-          &nbsp;
-        </span>
+
+export const UpdateBankDetailsModal = ({ _id, closeModal }: {
+  _id: string;
+  closeModal: (...args: unknown[]) => void;
+}) => {
+  const form = useRef<HTMLFormElement | null>(null);
+
+  const [isLoading, showIsLoading] = useState(false);
+
+  const addBankDetails = async (e: Event, form: HTMLFormElement) => {
+    e.preventDefault();
+    showIsLoading(true);
+    const { bank: { value: bank }, iban: { value: iban }, bic: { value: bic } } = form;
+    const [err, user] = await updateUserProfile({ bankDetails: { bank, iban, bic }, _id });
+    showIsLoading(false);
+    if (err) {
+      alert('oops something happened!');
+      console.log(err);
+    } else if (user) {
+      alert('bank details added successfully!');
+      closeModal()
+    }
+  }
+
+  return (<div
+    className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5 w-full"
+    id="modal1"
+    role="dialog"
+  >
+    <div className="modal-overlay absolute inset-0 bg-slate-900/60" onClick={closeModal}></div>
+    <div
+      className="modal-content scrollbar-sm relative flex max-w-lg flex-col items-center overflow-y-auto rounded-lg bg-white px-4 py-10 text-center dark:bg-navy-700 sm:px-5 w-2/5"
+    >
+
+
+      <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
+        Add Your bank details
+      </h2>
+      <div className="mt-4 w-full">
+        <form className="mt-4 space-y-4" ref={form}>
+          <Input
+            placeholder="deutshbank"
+            type="text"
+            name="bank"
+          />
+          <Input
+            placeholder="Iban"
+            type="text"
+            name="iban"
+          />
+          <Input
+            placeholder="bic"
+            type="text"
+            name="bic"
+          />
+          <Button
+            label="Add Bank Details"
+            action={(e) => { addBankDetails(e as Event, form.current!) }}
+            disabled={isLoading}
+          />
+        </form>
       </div>
-      <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
-      <div className="flex flex-row justify-between py-2 px-2">
-        <h3>Sparkasse Vest Recklinghausen</h3>
-
-        <h3>DE13426501501001079977</h3>
-
-        <h3>WELADED1REK</h3>
-
-        <div>
-          <button
-            className="py-1 px-2 my-2 rounded-md bg-gray-500"
-          >
-            <i className="fas fa-pen-to-square text-white" />
-          </button>
-          <button className="ml-2 py-1 px-2 my-2 rounded-md bg-red-600">
-            <i className="fas fa-times text-white" />
-          </button>
-        </div>
-      </div>
     </div>
-
   </div>
-)
+  )
+}
+
+type BankDetailsProps = { _id: string, bankDetails: UserBankDetails[] };
+
+export const BankDetails = (Props: Partial<BankDetailsProps>) => {
+  const [showBankDetailsModal, setShowBankDetailsModal] = useState(false)
+  console.log(Props);
+  return (
+    <div className="bg-white dark:bg-navy-600 my-4 rounded-md shadow-sm">
+      <div className="flex flex-row justify-between px-4 py-4">
+        <h3 className="text-lg font-medium tracking-wide text-slate-700 dark:text-navy-100">
+          <span>
+            <i className="fas fa-credit-card" />
+          </span>
+          <span className="ml-4">
+            Bank Details
+          </span>
+        </h3>
+
+
+        <button onClick={() => setShowBankDetailsModal(true)}>
+          <i className="fas fa-plus text-lg font-medium" />
+        </button>
+      </div>
+      <div className="p-6">
+        <div className="text-lg font-medium tracking-wide text-center text-slate-700 dark:text-navy-100 dark:text-black dark:bg-transparent bg-gray-300 py-2 my-1 flex flex-row justify-between px-2">
+          <span>
+            Surname
+          </span>
+          <span>
+            Iban
+          </span>
+          <span>
+            BIC
+          </span>
+          <span>
+            &nbsp;
+          </span>
+        </div>
+        <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+        {Props.bankDetails && Props.bankDetails.map((bankD) => (
+          <div className="flex flex-row justify-between py-2 px-2">
+            <h3>{bankD.bank!}</h3>
+
+            <h3>{bankD.iban}</h3>
+
+            <h3>{bankD.bic}</h3>
+
+            <div>
+              <button
+                className="py-1 px-2 my-2 rounded-md bg-gray-500"
+              >
+                <i className="fas fa-pen-to-square text-white" />
+              </button>
+              <button className="ml-2 py-1 px-2 my-2 rounded-md bg-red-600">
+                <i className="fas fa-times text-white" />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+      {showBankDetailsModal && (<UpdateBankDetailsModal _id={Props._id!} closeModal={() => setShowBankDetailsModal(false)} />)}
+    </div>
+  )
+}
 
 const AccountSettings = () => {
 
@@ -176,7 +257,7 @@ const AccountSettings = () => {
 
   const token = sessionStorage.getItem('userToken')
   const [user, setUser] = useState<User | null>(null);
-  
+
   const {
     makeUpdate,
   } = useUpateProfile();
@@ -234,6 +315,7 @@ const AccountSettings = () => {
           <div className="flex justify-center space-x-2">
             <button
               className="btn min-w-[7rem] rounded-full border border-slate-300 font-medium text-slate-700 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-100 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90"
+              type="button"
             >
               Cancel
             </button>
@@ -260,6 +342,7 @@ const AccountSettings = () => {
               >
                 <button
                   className="btn h-6 w-6 rounded-full border border-slate-200 p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:border-navy-500 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
+                  type="button"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -386,6 +469,7 @@ const AccountSettings = () => {
               </div>
               <button
                 className="btn h-8 rounded-full border border-slate-200 px-3 text-xs+ font-medium text-primary hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-500 dark:text-accent-light dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90"
+                type="button"
               >
                 Connect
               </button>
@@ -394,7 +478,10 @@ const AccountSettings = () => {
         </div>
       </form>
       <FooterBar />
-      <BankDetails />
+      <BankDetails
+        bankDetails={user?.bankDetails! as UserBankDetails[]}
+        _id={user?._id}
+      />
     </div>
   );
 };

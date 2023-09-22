@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+import { useRef, useState } from "react";
 import Button from "../../auth/components/button";
 import Input from "../../auth/components/input";
 import { EmailIcon, PasswordIcon } from "../../auth/svg";
+import { createAccount, generateUserId } from "../../auth/action";
+import { User } from "../../../types";
 
 const CreateAccountButton = ({
   action
@@ -70,78 +74,136 @@ export const CreateAccountModal = ({
   action
 }: {
   action: (...args: unknown[]) => void;
-}) => (
-  <div
-    className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5 w-full"
-    id="modal1"
-    role="dialog"
-  >
-    <div className="modal-overlay absolute inset-0 bg-slate-900/60" onClick={action}></div>
+}) => {
+  const form = useRef<HTMLFormElement | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<boolean | null>(null)
+
+  const createSubAccount = async (e: Event, form: HTMLFormElement) => {
+    e.preventDefault();
+    setIsLoading(true)
+    setError(false)
+    const { email: { value: email }, password: { value: password }, userRole: { value: role } } = form;
+    const [err, user] = await createAccount({
+      email,
+      password,
+      role,
+      type: 'email'
+    });
+    setIsLoading(false)
+    if (err) {
+      alert('oops something happened!')
+      console.log(err)
+      setError(true)
+    } else if (user) {
+      alert('user account created successfully!');
+      action();
+    }
+  }
+
+  return (
     <div
-      className="modal-content scrollbar-sm relative flex max-w-lg flex-col items-center overflow-y-auto rounded-lg bg-white px-4 py-10 text-center dark:bg-navy-700 sm:px-5 w-2/5"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5 w-full"
+      id="modal1"
+      role="dialog"
     >
+      <div className="modal-overlay absolute inset-0 bg-slate-900/60" onClick={action}></div>
+      <div
+        className="modal-content scrollbar-sm relative flex max-w-lg flex-col items-center overflow-y-auto rounded-lg bg-white px-4 py-10 text-center dark:bg-navy-700 sm:px-5 w-2/5"
+      >
 
 
-      <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
-        Create User Account
-      </h2>
-      <div className="mt-4 w-full">
-        <div className="mt-4 space-y-4">
-          <Input
-            placeholder="magga@magga.de"
-            type="email"
-            icon={<EmailIcon />}
+        <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
+          Create User Account
+        </h2>
+        <div className="mt-4 w-full">
+          <form className="mt-4 space-y-4" ref={form}>
+            <Input
+              placeholder="magga@magga.de"
+              type="email"
+              name="email"
+              icon={<EmailIcon />}
+            />
+            {error && (<small className="font-bold text-red-600 text-left">Email already in use</small>)}
+            <Input
+              placeholder="Passwort"
+              type="password"
+              name="password"
+              icon={<PasswordIcon />}
+            />
+            <label className="block text-left">
+              <select
+                name="userRole"
+                className="form-select mt-1.5 w-full rounded-lg bg-slate-150 px-3 py-2 ring-primary/50 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
+              >
+                <option value="contractor">Contractor</option>
+              </select>
+            </label>
+          </form>
+          <Button
+            label="Create account"
+            type="submit"
+            disabled={isLoading}
+            action={(e) => {
+              createSubAccount(e as Event, form.current!)
+            }}
           />
-          <Input
-            placeholder="Passwort"
-            type="password"
-            icon={<PasswordIcon />}
-          />
-          <label className="block text-left">
-            <select
-              className="form-select mt-1.5 w-full rounded-lg bg-slate-150 px-3 py-2 ring-primary/50 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
-            >
-              <option>Contractor</option>
-            </select>
-          </label>
         </div>
-        <Button
-          label="Create account"
-          action={action}
-        />
       </div>
     </div>
-  </div>
-)
+  )
+}
 
 export const CopyTokenModal = ({
-  action
+  action,
+  userId,
 }: {
-  action: (...args: unknown[]) => void
-}) => (
-  <div
-    className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5 w-full"
-    id="modal1"
-    role="dialog"
-  >
-    <div className="modal-overlay absolute inset-0 bg-slate-900/60" onClick={action}></div>
+  action: (...args: unknown[]) => void;
+  userId: string
+}) => {
+  const [user, setUser] = useState<Partial<User>>()
+  const makeUser = async () => {
+    const _user = await generateUserId("contractor", userId);
+    console.log(_user)
+    setUser(_user)
+    alert('user created successfully');
+    navigator.clipboard.writeText(paraRef.current?.innerText!)
+  }
+
+  const copyId = async () => {
+    await navigator.clipboard.writeText(paraRef.current?.innerText!)
+    alert('token copied!')
+    action()
+  }
+  const paraRef = useRef<HTMLParagraphElement | null>(null);
+  return (
     <div
-      className="modal-content scrollbar-sm relative flex max-w-lg flex-col items-center overflow-y-auto rounded-lg bg-white px-4 py-10 text-center dark:bg-navy-700 sm:px-5 w-2/5"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5 w-full"
+      id="modal1"
+      role="dialog"
     >
+      <div className="modal-overlay absolute inset-0 bg-slate-900/60" onClick={action}></div>
+      <div
+        className="modal-content scrollbar-sm relative flex max-w-lg flex-col items-center overflow-y-auto rounded-lg bg-white px-4 py-10 text-center dark:bg-navy-700 sm:px-5 w-2/5"
+      >
 
 
-      <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
-        Copy your token
-      </h2>
-      <div className="mt-4 w-full">
-        <p>DHG892DJDK</p>
-        <Button
-          label="Copy token"
-          action={action}
-        />
+        <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
+          Copy your token
+        </h2>
+        <div className="mt-4 w-full">
+          <p ref={paraRef}>{user?._id ? user._id : ''}</p>
+          {user ? (<Button
+            label="Copy token"
+            action={copyId}
+          />) : (<Button
+            label="Generate"
+            action={async () => await makeUser()}
+          />)}
+        </div>
       </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default CreateAccountButton;

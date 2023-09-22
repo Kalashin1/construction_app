@@ -31,7 +31,7 @@ export enum SCREENS {
 
 export const API_BASE_URL = 
 
-// 'http://localhost:8080'
+'http://localhost:8080'
 
-'https://magga-676xiecbma-uc.a.run.app';
+// 'https://magga-676xiecbma-uc.a.run.app';
 // export const CLIENT_BASE_URL = 'http://localhost:8080';

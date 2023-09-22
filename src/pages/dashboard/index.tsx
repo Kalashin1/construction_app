@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import Layout from "./layout";
 import HomeCards from "./components/home-cards";
 import CurrentProjects from "./components/current-projects";
@@ -11,12 +12,38 @@ import CreateAccountButton, {
   CopyTokenModal
 } from "./components/create-account";
 import { SCREENS } from "../../navigation/constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { User } from "../../types";
+import { useGetUserFromToken } from "./hooks/getUser";
 
 const Dashboard = () => {
   const [showAccountDropdown, updateShowAccountDropDown] = useState(false)
   const [showAccountModal, updateShowAccountModal] = useState(false)
-  const [showCopyTokenModal, updateShowCopyTokenModal] = useState(false)
+  const [showCopyTokenModal, updateShowCopyTokenModal] = useState(false);
+
+  const token = sessionStorage.getItem('userToken');
+  const {getUser} = useGetUserFromToken(token!)
+
+  useEffect(() => {
+    const abrtCnt = new AbortController()
+    const setUp = async () => {
+      const [error, _user] = await getUser(abrtCnt)
+      if (error) {
+        console.log(error);
+      } else if (_user) {
+        console.log(_user);
+        setUser(_user)
+      }
+    }
+
+    setUp()
+    return () => abrtCnt.abort();
+  }, [])
+
+
+
+  const [user, setUser] = useState<User|null>(null);
+
   const links = [{
     text: 'Create Account',
     svg: 'fas fa-user',
@@ -46,7 +73,7 @@ const Dashboard = () => {
             updateShowAccountModal(false)
             updateShowAccountDropDown(false)
           }} />)}
-          {showCopyTokenModal && (<CopyTokenModal action={() => {
+          {showCopyTokenModal && (<CopyTokenModal userId={user?._id!} action={() => {
             updateShowCopyTokenModal(false)
             updateShowAccountDropDown(false)
           }} />)}

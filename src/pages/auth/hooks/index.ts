@@ -60,7 +60,7 @@ export const useCreateUserAccount = () => {
   const [tokenError, updateTokenError] = useState(false)
 
   const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState(true)
+  const [passwordError, setPasswordError] = useState(false)
   const [passwordConfirm, setPasswordConfirm] = useState('')
 
   const [iAccept, setIAccept] = useState(true)
@@ -112,6 +112,7 @@ export const useCreateUserAccount = () => {
   return {
     email,
     setEmail,
+    setEmailError,
     password,
     setPassword,
     emailError,
@@ -125,9 +126,11 @@ export const useCreateUserAccount = () => {
     iAccept,
     user,
     createUserAccount,
+    setPasswordError,
     token,
     updateTokenError,
     tokenError,
     setToken,
+    setError,
   }
 }

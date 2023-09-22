@@ -13,4 +13,12 @@ export interface User {
   updatedAt: string;
   role: UserRoleType;
   avatar: string;
+  bankDetails: UserBankDetails[]|UserBankDetails;
 }
+
+export type UserBankDetails = {
+  bank: string;
+  iban: string;
+  bic: string;
+}
+// 650d6002aa58b8332aac7f02
