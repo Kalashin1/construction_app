@@ -4,10 +4,11 @@ type Props = {
   placeholder: string;
   value?: string;
   handleChange?: Dispatch<SetStateAction<string>>;
-  icon: ReactNode;
+  icon?: ReactNode;
   type?: string;
   showError?: boolean;
   errorMessage?: string;
+  name?: string;
   required?: boolean
 }
 
@@ -19,7 +20,8 @@ const Input = ({
   type = "text",
   showError=false,
   errorMessage='',
-  required=false
+  required=false,
+  name,
 }: Props) => {
   return (
     <div>
@@ -29,13 +31,14 @@ const Input = ({
           placeholder={placeholder}
           value={value}
           required={required}
+          name={name ? name: ''}
           onChange={e => handleChange && handleChange(e.target.value)}
           type={type}
         />
         <span
           className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent"
         >
-          {icon}
+          {typeof icon === 'string' ? icon : (<i className={`${icon}`} />)}
         </span>
       </label>
       {showError && (<small className="text-red-500">{errorMessage}</small>)}

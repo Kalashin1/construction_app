@@ -18,10 +18,10 @@ export const getUserFromToken = async (
 };
 
 export const updateUserProfile = async (
-  { _id, avatar, phone, username, first_name, last_name }: Partial<User>,
+  { _id, avatar, phone, username, first_name, last_name, bankDetails, billingDetails }: Partial<User>,
   abortController?: AbortController
 ): Promise<[Error | null, User | null]> => {
-  console.log(username, first_name, last_name,phone)
+  console.log(bankDetails)
   const res = await fetch(`${API_BASE_URL}/user/${_id}`, {
     method: "PATCH",
     body: JSON.stringify({
@@ -30,6 +30,8 @@ export const updateUserProfile = async (
       phone,
       first_name,
       last_name,
+      bankDetails,
+      billingDetails,
     }),
     headers: {
       'Content-Type': 'application/json'
@@ -44,3 +46,20 @@ export const updateUserProfile = async (
     return [await res.json(), null];
   }
 };
+
+
+export const completeRegistration = async (generatedId: string, param: Pick<User, 'email'| 'password'>) => {
+  const res = await fetch(`${API_BASE_URL}/complete-registration/${generatedId}`, {
+    method: 'POST',
+    body: JSON.stringify(param),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const payload = await res.json();
+  if (res.ok) {
+    return [null, payload];
+  } else {
+    return [payload, null]
+  }
+} 

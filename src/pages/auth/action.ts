@@ -52,6 +52,21 @@ export const createAccount = async (payload: SignupParam): Promise<[AppError | n
   }
 }
 
+export const generateUserId = async(role: string, referrer: string) => {
+  const res = await fetch(`${API_BASE_URL}/make-user`, {
+    method: "POST",
+    body: JSON.stringify({role, referrer }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if(res.ok) {
+    const user = await res.json();
+    return user;
+  }
+}
+
 export const forgotPassword = async ({email}: { email?: string, phone?: string } ) => {
   const res = await fetch(`${API_BASE_URL}/request-password-reset`, {
     method: 'POST',

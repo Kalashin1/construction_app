@@ -5,6 +5,7 @@ import GoogleIcon from "../svg/google";
 import Layout from "../layout";
 import { SCREENS } from "../../../navigation/constants";
 import { useCreateUserAccount } from "../hooks";
+import { completeRegistration } from "../../dashboard/helper/user";
 
 function Signup() {
 
@@ -13,6 +14,7 @@ function Signup() {
   const {
     email,
     setEmail,
+    setEmailError,
     password,
     setPassword,
     iAccept,
@@ -23,23 +25,55 @@ function Signup() {
     passwordError,
     emailError,
     token,
+    setPasswordError,
     tokenError,
     setToken,
     // updateTokenError,
-    createUserAccount,
+    // createUserAccount,
     isLoading,
     setIsLoading,
+    setError,
   } = useCreateUserAccount();
 
   const createAccount = async (e: Event) => {
     e.preventDefault();
-    const _user = await createUserAccount({ email, password, type: "EMAIL", role: 'admin' })
-    if (_user) {
-      alert('account created successfully');
-      sessionStorage.setItem('userToken', _user.token)
-      navigate(SCREENS.PROFILE);
+    setPasswordError(false)
+    setEmailError(false);
+    setIsLoading(true)
+    
+    // const _user = await createUserAccount({ email, password, type: "EMAIL", role: 'admin' })
+    // if (_user) {
+    //   alert('account created successfully');
+    //   sessionStorage.setItem('userToken', _user.token)
+    //   navigate(SCREENS.PROFILE);
+    // }
+    if(password !== passwordConfirm) {
+      setIsLoading(false)
+      setPasswordError(true)
+      setError('passwords do not match!')
+      return;
     }
+
+    setEmailError(false);
+    const [err, _user] = await completeRegistration(token, {
+      email,
+      password
+    });
     setIsLoading(false)
+    if (err) {
+      alert('oops something happened!')
+      console.log(err)
+      if (err.errorMessage.includes('email already exists')) {
+        setError(err.errorMessage);
+        setEmailError(true)
+      }
+    } else if (_user) {
+      alert('account created successfully');
+      sessionStorage.setItem('userToken', _user.user.token)
+      console.log(_user.user.token);
+      navigate(SCREENS.DASHBOARD);
+    }
+
   }
 
   return (
