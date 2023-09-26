@@ -11,7 +11,7 @@ const EmployeesComponent = () => {
             </svg>
           </button>
 
-          
+
         </div>
       </div>
       <div className="flex grow flex-col items-center px-4 pb-5 sm:px-5">
@@ -56,13 +56,19 @@ const EmployeesComponent = () => {
 const EmployeesOverview = () => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md dark:border-navy-700 dark:bg-navy-800 dark:text-white">
-      <div className="md:w-3/6 my-4">
+      <div className="flex justify-between flex-row items-center my-4">
         <h3 className="text-md font-bold">
           <span className="mr-4">
             <i className="fas fa-users" />
           </span>
           Employees
         </h3>
+
+        <button
+          className="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
+        >
+          Create Employee
+        </button>
       </div>
 
       <div className="grid md:grid-cols-2 md:gap-4 justify-between">
