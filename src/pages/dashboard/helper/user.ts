@@ -27,10 +27,11 @@ export const updateUserProfile = async (
     last_name,
     bankDetails,
     billingDetails,
+    numberRanges,
+    numberRangesLocal,
   }: Partial<User>,
   abortController?: AbortController
 ): Promise<[Error | null, User | null]> => {
-  console.log(bankDetails);
   const res = await fetch(`${API_BASE_URL}/user/${_id}`, {
     method: "PATCH",
     body: JSON.stringify({
@@ -41,6 +42,8 @@ export const updateUserProfile = async (
       last_name,
       bankDetails,
       billingDetails,
+      numberRanges,
+      numberRangesLocal
     }),
     headers: {
       "Content-Type": "application/json",

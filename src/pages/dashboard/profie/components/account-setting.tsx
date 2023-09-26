@@ -472,8 +472,9 @@ const AccountSettings = () => {
     const setUp = async () => {
       const abCnt = new AbortController();
       const [err, _user] = await getUserFromToken(token!, abCnt);
-      if (err) {
-        return navigate(SCREENS.LOGIN)
+      console.log(_user, err)
+      if (!_user || err) {
+        navigate(SCREENS.LOGIN)
       }
 
       if (_user) {

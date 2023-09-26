@@ -24,6 +24,8 @@ export interface User {
   employees: ReferrerType[];
   bankDetails: UserBankDetails[] | UserBankDetails;
   billingDetails: BillingDetails;
+  numberRanges: NumberRanges[];
+  numberRangesLocal: NumberRanges[];
   standIns: StandIn[]
 }
 
@@ -61,5 +63,14 @@ export interface TradeInterface {
   name: string;
   color: TradeColorEnum;
 }
+
+export type NumberRangesType = 'DRAFT' | 'INVOICE';
+
+export type NumberRanges = {
+  prefix: string;
+  nextNumber: number;
+  type: NumberRangesType;
+}
+
 
 // 650d6002aa58b8332aac7f02
