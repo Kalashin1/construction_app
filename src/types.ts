@@ -26,7 +26,7 @@ export interface User {
   billingDetails: BillingDetails;
   numberRanges: NumberRanges[];
   numberRangesLocal: NumberRanges[];
-  standIns: StandIn[]
+  standIn: StandIn[]
 }
 
 export type UserBankDetails = {
@@ -56,6 +56,7 @@ export type StandIn = {
   role: "employee";
   _id: string;
   email: string;
+  id: string;
 } & Partial<Pick<User, "first_name" | "last_name">>;
 
 export interface TradeInterface {

@@ -17,6 +17,17 @@ export const getUserFromToken = async (
   }
 };
 
+export const getUserById =async (id:string) => {
+  const res = await fetch(`${API_BASE_URL}/user/id/${id}`);
+  if (res.ok) {
+    const paylaod = await res.json()
+    return [null, paylaod];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+}
+
 export const updateUserProfile = async (
   {
     _id,
@@ -81,6 +92,19 @@ export const completeRegistration = async (
   }
 };
 
+export const assingEmployee = async (owner_id:string, employee_id: string) => {
+  const res = await fetch(`${API_BASE_URL}/assign_employee/${owner_id}/${employee_id}`, {
+    method: 'PATCH'
+  });
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null]
+  }
+}
+
 export const retrieveEmployees = async (owner_id: string) => {
   const res = await fetch(`${API_BASE_URL}/employee/${owner_id}`);
   const payload = await res.json();
@@ -91,7 +115,7 @@ export const retrieveEmployees = async (owner_id: string) => {
 
 export const assignStandIn = async (
   owner_id: string,
-  employee: Pick<User, "_id" | "email" | "role">
+  employee: Pick<User, "email" | "role"> & { id: string }
 ) => {
   const res = await fetch(`${API_BASE_URL}/assign-stand-in/${owner_id}`, {
     method: "POST",
@@ -156,5 +180,25 @@ export const deleteUserBankDetails = async (
   } else { 
     const error = await res.json()
     return [error, null]
+  }
+}
+
+export const deleteEmployeeStandIn = async (owner_id: string, employee_id: string) => {
+  const res = await fetch(`${API_BASE_URL}/stand-in`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      owner_id,
+      employee_id
+    })
+  });
+  if(res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null];
   }
 }
