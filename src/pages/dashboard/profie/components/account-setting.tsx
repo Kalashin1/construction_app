@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { useNavigate } from "react-router-dom";
 import { SCREENS } from "../../../../navigation/constants";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { useUpateProfile } from "../hooks";
-import { UserBankDetails, User } from "../../../../types";
-import { getUserFromToken, updateUserProfile } from "../../helper/user";
+import { UserBankDetails, User, StandIn, ReferrerType } from "../../../../types";
+import { assignStandIn, deleteUserBankDetails, getUserFromToken, retrieveEmployees, updateUserBankDetails, updateUserProfile } from "../../helper/user";
 import { Button } from '../../../auth/components/index';
 import { Input } from "../../../auth/components";
 
@@ -74,49 +74,167 @@ export const HeaderBar = () => (
 
 )
 
+const UpdateFooterBarModal = ({
+  _id,
+  closeModal
+}: {
+  _id: string;
+  closeModal: (...args: unknown[]) => void;
+}) => {
+  const [employees, setEmployees] = useState<Pick<User, '_id' | 'email' | 'role'>[] | null>(null);
+  useEffect(() => {
+    const getEmployees = async () => {
+      const [err, _employees] = await retrieveEmployees(_id);
+      console.log(_employees)
+      if (err) {
+        alert('error fetching employees');
+        console.log(err);
+      } else if (_employees) {
+        console.log(_employees);
+        setEmployees(_employees);
+      }
+    }
 
-export const FooterBar = () => (
-  <div className="bg-white dark:bg-navy-600 my-4 rounded-md shadow-sm">
-    <div className="flex flex-row justify-between px-4 py-4">
-      <h3 className="text-lg font-medium tracking-wide text-slate-700 dark:text-navy-100">
-        <span>
-          <i className="fas fa-users" />
-        </span>
-        <span className="ml-4">
-          Managing Directiors
-        </span>
-      </h3>
+    getEmployees()
+  }, [_id])
+  const form = useRef<HTMLFormElement | null>(null);
+
+  const [isLoading, showIsLoading] = useState(false);
+
+  const assignNewStandIn = async (
+    e: Event,
+    form: HTMLFormElement
+  ) => {
+    e.preventDefault();
+    showIsLoading(true);
+    const { employee: { value: employee } } = form;
+    const selectedEmployee = employees!.find((e) => e._id == employee);
+    const [err, payload] = await assignStandIn(_id, { ...selectedEmployee! });
+    showIsLoading(false)
+    if (err) {
+      alert('oops something happened');
+      console.log(err);
+    } else if (payload) {
+      alert('Stand-in set successfully')
+      console.log(payload);
+    }
+  }
+
+  return (
+    <Modal
+      title="Select New Stand In"
+      closeModal={closeModal}
+    >
+      <form className="mt-4 space-y-4" ref={form}>
+        <select name="standIn">
+          <option>
+            Select Employee
+          </option>
+          {employees && employees.map((emp) => (
+            <option value={emp._id}>
+              {emp.email}
+            </option>
+          ))}
+        </select>
+        <Button
+          label="Add Bank Details"
+          action={(e) => { assignNewStandIn(e as Event, form.current!) }}
+          disabled={isLoading}
+        />
+      </form>
+    </Modal>
+  )
+}
+
+type FooterBarProps = {
+  _id: string,
+  standIns: StandIn[]
+  employee: ReferrerType[]
+}
+
+export const FooterBar = (Props: FooterBarProps) => {
+  const [showModal, updateShowModal] = useState(false);
+  return (
+    <div className="bg-white dark:bg-navy-600 my-4 rounded-md shadow-sm">
+      <div className="flex flex-row justify-between px-4 py-4">
+        <h3 className="text-lg font-medium tracking-wide text-slate-700 dark:text-navy-100">
+          <span>
+            <i className="fas fa-users" />
+          </span>
+          <span className="ml-4">
+            Stand In
+          </span>
+        </h3>
 
 
-      <button>
-        <i className="fas fa-plus text-lg font-medium" />
-      </button>
+        <button
+          onClick={() => updateShowModal(true)}
+        >
+          <i className="fas fa-plus text-lg font-medium" />
+        </button>
+      </div>
+      <div className="p-6">
+        <h3 className="text-lg font-medium tracking-wide text-center text-slate-700 dark:text-navy-100 dark:text-black dark:bg-transparent bg-gray-300 py-2 my-1">Surname</h3>
+        <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+        {Props.standIns && Props.standIns.map((stdIn) => (
+          <div className="flex flex-row justify-between">
+            <h3>{stdIn.last_name}</h3>
+
+            <div>
+              <button
+                className="py-1 px-2 my-2 rounded-md bg-gray-500"
+              >
+                <i className="fas fa-pen-to-square text-white" />
+              </button>
+              <button className="ml-2 py-1 px-2 my-2 rounded-md bg-red-600">
+                <i className="fas fa-times text-white" />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+      {showModal && (<UpdateFooterBarModal
+        closeModal={() => updateShowModal(false)}
+        _id={Props._id}
+      />)}
     </div>
-    <div className="p-6">
-      <h3 className="text-lg font-medium tracking-wide text-center text-slate-700 dark:text-navy-100 dark:text-black dark:bg-transparent bg-gray-300 py-2 my-1">Surname</h3>
-      <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
-      <div className="flex flex-row justify-between">
-        <h3>Ibrahim</h3>
+  )
+}
 
-        <div>
-          <button
-            className="py-1 px-2 my-2 rounded-md bg-gray-500"
-          >
-            <i className="fas fa-pen-to-square text-white" />
-          </button>
-          <button className="ml-2 py-1 px-2 my-2 rounded-md bg-red-600">
-            <i className="fas fa-times text-white" />
-          </button>
+const Modal = ({
+  closeModal,
+  children,
+  title,
+}: {
+  closeModal: (...args: unknown[]) => void,
+  children: ReactNode,
+  title: string
+}) => {
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5 w-full"
+      id="modal1"
+      role="dialog"
+    >
+      <div className="modal-overlay absolute inset-0 bg-slate-900/60" onClick={closeModal}></div>
+      <div
+        className="modal-content scrollbar-sm relative flex max-w-lg flex-col items-center overflow-y-auto rounded-lg bg-white px-4 py-10 text-center dark:bg-navy-700 sm:px-5 w-2/5"
+      >
+
+
+        <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
+          {title}
+        </h2>
+        <div className="mt-4 w-full">
+          {children}
         </div>
       </div>
     </div>
-
-  </div>
-)
-
+  )
+}
 
 
-export const UpdateBankDetailsModal = ({ _id, closeModal }: {
+export const CreateBankDetailsModal = ({ _id, closeModal }: {
   _id: string;
   closeModal: (...args: unknown[]) => void;
 }) => {
@@ -136,57 +254,133 @@ export const UpdateBankDetailsModal = ({ _id, closeModal }: {
     } else if (user) {
       alert('bank details added successfully!');
       closeModal()
+      window.location.reload();
     }
   }
 
-  return (<div
-    className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5 w-full"
-    id="modal1"
-    role="dialog"
-  >
-    <div className="modal-overlay absolute inset-0 bg-slate-900/60" onClick={closeModal}></div>
-    <div
-      className="modal-content scrollbar-sm relative flex max-w-lg flex-col items-center overflow-y-auto rounded-lg bg-white px-4 py-10 text-center dark:bg-navy-700 sm:px-5 w-2/5"
+  return (
+    <Modal
+      title="Add Your bank details"
+      closeModal={closeModal}
     >
+      <form className="mt-4 space-y-4" ref={form}>
+        <Input
+          placeholder="deutshbank"
+          type="text"
+          name="bank"
+        />
+        <Input
+          placeholder="Iban"
+          type="text"
+          name="iban"
+        />
+        <Input
+          placeholder="bic"
+          type="text"
+          name="bic"
+        />
+        <Button
+          label="Add Bank Details"
+          action={(e) => { addBankDetails(e as Event, form.current!) }}
+          disabled={isLoading}
+        />
+      </form>
+    </Modal>
+  )
+}
 
+export const UpdateBankDetailsModal = ({
+  _id,
+  closeModal,
+  bankDetails
+}: {
+  _id: string,
+  closeModal: (...args: unknown[]) => void,
+  bankDetails: UserBankDetails
+}) => {
+  const form = useRef<HTMLFormElement | null>(null);
 
-      <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
-        Add Your bank details
-      </h2>
-      <div className="mt-4 w-full">
-        <form className="mt-4 space-y-4" ref={form}>
-          <Input
-            placeholder="deutshbank"
-            type="text"
-            name="bank"
-          />
-          <Input
-            placeholder="Iban"
-            type="text"
-            name="iban"
-          />
-          <Input
-            placeholder="bic"
-            type="text"
-            name="bic"
-          />
-          <Button
-            label="Add Bank Details"
-            action={(e) => { addBankDetails(e as Event, form.current!) }}
-            disabled={isLoading}
-          />
-        </form>
-      </div>
-    </div>
-  </div>
+  const [isLoading, showIsLoading] = useState(false);
+
+  const updateBankDetails = async (e: Event, form: HTMLFormElement) => {
+    e.preventDefault();
+    showIsLoading(true);
+    const { bank: { value: bank }, iban: { value: iban }, bic: { value: bic } } = form;
+    const [error, payload] = await updateUserBankDetails(_id, bankDetails, {
+      bank,
+      iban,
+      bic
+    })
+    showIsLoading(false)
+    if (error) {
+      alert('oops something happened!');
+      console.log(error);
+    } else if (payload) {
+      console.log(payload)
+      alert('bank details updated successfuly')
+      closeModal()
+    }
+  }
+
+  return (
+    <Modal
+      title="Select New Stand In"
+      closeModal={closeModal}
+    >
+      <form className="mt-4 space-y-4" ref={form}>
+        <Input
+          placeholder="deutshbank"
+          type="text"
+          defaultValue={bankDetails.bank}
+          name="bank"
+        />
+        <Input
+          placeholder="Iban"
+          type="text"
+          defaultValue={bankDetails.iban}
+          name="iban"
+        />
+        <Input
+          placeholder="bic"
+          defaultValue={bankDetails.bic}
+          type="text"
+          name="bic"
+        />
+        <Button
+          label="Add Bank Details"
+          action={(e) => { updateBankDetails(e as Event, form.current!) }}
+          disabled={isLoading}
+        />
+      </form>
+    </Modal>
   )
 }
 
 type BankDetailsProps = { _id: string, bankDetails: UserBankDetails[] };
 
 export const BankDetails = (Props: Partial<BankDetailsProps>) => {
-  const [showBankDetailsModal, setShowBankDetailsModal] = useState(false)
-  console.log(Props);
+  const [showBankDetailsModal, setShowBankDetailsModal] = useState(false);
+  const [showBankDetailsUpdateModal, setShowBankDetailsUpdateModal] = useState(false);
+  const [selectedBankDetails, updateSelectedBankDetails] = useState<UserBankDetails | null>(null);
+
+  const deleteBankDetails = async (bankDetails: UserBankDetails) => {
+    console.log(bankDetails)
+    if (confirm('are you sure you want to delete this bank detail')) {
+      const [error, payload] = await deleteUserBankDetails(
+        Props._id!,
+        bankDetails
+      );
+      if (error) {
+        alert('oops something happened!')
+        console.log(error);
+      } else if (payload) {
+        console.log(payload);
+        alert('bank details deleted successfully!')
+        location.reload();
+      }
+    }
+  }
+
   return (
     <div className="bg-white dark:bg-navy-600 my-4 rounded-md shadow-sm">
       <div className="flex flex-row justify-between px-4 py-4">
@@ -231,17 +425,29 @@ export const BankDetails = (Props: Partial<BankDetailsProps>) => {
             <div>
               <button
                 className="py-1 px-2 my-2 rounded-md bg-gray-500"
+                onClick={() => {
+                  updateSelectedBankDetails(bankD);
+                  setShowBankDetailsUpdateModal(true)
+                }}
               >
                 <i className="fas fa-pen-to-square text-white" />
               </button>
-              <button className="ml-2 py-1 px-2 my-2 rounded-md bg-red-600">
+              <button
+                className="ml-2 py-1 px-2 my-2 rounded-md bg-red-600"
+                onClick={() => deleteBankDetails(bankD)}
+              >
                 <i className="fas fa-times text-white" />
               </button>
             </div>
           </div>
         ))}
       </div>
-      {showBankDetailsModal && (<UpdateBankDetailsModal _id={Props._id!} closeModal={() => setShowBankDetailsModal(false)} />)}
+      {showBankDetailsModal && (<CreateBankDetailsModal _id={Props._id!} closeModal={() => setShowBankDetailsModal(false)} />)}
+      {showBankDetailsUpdateModal && (<UpdateBankDetailsModal
+        _id={Props._id!}
+        bankDetails={selectedBankDetails!}
+        closeModal={() => setShowBankDetailsUpdateModal(false)}
+      />)}
     </div>
   )
 }
@@ -266,14 +472,14 @@ const AccountSettings = () => {
     const setUp = async () => {
       const abCnt = new AbortController();
       const [err, _user] = await getUserFromToken(token!, abCnt);
-      if (err) {
-        return navigate(SCREENS.LOGIN)
+      console.log(_user, err)
+      if (!_user || err) {
+        navigate(SCREENS.LOGIN)
       }
 
       if (_user) {
         setEmail(_user.email)
         setUser(_user);
-        console.log(_user)
       }
     }
 
@@ -477,7 +683,11 @@ const AccountSettings = () => {
           </div>
         </div>
       </form>
-      <FooterBar />
+      <FooterBar
+        _id={user?._id!}
+        standIns={user?.standIns!}
+        employee={user?.employees!}
+      />
       <BankDetails
         bankDetails={user?.bankDetails! as UserBankDetails[]}
         _id={user?._id}

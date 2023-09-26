@@ -7,6 +7,7 @@ type Props = {
   icon?: ReactNode;
   type?: string;
   showError?: boolean;
+  defaultValue?: string;
   errorMessage?: string;
   name?: string;
   required?: boolean
@@ -22,6 +23,7 @@ const Input = ({
   errorMessage='',
   required=false,
   name,
+  defaultValue,
 }: Props) => {
   return (
     <div>
@@ -34,6 +36,7 @@ const Input = ({
           name={name ? name: ''}
           onChange={e => handleChange && handleChange(e.target.value)}
           type={type}
+          defaultValue={defaultValue}
         />
         <span
           className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent"
