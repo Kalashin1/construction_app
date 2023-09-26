@@ -1,6 +1,109 @@
+import { useEffect, useRef, useState, Dispatch, SetStateAction } from "react";
+import { Button, Input } from "../../../../../auth/components";
+import { EmailIcon, PasswordIcon } from "../../../../../auth/svg";
+import { Modal } from "../../../../profie/components/account-setting";
+import { createAccount } from "../../../../../auth/action";
+import { assingEmployee, getUserById, getUserFromToken } from "../../../../helper/user";
+import { useNavigate } from "react-router-dom";
+import { SCREENS } from "../../../../../../navigation/constants";
 
-const EmployeesComponent = () => {
+const CreateEmployeeAccountModal = ({
+  closeModal,
+  owner_id,
+  setUser,
+}: {
+  closeModal: (...args: unknown[]) => void;
+  owner_id: string;
+  setUser: Dispatch<SetStateAction<User | null>>
+}) => {
+  const form = useRef<HTMLFormElement | null>(null);
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
+  const createEmployeeAccount = async (
+    e: Event,
+    form: HTMLFormElement
+  ) => {
+    e.preventDefault();
+    setIsLoading(true)
+    setError(false);
+    const { email: { value: email }, password: { value: password } } = form;
+    const [err, employee] = await createAccount({
+      email,
+      password,
+      type: "EMAIL",
+      role: 'employee'
+    });
+    if (err) {
+      alert('oops something happened!')
+      console.log(err);
+    } else if (employee) {
+      const [error, payload] = await assingEmployee(owner_id, employee._id!);
+      setIsLoading(false)
+      if (error) {
+        alert('oops something happened!');
+        console.log(error);
+      } else {
+        alert('employee created successfully!');
+        console.log(payload);
+        closeModal()
+        setUser(payload.owner)
+      }
+    }
+  }
+
+
+  return (
+    <Modal
+      closeModal={closeModal}
+      title="Create Employee account"
+    >
+      <form className="mt-4 space-y-4" ref={form}>
+        <Input
+          placeholder="magga@magga.de"
+          type="email"
+          name="email"
+          icon={<EmailIcon />}
+        />
+        {error && (<small className="font-bold text-red-600 text-left">Email already in use</small>)}
+        <Input
+          placeholder="Passwort"
+          type="password"
+          name="password"
+          icon={<PasswordIcon />}
+        />
+        <Button
+          label="Create account"
+          type="submit"
+          disabled={isLoading}
+          action={(e) => {
+            createEmployeeAccount(e as Event, form.current!)
+          }}
+        />
+      </form>
+    </Modal >
+  )
+}
+const EmployeesComponent = ({
+  employeeId
+}: {
+  employeeId: string
+}) => {
+  console.log(employeeId)
+  const [employee, setEmployee] = useState<User|null>(null);
+  useEffect(() => {
+    const getEmployee = async () => {
+      const [error, _employee] = await getUserById(employeeId);
+      if (error) {
+        alert('oops something happened');
+        console.log(error);
+      } else if (_employee) {
+        setEmployee(_employee);
+      }
+    }
+
+    getEmployee();
+  }, [employeeId])
   return (
     <div className="card">
       <div className="p-2 text-right">
@@ -19,7 +122,7 @@ const EmployeesComponent = () => {
           <img className="rounded-full" src="images/100x100.png" alt="avatar" />
         </div>
         <h3 className="pt-3 text-lg font-medium text-slate-700 dark:text-navy-100">
-          Ibrahim Balde
+          {employee?.first_name ?? 'Ibrahim'} {employee?.last_name ?? 'Balde'}
         </h3>
         <p className="text-xs+">Chief Plumber</p>
         <div className="inline-space mt-3 flex grow flex-wrap items-start">
@@ -54,6 +157,27 @@ const EmployeesComponent = () => {
 
 
 const EmployeesOverview = () => {
+  const navigate = useNavigate();
+  const token = sessionStorage.getItem('userToken')
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const setUp = async () => {
+      const abCnt = new AbortController();
+      const [err, _user] = await getUserFromToken(token!, abCnt);
+      if (!_user || err) {
+        navigate(SCREENS.LOGIN)
+      }
+
+      if (_user) {
+        setUser(_user);
+      }
+    }
+
+    setUp()
+  }, [navigate, token]);
+
+  const [showModal, updateShowModal] = useState(false)
   return (
     <div className="bg-white p-6 rounded-lg shadow-md dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="flex justify-between flex-row items-center my-4">
@@ -66,15 +190,24 @@ const EmployeesOverview = () => {
 
         <button
           className="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
+          onClick={() => updateShowModal(true)}
         >
           Create Employee
         </button>
       </div>
 
       <div className="grid md:grid-cols-2 md:gap-4 justify-between">
-        <EmployeesComponent />
-        <EmployeesComponent />
+        {user && user.employees && user.employees.map((emp) => (
+          <EmployeesComponent
+            employeeId={emp.id!}
+          />
+        ))}
       </div>
+      {showModal && user && user._id && (<CreateEmployeeAccountModal
+        setUser={setUser}
+        closeModal={() => updateShowModal(false)}
+        owner_id={user?._id}
+      />)}
     </div>
   )
 }

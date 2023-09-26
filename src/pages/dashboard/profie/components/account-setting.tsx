@@ -201,7 +201,7 @@ export const FooterBar = (Props: FooterBarProps) => {
   )
 }
 
-const Modal = ({
+export const Modal = ({
   closeModal,
   children,
   title,

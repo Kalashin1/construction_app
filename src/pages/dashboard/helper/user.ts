@@ -17,6 +17,17 @@ export const getUserFromToken = async (
   }
 };
 
+export const getUserById =async (id:string) => {
+  const res = await fetch(`${API_BASE_URL}/user/id/${id}`);
+  if (res.ok) {
+    const paylaod = await res.json()
+    return [null, paylaod];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+}
+
 export const updateUserProfile = async (
   {
     _id,
@@ -80,6 +91,19 @@ export const completeRegistration = async (
     return [payload, null];
   }
 };
+
+export const assingEmployee = async (owner_id:string, employee_id: string) => {
+  const res = await fetch(`${API_BASE_URL}/assign_employee/${owner_id}/${employee_id}`, {
+    method: 'PATCH'
+  });
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null]
+  }
+}
 
 export const retrieveEmployees = async (owner_id: string) => {
   const res = await fetch(`${API_BASE_URL}/employee/${owner_id}`);
