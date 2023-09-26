@@ -4,7 +4,7 @@ import { SCREENS } from "../../../../navigation/constants";
 import { FormEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { useUpateProfile } from "../hooks";
 import { UserBankDetails, User, StandIn, ReferrerType } from "../../../../types";
-import { assignStandIn, deleteUserBankDetails, getUserFromToken, retrieveEmployees, updateUserBankDetails, updateUserProfile } from "../../helper/user";
+import { assignStandIn, deleteEmployeeStandIn, deleteUserBankDetails, getUserFromToken, retrieveEmployees, updateUserBankDetails, updateUserProfile } from "../../helper/user";
 import { Button } from '../../../auth/components/index';
 import { Input } from "../../../auth/components";
 
@@ -81,7 +81,8 @@ const UpdateFooterBarModal = ({
   _id: string;
   closeModal: (...args: unknown[]) => void;
 }) => {
-  const [employees, setEmployees] = useState<Pick<User, '_id' | 'email' | 'role'>[] | null>(null);
+  type Employee = Pick<User, 'email' | 'role'> & { id: string }
+  const [employees, setEmployees] = useState<Employee[] | null>(null);
   useEffect(() => {
     const getEmployees = async () => {
       const [err, _employees] = await retrieveEmployees(_id);
@@ -108,7 +109,8 @@ const UpdateFooterBarModal = ({
     e.preventDefault();
     showIsLoading(true);
     const { employee: { value: employee } } = form;
-    const selectedEmployee = employees!.find((e) => e._id == employee);
+    const selectedEmployee = employees!.find((e) => e.id == employee);
+    console.log('selectedEmployee', selectedEmployee);
     const [err, payload] = await assignStandIn(_id, { ...selectedEmployee! });
     showIsLoading(false)
     if (err) {
@@ -116,7 +118,9 @@ const UpdateFooterBarModal = ({
       console.log(err);
     } else if (payload) {
       alert('Stand-in set successfully')
-      console.log(payload);
+      // console.log(payload);
+      closeModal()
+      showIsLoading(false);
     }
   }
 
@@ -126,12 +130,12 @@ const UpdateFooterBarModal = ({
       closeModal={closeModal}
     >
       <form className="mt-4 space-y-4" ref={form}>
-        <select name="standIn">
+        <select name="employee">
           <option>
             Select Employee
           </option>
           {employees && employees.map((emp) => (
-            <option value={emp._id}>
+            <option value={emp.id}>
               {emp.email}
             </option>
           ))}
@@ -154,6 +158,24 @@ type FooterBarProps = {
 
 export const FooterBar = (Props: FooterBarProps) => {
   const [showModal, updateShowModal] = useState(false);
+  console.log(Props.standIns)
+  const deleteStandIn = async (employee_id: string) => {
+    if (confirm('Are you sure you want to delete this stand in')) {
+      const [error, payload] = await deleteEmployeeStandIn(
+        Props._id,
+        employee_id
+      );
+
+      if (error) {
+        alert('oops something happened!');
+        console.log(error);
+      } else if (payload) {
+        alert('deleted successfully');
+        console.log(payload);
+        updateShowModal(false);
+      }
+    }
+  }
   return (
     <div className="bg-white dark:bg-navy-600 my-4 rounded-md shadow-sm">
       <div className="flex flex-row justify-between px-4 py-4">
@@ -178,15 +200,14 @@ export const FooterBar = (Props: FooterBarProps) => {
         <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
         {Props.standIns && Props.standIns.map((stdIn) => (
           <div className="flex flex-row justify-between">
-            <h3>{stdIn.last_name}</h3>
+            <h3>{stdIn.last_name ?? stdIn.email}</h3>
 
             <div>
+
               <button
-                className="py-1 px-2 my-2 rounded-md bg-gray-500"
+                className="ml-2 py-1 px-2 my-2 rounded-md bg-red-600"
+                onClick={() => deleteStandIn(stdIn._id)}
               >
-                <i className="fas fa-pen-to-square text-white" />
-              </button>
-              <button className="ml-2 py-1 px-2 my-2 rounded-md bg-red-600">
                 <i className="fas fa-times text-white" />
               </button>
             </div>
@@ -685,7 +706,7 @@ const AccountSettings = () => {
       </form>
       <FooterBar
         _id={user?._id!}
-        standIns={user?.standIns!}
+        standIns={user?.standIn!}
         employee={user?.employees!}
       />
       <BankDetails

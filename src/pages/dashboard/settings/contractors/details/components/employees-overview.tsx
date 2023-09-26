@@ -6,6 +6,7 @@ import { createAccount } from "../../../../../auth/action";
 import { assingEmployee, getUserById, getUserFromToken } from "../../../../helper/user";
 import { useNavigate } from "react-router-dom";
 import { SCREENS } from "../../../../../../navigation/constants";
+import { User } from "../../../../../../types";
 
 const CreateEmployeeAccountModal = ({
   closeModal,
