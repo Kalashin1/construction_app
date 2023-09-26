@@ -1,5 +1,13 @@
 export type UserRoleType = "admin" | "contractor" | "executor" | "employee";
 
+export type TradeColorEnum =
+  | "blue-500"
+  | "red-500"
+  | "yellow-500"
+  | "green-500"
+  | "orange-500"
+  | "purple-500";
+
 export interface User {
   _id?: string;
   first_name: string;
@@ -13,15 +21,17 @@ export interface User {
   updatedAt: string;
   role: UserRoleType;
   avatar: string;
-  bankDetails: UserBankDetails[]|UserBankDetails;
+  employees: ReferrerType[];
+  bankDetails: UserBankDetails[] | UserBankDetails;
   billingDetails: BillingDetails;
+  standIns: StandIn[]
 }
 
 export type UserBankDetails = {
   bank: string;
   iban: string;
   bic: string;
-}
+};
 
 export type BillingDetails = {
   taxNumber: string;
@@ -29,6 +39,27 @@ export type BillingDetails = {
   cashDiscount: string;
   discountPeriod: string;
   paymentDeadline: string;
+};
+
+export type ReferrerType = {
+  role: string;
+  id: string;
+  _id?: string;
+  email: string;
+} & Partial<
+  Pick<User, "first_name" | "last_name" | "phone" | "username" | "avatar">
+>;
+
+export type StandIn = {
+  role: "employee";
+  _id: string;
+  email: string;
+} & Partial<Pick<User, "first_name" | "last_name">>;
+
+export interface TradeInterface {
+  _id: string;
+  name: string;
+  color: TradeColorEnum;
 }
 
 // 650d6002aa58b8332aac7f02

@@ -1,7 +1,7 @@
 type Props = {
   action?: (...args: unknown[]) => void;
   label: string;
-  disabled?: boolean 
+  disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
 }
 const Button = ({
