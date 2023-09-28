@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState, Dispatch, SetStateAction } from "react";
+import { useEffect, useRef, useState, Dispatch, SetStateAction, useMemo } from "react";
 import { Button, Input } from "../../../../../auth/components";
-import { EmailIcon, PasswordIcon } from "../../../../../auth/svg";
+import { EmailIcon, PasswordIcon, UserIcon } from "../../../../../auth/svg";
 import { Modal } from "../../../../profie/components/account-setting";
 import { createAccount } from "../../../../../auth/action";
 import { assingEmployee, getUserById, getUserFromToken } from "../../../../helper/user";
@@ -28,12 +28,19 @@ const CreateEmployeeAccountModal = ({
     e.preventDefault();
     setIsLoading(true)
     setError(false);
-    const { email: { value: email }, password: { value: password } } = form;
+    const { 
+      email: {value: email},
+      password: {value: password}, 
+      first_name: {value: first_name},
+      last_name: {value: last_name},
+    } = form;
     const [err, employee] = await createAccount({
       email,
       password,
       type: "EMAIL",
-      role: 'employee'
+      role: 'employee',
+      first_name,
+      last_name,
     });
     if (err) {
       alert('oops something happened!')
@@ -60,6 +67,18 @@ const CreateEmployeeAccountModal = ({
       title="Create Employee account"
     >
       <form className="mt-4 space-y-4" ref={form}>
+        <Input
+          placeholder="Ibrahim"
+          type="text"
+          name="first_name"
+          icon={<UserIcon />}
+        />
+        <Input
+          placeholder="Balde"
+          type="text"
+          name="last_name"
+          icon={<UserIcon />}
+        />
         <Input
           placeholder="magga@magga.de"
           type="email"
@@ -90,8 +109,7 @@ const EmployeesComponent = ({
 }: {
   employeeId: string
 }) => {
-  console.log(employeeId)
-  const [employee, setEmployee] = useState<User|null>(null);
+  const [employee, setEmployee] = useState<User | null>(null);
   useEffect(() => {
     const getEmployee = async () => {
       const [error, _employee] = await getUserById(employeeId);
@@ -159,7 +177,7 @@ const EmployeesComponent = ({
 
 const EmployeesOverview = () => {
   const navigate = useNavigate();
-  const token = sessionStorage.getItem('userToken')
+  const token = useMemo(() => sessionStorage.getItem('userToken'), []);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {

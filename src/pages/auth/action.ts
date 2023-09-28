@@ -8,7 +8,9 @@ export type LoginParam = {
 
 export type SignupParam = {
   role?: string;
-  type: string
+  type: string;
+  first_name?: string;
+  last_name?: string;
 } & LoginParam;
 
 type AppError = {

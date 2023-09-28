@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { User } from "../../../../../types";
-import { getUserFromToken, updateUserProfile } from "../../../helper/user";
+import { getUserFromToken} from "../../../helper/user";
 import { useNavigate } from "react-router-dom";
 import { SCREENS } from "../../../../../navigation/constants";
 
@@ -55,32 +55,32 @@ const NumberRangeInvoice = ({
   const draftForm = useRef<HTMLFormElement | null>(null);
   const invoiceForm = useRef<HTMLFormElement | null>(null);
 
-  const updateNumberRange = async () => {
+  // const updateNumberRange = async () => {
 
-    const {
-      nextNumber: { value: nextNumber },
-      Dprefix: { value: prefix },
-    } = draftForm.current!;
-    const {
-      invoicePrefix: { value: invoicePrefix },
-      invoiceNextNumber: { value: invoiceNextNumber }
-    } = invoiceForm.current!;
+  //   const {
+  //     nextNumber: { value: nextNumber },
+  //     Dprefix: { value: prefix },
+  //   } = draftForm.current!;
+  //   const {
+  //     invoicePrefix: { value: invoicePrefix },
+  //     invoiceNextNumber: { value: invoiceNextNumber }
+  //   } = invoiceForm.current!;
    
-    const [err, payload] = await updateUserProfile({
-      _id: user?._id,
-      [type]: [
-        { prefix, nextNumber, type: 'DRAFT' },
-        { prefix: invoicePrefix, nextNumber: invoiceNextNumber, type: 'INVOICE' }
-      ]
-    });
-    if (err) {
-      alert("oops something happened!")
-      console.log(err);
-    } else if (payload) {
-      alert('number range set successfully!')
-      console.log(payload)
-    }
-  }
+  //   const [err, payload] = await updateUserProfile({
+  //     _id: user?._id,
+  //     [type]: [
+  //       { prefix, nextNumber, type: 'DRAFT' },
+  //       { prefix: invoicePrefix, nextNumber: invoiceNextNumber, type: 'INVOICE' }
+  //     ]
+  //   });
+  //   if (err) {
+  //     alert("oops something happened!")
+  //     console.log(err);
+  //   } else if (payload) {
+  //     alert('number range set successfully!')
+  //     console.log(payload)
+  //   }
+  // }
   return (
     <div className="bg-white rounded-md shadow-sm my-4 dark:bg-navy-600">
       <div className="flex flex-row justify-between p-4">
@@ -95,12 +95,12 @@ const NumberRangeInvoice = ({
 
         <div>
 
-          <button
+          {/* <button
             className="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
             onClick={updateNumberRange}
           >
             Save
-          </button>
+          </button> */}
         </div>
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
@@ -116,12 +116,14 @@ const NumberRangeInvoice = ({
             <DisabledInput
               label="Prefix"
               defaultValue={_draft?.prefix}
+              disabled={true}
               name="Dprefix"
             />
             <DisabledInput
               label="Next Number"
               defaultValue={_draft?.nextNumber?.toString()}
               name="nextNumber"
+              disabled={true}
             />
           </form>
 
@@ -137,11 +139,13 @@ const NumberRangeInvoice = ({
               label="Prefix"
               defaultValue={invoice?.prefix}
               name="invoicePrefix"
+              disabled={true}
             />
             <DisabledInput
               label="Next Number"
               defaultValue={invoice?.nextNumber?.toString()}
               name="invoiceNextNumber"
+              disabled={true}
             />
           </form>
 

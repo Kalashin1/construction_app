@@ -1,19 +1,23 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { useNavigate } from "react-router-dom";
 import { SCREENS } from "../../../../navigation/constants";
-import { FormEvent, ReactNode, useEffect, useRef, useState } from "react";
+import { Dispatch, FormEvent, ReactNode, SetStateAction, useEffect, useRef, useState } from "react";
 import { useUpateProfile } from "../hooks";
 import { UserBankDetails, User, StandIn, ReferrerType } from "../../../../types";
-import { assignStandIn, deleteEmployeeStandIn, deleteUserBankDetails, getUserFromToken, retrieveEmployees, updateUserBankDetails, updateUserProfile } from "../../helper/user";
+import { assignStandIn, deleteEmployeeStandIn, deleteUserBankDetails, getUserById, getUserFromToken, retrieveEmployees, updateUserBankDetails, updateUserProfile } from "../../helper/user";
 import { Button } from '../../../auth/components/index';
 import { Input } from "../../../auth/components";
 
 
 
-export const HeaderBar = () => (
+export const HeaderBar = ({
+  id
+}: {
+  id: string
+}) => (
   <>
     <div className="my-4 px-4 bg-white rounded shadow-sm font-bold py-4 dark:bg-navy-600 dark:text-white">
-      <h3>MAGGA ID: 49288928</h3>
+      <h3>MAGGA ID: {id}</h3>
     </div>
     <div className="bg-white rounded-md shadow-sm my-4 dark:bg-navy-600">
       <div className="flex flex-row justify-between p-4">
@@ -76,10 +80,12 @@ export const HeaderBar = () => (
 
 const UpdateFooterBarModal = ({
   _id,
-  closeModal
+  closeModal,
+  setUser,
 }: {
   _id: string;
   closeModal: (...args: unknown[]) => void;
+  setUser: Dispatch<SetStateAction<User | null>>
 }) => {
   type Employee = Pick<User, 'email' | 'role'> & { id: string }
   const [employees, setEmployees] = useState<Employee[] | null>(null);
@@ -118,7 +124,14 @@ const UpdateFooterBarModal = ({
       console.log(err);
     } else if (payload) {
       alert('Stand-in set successfully')
-      // console.log(payload);
+      console.log(payload);
+      const [error, _user] = await getUserById(_id)
+      if (error) {
+        alert('oops error getting user');
+        console.log(error);
+      } else if (_user) {
+        setUser(_user);
+      }
       closeModal()
       showIsLoading(false);
     }
@@ -153,7 +166,8 @@ const UpdateFooterBarModal = ({
 type FooterBarProps = {
   _id: string,
   standIns: StandIn[]
-  employee: ReferrerType[]
+  employee: ReferrerType[];
+  setUser: Dispatch<SetStateAction<User | null>>
 }
 
 export const FooterBar = (Props: FooterBarProps) => {
@@ -173,6 +187,8 @@ export const FooterBar = (Props: FooterBarProps) => {
         alert('deleted successfully');
         console.log(payload);
         updateShowModal(false);
+        const [, user] = await getUserById(Props._id);
+        Props.setUser(user);
       }
     }
   }
@@ -217,6 +233,7 @@ export const FooterBar = (Props: FooterBarProps) => {
       {showModal && (<UpdateFooterBarModal
         closeModal={() => updateShowModal(false)}
         _id={Props._id}
+        setUser={Props.setUser}
       />)}
     </div>
   )
@@ -255,9 +272,10 @@ export const Modal = ({
 }
 
 
-export const CreateBankDetailsModal = ({ _id, closeModal }: {
+export const CreateBankDetailsModal = ({ _id, closeModal, setUser }: {
   _id: string;
   closeModal: (...args: unknown[]) => void;
+  setUser: Dispatch<SetStateAction<User | null>>
 }) => {
   const form = useRef<HTMLFormElement | null>(null);
 
@@ -275,7 +293,7 @@ export const CreateBankDetailsModal = ({ _id, closeModal }: {
     } else if (user) {
       alert('bank details added successfully!');
       closeModal()
-      window.location.reload();
+      setUser(user)
     }
   }
 
@@ -313,11 +331,13 @@ export const CreateBankDetailsModal = ({ _id, closeModal }: {
 export const UpdateBankDetailsModal = ({
   _id,
   closeModal,
-  bankDetails
+  bankDetails,
+  setUser
 }: {
   _id: string,
   closeModal: (...args: unknown[]) => void,
-  bankDetails: UserBankDetails
+  bankDetails: UserBankDetails;
+  setUser: Dispatch<SetStateAction<User | null>>
 }) => {
   const form = useRef<HTMLFormElement | null>(null);
 
@@ -340,6 +360,8 @@ export const UpdateBankDetailsModal = ({
       console.log(payload)
       alert('bank details updated successfuly')
       closeModal()
+      const [, user] = await getUserById(_id);
+      setUser(user);
     }
   }
 
@@ -377,9 +399,13 @@ export const UpdateBankDetailsModal = ({
   )
 }
 
-type BankDetailsProps = { _id: string, bankDetails: UserBankDetails[] };
+type BankDetailsProps = {
+  _id?: string;
+  bankDetails?: UserBankDetails[];
+  setUser: Dispatch<SetStateAction<User | null>>
+};
 
-export const BankDetails = (Props: Partial<BankDetailsProps>) => {
+export const BankDetails = (Props: BankDetailsProps) => {
   const [showBankDetailsModal, setShowBankDetailsModal] = useState(false);
   const [showBankDetailsUpdateModal, setShowBankDetailsUpdateModal] = useState(false);
   const [selectedBankDetails, updateSelectedBankDetails] = useState<UserBankDetails | null>(null);
@@ -397,7 +423,9 @@ export const BankDetails = (Props: Partial<BankDetailsProps>) => {
       } else if (payload) {
         console.log(payload);
         alert('bank details deleted successfully!')
-        location.reload();
+        // location.reload();
+        const [, user] = await getUserById(Props._id!);
+        Props.setUser && Props.setUser(user)
       }
     }
   }
@@ -463,12 +491,19 @@ export const BankDetails = (Props: Partial<BankDetailsProps>) => {
           </div>
         ))}
       </div>
-      {showBankDetailsModal && (<CreateBankDetailsModal _id={Props._id!} closeModal={() => setShowBankDetailsModal(false)} />)}
-      {showBankDetailsUpdateModal && (<UpdateBankDetailsModal
-        _id={Props._id!}
-        bankDetails={selectedBankDetails!}
-        closeModal={() => setShowBankDetailsUpdateModal(false)}
-      />)}
+      {showBankDetailsModal && (
+        <CreateBankDetailsModal
+          _id={Props._id!}
+          closeModal={() => setShowBankDetailsModal(false)}
+          setUser={Props.setUser && Props.setUser}
+        />)}
+      {showBankDetailsUpdateModal && (
+        <UpdateBankDetailsModal
+          _id={Props._id!}
+          bankDetails={selectedBankDetails!}
+          closeModal={() => setShowBankDetailsUpdateModal(false)}
+          setUser={Props.setUser}
+        />)}
     </div>
   )
 }
@@ -529,7 +564,7 @@ const AccountSettings = () => {
 
   return (
     <div className="col-span-12 lg:col-span-8">
-      <HeaderBar />
+      {user && user._id && (<HeaderBar id={user._id} />)}
       <form className="card" ref={formRef} onSubmit={(e) => updateUserProfile(e, formRef.current!)}>
         <div
           className="flex flex-col items-center space-y-4 border-b border-slate-200 p-4 dark:border-navy-500 sm:flex-row sm:justify-between sm:space-y-0 sm:px-5"
@@ -708,9 +743,11 @@ const AccountSettings = () => {
         _id={user?._id!}
         standIns={user?.standIn!}
         employee={user?.employees!}
+        setUser={setUser}
       />
       <BankDetails
         bankDetails={user?.bankDetails! as UserBankDetails[]}
+        setUser={setUser}
         _id={user?._id}
       />
     </div>

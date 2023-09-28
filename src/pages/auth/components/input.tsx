@@ -15,7 +15,7 @@ type Props = {
 
 const Input = ({
   handleChange,
-  icon,
+  icon: Icon,
   placeholder,
   value,
   type = "text",
@@ -41,7 +41,8 @@ const Input = ({
         <span
           className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent"
         >
-          {typeof icon === 'string' ? icon : (<i className={`${icon}`} />)}
+          {typeof Icon === 'string' && (<i className={`${Icon}`} />) }
+          {typeof Icon !== 'string' && Icon}
         </span>
       </label>
       {showError && (<small className="text-red-500">{errorMessage}</small>)}

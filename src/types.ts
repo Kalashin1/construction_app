@@ -26,7 +26,8 @@ export interface User {
   billingDetails: BillingDetails;
   numberRanges: NumberRanges[];
   numberRangesLocal: NumberRanges[];
-  standIn: StandIn[]
+  standIn: StandIn[];
+  trades: TradeInterface[];
 }
 
 export type UserBankDetails = {
@@ -61,7 +62,7 @@ export type StandIn = {
 
 export interface TradeInterface {
   _id: string;
-  name: string;
+  name: 'painting'|'plumbing'|'electricity';
   color: TradeColorEnum;
 }
 
