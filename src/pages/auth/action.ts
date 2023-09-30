@@ -8,7 +8,10 @@ export type LoginParam = {
 
 export type SignupParam = {
   role?: string;
-  type: string
+  type: string;
+  first_name?: string;
+  last_name?: string;
+  position: string;
 } & LoginParam;
 
 type AppError = {
@@ -33,7 +36,7 @@ export const login = async (payload: LoginParam): Promise<[AppError | null, User
   }
 }
 
-export const createAccount = async (payload: SignupParam): Promise<[AppError | null, User|null]> => {
+export const createAccount = async (payload: Partial<SignupParam>): Promise<[AppError | null, User|null]> => {
   console.log(payload.email)
   const res = await fetch(`${API_BASE_URL}/register`, {
     method: 'POST',

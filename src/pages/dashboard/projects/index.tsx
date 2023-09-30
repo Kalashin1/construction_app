@@ -1,10 +1,13 @@
 import Layout from "../layout";
 import HomeCards from "./components/home-cards";
+import FilterCards from "./components/filter-cards";
 import ProjectLists from "./components/project-lists";
 import BreadCrumb from "../components/bread-crumb";
 import { SCREENS } from "../../../navigation/constants";
+import { useState } from "react";
 
 const Projects = () => {
+  const [showExtraFilter, updateShowExtraFilter] = useState(false);
   return (
     <Layout>
       <div className="py-10 px-6">
@@ -16,9 +19,12 @@ const Projects = () => {
           />
         </div>
         <HomeCards />
-
+        {showExtraFilter && (<FilterCards />)}
         <div className="my-10">
-          <ProjectLists />
+          <ProjectLists 
+            showFilter={showExtraFilter}
+            updateShowFilter={updateShowExtraFilter}
+          />
         </div>
       </div>
     </Layout>
