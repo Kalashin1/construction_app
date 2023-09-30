@@ -256,7 +256,7 @@ export const Modal = ({
     >
       <div className="modal-overlay absolute inset-0 bg-slate-900/60" onClick={closeModal}></div>
       <div
-        className="modal-content scrollbar-sm relative flex max-w-lg flex-col items-center overflow-y-auto rounded-lg bg-white px-4 py-10 text-center dark:bg-navy-700 sm:px-5 w-2/5"
+        className="modal-content scrollbar-sm relative flex max-w-lg flex-col items-center overflow-y-auto rounded-lg bg-white px-4 py-10 text-center dark:bg-navy-700 sm:px-5 md:w-2/5"
       >
 
 

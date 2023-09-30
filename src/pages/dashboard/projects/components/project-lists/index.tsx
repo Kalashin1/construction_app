@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "../../../components/current-projects";
 import { TableSearch, SelectBox } from "../../../components/project-summary";
 import ProjectListTable from "./components/project-list-table";
 
-const ProjectLists = () => {
-  const [numRows, setNumRows] = useState(0)
+const ProjectLists = ({
+  updateShowFilter,
+  showFilter
+}: {
+  updateShowFilter: Dispatch<SetStateAction<boolean>>;
+  showFilter: boolean
+}) => {
+  const [numRows, setNumRows] = useState(0);
   return (
     <div className="bg-white shadow-md rounded-md my-4 py-6 dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="flex flex-col sm:flex-row justify-between my-4 px-6 ">
@@ -19,10 +25,15 @@ const ProjectLists = () => {
             action={() => { }}
             label="Excel"
           />
-          <Button
-            action={() => { }}
-            label="Filter"
-          />
+          {showFilter ?
+            (<Button
+              action={() => {updateShowFilter(false)}}
+              label="All Projects"
+            />): (<Button
+              action={() => {updateShowFilter(true)}}
+              label="Filter"
+            />)
+          }
         </div>
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>

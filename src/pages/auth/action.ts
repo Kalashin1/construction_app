@@ -11,6 +11,7 @@ export type SignupParam = {
   type: string;
   first_name?: string;
   last_name?: string;
+  position: string;
 } & LoginParam;
 
 type AppError = {
