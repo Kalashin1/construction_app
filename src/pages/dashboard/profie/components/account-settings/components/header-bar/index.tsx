@@ -11,7 +11,7 @@ const HeaderBar = ({
 
   const {user, setCurrentUser} = useContext(UserAuthContext)
 
-  const uploadImage = async (type: string) => {{
+  const uploadImage = async (type: string) => {
     const [err, file] = await getFile();
     if (err) {
       console.log(err)
@@ -31,7 +31,7 @@ const HeaderBar = ({
       }
       console.log(file)
     }
-  }}
+  }
   return (
     <>
       <div className="my-4 px-4 bg-white rounded shadow-sm font-bold py-4 dark:bg-navy-600 dark:text-white">
@@ -81,13 +81,13 @@ const HeaderBar = ({
         </div>
         <div className="grid grid-cols-3 px-6 py-4 gap-x-4 justify-between">
           <span>
-            <img src={user?.logoUrl.logo} className='w-20 h-20 object-cover rounded-full' />
+            <img src={user?.logoUrl && user?.logoUrl.logo} className='w-20 h-20 object-cover rounded-full' />
           </span>
           <span>
-            {user?.logoUrl.icon ? (<img src={user?.logoUrl.icon} className='w-20 h-20 object-cover rounded-full' />): ('No Image')}
+            {user?.logoUrl && user?.logoUrl.icon ? (<img src={user?.logoUrl.icon} className='w-20 h-20 object-cover rounded-full' />): ('No Image')}
           </span>
           <span>
-          {user?.logoUrl.invoiceLogo ? (<img src={user?.logoUrl.invoiceLogo} className='w-20 h-20 object-cover rounded-full' />): ('No Image')}
+          {user?.logoUrl && user?.logoUrl.invoiceLogo ? (<img src={user?.logoUrl.invoiceLogo} className='w-20 h-20 object-cover rounded-full' />): ('No Image')}
           </span>
 
         </div>
