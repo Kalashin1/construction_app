@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { SCREENS } from "../../../navigation/constants";
+import { UserAuthContext } from "../../../App";
+import {useContext} from 'react';
 
 type DropdownItemProps = {
   svg: string;
@@ -37,6 +39,9 @@ const DropdownItem = ({
 )
 
 const DashboardButtonDropdown = () => {
+
+  const {user} = useContext(UserAuthContext)
+  
   return (
     <div className="w-64 absolute top-12 -left-44">
       <div className="card p-4 sm:p-5">
@@ -52,9 +57,9 @@ const DashboardButtonDropdown = () => {
             <h3
               className="text-base font-medium text-slate-700 dark:text-navy-100"
             >
-              Ibrahim Balde
+             {`${user?.last_name} ${user?.first_name}`}
             </h3>
-            <p className="text-xs+">Admin</p>
+            <p className="text-xs+">{user?.role}</p>
           </div>
         </div>
         <ul className="mt-6 space-y-1.5 font-inter font-medium">

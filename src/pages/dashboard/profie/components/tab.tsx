@@ -1,4 +1,4 @@
-import AccountSettings from "./account-setting"
+import AccountSettings from "./account-settings"
 
 const Tab = () => {
   return (

@@ -29,6 +29,8 @@ export interface User {
   position: string;
   standIn: StandIn[];
   trades: TradeInterface[];
+  documents: UserDocuments;
+  logoUrl: LogoUrl;
 }
 
 export type UserBankDetails = {
@@ -76,5 +78,55 @@ export type NumberRanges = {
   type: NumberRangesType;
 }
 
-
+export type LogoUrl = {
+  logo: string;
+  icon: string;
+  invoiceLogo: string;
+}
 // 650d6002aa58b8332aac7f02
+
+export type UserDocuments = {
+  BusinessRegistration: string;
+  MasterScertificate: string;
+  CommercialRegisterExtract: string;
+  Craftscroll: string;
+  CertificateOfExistenceBusinessLiability: string;
+  CertificateOfExemptionAccording: string;
+  CertificateInTaxMatters: string;
+  MinimumWageProof: string; 
+  GlobalMinimumWageCertificate: string;
+  CertificareOfSafetyFromTheBG: string;
+  CertificateOfClearanceOfHealthInsuranceAndSocialSecurity: string;
+  SalesTaxIdentification: string;
+  Letterhead: string;
+  A1Certificate: string;
+  CertificateOfClearanceFromTheCollectiveSocialInsuranceFund: string
+  ProofOfOccupationalSafetyTraining: string;
+  EmployeeList: string;
+  TrainingAndInstructionCertificates: string;  
+  InstallerIDCard: string;
+  ProofOfExpertiseAccordingToTRGS: string;
+}
+
+export const UserDocumentsKeys = [
+  'BusinessRegistration',
+  "MasterScertificate",
+  "CommercialRegisterExtract",
+  "Craftscroll",
+  "CertificateOfExistenceBusinessLiability",
+  "CertificateOfExemptionAccording",
+  "CertificateInTaxMatters",
+  "MinimumWageProof" ,
+  "GlobalMinimumWageCertificate",
+  "CertificareOfSafetyFromTheBG",
+  "CertificateOfClearanceOfHealthInsuranceAndSocialSecurity",
+  "SalesTaxIdentification",
+  "Letterhead",
+  "A1Certificate",
+  "CertificateOfClearanceFromTheCollectiveSocialInsuranceFund",
+  "ProofOfOccupationalSafetyTraining",
+  "EmployeeList",
+  "TrainingAndInstructionCertificates"  ,
+  "InstallerIDCard",
+  "ProofOfExpertiseAccordingToTRGS",
+] as const

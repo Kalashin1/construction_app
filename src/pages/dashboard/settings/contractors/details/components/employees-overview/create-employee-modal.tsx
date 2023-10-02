@@ -3,7 +3,7 @@ import { User } from "../../../../../../../types";
 import { Button, Input } from "../../../../../../auth/components";
 import { EmailIcon, PasswordIcon, UserIcon } from "../../../../../../auth/svg";
 import { assingEmployee } from "../../../../../helper/user";
-import { Modal } from "../../../../../profie/components/account-setting";
+import { Modal } from "../../../../../profie/components/account-settings";
 import { createAccount } from "../../../../../../auth/action";
 
 export const CreateEmployeeAccountModal = ({
