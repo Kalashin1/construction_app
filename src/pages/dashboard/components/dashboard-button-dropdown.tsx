@@ -49,7 +49,7 @@ const DashboardButtonDropdown = () => {
           <div className="avatar h-14 w-14">
             <img
               className="rounded-full"
-              src="images/100x100.png"
+              src={user?.avatar ?? "images/100x100.png"}
               alt="avatar"
             />
           </div>
