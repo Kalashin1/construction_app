@@ -12,37 +12,26 @@ import CreateAccountButton, {
   CopyTokenModal
 } from "./components/create-account";
 import { SCREENS } from "../../navigation/constants";
-import { useEffect, useState } from "react";
-import { User } from "../../types";
-import { useGetUserFromToken } from "./hooks/getUser";
+import { useContext, useEffect, useState } from "react";
+import { UserAuthContext } from "../../App";
 
 const Dashboard = () => {
   const [showAccountDropdown, updateShowAccountDropDown] = useState(false)
   const [showAccountModal, updateShowAccountModal] = useState(false)
   const [showCopyTokenModal, updateShowCopyTokenModal] = useState(false);
 
-  const token = sessionStorage.getItem('userToken');
-  const {getUser} = useGetUserFromToken(token!)
+  const {user, setCurrentUser, getUser} = useContext(UserAuthContext);
 
   useEffect(() => {
-    const abrtCnt = new AbortController()
     const setUp = async () => {
-      const [error, _user] = await getUser(abrtCnt)
-      if (error) {
-        console.log(error);
-      } else if (_user) {
-        console.log(_user);
-        setUser(_user)
-      }
+      const token = sessionStorage.getItem('userToken');
+      const [, _user] = await getUser!(null, token!);
+      if (_user)
+        setCurrentUser!(_user)
     }
 
-    setUp()
-    return () => abrtCnt.abort();
-  }, [])
-
-
-
-  const [user, setUser] = useState<User|null>(null);
+    setUp();
+  }, [getUser, setCurrentUser])
 
   const links = [{
     text: 'Create Account',

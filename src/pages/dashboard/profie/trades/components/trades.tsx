@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Modal } from "../../components/account-setting";
+import { Modal } from "../../components/account-settings";
 import { Button } from "../../../../auth/components";
 import { TradeInterface, User } from "../../../../../types";
 import { getUserById, getUserFromToken } from "../../../helper/user";

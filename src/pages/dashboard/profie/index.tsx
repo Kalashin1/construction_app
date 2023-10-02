@@ -4,7 +4,7 @@ import { SCREENS } from "../../../navigation/constants";
 import Sidebar from "./components/sidebar";
 import {useContext} from "react";
 import { SidebarContext } from "../../../App";
-import AccountSettings from "./components/account-setting";
+import AccountSettings from "./components/account-settings";
 
 const Profile = () => {
   const {

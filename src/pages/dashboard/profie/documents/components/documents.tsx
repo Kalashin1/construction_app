@@ -1,5 +1,34 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+import { UserAuthContext } from '../../../../../App';
+import { UserDocumentsKeys } from '../../../../../types';
+import { useContext } from 'react';
+import { getFile, uploadDocument } from '../../../helper/uploads';
+import { Link } from 'react-router-dom';
+
 const DocumentsTable = () => {
-  const dataTitles = ['Documents', 'Mandatory', 'Uploaded On', 'Expiry Date', '']
+  const { user, setCurrentUser } = useContext(UserAuthContext)
+  const dataTitles = ['Documents', 'Mandatory', '']
+
+  const uploadUserDocument = async (documentType: string) => {
+    const [err, file] = await getFile();
+    if (err) {
+      console.log(err)
+    } else if (file) {
+      const [error, payload] = await uploadDocument(
+        user?._id!,
+        file,
+        documentType
+      )
+      if (error) {
+        alert('oops something happened!');
+        console.log(error)
+      } else if (payload) {
+        console.log(payload);
+        alert(`profile photo updated successfully!`);
+        setCurrentUser!(payload.user);
+      }
+    }
+  }
   return (
     <div className="min-w-full overflow-x-scroll my-4">
       <table className="w-full text-left">
@@ -18,26 +47,30 @@ const DocumentsTable = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">Proof Of Ownership</td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-              <span>
-                <i className="fas fa-check" />
-              </span>
-            </td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-              10/10/2023
-            </td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-              10/10/2025
-            </td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-              <button className="border-2 rounded border-gray-800 px-6 py-1">
-                Upload Document
-              </button>
-            </td>
-            
-          </tr>
+          {UserDocumentsKeys.map((userDocK, index) => (
+            <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500" key={index}>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {user?.documents && user?.documents[userDocK] ? (
+                <Link to={user?.documents[userDocK]} className='text-blue-500 underline'>{userDocK}</Link>) :userDocK}
+              </td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                <span>
+                  <i className="fas fa-check" />
+                </span>
+              </td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {user?.documents && user?.documents[userDocK] ? (<button className="border-2 rounded border-gray-800 px-6 py-1">
+                  Update Document
+                </button>) : (
+                  <button className="border-2 rounded border-gray-800 px-6 py-1" onClick={() => uploadUserDocument(userDocK)}>
+                    Upload Document
+                  </button>
+                )}
+
+              </td>
+
+            </tr>
+          ))}
         </tbody>
 
       </table>
@@ -52,13 +85,13 @@ const DocumentsOverview = () => {
       <div className="md:w-3/6 my-4">
         <h3 className="text-md font-bold">
           <span className="mr-4">
-            <i className="fas fa-file-lines text-md" />  
-          </span>  
+            <i className="fas fa-file-lines text-md" />
+          </span>
           Documents Provided
         </h3>
       </div>
 
-      
+
       <div>
         <DocumentsTable />
       </div>
