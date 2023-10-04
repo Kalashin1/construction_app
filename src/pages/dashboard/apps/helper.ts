@@ -11,3 +11,18 @@ export const getUsersDirectories = async (role: UserRoleType) => {
     return [error, null];
   }
 }
+
+export const getFiles = async (prefix: string) => {
+  const res = await fetch(`${API_BASE_URL}/files/`, {
+    method: 'PATCH',
+    body: JSON.stringify({prefix})
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+    return [null, data];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+}
