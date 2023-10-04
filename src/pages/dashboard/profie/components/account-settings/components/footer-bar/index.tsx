@@ -54,7 +54,12 @@ const FooterBar = (Props: FooterBarProps) => {
         </button>
       </div>
       <div className="p-6">
-        <h3 className="text-lg font-medium tracking-wide text-center text-slate-700 dark:text-navy-100 dark:text-black dark:bg-transparent bg-gray-300 py-2 my-1">Surname</h3>
+        <div className="text-lg font-medium tracking-wide text-center text-slate-700 dark:text-navy-100 dark:text-black px-4 dark:bg-transparent bg-gray-300 py-2 my-1 flex flex-row justify-between">
+         <span>First Name</span>
+         <span>Last Name</span>
+         <span>Position</span>
+         <span>Action</span>
+        </div>
         <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
         {Props.standIns && Props.standIns.map((stdIn) => (
           <div className="flex flex-row justify-between">

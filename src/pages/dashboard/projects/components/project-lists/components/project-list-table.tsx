@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import { SCREENS } from "../../../../../../navigation/constants";
+import { Dropdown } from "../../dropdown";
+import { useState } from "react";
 
 const ProjectListTable = () => {
-  const dataTitles = ['Project', 'Status', 'Info', 'Completion', 'Action']
+  const dataTitles = ['Project', 'Status', 'Info', 'Completion', ' ']
+  const [showDropdown, updateShowDropdown] = useState(false);
   return (
-    <div className="is-scrollbar-hidden min-w-full overflow-x-auto my-4">
+    <div className="is-scrollbar-hidden min-w-full overflow-x-auto my-4" onClick={() => updateShowDropdown(false)}>
       <table className="w-full text-left">
         <thead>
           <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
@@ -20,7 +23,7 @@ const ProjectListTable = () => {
 
           </tr>
         </thead>
-        <tbody>
+        <tbody className="relative">
           <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">
               <Link to={SCREENS.DETAIL} className="text-red-600">MAGGA-34087</Link>
@@ -61,10 +64,16 @@ const ProjectListTable = () => {
             <td className="whitespace-nowrap px-4 py-3 sm:px-5">
               <p className="font-bold">vor 38 Tagen</p>
             </td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-              <p className="font-bold">
-                <i className="fas fa-chevron-down" />
-              </p>
+            <td className="whitespace-nowrap px-4 py-3 sm:px-5" onClick={e => e.stopPropagation()}>
+              <button 
+                className="font-bold"
+                onClick={() => updateShowDropdown(true)}
+              >
+                <i className="fas fa-ellipsis-vertical text-xl" />
+              </button>
+             {showDropdown && ( <div className="absolute top-4 right-72" >
+                <Dropdown />
+              </div>)}
             </td>
           </tr>
         </tbody>

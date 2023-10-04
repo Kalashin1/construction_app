@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+import { SCREENS } from "../../../navigation/constants";
+
 type ProjectStatsProps = {
   title: string;
   figure: number;
@@ -75,6 +78,7 @@ const projectStatsData = [
 ]
 
 const CurrentProjects = () => {
+  const navigate = useNavigate();
   return (
     <div
       className="rounded-sm shadow-md bg-white py-2 lg:w-2/4 my-2 lg:my-0 dark:border-navy-700 dark:bg-navy-800 dark:text-white"
@@ -96,7 +100,10 @@ const CurrentProjects = () => {
       <div className="flex flex-row justify-end py-4 px-4 items-center">
         <Button 
           label="Filter Positions"
-          action={() => {}}
+          action={() => {{
+            sessionStorage.setItem('showProjectFilter', 'yes');
+            navigate(SCREENS.PROJECTS)
+          }}}
         />
         <Button 
           label="All Projects"

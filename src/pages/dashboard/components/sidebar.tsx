@@ -64,7 +64,7 @@ const sidebarLinksArray = [
       },
     ]
   },
-  {
+  { 
     text: 'Projects Summary',
     link: SCREENS.PROJECTS,
     icon: FormIcon,
@@ -107,7 +107,6 @@ const sidebarLinksArray = [
       parent: SCREENS.BILLS
     }]
   },
-
 ]
 
 

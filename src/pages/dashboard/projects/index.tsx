@@ -7,7 +7,10 @@ import { SCREENS } from "../../../navigation/constants";
 import { useState } from "react";
 
 const Projects = () => {
-  const [showExtraFilter, updateShowExtraFilter] = useState(false);
+  const showProjectFilter = sessionStorage.getItem('showProjectFilter');
+  const [showExtraFilter, updateShowExtraFilter] = useState(
+    showProjectFilter && showProjectFilter === 'yes' ? true: false 
+  );
   return (
     <Layout>
       <div className="py-10 px-6">
