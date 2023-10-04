@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import {getFiles} from '../../../../helper'
 
 export type FolderType = {
   name: string;
@@ -12,6 +13,16 @@ const FoldersTable = ({
   folders: FolderType[];
   setCurrentFolder: Dispatch<SetStateAction<FolderType[]>>
 }) => {
+  const getFolderFiles = async (prefix: string) => {
+    const [error, payload] = await getFiles(prefix);
+    if (error) {
+      alert('oops something happened!');
+      console.log(error)
+    } else if (payload) {
+      console.log("payload", payload);
+      setCurrentFolder(payload)
+    }
+  }
   return (
     <div className="card mt-3">
       <div className="is-scrollbar-hidden min-w-full overflow-x-auto">
@@ -37,15 +48,22 @@ const FoldersTable = ({
           <tbody>
             {folders && folders.map((folder, index) => (
               <tr key={index} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500 cursor-pointer"
-                onClick={() => setCurrentFolder(folder.children)}
+                onClick={() => {
+                  if (folder.children.length > 0) {
+                    setCurrentFolder(folder.children);
+                  } else {
+                    console.log(folder.name)
+                    getFolderFiles(folder.name);
+                  }
+                }}
               >
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                  <div className="flex items-center space-x-4">
+                  {(<div className="flex items-center space-x-4">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
                       <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path>
                     </svg>
                     <span className="font-medium text-slate-700 dark:text-navy-100">{folder?.name}</span>
-                  </div>
+                  </div>)}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                   2 day ago

@@ -76,7 +76,7 @@ const TabContent = ({
             array={contractors}
             folderImageUrl="images/folders/folder-success.svg"
             strokeColor="currentColor"
-            title="Executors"
+            title="Contractors"
             action={() => setCurrentFolders(contractors)}
           />
         </div>
