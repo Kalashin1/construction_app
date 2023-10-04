@@ -1,6 +1,6 @@
 import FoldersHeadingDropdown from "./folders-heading-dropdown";
 
-type FoldersOverviewHeadingProps = {
+export type FoldersOverviewHeadingProps = {
   showDropdown: boolean;
   updateShowDropdown: (...args: unknown[]) => void;
 }
