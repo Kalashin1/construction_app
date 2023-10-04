@@ -34,6 +34,9 @@ export const ProjectDetailCard = () => (
           <h3>&nbsp;1.00&nbsp;|&nbsp;</h3>
           <h3>00.00 €&nbsp;|&nbsp;</h3>
           <h3>&nbsp;00.00 €</h3>
+          <button className="px-2">
+            <i className="fas fa-ellipsis-vertical" />
+          </button>
         </div>
       </div>
     </div>

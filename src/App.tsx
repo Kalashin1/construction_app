@@ -62,7 +62,6 @@ function App() {
     }
 
     setUp()
-    return () => abrtCnt.abort();
   }, [])
 
   return (

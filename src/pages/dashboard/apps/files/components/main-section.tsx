@@ -1,10 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import FoldersOverview from "./folders-overview";
-import TabFolders from "./tab-folders";
+import TabFolders from "./tab-folder";
+import { FolderType } from "./folders-overview/components/folders-table";
 
 const Dropdown = () => (
   <div>
-    <div className="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700 absolute left-20 top-12">
+    <div className="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700 absolute left-20 top-12 z-50">
       <ul>
         <li>
           <a href="#" className="flex h-8 items-center space-x-3 px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">
@@ -94,6 +95,7 @@ const MainSection = ({
   showSecondDropdown,
   updateShowSecondDropdown,
 }: MaiSectionProps) => {
+  const [currentFolders, setCurrentFolder] = useState<FolderType[]>([]);
   return (
     <>
       <Heading
@@ -101,9 +103,14 @@ const MainSection = ({
         updateShowDropdown={updateShowDropdown}
         showLeftSidePanel={showLeftSidePanel}
       />
-      <TabFolders />
+      <TabFolders 
+        setCurrentFolders={setCurrentFolder}
+
+      />
       <FoldersOverview
         showDropdown={showSecondDropdown}
+        currentFolders={currentFolders}
+        updateCurrentFolders={setCurrentFolder}
         updateShowDropdown={updateShowSecondDropdown}
       />
     </>
