@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import FoldersOverview from "./folders-overview";
 import TabFolders from "./tab-folder";
 import { FolderType } from "./folders-overview/components/folders-table";
@@ -86,6 +86,8 @@ const Heading = ({
 type MaiSectionProps = HeadingProps & {
   showSecondDropdown: boolean;
   updateShowSecondDropdown:(...args: unknown[]) => void;
+  setCurrentFolder: Dispatch<SetStateAction<FolderType[]>>;
+  currentFolders: FolderType[]
 };
 
 const MainSection = ({
@@ -94,8 +96,10 @@ const MainSection = ({
   showLeftSidePanel,
   showSecondDropdown,
   updateShowSecondDropdown,
+  setCurrentFolder,
+  currentFolders
 }: MaiSectionProps) => {
-  const [currentFolders, setCurrentFolder] = useState<FolderType[]>([]);
+  
   return (
     <>
       <Heading
