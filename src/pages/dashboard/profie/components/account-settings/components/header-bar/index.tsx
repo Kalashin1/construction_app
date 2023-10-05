@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { UserAuthContext } from '../../../../../../../App'
 import { getFile, uploadLogoURL } from '../../../../../helper/uploads'
-import {useContext} from 'react';
+import { useContext } from 'react';
 
 const HeaderBar = ({
   id
@@ -9,7 +9,7 @@ const HeaderBar = ({
   id: string
 }) => {
 
-  const {user, setCurrentUser} = useContext(UserAuthContext)
+  const { user, setCurrentUser } = useContext(UserAuthContext)
 
   const uploadImage = async (type: string) => {
     const [err, file] = await getFile();
@@ -84,10 +84,10 @@ const HeaderBar = ({
             <img src={user?.logoUrl && user?.logoUrl.logo} className='w-20 h-20 object-cover rounded-full' />
           </span>
           <span>
-            {user?.logoUrl && user?.logoUrl.icon ? (<img src={user?.logoUrl.icon} className='w-20 h-20 object-cover rounded-full' />): ('No Image')}
+            {user?.logoUrl && user?.logoUrl.icon ? (<img src={user?.logoUrl.icon} className='w-20 h-20 object-cover rounded-full' />) : ('No Image')}
           </span>
           <span>
-          {user?.logoUrl && user?.logoUrl.invoiceLogo ? (<img src={user?.logoUrl.invoiceLogo} className='w-20 h-20 object-cover rounded-full' />): ('No Image')}
+            {user?.logoUrl && user?.logoUrl.invoiceLogo ? (<img src={user?.logoUrl.invoiceLogo} className='w-20 h-20 object-cover rounded-full' />) : ('No Image')}
           </span>
 
         </div>

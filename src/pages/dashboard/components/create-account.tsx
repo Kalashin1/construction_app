@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import Button from "../../auth/components/button";
 import Input from "../../auth/components/input";
-import { EmailIcon, PasswordIcon } from "../../auth/svg";
+import { EmailIcon, PasswordIcon, UserIcon } from "../../auth/svg";
 import { createAccount, generateUserId } from "../../auth/action";
 import { User } from "../../../types";
 
@@ -83,12 +83,15 @@ export const CreateAccountModal = ({
     e.preventDefault();
     setIsLoading(true)
     setError(false)
-    const { email: { value: email }, password: { value: password }, userRole: { value: role } } = form;
+    const { email: { value: email }, password: { value: password }, userRole: { value: role },  first_name: {value: first_name},
+    last_name: {value: last_name}, } = form;
     const [err, user] = await createAccount({
       email,
       password,
       role,
-      type: 'email'
+      type: 'email',
+      first_name,
+      last_name
     });
     setIsLoading(false)
     if (err) {
@@ -118,6 +121,18 @@ export const CreateAccountModal = ({
         </h2>
         <div className="mt-4 w-full">
           <form className="mt-4 space-y-4" ref={form}>
+            <Input
+              placeholder="Ibrahim"
+              type="text"
+              name="first_name"
+              icon={<UserIcon />}
+            />
+            <Input
+              placeholder="Balde"
+              type="text"
+              name="last_name"
+              icon={<UserIcon />}
+            />
             <Input
               placeholder="magga@magga.de"
               type="email"

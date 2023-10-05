@@ -1,9 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
-import {getFiles} from '../../../../helper'
+import { getFiles } from '../../../../helper'
 
 export type FolderType = {
   name: string;
-  children: FolderType[]
+  children: FolderType[];
+  kind?: string;
 }
 
 const FoldersTable = ({
@@ -58,12 +59,15 @@ const FoldersTable = ({
                 }}
               >
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                  {(<div className="flex items-center space-x-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                  <div className="flex items-center space-x-4">
+                    {folder.kind ? (<svg xmlns="http://www.w3.org/2000/svg" className="h-5.5 w-5.5" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z"></path>
+                      <path d="M3 8a2 2 0 012-2v10h8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"></path>
+                    </svg>) : (<svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
                       <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path>
-                    </svg>
+                    </svg>)}
                     <span className="font-medium text-slate-700 dark:text-navy-100">{folder?.name}</span>
-                  </div>)}
+                  </div>
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                   2 day ago
