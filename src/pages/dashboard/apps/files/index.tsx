@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import Layout from "../../layout";
 import SidebarPanel from "./components/sidepanel";
 import { useContext, useState } from "react";
 import { SidebarContext } from "../../../../App";
 import MainSection from "./components/main-section";
 import LeftSidePanel from "./components/left-side-panel";
+import { FolderType } from "./components/folders-overview/components/folders-table";
 
 const FileManager = () => {
   const {
@@ -16,18 +18,20 @@ const FileManager = () => {
   } = useContext(SidebarContext);
   const [showDropdown, updateDropDown] = useState(false);
   const [showSecondDropdown, updateShowSecondDropDown] = useState(false);
+  const [currentFolders, setCurrentFolder] = useState<FolderType[]>([]);
   return (
     <Layout
       sidePanel={
         (
+          // @ts-ignore
           <SidebarPanel
-
             closeSidebar={
               deviceWidth && deviceWidth > 560 ?
                 () => updateShowProjectMenu && updateShowProjectMenu(!showProjectMenu) :
                 () => updateShowSidebar && updateShowSidebar(!showSidebar)
             }
-            links={[0, 1, 2, 3]}
+            setCurrentFolders={setCurrentFolder}
+            links={['contractors']}
             headerText="Files"
           />
         )
@@ -43,6 +47,8 @@ const FileManager = () => {
           updateShowDropdown={updateDropDown}
           showLeftSidePanel={() => updateShowLeftSidebar!(true)}
           showSecondDropdown={showSecondDropdown}
+          currentFolders={currentFolders}
+          setCurrentFolder={setCurrentFolder}
           updateShowSecondDropdown={() => updateShowSecondDropDown(!showSecondDropdown)}
         />
       </main>
