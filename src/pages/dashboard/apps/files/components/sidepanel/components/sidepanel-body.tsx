@@ -9,6 +9,8 @@ export type SidebarPanelBodyProps = {
   closeSidebar: (...args: unknown[]) => void;
   contractors?: FolderType[]
   setCurrentFolder?: Dispatch<SetStateAction<FolderType[]>>
+  setParentFolder?: Dispatch<SetStateAction<unknown>>;
+  parentFolder: unknown;
 }
 
 
@@ -16,7 +18,9 @@ const SidebarPanelBody = ({
   links,
   // closeSidebar,
   contractors,
-  setCurrentFolder
+  setCurrentFolder,
+  setParentFolder,
+  parentFolder,
 }: SidebarPanelBodyProps) => {
   return (
     <div
@@ -54,6 +58,8 @@ const SidebarPanelBody = ({
                 folderName={folder} 
                 subFolders={folder === 'contractors' && contractors ? contractors:[] } 
                 setCurrentFolders={setCurrentFolder!}
+                parentFolder={parentFolder}
+                setParentFolder={setParentFolder!}
               />
             </li>
           )

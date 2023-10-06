@@ -6,16 +6,24 @@ const ListItem = ({
   subFolders,
   folderName,
   setCurrentFolders,
+  setParentFolder,
+  parentFolder,
 }: {
   subFolders?: FolderType[];
   folderName: string;
   setCurrentFolders: Dispatch<SetStateAction<FolderType[]>>
+  setParentFolder: Dispatch<SetStateAction<unknown>>;
+  parentFolder: unknown
 }) => {
   const [showSubFolders, updateShowSubFolders] = useState(false)
   return (
     <>
       <div
-        onClick={() => updateShowSubFolders(!showSubFolders)}
+        onClick={() => {
+          updateShowSubFolders(!showSubFolders)
+          
+          setCurrentFolders(subFolders!)
+        }}
         className="tree-header flex cursor-pointer items-center rounded px-2 py-1 tracking-wide text-slate-800 outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:text-navy-100 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">
         {subFolders?.length ? (<button onClick={() => updateShowSubFolders(!showSubFolders)} className="ac-trigger btn mr-1 h-5 w-5 rounded-lg p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25" id="ac-trigger-1" role="button" aria-controls="ac-panel-1" aria-disabled="false" aria-expanded="false">
           <svg xmlns="http://www.w3.org/2000/svg" className="ac-icon h-4.5 w-4.5 transition-transform" viewBox="0 0 20 20" fill="currentColor">
@@ -28,7 +36,13 @@ const ListItem = ({
         <span>{folderName}</span>
       </div>
 
-      {showSubFolders && subFolders?.length && (<SubFolder setCurrentFolders={setCurrentFolders} subFolders={subFolders} />)}
+      {showSubFolders && subFolders?.length && (
+      <SubFolder 
+        setCurrentFolders={setCurrentFolders} 
+        subFolders={subFolders}
+        parentFolder={parentFolder}
+        setParentFolder={setParentFolder}
+      />)}
 
     </>
   )
