@@ -18,13 +18,16 @@ const FoldersTable = ({
   parentFolder: unknown
 }) => {
   const getFolderFiles = async (prefix: string) => {
-    const [error, payload] = await getFiles(prefix);
+    const __prefix = localStorage.getItem('prefix');
+    const fullPrefix = `${__prefix}/${prefix}/`;
+    console.log('prefix', fullPrefix);
+    const [error, payload] = await getFiles(fullPrefix);
     if (error) {
       alert('oops something happened!');
-      console.log(error)
+      console.log(error);
     } else if (payload) {
       console.log("payload", payload);
-      setCurrentFolder(payload)
+      setCurrentFolder(payload);
     }
   }
   return (
@@ -57,14 +60,25 @@ const FoldersTable = ({
               let folderName = folder.name
               if (folder.name) {
                 const folderNameArray = folder?.name?.split('-');
-                if (folderNameArray[2]) {
-                  folderNameArray[2] = folderNameArray[2].slice(0, 3);
-                  folderName = folderNameArray.join('-');
+                if (folderNameArray.length > 3) {
+                  console.log(folderNameArray[2])
+                  const fileName = folderNameArray.at(-1)?.split('/').at(-1);
+                  if (fileName) {
+                    folderName = fileName;
+                  }
+                } else {
+                  if (folderNameArray[2]) {
+                    folderNameArray[2] = folderNameArray[2].slice(0, 3);
+                    folderName = folderNameArray.join('-');
+                  }
                 }
               }
               return (
                 <tr key={index} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500 cursor-pointer"
                   onClick={() => {
+                    if (folder.children.length === 23) {
+                      localStorage.setItem('prefix', folder.name);
+                    }
                     if (folder.children.length > 0) {
                       setCurrentFolder(folder.children);
                     } else {

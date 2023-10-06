@@ -15,7 +15,10 @@ export const getUsersDirectories = async (role: UserRoleType) => {
 export const getFiles = async (prefix: string) => {
   const res = await fetch(`${API_BASE_URL}/files/`, {
     method: 'PATCH',
-    body: JSON.stringify({prefix})
+    body: JSON.stringify({prefix}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
   });
 
   if (res.ok) {
