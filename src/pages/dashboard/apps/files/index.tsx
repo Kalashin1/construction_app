@@ -19,11 +19,11 @@ const FileManager = () => {
   const [showDropdown, updateDropDown] = useState(false);
   const [showSecondDropdown, updateShowSecondDropDown] = useState(false);
   const [currentFolders, setCurrentFolder] = useState<FolderType[]>([]);
+  const [parentFolder, setParentFolder] = useState<unknown>();
   return (
     <Layout
       sidePanel={
         (
-          // @ts-ignore
           <SidebarPanel
             closeSidebar={
               deviceWidth && deviceWidth > 560 ?
@@ -33,6 +33,8 @@ const FileManager = () => {
             setCurrentFolders={setCurrentFolder}
             links={['contractors']}
             headerText="Files"
+            setParentFolder={setParentFolder}
+            parentFolder={parentFolder}
           />
         )
       }
@@ -50,6 +52,8 @@ const FileManager = () => {
           currentFolders={currentFolders}
           setCurrentFolder={setCurrentFolder}
           updateShowSecondDropdown={() => updateShowSecondDropDown(!showSecondDropdown)}
+          parentFolder={parentFolder}
+          setParentFolder={setParentFolder}
         />
       </main>
     </Layout>

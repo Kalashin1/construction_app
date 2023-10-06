@@ -3,10 +3,14 @@ import { FolderType } from "../../folders-overview/components/folders-table";
 
 const SubFolder = ({
   subFolders,
-  setCurrentFolders
+  setCurrentFolders,
+  setParentFolder,
+  parentFolder
 }: {
   subFolders: FolderType[];
-  setCurrentFolders: Dispatch<SetStateAction<FolderType[]>>
+  setCurrentFolders: Dispatch<SetStateAction<FolderType[]>>;
+  setParentFolder: Dispatch<SetStateAction<unknown>>;
+  parentFolder: unknown;
 }) => (
   <div className="ac-panel pl-4" id="ac-panel-1" role="region" aria-labelledby="ac-trigger-1"
     style={{ transitionDuration: '200ms' }}>
@@ -17,7 +21,10 @@ const SubFolder = ({
         const folderName = folderNameArray.join('-');
         return (
           <li key={i}
-            onClick={() => setCurrentFolders(_.children)}
+            onClick={() => {
+              setCurrentFolders(_.children)
+              setParentFolder(parentFolder + ` > ${folderName}`)
+            }}
           >
             <div tabIndex={0} className="flex cursor-pointer items-center rounded px-2 py-1 tracking-wide text-slate-800 outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:text-navy-100 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">
               <div className="mr-1 flex h-5 w-5 items-center justify-center"></div>

@@ -87,7 +87,9 @@ type MaiSectionProps = HeadingProps & {
   showSecondDropdown: boolean;
   updateShowSecondDropdown:(...args: unknown[]) => void;
   setCurrentFolder: Dispatch<SetStateAction<FolderType[]>>;
-  currentFolders: FolderType[]
+  currentFolders: FolderType[];
+  parentFolder: unknown;
+  setParentFolder: Dispatch<SetStateAction<unknown>>;
 };
 
 const MainSection = ({
@@ -97,7 +99,9 @@ const MainSection = ({
   showSecondDropdown,
   updateShowSecondDropdown,
   setCurrentFolder,
-  currentFolders
+  currentFolders,
+  parentFolder,
+  setParentFolder,
 }: MaiSectionProps) => {
   
   return (
@@ -116,6 +120,8 @@ const MainSection = ({
         currentFolders={currentFolders}
         updateCurrentFolders={setCurrentFolder}
         updateShowDropdown={updateShowSecondDropdown}
+        parentFolder={parentFolder}
+        setParentFolder={setParentFolder}
       />
     </>
   )

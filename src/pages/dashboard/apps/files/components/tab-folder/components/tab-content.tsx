@@ -43,14 +43,12 @@ const Folder = ({
 
 
 const TabContent = ({
-  employees,
+  // employees,
   contractors,
-  executors,
+  // executors,
   setCurrentFolders
 }: {
-  employees: _Folder[];
   contractors: _Folder[];
-  executors: _Folder[];
   setCurrentFolders: Dispatch<SetStateAction<_Folder[]>>
 }) => {
   return (
@@ -58,23 +56,23 @@ const TabContent = ({
       <div id="tab-folder-recent" className="tab-content tab-shift-left swiper px-[var(--margin-x)] pt-4 transition-all duration-[.25s] swiper-initialized swiper-horizontal swiper-backface-hidden is-active py-4">
         <div className="swiper-wrapper" id="swiper-wrapper-7a1103272bc142eca" aria-live="polite" style={{ transform: 'translate3d(0px, 0px, 0px)', transitionDuration: '0ms' }}>
 
-          <Folder 
+          {/* <Folder 
             array={employees}
             folderImageUrl="images/folders/folder-primary.svg"
             strokeColor="currentColor"
             title="Employees"
             action={() => setCurrentFolders(employees)}
-          />
-          <Folder 
+          /> */}
+          {/* <Folder 
             array={executors}
             folderImageUrl="images/folders/folder-warning.svg"
             strokeColor="currentColor"
             title="Executors"
             action={() => setCurrentFolders(executors)}
-          />
+          /> */}
           <Folder 
             array={contractors}
-            folderImageUrl="images/folders/folder-success.svg"
+            folderImageUrl="images/folders/folder-warning.svg"
             strokeColor="currentColor"
             title="Contractors"
             action={() => setCurrentFolders(contractors)}
