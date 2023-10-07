@@ -9,12 +9,14 @@ export const useUpateProfile = () => {
     phone,
     username,
     _id,
+    address
   }: Partial<User>) => updateUserProfile({
     first_name,
     last_name,
     phone,
     username,
     _id,
+    address
   });
   return {
     makeUpdate,

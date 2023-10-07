@@ -76,13 +76,26 @@ const AccountSettings = () => {
 
   const updateUserProfile = async (e: FormEvent, form: HTMLFormElement) => {
     e.preventDefault()
-    const { username: { value: username }, phone: { value: phone }, first_name: { value: first_name }, last_name: { value: last_name } } = form;
+    const { 
+      username: { value: username }, 
+      phone: { value: phone }, 
+      first_name: { value: first_name }, 
+      last_name: { value: last_name },
+      province: {value: province },
+      zip: {value: zip},
+      street: {value: street }
+    } = form;
     const [error, _user] = await makeUpdate({
       _id: user?._id,
       username,
       phone,
       first_name,
-      last_name
+      last_name,
+      address: {
+        street,
+        zip,
+        province
+      }
     });
 
     if (error) {
@@ -254,6 +267,57 @@ const AccountSettings = () => {
                   placeholder="Enter Username"
                   name="username"
                   defaultValue={user?.username}
+                  type="text"
+                />
+                <span
+                  className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent"
+                >
+                  <i className="fa-regular fa-user text-base"></i>
+                </span>
+              </span>
+            </label>
+            <label className="block">
+              <span>Street</span>
+              <span className="relative mt-1.5 flex">
+                <input
+                  className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                  placeholder="Enter Street"
+                  name="street"
+                  defaultValue={user?.address?.street}
+                  type="text"
+                />
+                <span
+                  className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent"
+                >
+                  <i className="fa-regular fa-user text-base"></i>
+                </span>
+              </span>
+            </label>
+            <label className="block">
+              <span>Zip</span>
+              <span className="relative mt-1.5 flex">
+                <input
+                  className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                  placeholder="Enter Zip code"
+                  name="zip"
+                  defaultValue={user?.address?.zip}
+                  type="text"
+                />
+                <span
+                  className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent"
+                >
+                  <i className="fa-regular fa-user text-base"></i>
+                </span>
+              </span>
+            </label>
+            <label className="block">
+              <span>Province</span>
+              <span className="relative mt-1.5 flex">
+                <input
+                  className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                  placeholder="Enter Province"
+                  name="province"
+                  defaultValue={user?.address?.province}
                   type="text"
                 />
                 <span

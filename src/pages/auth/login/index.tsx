@@ -31,7 +31,10 @@ function Login() {
     if (_user) {
       alert('login successful');
       sessionStorage.setItem('userToken', _user.token)
-      navigate(SCREENS.DASHBOARD)
+      if(!_user.first_name|| !_user.last_name || _user.avatar)
+        navigate(SCREENS.PROFILE)
+      else navigate(SCREENS.DASHBOARD);
+
     } else {
       console.log('something happened', errorMessage)
     }

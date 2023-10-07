@@ -55,7 +55,6 @@ function App() {
             location.assign('/login');
         }
       } else if (_user) {
-        console.log(_user);
         sessionStorage.setItem('userToken', _user.token);
         setCurrentUser(_user)
       }

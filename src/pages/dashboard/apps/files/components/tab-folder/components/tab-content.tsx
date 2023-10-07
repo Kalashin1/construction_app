@@ -50,6 +50,8 @@ const TabContent = ({
 }: {
   contractors: _Folder[];
   setCurrentFolders: Dispatch<SetStateAction<_Folder[]>>
+  setParentFolder: Dispatch<SetStateAction<_Folder[]>>,
+  parentFolder: _Folder[];
 }) => {
   return (
     <div>

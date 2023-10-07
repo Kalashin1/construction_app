@@ -7,8 +7,8 @@ import { FolderType } from "../folders-overview/components/folders-table";
 
 type SidebarPanelProps = SidebarPanelHeaderProps & SidebarPanelBodyProps & {
   setCurrentFolders: Dispatch<SetStateAction<FolderType[]>>;
-  parentFolder: unknown;
-  setParentFolder: Dispatch<SetStateAction<unknown>>;
+  parentFolder: FolderType[];
+  setParentFolder: Dispatch<SetStateAction<FolderType[]>>;
 }
 
 const SidebarPanel = ({

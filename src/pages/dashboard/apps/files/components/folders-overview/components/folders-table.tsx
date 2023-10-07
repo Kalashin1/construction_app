@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { getFiles } from '../../../../helper'
+import { getEmployeesFolder, getExecutorsFolder, getFiles } from '../../../../helper'
 
 export type FolderType = {
   name: string;
@@ -11,12 +11,16 @@ const FoldersTable = ({
   folders,
   setCurrentFolder,
   // parentFolder,
+  parentFolders,
+  setParentFolders,
 }: {
   folders: FolderType[];
   setCurrentFolder: Dispatch<SetStateAction<FolderType[]>>
-  setParentFolder: Dispatch<SetStateAction<unknown>>
-  parentFolder: unknown
+  setParentFolders: Dispatch<SetStateAction<FolderType[]>>
+  parentFolders: FolderType[]
+  RootFolderName: FolderType[]
 }) => {
+
   const getFolderFiles = async (prefix: string) => {
     const __prefix = localStorage.getItem('prefix');
     const fullPrefix = `${__prefix}/${prefix}/`;
@@ -30,6 +34,46 @@ const FoldersTable = ({
       setCurrentFolder(payload);
     }
   }
+
+  const runSetup = async (folder: FolderType) => {
+    if (folder.children.length === 23) {
+      localStorage.setItem('prefix', folder.name);
+    }
+
+    if (folder.children.length > 0) {
+      setCurrentFolder(folder.children);
+      setParentFolders(folders)
+    } else {
+      console.log(folder.name)
+      if (folder.name === 'Employees') {
+        const id = localStorage.getItem('prefix')?.split('-').at(-1)
+        const [error, employeesFolder] = await getEmployeesFolder(id!)
+        if (error) {
+          alert('oops something happened!');
+          console.log(error)
+        } else if (employeesFolder) {
+          console.log(employeesFolder);
+          setCurrentFolder(employeesFolder)
+        }
+      }
+      else if (folder.name === 'Executors') {
+        const id = localStorage.getItem('prefix')?.split('-').at(-1)
+        const [error, employeesFolder] = await getExecutorsFolder(id!)
+        if (error) {
+          alert('oops something happened!');
+          console.log(error)
+        } else if (employeesFolder) {
+          console.log(employeesFolder);
+          setCurrentFolder(employeesFolder)
+        }
+      }
+      else {
+        getFolderFiles(folder.name);
+      }
+    }
+  }
+
+
   return (
     <div className="card mt-3">
       <div className="is-scrollbar-hidden min-w-full overflow-x-auto">
@@ -37,7 +81,10 @@ const FoldersTable = ({
           <thead>
             <tr>
               <th className="whitespace-nowrap rounded-tl-lg bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                <button className="mr-4">
+                <button className="mr-4" onClick={() => {
+                  console.log(parentFolders)
+                  setCurrentFolder(parentFolders)
+                }}>
                   <i className="fas fa-chevron-left" />
                 </button>
                 <span>Name</span>
@@ -56,7 +103,7 @@ const FoldersTable = ({
             </tr>
           </thead>
           <tbody>
-            {folders && folders.map((folder, index) => {
+            {folders ? folders.map((folder, index) => {
               let folderName = folder.name
               if (folder.name) {
                 const folderNameArray = folder?.name?.split('-');
@@ -75,17 +122,7 @@ const FoldersTable = ({
               }
               return (
                 <tr key={index} className="border-y border-transparent border-b-slate-200 dark:border-b-navy-500 cursor-pointer"
-                  onClick={() => {
-                    if (folder.children.length === 23) {
-                      localStorage.setItem('prefix', folder.name);
-                    }
-                    if (folder.children.length > 0) {
-                      setCurrentFolder(folder.children);
-                    } else {
-                      console.log(folder.name)
-                      getFolderFiles(folder.name);
-                    }
-                  }}
+                  onClick={() => runSetup(folder)}
                 >
                   <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                     <div className="flex items-center space-x-4">
@@ -126,7 +163,7 @@ const FoldersTable = ({
                   </td>
                 </tr>
               )
-            })}
+            }): (<div className="p-4">No folders </div>)}
           </tbody>
         </table>
       </div>

@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import Button from "../../auth/components/button";
 import Input from "../../auth/components/input";
 import { EmailIcon, PasswordIcon, UserIcon } from "../../auth/svg";
-import { createAccount, generateUserId } from "../../auth/action";
+import { createAccount, generateUserId, assignOwner } from "../../auth/action";
 import { User } from "../../../types";
+import { UserAuthContext } from "../../../App";
+import { useNavigate } from "react-router-dom";
+import { SCREENS } from "../../../navigation/constants";
 
 const CreateAccountButton = ({
   action
@@ -76,16 +79,18 @@ export const CreateAccountModal = ({
   action: (...args: unknown[]) => void;
 }) => {
   const form = useRef<HTMLFormElement | null>(null);
+  const {getUser} = useContext(UserAuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<boolean | null>(null)
+  const navigate = useNavigate()
 
-  const createSubAccount = async (e: Event, form: HTMLFormElement) => {
+  const CreateSubAccount = async (e: Event, form: HTMLFormElement) => {
     e.preventDefault();
     setIsLoading(true)
     setError(false)
     const { email: { value: email }, password: { value: password }, userRole: { value: role },  first_name: {value: first_name},
     last_name: {value: last_name}, } = form;
-    const [err, user] = await createAccount({
+    const [err, payload] = await createAccount({
       email,
       password,
       role,
@@ -98,9 +103,19 @@ export const CreateAccountModal = ({
       alert('oops something happened!')
       console.log(err)
       setError(true)
-    } else if (user) {
-      alert('user account created successfully!');
-      action();
+    } else if (payload) {
+      // connect to creator
+      const [userErr, user] = await getUser!()
+      if (userErr) navigate(SCREENS.LOGIN)
+      const [error, result] = await assignOwner(user?._id!, payload._id!)
+      if (error) {
+        alert('oops something happened');
+        console.log(error);
+      } else if (result) {
+        alert('user account created successfully!');
+        console.log(result);
+        action();
+      }
     }
   }
 
@@ -152,6 +167,7 @@ export const CreateAccountModal = ({
                 className="form-select mt-1.5 w-full rounded-lg bg-slate-150 px-3 py-2 ring-primary/50 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
               >
                 <option value="contractor">Contractor</option>
+                <option value="executor">Executor</option>
               </select>
             </label>
           </form>
@@ -160,7 +176,7 @@ export const CreateAccountModal = ({
             type="submit"
             disabled={isLoading}
             action={(e) => {
-              createSubAccount(e as Event, form.current!)
+              CreateSubAccount(e as Event, form.current!)
             }}
           />
         </div>

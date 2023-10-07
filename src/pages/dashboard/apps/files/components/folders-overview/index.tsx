@@ -6,8 +6,8 @@ import FoldersTable, { FolderType } from "./components/folders-table";
 type FoldersOverviewProps = FoldersOverviewHeadingProps & {
   currentFolders: FolderType[];
   updateCurrentFolders: Dispatch<SetStateAction<FolderType[]>>;
-  setParentFolder: Dispatch<SetStateAction<unknown>>;
-  parentFolder: unknown;
+  setParentFolder: Dispatch<SetStateAction<FolderType[]>>;
+  parentFolder: FolderType[];
 }
 
 const FoldersOverview = ({
@@ -18,6 +18,7 @@ const FoldersOverview = ({
   parentFolder,
   setParentFolder
 }: FoldersOverviewProps) => {
+  const RootFolder = JSON.parse(localStorage.getItem('rootFolder')!);
   return (
     <div className="mt-4 grid grid-cols-12 gap-4 px-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 sm:gap-5 lg:gap-6">
       <div className="col-span-12">
@@ -30,8 +31,9 @@ const FoldersOverview = ({
         <FoldersTable 
           folders={currentFolders}
           setCurrentFolder={updateCurrentFolders}
-          parentFolder={parentFolder}
-          setParentFolder={setParentFolder}
+          parentFolders={parentFolder}
+          setParentFolders={setParentFolder}
+          RootFolderName={RootFolder}
         />
       </div>
       <div className="col-span-12 lg:col-span-4">

@@ -20,6 +20,7 @@ type AppError = {
 }
 
 export const login = async (payload: LoginParam): Promise<[AppError | null, User|null]> => {
+  console.log(API_BASE_URL)
   const res = await fetch(`${API_BASE_URL}/login`, {
     method: 'POST',
     body: JSON.stringify(payload),
@@ -92,6 +93,19 @@ export const resetPassword = async ({ email, password, token }: Partial<User>) =
     method: 'POST',
     body: JSON.stringify({ email, password, token: parseFloat(token!)}),
     headers: {'Content-Type': 'application/json'}
+  });
+
+  if (res.ok) {
+    const user = await res.json();
+    return [null, user];
+  } else {
+    return [await res.json(), null];
+  }
+}
+
+export const assignOwner = async (owner_id: string, subAccount_id: string) => {
+  const res = await fetch(`${API_BASE_URL}/assign/owner/${owner_id}/${subAccount_id}`, {
+    method: 'PATCH'
   });
 
   if (res.ok) {

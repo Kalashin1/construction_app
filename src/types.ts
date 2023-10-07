@@ -31,6 +31,13 @@ export interface User {
   trades: TradeInterface[];
   documents: UserDocuments;
   logoUrl: LogoUrl;
+  address: Address;
+}
+
+export type Address = {
+  street: string;
+  zip: string;
+  province: string
 }
 
 export type UserBankDetails = {
