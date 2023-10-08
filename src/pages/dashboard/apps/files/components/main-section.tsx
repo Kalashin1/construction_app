@@ -88,8 +88,8 @@ type MaiSectionProps = HeadingProps & {
   updateShowSecondDropdown:(...args: unknown[]) => void;
   setCurrentFolder: Dispatch<SetStateAction<FolderType[]>>;
   currentFolders: FolderType[];
-  parentFolder: unknown;
-  setParentFolder: Dispatch<SetStateAction<unknown>>;
+  parentFolder: FolderType[];
+  setParentFolder: Dispatch<SetStateAction<FolderType[]>>;
 };
 
 const MainSection = ({
@@ -113,6 +113,8 @@ const MainSection = ({
       />
       <TabFolders 
         setCurrentFolders={setCurrentFolder}
+        parentFolder={parentFolder}
+        setParentFolder={setParentFolder}
 
       />
       <FoldersOverview

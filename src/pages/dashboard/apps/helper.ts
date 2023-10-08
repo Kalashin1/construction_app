@@ -29,3 +29,28 @@ export const getFiles = async (prefix: string) => {
     return [error, null];
   }
 }
+
+export const getEmployeesFolder = async (owner_id: string) => {
+  const res = await fetch(`${API_BASE_URL}/owner/employee/${owner_id}`);
+  if (res.ok) {
+    const data = await res.json();
+    return [null, data];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+}
+
+
+export const getExecutorsFolder = async (owner_id: string) => {
+  const res = await fetch(`${API_BASE_URL}/owner/executor/${owner_id}`);
+  if (res.ok) {
+    const data = await res.json();
+    return [null, data];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+}
+
+

@@ -71,7 +71,7 @@ function Signup() {
       alert('account created successfully');
       sessionStorage.setItem('userToken', _user.user.token)
       console.log(_user.user.token);
-      navigate(SCREENS.DASHBOARD);
+      navigate(SCREENS.PROFILE);
     }
 
   }

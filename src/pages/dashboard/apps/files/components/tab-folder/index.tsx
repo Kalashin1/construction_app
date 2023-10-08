@@ -14,10 +14,14 @@ import {
 
 type TabFoldersProps = {
   setCurrentFolders: Dispatch<SetStateAction<FolderType[]>>
+  setParentFolder: Dispatch<SetStateAction<FolderType[]>>
+  parentFolder: FolderType[];
 }
 
 const TabFolders = ({
-  setCurrentFolders
+  setCurrentFolders,
+  setParentFolder,
+  parentFolder
 }: TabFoldersProps) => {
   const [contractors, setContractors] = useState<FolderType[]>([])
 
@@ -36,7 +40,9 @@ const TabFolders = ({
 
       if (_contractors) {
         setContractors(_contractors);
-        setCurrentFolders([{ name: 'Contractors', children: _contractors }])
+        const RootFolder = [{ name: 'Contractors', children: _contractors }]
+        setCurrentFolders(RootFolder)
+        localStorage.setItem('rootFolder', JSON.stringify(RootFolder))
       }
 
 
@@ -52,6 +58,8 @@ const TabFolders = ({
         <TabContent
           contractors={contractors}
           setCurrentFolders={setCurrentFolders}
+          setParentFolder={setParentFolder}
+          parentFolder={parentFolder}
         />
       )}
     </div>

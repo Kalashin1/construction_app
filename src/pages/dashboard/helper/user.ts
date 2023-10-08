@@ -40,6 +40,7 @@ export const updateUserProfile = async (
     billingDetails,
     numberRanges,
     numberRangesLocal,
+    address
   }: Partial<User>,
   abortController?: AbortController
 ): Promise<[Error | null, User | null]> => {
@@ -54,7 +55,8 @@ export const updateUserProfile = async (
       bankDetails,
       billingDetails,
       numberRanges,
-      numberRangesLocal
+      numberRangesLocal,
+      address
     }),
     headers: {
       "Content-Type": "application/json",

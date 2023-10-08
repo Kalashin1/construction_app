@@ -79,7 +79,7 @@ const AppWrapper: FC<Props> = ({
               <div className="avatar mr-3 hidden h-8 w-8 lg:flex">
                 <img
                   className="rounded-full"
-                  src={user?.avatar ?? "images/100x100.png"}
+                  src={user && user.avatar ? user.avatar:  "images/100x100.png"}
                   alt="avatar"
                 />
               </div>

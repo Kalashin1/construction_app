@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../../../components/current-projects";
 import Pagination from "../../../components/pagination";
 import { SelectBox, TableSearch } from "../../../components/project-summary";
 import { UserIcon } from "../../../svg";
 import { Link } from "react-router-dom";
 import { SCREENS } from "../../../../../navigation/constants";
+import { User } from "../../../../../types";
+import { getContractors } from "../../helper";
 
-const ConstractorsTable = () => {
-  const dataTitles = ['S/N', 'Surnaame', 'Street', 'Postcode', 'Location', 'additive', 'e-mail']
+const ConstractorsTable = ({
+  contractors
+}: {
+  contractors: User[]|null
+}) => {
+  const dataTitles = ['S/N', 'Surnaame', 'Street', 'Postcode', 'Location', 'e-mail']
   return (
     <div className="is-scrollbar-hidden min-w-full overflow-x-auto my-4">
       <table className="w-full text-left">
@@ -26,24 +32,32 @@ const ConstractorsTable = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">1</td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-              <Link className="text-red-500" to={SCREENS.CONTRACTOR_DETAILS}>
-                Ibrahim
-              </Link>
-            </td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-              Musterstraße. XXXXX, Stadt
-            </td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">45329</td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">Eat</td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">&nbsp;</td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-              magga@gmail.com
-              {/* <span className="bg-green-700 py-1 px-4 rounded text-white">success</span> */}
-            </td>
-          </tr>
+          {contractors && contractors.map((con, index) => (
+            <tr
+              className="border border-transparent border-b-slate-200 dark:border-b-navy-500"
+              key={index}
+            >
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{index+1}</td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                <Link className="text-red-500" to={SCREENS.CONTRACTOR_DETAILS}>
+                  {con.first_name}
+                </Link>
+              </td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {con?.address?.street ? con.address.street :'Musterstraße. XXXXX, Stadt'}
+              </td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {con?.address?.zip ? con.address.zip :'45329'}
+              </td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+              {con?.address?.province ? con.address.province : ''}
+              </td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {con.email}
+                {/* <span className="bg-green-700 py-1 px-4 rounded text-white">success</span> */}
+              </td>
+            </tr>
+          ))}
         </tbody>
 
       </table>
@@ -53,12 +67,27 @@ const ConstractorsTable = () => {
 
 
 const ConstructorsOverview = () => {
-  const [numRows, setNumRows] = useState(0)
+  const [numRows, setNumRows] = useState(0);
+  const [contractors, setContractors] = useState<User[] | null>([]);
+
+  useEffect(() => {
+    const setUp = async () => {
+      const [error, payload] = await getContractors();
+      if (error) {
+        alert('oops something happened!');
+        console.log(error);
+      } else {
+        setContractors(payload);
+        console.log(payload)
+      }
+    }
+    setUp()
+  }, [])
   return (
     <div className="bg-white rounded-lg shadow-md dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="flex flex-row justify-between items-center p-3">
         <h3 className="text-md font-bold flex flex-row">
-          <UserIcon 
+          <UserIcon
             width={15}
             color="#fff"
           />
@@ -68,7 +97,7 @@ const ConstructorsOverview = () => {
           label="Capacity Planning"
           color="bg-primary"
           textColor="text-white"
-          action={() => {}}
+          action={() => { }}
         />
       </div>
 
@@ -94,7 +123,9 @@ const ConstructorsOverview = () => {
         </div>
       </div>
       <div>
-        <ConstractorsTable />
+        <ConstractorsTable 
+          contractors={contractors}
+        />
         <Pagination />
       </div>
     </div>
