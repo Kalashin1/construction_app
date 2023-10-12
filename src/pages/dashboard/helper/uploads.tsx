@@ -75,8 +75,8 @@ export const uploadProject = async (
   file: File
 ) => {
   const formData = new FormData();
-  formData.append('image', file);
-  const res = await fetch(`${API_BASE_URL}/project/upload/'${project_id}`, {
+  formData.append('project', file);
+  const res = await fetch(`${API_BASE_URL}/project/upload/${project_id}`, {
     method: 'POST',
     body: formData
   })
