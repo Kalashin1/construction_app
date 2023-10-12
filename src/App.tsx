@@ -44,9 +44,8 @@ function App() {
   const { getUser } = useGetUserFromToken(token!)
 
   useEffect(() => {
-    const abrtCnt = new AbortController()
     const setUp = async () => {
-      const [error, _user] = await getUser(abrtCnt)
+      const [error, _user] = await getUser()
       if (error) {
         setCurrentUser(null)
         console.log(location.pathname)

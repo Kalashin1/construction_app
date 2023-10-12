@@ -16,7 +16,13 @@ export enum SCREENS {
   OPS_ADMINISTRATION = '/ops',
   DETAIL = '/detail',
   PROFILE = '/profile',
-  CONTRACTOR_DETAILS = '/contractor-detail',
+  CONTRACTOR_DETAILS = '/contractor/:id',
+  CONTRACTOR_BILLING_DETAILS = '/billing-details/:id',
+  USER_DOCUMENTS = '/user-documents/:id',
+  CONTACT_PERSON = '/contact-person/:id',
+  FRAMEWORKS = '/frameworkd/:id',
+  TARGET_SALES = '/target-sales/:id',
+  USER_EMPLOYEES = '/user-employee/:id',
   CHAT = '/chat',
   TODO = '/todo',
   APPS = '/apps',
@@ -27,13 +33,14 @@ export enum SCREENS {
   BILLING_DETAILS = '/billing-details',
   TRADES = '/trades',
   DOCUMENTS = '/documents',
+  EMPLOYEES = '/employees'
 }
 
 export const API_BASE_URL = 
 
-// import.meta.env.VITE_API_BASE_URL;
+import.meta.env.VITE_API_BASE_URL;
 
 // 'http://localhost:8080'
 
-'https://magga-676xiecbma-uc.a.run.app';
+// 'https://magga-676xiecbma-uc.a.run.app';
 // export const CLIENT_BASE_URL = 'http://localhost:8080';

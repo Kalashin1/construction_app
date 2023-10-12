@@ -1,4 +1,4 @@
-import { Button } from "../../../../components/current-projects";
+import { Button } from "../../../../../components/current-projects";
 
 const TargetSales = () => {
   return (

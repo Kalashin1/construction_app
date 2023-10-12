@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   AppIcon,
@@ -12,6 +12,7 @@ import {
 import { SCREENS } from "../../../navigation/constants";
 import SidebarPanel from "./sidebar-panel";
 import { motion, AnimatePresence } from 'framer-motion';
+import { UserAuthContext } from "../../../App";
 
 
 const sidebarLinksArray = [
@@ -165,6 +166,7 @@ const Sidebar = ({
 }: Props) => {
   const deviceWidth = window.innerWidth;
   const location = useLocation()
+  const {user} = useContext(UserAuthContext);
 
   useEffect(() => {
     const sidebarLink = sidebarLinksArray.find(
@@ -219,7 +221,7 @@ const Sidebar = ({
             <a href="/">
               <img
                 className="h-20 w-20 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
-                src="images/magga-logo.png"
+                src="/images/magga-logo.png"
                 alt="logo"
               />
             </a>
@@ -241,13 +243,19 @@ const Sidebar = ({
 
           <div className="flex flex-col items-center space-y-3 py-3">
 
-            {bottomLinks.map((bottomLink, index) => (
-              <SidebarLink
-                key={index}
-                link={bottomLink.link}
-                svg={(<bottomLink.icon />)}
-              />
-            ))}
+            {bottomLinks.map((bottomLink, index) => {
+              console.log(bottomLink)
+              if ((bottomLink.text.includes('General Contractors')) && (user?.role !== 'admin')) {
+                return (<></>) 
+              }
+              return (
+                <SidebarLink
+                  key={index}
+                  link={bottomLink.link}
+                  svg={(<bottomLink.icon />)}
+                />
+              )
+            })}
 
 
           </div>

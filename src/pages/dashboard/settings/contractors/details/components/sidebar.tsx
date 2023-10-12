@@ -1,5 +1,7 @@
-import { Link } from "react-router-dom";
-import { SCREENS } from "../../../../../../navigation/constants";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { User } from "../../../../../../types";
+import { getUserById } from "../../../../helper/user";
 
 type SidebarPanelHeaderProps = {
   headerText?: string;
@@ -48,24 +50,24 @@ type SidebarPanelBodyProps = {
 
 
 
-export const SecondList = () => (
+export const SecondList = ({id}:{id: string}) => (
   <ul className="space-y-1.5 px-2 font-inter text-xs+ font-medium">
     <li>
-      <Link className="group flex space-x-2 rounded-lg p-2 tracking-wide text-slate-800 outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:text-navy-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600" to={SCREENS.PROFILE}>
+      <Link className="group flex space-x-2 rounded-lg p-2 tracking-wide text-slate-800 outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:text-navy-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600" to={`/contractor/${id}`}>
         <i className="fas fa-user" />
         <span className="text-slate-800 dark:text-navy-100">Base Data</span>
       </Link>
     </li>
     <li>
-      <Link className="group flex space-x-2 rounded-lg p-2 tracking-wide text-slate-800 outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:text-navy-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600" to={SCREENS.NUMBER_RANGES}>
+      <Link className="group flex space-x-2 rounded-lg p-2 tracking-wide text-slate-800 outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:text-navy-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600" to={`/target-sales/${id}`}>
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4.5 w-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
         </svg>
-        <span className="text-slate-800 dark:text-navy-100">Number Ranges</span>
+        <span className="text-slate-800 dark:text-navy-100">Target Sales</span>
       </Link>
     </li>
     <li>
-      <Link className="group flex space-x-2 rounded-lg p-2 tracking-wide text-slate-800 outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:text-navy-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600" to={SCREENS.BILLING_DETAILS}>
+      <Link className="group flex space-x-2 rounded-lg p-2 tracking-wide text-slate-800 outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:text-navy-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600" to={`/billing-details/${id}`}>
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4.5 w-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
@@ -73,25 +75,54 @@ export const SecondList = () => (
       </Link>
     </li>
     <li>
-      <Link className="group flex space-x-2 rounded-lg p-2 tracking-wide text-slate-800 outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:text-navy-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600" to={SCREENS.TRADES}>
+      <Link className="group flex space-x-2 rounded-lg p-2 tracking-wide text-slate-800 outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:text-navy-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600" to={`/frameworkd/${id}`}>
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4.5 w-4.5 text-slate-400 transition-colors group-hover:text-slate-500 group-focus:text-slate-500 dark:text-navy-300 dark:group-hover:text-navy-200 dark:group-focus:text-navy-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
         </svg>
-        <span className="text-slate-800 dark:text-navy-100">Trades</span>
+        <span className="text-slate-800 dark:text-navy-100">Frameworks and Project Contracts</span>
       </Link>
     </li>
     <li>
-      <Link className="group flex space-x-2 rounded-lg p-2 tracking-wide text-error outline-none transition-all hover:bg-error/20 focus:bg-error/20" to={SCREENS.DOCUMENTS}>
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-        </svg>
+      <Link className="group flex space-x-2 rounded-lg p-2 tracking-wide outline-none transition-all hover:bg-error/20 focus:bg-error/20" to={`/contact-person/${id}`}>
+        <i className="fas fa-phone" />
+        <span>Contact Person</span>
+      </Link>
+    </li>
+    <li>
+      <Link className="group flex space-x-2 rounded-lg p-2 tracking-wide outline-none transition-all hover:bg-error/20 focus:bg-error/20" to={`/user-documents/${id}`}>
+        <i className="fas fa-file"/>
         <span>Documents</span>
+      </Link>
+    </li>
+    <li>
+      <Link className="group flex space-x-2 rounded-lg p-2 tracking-wide outline-none transition-all hover:bg-error/20 focus:bg-error/20" to={`/user-employee/${id}`}>
+        <i className="fas fa-users" />
+        <span>Employees</span>
       </Link>
     </li>
   </ul>
 )
 
 export const SidebarPanelBody = () => {
+  const {id} = useParams();
+  const [user, setUser] = useState<User|null>(null)
+
+  useEffect(() => {
+    const getUserDetails = async (id: string) => {
+      const [error, _user] = await getUserById(id)
+      if(error) {
+        alert('error getting user account');
+        console.log(error);
+      }
+
+      if (_user) {
+        console.log(_user);
+        setUser(_user)
+      }
+    }
+
+    getUserDetails(id!)
+  }, [id])
   return (
     <div
       className="nav-wrapper h-[calc(100%-4.5rem)] min-h-screen overflow-x-hidden pb-6"
@@ -103,20 +134,8 @@ export const SidebarPanelBody = () => {
           <span> Executors</span>
         </button>
       </div>
-      {/* <div className="ac-header mt-4 flex items-center justify-between px-4">
-        <span className="text-xs font-medium uppercase">My Files
-        </span>
-        <div className="-mr-1.5 flex">
-          <button className="btn h-6 w-6 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
-            <i className="fas fa-search" />
-          </button>
-          <button className="ac-trigger btn h-6 w-6 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25" id="ac-trigger-0" role="button" aria-controls="ac-panel-0" aria-disabled="false" aria-expanded="true">
-            <i className="fa fa-chevron-up" />
-          </button>
-        </div>
-      </div> */}
-      {/* <SecondList /> */}
-      {/* <div className="mx-4 my-3 h-px bg-slate-200 dark:bg-navy-500"></div> */}
+      <SecondList id={user?._id as string} />
+      <div className="mx-4 my-3 h-px bg-slate-200 dark:bg-navy-500"></div>
       
     </div>
   )

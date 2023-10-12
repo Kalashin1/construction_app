@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { StandIn } from "../../../../../../../types";
-import { getUserById } from "../../../../../helper/user";
+import { User } from "../../../../../../types";
+import { getUserById } from "../../../../helper/user";
 import EmployeesDropdown from "./employees-dropdown";
 
 const EmployeesComponent = ({
@@ -10,7 +10,7 @@ const EmployeesComponent = ({
   employeeId: string;
   owner_id: string;
 }) => {
-  const [employee, setEmployee] = useState<StandIn | null>(null);
+  const [employee, setEmployee] = useState<User | null>(null);
   const [showDroppdown, updateShowDropdown] = useState(false);
   useEffect(() => {
     const getEmployee = async () => {

@@ -4,7 +4,6 @@ import Pagination from "../../../components/pagination";
 import { SelectBox, TableSearch } from "../../../components/project-summary";
 import { UserIcon } from "../../../svg";
 import { Link } from "react-router-dom";
-import { SCREENS } from "../../../../../navigation/constants";
 import { User } from "../../../../../types";
 import { getContractors } from "../../helper";
 
@@ -13,7 +12,7 @@ const ConstractorsTable = ({
 }: {
   contractors: User[]|null
 }) => {
-  const dataTitles = ['S/N', 'Surnaame', 'Street', 'Postcode', 'Location', 'e-mail']
+  const dataTitles = ['S/N', 'Name', 'Street', 'Postcode', 'Location', 'e-mail']
   return (
     <div className="is-scrollbar-hidden min-w-full overflow-x-auto my-4">
       <table className="w-full text-left">
@@ -39,7 +38,7 @@ const ConstractorsTable = ({
             >
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">{index+1}</td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <Link className="text-red-500" to={SCREENS.CONTRACTOR_DETAILS}>
+                <Link className="text-red-500" to={`/contractor/${con._id}`}>
                   {con.first_name}
                 </Link>
               </td>

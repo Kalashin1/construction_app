@@ -18,6 +18,11 @@ const links = [{
   text: 'Todos',
   svg: 'fas fa-cog',
   link: SCREENS.TODO
+},
+{
+  text: 'Logout',
+  svg: 'fas fa-right-from-bracket',
+  link: SCREENS.LOGIN
 }]
 
 const DropdownItem = ({
@@ -25,7 +30,11 @@ const DropdownItem = ({
   text,
   link
 }: DropdownItemProps) => (
-  <li>
+  <li onClick={() => {
+    if (text === 'Logout') {
+      sessionStorage.clear();
+    }
+  }}>
     <Link
       className="flex items-center space-x-2 rounded-lg bg-primary px-4 py-2.5 tracking-wide text-white outline-none transition-all dark:bg-accent"
       to={link}
@@ -49,7 +58,7 @@ const DashboardButtonDropdown = () => {
           <div className="avatar h-14 w-14">
             <img
               className="rounded-full"
-              src={user?.avatar ?? "images/100x100.png"}
+              src={user && user.avatar ? user.avatar:  "images/100x100.png"}
               alt="avatar"
             />
           </div>
@@ -57,7 +66,8 @@ const DashboardButtonDropdown = () => {
             <h3
               className="text-base font-medium text-slate-700 dark:text-navy-100"
             >
-             {`${user?.last_name} ${user?.first_name}`}
+             {`${user?.last_name} ${
+                user?.role !== 'contractor' || 'executor' && user?.first_name}`}
             </h3>
             <p className="text-xs+">{user?.role}</p>
           </div>

@@ -1,16 +1,18 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Dispatch, SetStateAction } from "react";
-import { assignStandIn } from "../../../../../helper/user";
-import { StandIn } from "../../../../../../../types";
+import { assignStandIn } from "../../../../helper/user";
+import { User } from "../../../../../../types";
 
 const DropdownItem = ({
   employee,
   owner_id
 }: {
-  employee: StandIn;
+  employee: User;
   owner_id: string;
 }) => {
   const assignNewStandIn = async () => {
     console.log(owner_id, employee)
+    // @ts-ignore
     const [err, payload] = await assignStandIn(owner_id, { ...employee! });
     if (err) {
       alert('oops something happened');
@@ -74,7 +76,7 @@ const EmployeesDropdown = ({
   owner_id
 }: {
   showDropdown: Dispatch<SetStateAction<boolean>>;
-  employee: StandIn;
+  employee: User;
   owner_id: string;
 }) => {
   return (

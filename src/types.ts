@@ -29,9 +29,11 @@ export interface User {
   position: string;
   standIn: StandIn[];
   trades: TradeInterface[];
-  documents: UserDocuments;
+  documents: UserDocument[];
   logoUrl: LogoUrl;
   address: Address;
+  socialSecurityNumber: string;
+  taxIdNumber: string;
 }
 
 export type Address = {
@@ -69,7 +71,7 @@ export type StandIn = {
   email: string;
   id: string;
   position: string;
-} & Partial<Pick<User, "first_name" | "last_name">>;
+} & Partial<Pick<User, "first_name" | "last_name" | "phone">>;
 
 export interface TradeInterface {
   _id: string;
@@ -91,6 +93,13 @@ export type LogoUrl = {
   invoiceLogo: string;
 }
 // 650d6002aa58b8332aac7f02
+
+export type UserDocument = {
+  name: string;
+  fileUrl: string;
+  uploadedAt: string;
+  status: string;
+}
 
 export type UserDocuments = {
   BusinessRegistration: string;

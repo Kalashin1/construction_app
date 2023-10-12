@@ -14,7 +14,6 @@ import CreateProjectPage from '../pages/dashboard/projects/create-project';
 import OPSAdministration from '../pages/dashboard/bills/ops';
 import ProjectDetails from '../pages/dashboard/projects/details';
 import Profile from '../pages/dashboard/profie';
-import ContractorDetails from '../pages/dashboard/settings/contractors/details';
 import ChatApp from '../pages/dashboard/projects/chat';
 import { SCREENS } from './constants';
 import Todos from '../pages/dashboard/apps/todos';
@@ -28,6 +27,16 @@ import Trades from '../pages/dashboard/profie/trades';
 import Documents from '../pages/dashboard/profie/documents';
 import ForgotPassword from '../pages/auth/forgot-password';
 import ResetPassword from '../pages/auth/reset-password';
+
+import UserProfile from '../pages/dashboard/settings/contractors/details/profile';
+import UserBillingDetails from '../pages/dashboard/settings/contractors/details/billing-details';
+import UserDocuments from '../pages/dashboard/settings/contractors/details/documents';
+import ContactPerson from '../pages/dashboard/settings/contractors/details/contact-person';
+import Frameworks from '../pages/dashboard/settings/contractors/details/frameworks/';
+import TargetSales from '../pages/dashboard/settings/contractors/details/target-sales/';
+import Employee from '../pages/dashboard/settings/contractors/details/employees-overview';
+import Employees from '../pages/dashboard/profie/employees';
+
 
 const router = createBrowserRouter([
   {
@@ -92,7 +101,7 @@ const router = createBrowserRouter([
   },
   {
     path: SCREENS.CONTRACTOR_DETAILS,
-    element: (<ContractorDetails />)
+    element: (<UserProfile />)
   },
   {
     path: SCREENS.CHAT,
@@ -135,12 +144,45 @@ const router = createBrowserRouter([
     element: (<Documents />)
   },
   {
+    path: SCREENS.CONTRACTOR_BILLING_DETAILS,
+    element: (<UserBillingDetails />)
+  },
+  {
+    path: SCREENS.FRAMEWORKS,
+    element: (<Frameworks />)
+  },
+  {
+    path: SCREENS.USER_DOCUMENTS,
+    element: (<UserDocuments />)
+  },
+  {
+    path: SCREENS.TARGET_SALES,
+    element: (<TargetSales />)
+  },
+  {
+    path: SCREENS.CONTACT_PERSON,
+    element: (<ContactPerson />)
+  },
+  {
+    path: SCREENS.DOCUMENTS,
+    element: (<Documents />)
+  },
+
+  {
     path: SCREENS.FORGOT_PASSWORD,
     element: (<ForgotPassword />)
   },
   {
+    path: SCREENS.USER_EMPLOYEES,
+    element: (<Employee />)
+  },
+  {
     path: SCREENS.RESET_PASSWORD,
     element: (<ResetPassword />)
+  },
+  {
+    path: SCREENS.EMPLOYEES,
+    element: (<Employees />)
   }
 ]);
 
