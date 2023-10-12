@@ -22,6 +22,7 @@ export interface User {
   role: UserRoleType;
   avatar: string;
   employees: ReferrerType[];
+  executors: User[];
   bankDetails: UserBankDetails[] | UserBankDetails;
   billingDetails: BillingDetails;
   numberRanges: NumberRanges[];

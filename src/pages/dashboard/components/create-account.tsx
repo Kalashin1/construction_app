@@ -132,7 +132,7 @@ export const CreateAccountModal = ({
 
 
         <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
-          Create User Account
+          Create account
         </h2>
         <div className="mt-4 w-full">
           <form className="mt-4 space-y-4" ref={form}>

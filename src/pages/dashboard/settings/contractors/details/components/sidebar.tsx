@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { User } from "../../../../../../types";
 import { getUserById } from "../../../../helper/user";
+import { CreateAccountModal } from "../../../../components/create-account";
 
 type SidebarPanelHeaderProps = {
   headerText?: string;
@@ -103,7 +104,13 @@ export const SecondList = ({id}:{id: string}) => (
   </ul>
 )
 
-export const SidebarPanelBody = () => {
+type _SidebarPanelBodyProps = {
+  showCreateAccountModal: (...args: unknown[]) => void;
+};
+
+export const SidebarPanelBody = ({
+  showCreateAccountModal
+}:_SidebarPanelBodyProps) => {
   const {id} = useParams();
   const [user, setUser] = useState<User|null>(null)
 
@@ -129,9 +136,11 @@ export const SidebarPanelBody = () => {
       data-simplebar
     >
       <div className="mt-4 flex px-4 pb-4 shadow-sm">
-        <button className="btn w-full space-x-2 rounded-full border border-slate-200 py-2 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-500 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90">
+        <button className="btn w-full space-x-2 rounded-full border border-slate-200 py-2 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-500 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90"
+          onClick={() => {showCreateAccountModal()}}
+        >
           
-          <span> Executors</span>
+          <span>Create Account</span>
         </button>
       </div>
       <SecondList id={user?._id as string} />
@@ -143,12 +152,14 @@ export const SidebarPanelBody = () => {
 
 
 
-type SidebarPanelProps = SidebarPanelHeaderProps & SidebarPanelBodyProps
+type SidebarPanelProps = SidebarPanelHeaderProps & SidebarPanelBodyProps & _SidebarPanelBodyProps
 
 const SidebarPanel = ({
   headerText,
-  closeSidebar
+  closeSidebar,
+  showCreateAccountModal
 }: SidebarPanelProps) => {
+  const [showAccountModal, updateShowAccountModal] = useState(false)
   return (
     <div className="w-72 py-2 shadow-md absolute" style={{ top: '-.45rem' }}>
       <div
@@ -157,7 +168,10 @@ const SidebarPanel = ({
         {/* <!-- Sidebar Panel Header --> */}
         <SidebarPanelHeader headerText={headerText} closeSidebar={closeSidebar} />
         {/* <!-- Sidebar Panel Body --> */}
-        <SidebarPanelBody />
+        <SidebarPanelBody showCreateAccountModal={() => updateShowAccountModal(true)} />
+        {showAccountModal && (<CreateAccountModal action={() => {
+          updateShowAccountModal(false)
+        }} />)}
       </div>
     </div>
   );

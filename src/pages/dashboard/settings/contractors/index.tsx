@@ -6,17 +6,17 @@ import { SCREENS } from "../../../../navigation/constants";
 const Contractors = () => {
   return (
     <Layout>
-      <main className="p-6">
+      <section className="p-8 md:p-16">
         <BreadCrumb
           pageName="General Contractor"
-          firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard'}}
-          secondLevel={{ link: '', text: 'General Contractor'}}
+          firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard' }}
+          secondLevel={{ link: '', text: 'General Contractor' }}
         />
-
-        <section>
+        <main className="my-6">
           <ContractorsOverview />
-        </section>
-      </main>
+         
+        </main>
+      </section>
     </Layout>
   );
 };

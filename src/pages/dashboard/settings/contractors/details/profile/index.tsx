@@ -14,6 +14,7 @@ const ProfilePage = () => {
     showSidebar,
     updateShowSidebar,
   } = useContext(SidebarContext);
+
   return (
     <Layout
       sidePanel={
@@ -30,16 +31,16 @@ const ProfilePage = () => {
         )
       }
     >
-     <section className="p-8 md:p-20">
+      <section className="p-8 md:p-20">
 
-      <BreadCrumb
-        pageName="Contractor Details"
-        firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard' }}
-        secondLevel={{ link: SCREENS.CONTRACTORS, text: 'General Contractor' }}
-        thirdLevel={{ link: SCREENS.CONTRACTOR_DETAILS, text: 'General contractor details' }}
-      />
+        <BreadCrumb
+          pageName="Contractor Details"
+          firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard' }}
+          secondLevel={{ link: SCREENS.CONTRACTORS, text: 'General Contractor' }}
+          thirdLevel={{ link: SCREENS.CONTRACTOR_DETAILS, text: 'General contractor details' }}
+        />
         <Profile />
-     </section>
+      </section>
     </Layout>
   )
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { ReactNode, useEffect, useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -136,7 +137,7 @@ const SidebarLink = ({
   link
 }: {
   svg: ReactNode;
-  link: string
+  link: string;
 }) => {
   const location = useLocation()
   return (
@@ -166,7 +167,7 @@ const Sidebar = ({
 }: Props) => {
   const deviceWidth = window.innerWidth;
   const location = useLocation()
-  const {user} = useContext(UserAuthContext);
+  const {user} = useContext(UserAuthContext)
 
   useEffect(() => {
     const sidebarLink = sidebarLinksArray.find(
@@ -244,9 +245,10 @@ const Sidebar = ({
           <div className="flex flex-col items-center space-y-3 py-3">
 
             {bottomLinks.map((bottomLink, index) => {
-              console.log(bottomLink)
               if ((bottomLink.text.includes('General Contractors')) && (user?.role !== 'admin')) {
-                return (<></>) 
+                bottomLink.text = 'General Executors';
+                // @ts-ignore
+                bottomLink.children[0].text = 'Executors';
               }
               return (
                 <SidebarLink
