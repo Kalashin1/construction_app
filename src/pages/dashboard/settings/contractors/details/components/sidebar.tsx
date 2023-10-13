@@ -152,12 +152,11 @@ export const SidebarPanelBody = ({
 
 
 
-type SidebarPanelProps = SidebarPanelHeaderProps & SidebarPanelBodyProps & _SidebarPanelBodyProps
+type SidebarPanelProps = SidebarPanelHeaderProps & SidebarPanelBodyProps 
 
 const SidebarPanel = ({
   headerText,
   closeSidebar,
-  showCreateAccountModal
 }: SidebarPanelProps) => {
   const [showAccountModal, updateShowAccountModal] = useState(false)
   return (

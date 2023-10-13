@@ -1,6 +1,5 @@
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { getEmployeesFolder, getExecutorsFolder, getFiles } from '../../../../helper'
-import { UserAuthContext } from "../../../../../../../App";
 
 export type FolderType = {
   name: string;
@@ -21,8 +20,6 @@ const FoldersTable = ({
   parentFolders: FolderType[]
   RootFolderName: FolderType[]
 }) => {
-
-  const {user, getUser} = useContext(UserAuthContext);
 
   const getFolderFiles = async (prefix: string) => {
     const __prefix = localStorage.getItem('prefix');

@@ -31,7 +31,7 @@ const FileManager = () => {
                 () => updateShowSidebar && updateShowSidebar(!showSidebar)
             }
             setCurrentFolders={setCurrentFolder}
-            links={['contractors']}
+            links={['contractors', 'executors', 'employees', 'projects', 'shop']}
             headerText="Files"
             // @ts-ignore
             setParentFolder={setParentFolder}
