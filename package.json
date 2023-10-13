@@ -15,6 +15,7 @@
     "@tanstack/react-query": "4.0",
     "dotenv": "^16.3.1",
     "framer-motion": "^10.16.4",
+    "pdf2json": "^3.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-multi-carousel": "^2.8.4",

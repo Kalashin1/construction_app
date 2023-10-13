@@ -9,6 +9,11 @@ const DocumentsTable = () => {
   const { user, setCurrentUser } = useContext(UserAuthContext)
   const dataTitles = ['Documents', 'Mandatory', 'Status', '']
 
+  function splitCamelCase(word: string) {
+    const words = word.split(/(?=[A-Z])+/)
+    return words.join(' ');
+  }
+
   const uploadUserDocument = async (documentType: string) => {
     const [err, file] = await getFile();
     if (err) {
@@ -50,8 +55,7 @@ const DocumentsTable = () => {
           {UserDocumentsKeys.map((userDocK, index) => (
             <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500" key={index}>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {user?.documents && user?.documents[userDocK] ? (
-                  <Link to={user?.documents[userDocK]} className='text-blue-500 underline'>{userDocK}</Link>) : userDocK}
+                <Link to={user?.documents[index]?.fileUrl ?? ''} className='text-blue-500 underline' target='_blank'>{splitCamelCase(userDocK)}</Link>
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 <span>
@@ -59,10 +63,10 @@ const DocumentsTable = () => {
                 </span>
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                Pending upload
+                {user?.documents[index]?.status ?? "Pending Upload"}
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {user?.documents && user?.documents[userDocK] ? (<button
+                {user?.documents && user?.documents[index]?.name === userDocK ? (<button
                   className="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
                 >
                   Update Document

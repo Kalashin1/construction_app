@@ -1,8 +1,7 @@
-import { useEffect, useState, useMemo } from "react";
-import { getUserFromToken } from "../../../../../helper/user";
-import { useNavigate } from "react-router-dom";
-import { SCREENS } from "../../../../../../../navigation/constants";
-import { User } from "../../../../../../../types";
+import { useEffect, useState } from "react";
+import { getUserById } from "../../../../helper/user";
+import { useNavigate, useParams } from "react-router-dom";
+import { User } from "../../../../../../types";
 import { CreateEmployeeAccountModal } from "./create-employee-modal";
 import EmployeesComponent from "./employee";
 import Carousel from 'react-multi-carousel';
@@ -27,17 +26,25 @@ const responsive = {
 };  
 
 
-const EmployeesOverview = () => {
+const EmployeesOverview = ({
+  owner_id
+}: {
+  owner_id?: string
+}) => {
   const navigate = useNavigate();
-  const token = useMemo(() => sessionStorage.getItem('userToken'), []);
+  const {id} = useParams()
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const setUp = async () => {
-      const abCnt = new AbortController();
-      const [err, _user] = await getUserFromToken(token!, abCnt);
+      let err, _user;
+      if (!owner_id) {
+        [err, _user] = await getUserById(id!);
+      } else {
+        [err, _user] = await getUserById(owner_id)
+      }
       if (!_user || err) {
-        navigate(SCREENS.LOGIN)
+        alert('error getting user')
       }
 
       if (_user) {
@@ -46,7 +53,7 @@ const EmployeesOverview = () => {
     }
 
     setUp()
-  }, [navigate, token]);
+  }, [navigate, id, owner_id]);
 
   const [showModal, updateShowModal] = useState(false)
   return (
@@ -59,12 +66,12 @@ const EmployeesOverview = () => {
           Employees
         </h3>
 
-        <button
+      {owner_id &&(  <button
           className="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
           onClick={() => updateShowModal(true)}
         >
           Create Employee
-        </button>
+        </button>)}
       </div>
 
       {/* <div className="grid md:grid-cols-2 md:gap-4 justify-between"> */}
@@ -84,7 +91,7 @@ const EmployeesOverview = () => {
           dotListClass="custom-dot-list-style"
           itemClass="carousel-item-padding-40-px"
         >
-          {user.employees.map((emp) => (
+          {user.employees.map((emp: { id: string; }) => (
             <div className="mx-2">
               <EmployeesComponent
                 owner_id={user._id!}

@@ -68,7 +68,6 @@ function Signup() {
         setEmailError(true)
       }
     } else if (_user) {
-      alert('account created successfully');
       sessionStorage.setItem('userToken', _user.user.token)
       console.log(_user.user.token);
       navigate(SCREENS.PROFILE);

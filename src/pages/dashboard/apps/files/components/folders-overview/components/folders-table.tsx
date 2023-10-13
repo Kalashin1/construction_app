@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { getEmployeesFolder, getExecutorsFolder, getFiles } from '../../../../helper'
 
 export type FolderType = {
@@ -35,9 +35,12 @@ const FoldersTable = ({
     }
   }
 
+  const [prefix, setPrefix] = useState('')
+
   const runSetup = async (folder: FolderType) => {
     if (folder.children.length === 23) {
       localStorage.setItem('prefix', folder.name);
+      setPrefix(folder.name);
     }
 
     if (folder.children.length > 0) {
@@ -46,7 +49,7 @@ const FoldersTable = ({
     } else {
       console.log(folder.name)
       if (folder.name === 'Employees') {
-        const id = localStorage.getItem('prefix')?.split('-').at(-1)
+        const id = prefix?.split('-').at(-1)
         const [error, employeesFolder] = await getEmployeesFolder(id!)
         if (error) {
           alert('oops something happened!');
@@ -57,8 +60,9 @@ const FoldersTable = ({
         }
       }
       else if (folder.name === 'Executors') {
-        const id = localStorage.getItem('prefix')?.split('-').at(-1)
-        const [error, employeesFolder] = await getExecutorsFolder(id!)
+        console.log(prefix)
+        const id = localStorage.getItem('prefix')?.split('-').at(-1);
+        const [error, employeesFolder] = await getExecutorsFolder(id!);
         if (error) {
           alert('oops something happened!');
           console.log(error)
@@ -103,7 +107,7 @@ const FoldersTable = ({
             </tr>
           </thead>
           <tbody>
-            {folders ? folders.map((folder, index) => {
+            {folders && folders.map ? folders.map((folder, index) => {
               let folderName = folder.name
               if (folder.name) {
                 const folderNameArray = folder?.name?.split('-');

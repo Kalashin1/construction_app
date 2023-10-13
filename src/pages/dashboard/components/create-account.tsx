@@ -79,7 +79,7 @@ export const CreateAccountModal = ({
   action: (...args: unknown[]) => void;
 }) => {
   const form = useRef<HTMLFormElement | null>(null);
-  const {getUser} = useContext(UserAuthContext);
+  const { getUser, user } = useContext(UserAuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<boolean | null>(null)
   const navigate = useNavigate()
@@ -88,8 +88,8 @@ export const CreateAccountModal = ({
     e.preventDefault();
     setIsLoading(true)
     setError(false)
-    const { email: { value: email }, password: { value: password }, userRole: { value: role },  first_name: {value: first_name},
-    last_name: {value: last_name}, } = form;
+    const { email: { value: email }, password: { value: password }, userRole: { value: role }, first_name: { value: first_name },
+      last_name: { value: last_name }, } = form;
     const [err, payload] = await createAccount({
       email,
       password,
@@ -132,7 +132,7 @@ export const CreateAccountModal = ({
 
 
         <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
-          Create User Account
+          Create account
         </h2>
         <div className="mt-4 w-full">
           <form className="mt-4 space-y-4" ref={form}>
@@ -166,8 +166,14 @@ export const CreateAccountModal = ({
                 name="userRole"
                 className="form-select mt-1.5 w-full rounded-lg bg-slate-150 px-3 py-2 ring-primary/50 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
               >
-                <option value="contractor">Contractor</option>
-                <option value="executor">Executor</option>
+                {user?.role === 'admin' && (<option value="contractor">Contractor</option>)}
+                {user?.role === 'contractor' && (
+                  <>
+                    <option value="executor">Executor</option>
+                    <option value="employee">Employee</option>
+                  </>
+                )}
+                {user?.role === 'executor' && (<option value="employee">Employee</option>)}
               </select>
             </label>
           </form>

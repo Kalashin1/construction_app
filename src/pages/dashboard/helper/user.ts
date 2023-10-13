@@ -17,7 +17,7 @@ export const getUserFromToken = async (
   }
 };
 
-export const getUserById =async (id:string) => {
+export const getUserById = async (id:string): Promise<[Error|null, User|null]> => {
   const res = await fetch(`${API_BASE_URL}/user/id/${id}`);
   if (res.ok) {
     const paylaod = await res.json()
@@ -40,7 +40,9 @@ export const updateUserProfile = async (
     billingDetails,
     numberRanges,
     numberRangesLocal,
-    address
+    address,
+    socialSecurityNumber,
+    taxIdNumber
   }: Partial<User>,
   abortController?: AbortController
 ): Promise<[Error | null, User | null]> => {
@@ -56,7 +58,9 @@ export const updateUserProfile = async (
       billingDetails,
       numberRanges,
       numberRangesLocal,
-      address
+      address,
+      socialSecurityNumber,
+      taxIdNumber,
     }),
     headers: {
       "Content-Type": "application/json",

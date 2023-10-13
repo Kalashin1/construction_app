@@ -31,7 +31,20 @@ function Login() {
     if (_user) {
       alert('login successful');
       sessionStorage.setItem('userToken', _user.token)
-      if(!_user.first_name|| !_user.last_name || _user.avatar)
+      if(
+          !_user.first_name || 
+          !_user.last_name || 
+          !_user.avatar || 
+          !_user.address || 
+          !_user.bankDetails || 
+          !_user.phone ||
+          !_user.username || 
+          !_user.email || 
+          (_user.role === 'employee' && !_user.taxIdNumber)||
+          (_user.role === 'employee' && !_user.socialSecurityNumber)||
+          (_user.role !== 'employee' || 'admin' && !_user.billingDetails)||
+          (_user.role !== 'employee' || 'admin' && !_user.documents)
+        )
         navigate(SCREENS.PROFILE)
       else navigate(SCREENS.DASHBOARD);
 

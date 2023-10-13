@@ -5,7 +5,7 @@ import { FormEvent, ReactNode, useContext, useEffect, useRef, useState } from "r
 import { useUpateProfile } from "../../hooks";
 import { UserBankDetails } from "../../../../../types";
 import HeaderBar from "./components/header-bar";
-import FooterBar  from "./components/footer-bar";
+import FooterBar from "./components/footer-bar";
 import { BankDetails } from "./components/bank-details";
 import { UserAuthContext } from "../../../../../App";
 import { getFile, uploadProfilePhoto } from "../../../helper/uploads";
@@ -57,7 +57,7 @@ const AccountSettings = () => {
     makeUpdate,
   } = useUpateProfile();
 
-  const {user, setCurrentUser, getUser} = useContext(UserAuthContext);
+  const { user, setCurrentUser, getUser } = useContext(UserAuthContext);
 
   useEffect(() => {
     const setUp = async () => {
@@ -66,7 +66,9 @@ const AccountSettings = () => {
       if (_user) {
         setCurrentUser!(_user);
         setEmail(_user.email);
-      } else if (err) {
+      }
+
+      if (err) {
         navigate(SCREENS.LOGIN);
       }
     }
@@ -74,16 +76,21 @@ const AccountSettings = () => {
     setUp();
   }, [])
 
+  const isEmployeeOrAdmin = user?.role === 'employee' || user?.role === 'admin';
+  const isEmployee = user?.role === 'employee';
+
   const updateUserProfile = async (e: FormEvent, form: HTMLFormElement) => {
     e.preventDefault()
-    const { 
-      username: { value: username }, 
-      phone: { value: phone }, 
-      first_name: { value: first_name }, 
+    const {
+      username: { value: username },
+      phone: { value: phone },
+      first_name: { value: first_name },
       last_name: { value: last_name },
-      province: {value: province },
-      zip: {value: zip},
-      street: {value: street }
+      province: { value: province },
+      zip: { value: zip },
+      street: { value: street },
+      taxIdNumber: {value: taxIdNumber},
+      socialSecurityNumber: {value: socialSecurityNumber}
     } = form;
     const [error, _user] = await makeUpdate({
       _id: user?._id,
@@ -95,7 +102,9 @@ const AccountSettings = () => {
         street,
         zip,
         province
-      }
+      },
+      taxIdNumber,
+      socialSecurityNumber
     });
 
     if (error) {
@@ -190,7 +199,7 @@ const AccountSettings = () => {
           <div className="my-7 h-px bg-slate-200 dark:bg-navy-500"></div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label className="block">
-              <span>First name </span>
+              <span>{isEmployeeOrAdmin ? 'First Name' : 'Name'}</span>
               <span className="relative mt-1.5 flex">
                 <input
                   className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -207,7 +216,7 @@ const AccountSettings = () => {
                 </span>
               </span>
             </label>
-            <label className="block">
+            <label className={`${isEmployeeOrAdmin ? 'block': 'hidden'}`}>
               <span>Last Name </span>
               <span className="relative mt-1.5 flex">
                 <input
@@ -318,6 +327,40 @@ const AccountSettings = () => {
                   placeholder="Enter Province"
                   name="province"
                   defaultValue={user?.address?.province}
+                  type="text"
+                />
+                <span
+                  className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent"
+                >
+                  <i className="fa-regular fa-user text-base"></i>
+                </span>
+              </span>
+            </label>
+            <label className={`${isEmployee ? 'block': 'hidden'}`}>
+              <span>Tax ID Number</span>
+              <span className="relative mt-1.5 flex">
+                <input
+                  className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                  placeholder="Enter Tax id number"
+                  name="taxIdNumber"
+                  type="text"
+                  defaultValue={user?.taxIdNumber}
+                />
+                <span
+                  className="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent"
+                >
+                  <i className="fa-regular fa-user text-base"></i>
+                </span>
+              </span>
+            </label>
+            <label className={`${isEmployee ? 'block': 'hidden'}`}>
+              <span>Social Security Number</span>
+              <span className="relative mt-1.5 flex">
+                <input
+                  className="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                  placeholder="Enter Social Security Number"
+                  name="socialSecurityNumber"
+                  defaultValue={user?.socialSecurityNumber}
                   type="text"
                 />
                 <span

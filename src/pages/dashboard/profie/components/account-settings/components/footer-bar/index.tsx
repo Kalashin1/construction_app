@@ -13,7 +13,6 @@ type FooterBarProps = {
 const FooterBar = (Props: FooterBarProps) => {
   const [showModal, updateShowModal] = useState(false);
   const {setCurrentUser, getUser, user} = useContext(UserAuthContext);
-  console.log(Props.standIns)
   const deleteStandIn = async (employee_id: string) => {
     if (confirm('Are you sure you want to delete this stand in')) {
       const [error, payload] = await deleteEmployeeStandIn(
