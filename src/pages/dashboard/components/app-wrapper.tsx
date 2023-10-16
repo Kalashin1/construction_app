@@ -1,13 +1,16 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import MenuIcon from "../svg/menu";
 import SearchIcon from "../svg/search";
 import LightModeIcon from "../svg/light";
 import NotificationIcon from "../svg/notificaiton";
 import SquareIcon from "../svg/square";
 import DashboardButtonDropdown from "./dashboard-button-dropdown";
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useContext } from "react";
 import { SidebarContext, UserAuthContext } from "../../../App";
 import NotificationDropdown from "./notification-dropdown";
+import { INotification } from "../../../types";
+import { getUserNotification, markAllNotificationAsRead } from "../helper/notifications";
 
 type Props = {
   toggleSidebar: (...args: unknown[]) => void
@@ -24,22 +27,57 @@ type Props = {
 const AppWrapper: FC<Props> = ({
   toggleSidebar
 }) => {
-  const [showDashboardDropdown, updateShowDashboardDropdown] = useState(false);
-  const [showNotifications, updateShowNotifications] = useState(false);
+
   const {
     updateShowLeftSidebar,
-    showLeftSidebar
+    showLeftSidebar,
+    updateShowDashboardDropdown,
+    showNotifications,
+    showDashboardDropdown,
+    updateShowNotifications
   } = useContext(SidebarContext);
+  const { user } = useContext(UserAuthContext);
 
-  const {user} = useContext(UserAuthContext);
+  const [notifications, setNotifications] = useState<INotification[] | null>(null)
+
+  const readNotification = async () => {
+    const [error,] = await markAllNotificationAsRead(user?._id!);
+    if (error) {
+      alert('oops something happened');
+      console.log(error)
+      // setNotifications([])
+    }
+  }
 
   const switchMode = () => {
     const html = window.document.querySelector('html');
     html?.classList.toggle('dark')
   }
 
+  useEffect(() => {
+    const setUp = async () => {
+      if (user) {
+        console.log("user", user)
+        const [error, _notifications] = await getUserNotification(user?._id!);
+        if (error) {
+          console.log(error)
+        }
+
+        if (_notifications) {
+          setNotifications(_notifications);
+          console.log("notifications", _notifications);
+        }
+      }
+    }
+
+    setUp()
+  }, [user])
+
   return (
-    <nav className="header print:hidden relative z-0">
+    <nav className="header print:hidden relative z-0" onClick={() => {
+      updateShowDashboardDropdown!(false)
+      updateShowNotifications!(false)
+    }}>
       {/* <!-- App Header  --> */}
       <div
         className="px md:px-8 px-2 relative items-center justify-between flex-row space-x md:space-x-4 flex w-full bg-white dark:bg-navy-700 print:hidden"
@@ -62,24 +100,38 @@ const AppWrapper: FC<Props> = ({
             <span className="cursor-pointer" onClick={switchMode}>
               <LightModeIcon />
             </span>
-            <span className="cursor-pointer"
-              onClick={() => updateShowNotifications(!showNotifications)}
+            <span className={`cursor-pointer relative -top-${notifications?.length! > 0 ? 2: 0}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                updateShowNotifications!(true)
+                setTimeout(() => {
+                  readNotification()
+                }, 5000)
+              }}
             >
-              <NotificationIcon />
+              {notifications?.length! > 0 && (<div style={{ fontSize: '10px' }} className="h-4 w-4 rounded-full bg-red-500 relative left-1.5 text-white flex items-center justify-center font-bold">
+                {notifications!.length}
+              </div>)}
+              {showNotifications && notifications && (<NotificationDropdown notifications={notifications} />)}
+              <span className="">
+                <NotificationIcon />
+              </span>
             </span>
-            {showNotifications && (<NotificationDropdown />)}
             <span className="cursor-pointer"
               onClick={() => updateShowLeftSidebar!(!showLeftSidebar)}
             >
               <SquareIcon />
             </span>
             <span className="cursor-pointer"
-              onClick={() => updateShowDashboardDropdown(!showDashboardDropdown)}
+              onClick={(e) => {
+                e.stopPropagation();
+                updateShowDashboardDropdown!(!showDashboardDropdown);
+              }}
             >
               <div className="avatar mr-3 hidden h-8 w-8 lg:flex">
                 <img
                   className="rounded-full"
-                  src={user && user.avatar ? user.avatar:  "images/100x100.png"}
+                  src={user && user.avatar ? user.avatar : "images/100x100.png"}
                   alt="avatar"
                 />
               </div>

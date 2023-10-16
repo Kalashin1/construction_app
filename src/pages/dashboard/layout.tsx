@@ -30,6 +30,8 @@ const Layout: FC<Props> = ({
     updateShowSidebar,
     showLeftSidebar,
     updateShowLeftSidebar,
+    updateShowNotifications,
+    updateShowDashboardDropdown
   } = useContext(SidebarContext);
   const location = useLocation();
 
@@ -73,7 +75,13 @@ const Layout: FC<Props> = ({
             () => updateShowSidebar && updateShowSidebar(false) :
             () => { }
         }>
-          {children}
+          <div onClick={() => {
+            updateShowDashboardDropdown!(false)
+            updateShowNotifications!(false)
+          }}>
+
+            {children}
+          </div>
         </main>
       ) : (
         <main className="main-content relative pb-8 min-h-screen" onClick={
@@ -81,7 +89,12 @@ const Layout: FC<Props> = ({
             () => updateShowSidebar && updateShowSidebar(false) :
             () => { }
         }>
-          {children}
+          <div onClick={() => {
+            updateShowDashboardDropdown!(false)
+            updateShowNotifications!(false)
+          }}>
+            {children}
+          </div>
         </main>
       )
       }
