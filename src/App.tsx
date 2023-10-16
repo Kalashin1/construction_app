@@ -17,13 +17,17 @@ export type SidebarContextType = {
   deviceWidth: number;
   showLeftSidebar: boolean;
   updateShowLeftSidebar: Dispatch<SetStateAction<boolean>>;
+  showDashboardDropdown: boolean;
+  updateShowDashboardDropdown: Dispatch<SetStateAction<boolean>>;
+  showNotifications: boolean
+  updateShowNotifications: Dispatch<SetStateAction<boolean>>;
 }
 
 type UserPayload = User
 
 export type UserAuthContextType = {
   user: UserPayload | null
-  getUser: (abtCnt?: AbortController|null, token?: string) => Promise<[Error | null, UserPayload | null]>
+  getUser: (abtCnt?: AbortController | null, token?: string) => Promise<[Error | null, UserPayload | null]>
   setCurrentUser: Dispatch<SetStateAction<UserPayload>>
 }
 
@@ -35,6 +39,8 @@ function App() {
   const [showSidebar, updateShowSidebar] = useState(true);
   const [showProjectMenu, updateShowProjectMenu] = useState(false)
   const [showLeftSidebar, updateShowLeftSidebar] = useState(false)
+  const [showDashboardDropdown, updateShowDashboardDropdown] = useState(false);
+  const [showNotifications, updateShowNotifications] = useState(false);
   const deviceWidth = window.innerWidth;
 
 
@@ -45,6 +51,12 @@ function App() {
 
   useEffect(() => {
     const setUp = async () => {
+      if (!token) {
+        if (location.pathname !== SCREENS.LOGIN) {
+          if (location.pathname !== SCREENS.HOME)
+            location.assign('/login');
+        }
+      }
       const [error, _user] = await getUser()
       if (error) {
         setCurrentUser(null)
@@ -63,27 +75,31 @@ function App() {
   }, [])
 
   return (
-      <UserAuthContext.Provider value={{
-        user: currentUser,
-        //  @ts-ignore
-        getUser,
-        //  @ts-ignore
-        setCurrentUser
-      }}>
-        <SidebarContext.Provider
-          value={{
-            showSidebar,
-            updateShowSidebar,
-            showProjectMenu,
-            updateShowProjectMenu,
-            deviceWidth,
-            showLeftSidebar,
-            updateShowLeftSidebar
-          }}>
-          <RouterProvider router={router} />
-        </SidebarContext.Provider>
-      </UserAuthContext.Provider>
-  ) 
+    <UserAuthContext.Provider value={{
+      user: currentUser,
+      //  @ts-ignore
+      getUser,
+      //  @ts-ignore
+      setCurrentUser
+    }}>
+      <SidebarContext.Provider
+        value={{
+          showSidebar,
+          updateShowSidebar,
+          showProjectMenu,
+          updateShowProjectMenu,
+          deviceWidth,
+          showLeftSidebar,
+          updateShowLeftSidebar,
+          showDashboardDropdown,
+          showNotifications,
+          updateShowDashboardDropdown,
+          updateShowNotifications
+        }}>
+        <RouterProvider router={router} />
+      </SidebarContext.Provider>
+    </UserAuthContext.Provider>
+  )
 }
 
 export default App

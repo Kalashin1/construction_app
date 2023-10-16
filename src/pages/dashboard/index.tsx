@@ -12,7 +12,7 @@ import CreateAccountButton, {
   CopyTokenModal
 } from "./components/create-account";
 import { SCREENS } from "../../navigation/constants";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { UserAuthContext } from "../../App";
 
 const Dashboard = () => {
@@ -20,18 +20,9 @@ const Dashboard = () => {
   const [showAccountModal, updateShowAccountModal] = useState(false)
   const [showCopyTokenModal, updateShowCopyTokenModal] = useState(false);
 
-  const {user, setCurrentUser, getUser} = useContext(UserAuthContext);
+  const {user} = useContext(UserAuthContext);
 
-  useEffect(() => {
-    const setUp = async () => {
-      const token = sessionStorage.getItem('userToken');
-      const [, _user] = await getUser!(null, token!);
-      if (_user)
-        setCurrentUser!(_user)
-    }
-
-    setUp();
-  }, [getUser, setCurrentUser])
+  
 
   const links = [{
     text: 'Create Account',

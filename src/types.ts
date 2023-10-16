@@ -147,3 +147,13 @@ export const UserDocumentsKeys = [
   "InstallerIDCard",
   "ProofOfExpertiseAccordingToTRGS",
 ] as const
+
+export interface INotification {
+  _id: string;
+  user_id: string;
+  shortText: string;
+  isRead: boolean;
+  type: string;
+  createdAt: string;
+  updatedAt: string;
+}
