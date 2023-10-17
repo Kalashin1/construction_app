@@ -1,103 +1,39 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Modal } from "../../components/account-settings";
-import { Button } from "../../../../auth/components";
-import { TradeInterface, User } from "../../../../../types";
-import { getUserById, getUserFromToken } from "../../../helper/user";
-import { useNavigate } from "react-router-dom";
-import { SCREENS } from "../../../../../navigation/constants";
-import { TradeIcons, assignUserTrade, getAllTrades, removeUserTrade } from "./helper";
+import {
+  useContext, useEffect, useState
+} from "react";
+import { TradeIcons, deletePositons, getPositions, removeUserTrade } from "./helper";
+import * as XLSX from 'xlsx'
+import { UserAuthContext } from "../../../../../App";
+import { getContract } from "../../../settings/contractors/details/frameworks/helper";
+import { CONTRACT_STATUS, Contract } from "../../../../../types";
+import { Link } from "react-router-dom";
 
-const AddTradeModal = ({
-  closeModal,
-  _id,
-  setUser
-}: {
-  closeModal: (...args: unknown[]) => void;
-  _id: string;
-  setUser: Dispatch<SetStateAction<User | null>>
-}) => {
-  const form = useRef<HTMLFormElement | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [trades, setTrades] = useState<TradeInterface[]>()
+const Trades = () => {
+  const { user, setCurrentUser } = useContext(UserAuthContext);
+  const [contracts, setContracts] = useState<Contract[] | null>();
 
   useEffect(() => {
-    const getTrades = async () => {
-      const [error, _trades] = await getAllTrades();
+    const setUp = async () => {
+      const [error, data] = await getContract({
+        contractor: user?.creator.id!,
+        executor: user?._id!,
+        status: CONTRACT_STATUS[0]
+      })
 
       if (error) {
-        alert('oops something happened!')
-        console.log(error)
-      } else if (_trades) {
-        console.log(_trades);
-        setTrades(_trades)
+        alert('error fetching contracts');
+        console.log(error);
       }
-    }
-    getTrades();
-  }, [])
 
-  const assignTradeToUser = async (e: Event, form: HTMLFormElement) => {
-    e.preventDefault();
-    setIsLoading(true)
-    const { trade: { value: selectedTrade } } = form;
-    const [error, payload] = await assignUserTrade(_id, selectedTrade);
-    setIsLoading(false)
-    if (error) {
-      alert('oops something happened!')
-    } else if (payload) {
-      alert('trade addedd successfully!');
-      const [, user] = await getUserById(_id);
-      closeModal();
-      setUser(user);
-    }
-  }
-
-
-  return (
-    <Modal
-      title="Add Trade"
-      closeModal={closeModal}
-    >
-      <form className="mt-4 space-y-4" ref={form}>
-        <label>
-          <p className="text-left">Please Select your Trade</p>
-          <select name="trade" className="w-full py-2">
-            {trades && trades.map((trade) => (
-              <option className="p-2" value={trade._id}>{trade.name}</option>
-            ))}
-
-          </select>
-        </label>
-        <Button
-          label="Add Trade"
-          action={(e) => { assignTradeToUser(e as Event, form.current!) }}
-          disabled={isLoading}
-        />
-      </form>
-    </Modal>
-  )
-}
-const Trades = () => {
-  const navigate = useNavigate()
-  const [showModal, updateShowModal] = useState(false)
-  const [user, setUser] = useState<User | null>(null)
-
-  const token = useMemo(() => sessionStorage.getItem('userToken'), [])
-  const visitLoginPage = useCallback(() => navigate(SCREENS.LOGIN), [navigate])
-
-  useEffect(() => {
-    const setUp = async (token: string) => {
-      const [err, _user] = await getUserFromToken(token);
-
-      if (err) {
-        visitLoginPage()
-      } else if (_user) {
-        setUser(_user);
+      if (data) {
+        console.log(data)
+        setContracts(data);
       }
     }
 
-    setUp(token!);
-  }, [token, visitLoginPage]);
+    setUp()
+  }, [user?._id, user?.creator.id])
 
   const deleteTrade = async (trade_id: string) => {
     if (confirm('delete this trade?')) {
@@ -107,10 +43,32 @@ const Trades = () => {
         alert(error)
       } else if (payload) {
         alert('trade deleted successfully!')
-        setUser(payload);
+        const [err, response] = await deletePositons({ trade_id, contractor_id: user?._id! })
+        if (err) {
+          alert('oops something happened!');
+          alert(err)
+        } else if (response) {
+          setCurrentUser!(payload)
+          alert('positions removed successfully!')
+        }
       }
     }
   }
+
+  const getTradePositions = async (trade_id: string) => {
+    console.log(trade_id)
+    const [error, payload] = await getPositions(trade_id);
+    if (error) {
+      alert('oops something happened!');
+      console.log(error);
+    } else {
+      const worksheet = XLSX.utils.json_to_sheet(payload);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Positions");
+      XLSX.writeFile(workbook, `${user?.first_name}-${trade_id}-positions.xlsx`, { compression: true });
+    }
+  }
+
   return (
     <div className="bg-white rounded-md shadow-md dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="p-8 flex flex-row justify-between items-center">
@@ -128,7 +86,7 @@ const Trades = () => {
             <i className="fas fa-pen-to-square" />
             <span className="ml-1">Capacity Planning</span>
           </button>
-          <button onClick={() => updateShowModal(true)}>
+          <button>
             <span>
               <i className="fas fa-plus" />
             </span>
@@ -139,9 +97,9 @@ const Trades = () => {
       <div className="p-6">
         <ul className="list-disc">
 
-          {user && user.trades.map((trade) => (
+          {contracts && contracts.map(({ trade, _id, status }) => (
             <li className="flex flex-row justify-between items-center my-4">
-              <div className={`text-${trade.color} text-lg`}>
+              <div className={`text-${trade.color} text-lg cursor-pointer`} onClick={() => getTradePositions(trade._id)}>
                 <span className="mr-2">
                   <i className={TradeIcons[trade.name]} />
                 </span>
@@ -150,20 +108,25 @@ const Trades = () => {
                 </span>
               </div>
 
-              <button onClick={() => deleteTrade(trade._id)}>
-                <i className="fas fa-times" />
-              </button>
+              <div>
+                <Link to={`/contract/${_id}`}>
+                  {status === CONTRACT_STATUS[1] ? (
+                    <i className="fas fa-times text-red-500 mr-4" />
+                  ) : (
+                    <i className="fa-solid fa-arrow-up-right-from-square mr-4" />
+                  )}
+                </Link>
+                <button onClick={() => deleteTrade(trade._id)}>
+                  <i className="fas fa-times" />
+                </button>
+              </div>
+
             </li>
           ))}
 
         </ul>
       </div>
-      {showModal && user && (
-        <AddTradeModal
-          _id={user._id!}
-          setUser={setUser}
-          closeModal={() => updateShowModal(false)}
-        />)}
+
     </div>
   );
 };

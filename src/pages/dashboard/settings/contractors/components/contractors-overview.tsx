@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { useState, useEffect, useContext } from "react";
 import { Button } from "../../../components/current-projects";
 import Pagination from "../../../components/pagination";
@@ -7,15 +8,18 @@ import { Link } from "react-router-dom";
 import { User } from "../../../../../types";
 import { getContractors } from "../../helper";
 import { UserAuthContext } from "../../../../../App";
+import AddTradeModal from "../../../profie/trades/components/trade-moda";
 
 const ConstractorsTable = ({
   contractors
 }: {
-  contractors: User[]|null
+  contractors: User[] | null
 }) => {
-  const dataTitles = ['S/N', 'Name', 'Street', 'Postcode', 'Location', 'e-mail']
+  const dataTitles = ['S/N', 'Name', 'Street', 'Postcode', 'Location', 'e-mail', 'action'];
+  const { setCurrentUser, user } = useContext(UserAuthContext);
+  const [showTradeModal, updateShowTradeModal] = useState(false)
   return (
-    <div className="is-scrollbar-hidden min-w-full overflow-x-auto my-4">
+    <div className="min-w-full overflow-x-auto my-4 relative">
       <table className="w-full text-left">
         <thead>
           <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
@@ -37,30 +41,42 @@ const ConstractorsTable = ({
               className="border border-transparent border-b-slate-200 dark:border-b-navy-500"
               key={index}
             >
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{index+1}</td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{index + 1}</td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 <Link className="text-red-500" to={`/contractor/${con._id}`}>
                   {con.first_name}
                 </Link>
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {con?.address?.street ? con.address.street :'Musterstraße. XXXXX, Stadt'}
+                {con?.address?.street ? con.address.street : 'Musterstraße. XXXXX, Stadt'}
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {con?.address?.zip ? con.address.zip :'45329'}
+                {con?.address?.zip ? con.address.zip : '45329'}
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-              {con?.address?.province ? con.address.province : ''}
+                {con?.address?.province ? con.address.province : ''}
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {con.email}
                 {/* <span className="bg-green-700 py-1 px-4 rounded text-white">success</span> */}
               </td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                <button className="border border-gray-700 px-4 py-1 rounded-lg" onClick={() => updateShowTradeModal(true)}>
+                  Send Contract
+                </button>
+              </td>
+              {showTradeModal && user?.role === "contractor" && (<AddTradeModal
+                closeModal={() => updateShowTradeModal(false)}
+                setUser={setCurrentUser!}
+                _id={user?._id!}
+                executor={con._id!}
+              />)}
             </tr>
           ))}
         </tbody>
 
       </table>
+
     </div>
   );
 };
@@ -69,11 +85,11 @@ const ConstractorsTable = ({
 const ConstructorsOverview = () => {
   const [numRows, setNumRows] = useState(0);
   const [contractors, setContractors] = useState<User[] | null>([]);
-  const  {user} = useContext(UserAuthContext);
+  const { user } = useContext(UserAuthContext);
 
   useEffect(() => {
     const setUp = async () => {
-      if (user?.role === 'admin'){
+      if (user?.role === 'admin') {
         const [error, payload] = await getContractors();
         if (error) {
           alert('oops something happened!');
@@ -83,7 +99,7 @@ const ConstructorsOverview = () => {
           console.log(payload)
         }
       }
-      if (user?.role === 'contractor'){
+      if (user?.role === 'contractor') {
         console.log(user.executors)
         setContractors(user.executors)
       }
@@ -131,7 +147,7 @@ const ConstructorsOverview = () => {
         </div>
       </div>
       <div>
-        <ConstractorsTable 
+        <ConstractorsTable
           contractors={contractors}
         />
         <Pagination />

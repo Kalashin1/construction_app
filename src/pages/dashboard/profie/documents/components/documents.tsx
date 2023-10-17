@@ -6,11 +6,11 @@ import { getFile, uploadDocument } from '../../../helper/uploads';
 import { Link } from 'react-router-dom';
 
 const DocumentsTable = () => {
-  const { user, setCurrentUser } = useContext(UserAuthContext)
-  const dataTitles = ['Documents', 'Mandatory', 'Status', '']
+  const { user, setCurrentUser } = useContext(UserAuthContext);
+  const dataTitles = ['Documents', 'Mandatory', 'Status', ''];
 
   function splitCamelCase(word: string) {
-    const words = word.split(/(?=[A-Z])+/)
+    const words = word.split(/(?=[A-Z])+/);
     return words.join(' ');
   }
 
@@ -28,12 +28,12 @@ const DocumentsTable = () => {
         alert('oops something happened!');
         console.log(error)
       } else if (payload) {
-        console.log(payload);
         alert(`profile photo updated successfully!`);
         setCurrentUser!(payload.user);
       }
     }
   }
+
   return (
     <div className="min-w-full overflow-x-scroll my-4">
       <table className="w-full text-left">
@@ -52,10 +52,10 @@ const DocumentsTable = () => {
           </tr>
         </thead>
         <tbody>
-          {UserDocumentsKeys.map((userDocK, index) => (
+          {UserDocumentsKeys && UserDocumentsKeys.map((userDocK, index) => (
             <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500" key={index}>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <Link to={user?.documents[index]?.fileUrl ?? ''} className='text-blue-500 underline' target='_blank'>{splitCamelCase(userDocK)}</Link>
+                <Link to={user?.documents ? user?.documents[index]?.fileUrl : ''} className='text-blue-500 underline' target='_blank'>{splitCamelCase(userDocK)}</Link>
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 <span>
@@ -63,7 +63,7 @@ const DocumentsTable = () => {
                 </span>
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {user?.documents[index]?.status ?? "Pending Upload"}
+                {user?.documents && user?.documents[index] ? user?.documents[index]?.status : "Pending Upload"}
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {user?.documents && user?.documents[index]?.name === userDocK ? (<button
