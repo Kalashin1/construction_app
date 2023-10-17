@@ -1,7 +1,16 @@
 import { CONTRACT_STATUS, Contract } from "../../../../../../../../types";
+import { getPositions } from "../../../../../../profie/trades/components/helper";
+import * as XLSX from 'xlsx';
 import { acceptContract, acceptContractParams, rejectContract, terminateContract } from "../../helper";
+import {Dispatch, SetStateAction} from 'react';
 
-const ContractHeader = ({ contract }: { contract: Contract }) => {
+const ContractHeader = ({ 
+  contract,
+  updateContract
+}: { 
+  contract: Contract, 
+  updateContract: Dispatch<SetStateAction<Contract>> 
+}) => {
 
   const accept = async (params: acceptContractParams) => {
     const [error, payload] = await acceptContract(params);
@@ -9,8 +18,8 @@ const ContractHeader = ({ contract }: { contract: Contract }) => {
       alert('oops something happened!')
       console.log(error)
     } else if (payload) {
-      alert('contract accepted successfully!')
-      console.log(payload)
+      alert('contract accepted successfully!');
+      updateContract(payload);
     }
   }
 
@@ -21,7 +30,7 @@ const ContractHeader = ({ contract }: { contract: Contract }) => {
       console.log(error)
     } else if (payload) {
       alert('contract accepted successfully!')
-      console.log(payload)
+      updateContract(payload)
     }
   }
 
@@ -32,7 +41,21 @@ const ContractHeader = ({ contract }: { contract: Contract }) => {
       console.log(error)
     } else if (payload) {
       alert('contract accepted successfully!')
-      console.log(payload)
+      updateContract(payload)
+    }
+  }
+
+  const getTradePositions = async (trade_id: string, contract: Contract) => {
+    console.log(trade_id)
+    const [error, payload] = await getPositions(trade_id);
+    if (error) {
+      alert('oops something happened!');
+      console.log(error);
+    } else {
+      const worksheet = XLSX.utils.json_to_sheet(payload);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Positions");
+      XLSX.writeFile(workbook, `${contract._id}-${trade_id}-positions.xlsx`, { compression: true });
     }
   }
 
@@ -64,7 +87,7 @@ const ContractHeader = ({ contract }: { contract: Contract }) => {
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
 
       <div className="flex justify-between p-4">
-        <button className="border border-gray-800 px-4 py-1 rounded-md shadow">
+        <button className="border border-gray-800 px-4 py-1 rounded-md shadow" onClick={() => getTradePositions(contract.trade._id, contract)}>
           <span className="mr-2">
             <i className="fas fa-download" />
           </span>
