@@ -33,7 +33,8 @@ export enum SCREENS {
   BILLING_DETAILS = '/billing-details',
   TRADES = '/trades',
   DOCUMENTS = '/documents',
-  EMPLOYEES = '/employees'
+  EMPLOYEES = '/employees',
+  CONTRACT = '/contract/:id',
 }
 
 export const API_BASE_URL = 

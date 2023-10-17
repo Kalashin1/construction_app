@@ -47,8 +47,8 @@ const BreadCrumb = ({
   thirdLevel
 }: Props) => {
   return (
-    <div className="flex flex-col md:flex-row justify-between">
-      <div className="mb-4">
+    <div className="flex flex-col md:flex-row justify-between items-center">
+      <div className="mb-4 md:mb-0">
         <h3>{pageName}</h3>
       </div>
       <ul className="flex flex-wrap items-center space-x-2">

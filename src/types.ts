@@ -35,6 +35,7 @@ export interface User {
   address: Address;
   socialSecurityNumber: string;
   taxIdNumber: string;
+  creator: ReferrerType;
 }
 
 export type Address = {
@@ -156,4 +157,32 @@ export interface INotification {
   type: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface PositionInterface {
+  _id: string;
+  shortText: string;
+  crowd: string;
+  units: "pcs";
+  price: number;
+  trade: string;
+  longText: string;
+  external_id: string;
+  createdAt?: string;
+  updatedAt: string;
+  contractor?: string;
+}
+
+export const CONTRACT_STATUS = ["GENERATED", "ACCEPTED", "REJECTED", "TERMINATED"];
+
+export interface Contract {
+  contractor: User;
+  executor: User;
+  generatedAt: string;
+  trade: TradeInterface;
+  _id: string;
+  status: (typeof CONTRACT_STATUS)[number];
+  terminatedAt: number;
+  acceptedAt: number;
+  positions: Array<PositionInterface>;
 }

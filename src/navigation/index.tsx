@@ -36,6 +36,7 @@ import Frameworks from '../pages/dashboard/settings/contractors/details/framewor
 import TargetSales from '../pages/dashboard/settings/contractors/details/target-sales/';
 import Employee from '../pages/dashboard/settings/contractors/details/employees-overview';
 import Employees from '../pages/dashboard/profie/employees';
+import Contract from '../pages/dashboard/settings/contractors/details/frameworks/contracts';
 
 
 const router = createBrowserRouter([
@@ -183,6 +184,10 @@ const router = createBrowserRouter([
   {
     path: SCREENS.EMPLOYEES,
     element: (<Employees />)
+  },
+  {
+    path: SCREENS.CONTRACT,
+    element: (<Contract />)
   }
 ]);
 
