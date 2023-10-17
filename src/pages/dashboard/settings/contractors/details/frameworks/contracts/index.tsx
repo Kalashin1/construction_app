@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import Layout from "../../../../../layout";
 import { SCREENS } from "../../../../../../../navigation/constants";
 import BreadCrumb from "../../../../../components/bread-crumb";
@@ -9,8 +10,8 @@ import { getContractById } from "../helper";
 import { Contract as ContractType } from "../../../../../../../types";
 
 const Contract = () => {
-  const [contract, setContract] = useState<ContractType|null>(null)
-  const {id} = useParams();
+  const [contract, setContract] = useState<ContractType | null>(null)
+  const { id } = useParams();
 
   useEffect(() => {
     const setUp = async () => {
@@ -32,7 +33,13 @@ const Contract = () => {
           thirdLevel={{ link: SCREENS.CONTRACTOR_DETAILS, text: 'General contractor details' }}
         />
         <main className="my-6">
-          {contract && (<ContractHeader contract={contract!} />) }
+          {contract && (
+            <ContractHeader
+            contract={contract!}
+              //  @ts-ignore 
+              updateContract={setContract}
+            />
+          )}
           {contract && (<PositionsOverview positions={contract.positions} />)}
         </main>
       </section>
