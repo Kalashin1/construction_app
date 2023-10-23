@@ -108,7 +108,7 @@ const HomeCards = () => {
 
         {cards.map((card, index) => (
           <Card
-            figure={card.figure}
+            figure={card.figure.toString()}
             svg={(<card.svg width={50} fill="#fff" />)}
             text={card.text}
             color={card.color}
