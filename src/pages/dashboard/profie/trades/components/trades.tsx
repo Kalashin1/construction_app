@@ -20,15 +20,21 @@ const Trades = () => {
         executor: user?._id!,
         status: CONTRACT_STATUS[0]
       })
+      const [err, acceptedContracts] = await getContract({
+        contractor: user?.creator.id!,
+        executor: user?._id!,
+        status: CONTRACT_STATUS[1]
+      })
 
-      if (error) {
+      if (error || err) {
         alert('error fetching contracts');
-        console.log(error);
+        console.log('error', error);
+        console.log('err', err);
       }
 
       if (data) {
         console.log(data)
-        setContracts(data);
+        setContracts([...data, ...acceptedContracts]);
       }
     }
 
@@ -97,8 +103,8 @@ const Trades = () => {
       <div className="p-6">
         <ul className="list-disc">
 
-          {contracts && contracts.map(({ trade, _id, status }) => (
-            <li className="flex flex-row justify-between items-center my-4">
+          {contracts && contracts.map(({ trade, _id }) => (
+            <li className={`flex flex-row justify-between items-center rounded-md my-4 border-${trade.color} border-2 p-4`}>
               <div className={`text-${trade.color} text-lg cursor-pointer`} onClick={() => getTradePositions(trade._id)}>
                 <span className="mr-2">
                   <i className={TradeIcons[trade.name]} />
@@ -110,23 +116,16 @@ const Trades = () => {
 
               <div>
                 <Link to={`/contract/${_id}`}>
-                  {status === CONTRACT_STATUS[1] ? (
-                    <i className="fas fa-times text-red-500 mr-4" />
-                  ) : (
-                    <i className="fa-solid fa-arrow-up-right-from-square mr-4" />
-                  )}
+                  <i className="fa-solid fa-arrow-up-right-from-square mr-4" />
                 </Link>
                 <button onClick={() => deleteTrade(trade._id)}>
                   <i className="fas fa-times" />
                 </button>
               </div>
-
             </li>
           ))}
-
         </ul>
       </div>
-
     </div>
   );
 };

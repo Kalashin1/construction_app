@@ -7,7 +7,7 @@ export const PositionsOverview = ({ positions }: { positions: PositionInterface[
 
   const [numRows, setNumRows] = useState(0)
   return (
-    <div className="bg-white rounded-md shadow-sm my-8">
+    <div className="bg-white rounded-md shadow-sm my-8 overflow-x-scroll">
       <div className="p-4">
         Contract positions
       </div>
@@ -34,7 +34,7 @@ export default PositionsOverview;
 const PositionTable = ({ positions }: { positions: PositionInterface[] }) => {
   const dataTitles = ['Position', 'Short Text', 'Crowd', 'Unit', 'Price']
   return (
-    <table className="w-full text-left">
+    <table className="w-full text-left overflow-x-scroll">
       <thead>
         <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
 
