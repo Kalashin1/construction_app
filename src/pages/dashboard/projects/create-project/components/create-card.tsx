@@ -1,4 +1,8 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+import { UserAuthContext } from "../../../../../App";
+import { createProject } from "../../../helper/project";
 import { getFile, uploadProject } from "../../../helper/uploads";
+import {useContext} from 'react';
 
 const Button = ({
   label,
@@ -19,6 +23,7 @@ const Button = ({
 };
 
 const CreateCard = () => {
+  const {user} = useContext(UserAuthContext)
   const uploadNewProject = async () => {
     const [err, file] = await getFile({
       'application/*': ['.pdf', '.xlsx', '.xls']
@@ -28,7 +33,7 @@ const CreateCard = () => {
     } else if (file) {
       console.log(file)
       const [error, response] = await uploadProject(
-        Math.floor(Math.random() * 100000).toString(),
+        user?._id!,
         file
       )
       if (error) {
@@ -37,6 +42,16 @@ const CreateCard = () => {
       } else if (response) {
         alert('project uploaded successfully')
         console.log(response)
+        const [projectErr, project] = await createProject(response);
+        if (projectErr) {
+          alert('oops something happened! '+ projectErr.message)
+          console.log(projectErr);
+        }
+
+        else if (project) {
+          alert('project created successfully')
+          console.log(project)
+        }
       }
     }
   }

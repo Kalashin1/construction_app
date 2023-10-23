@@ -1,7 +1,10 @@
-import { Dispatch, SetStateAction, useState } from "react";
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+import { Dispatch, SetStateAction, useState, useContext, useEffect } from "react";
 import { Button } from "../../../components/current-projects";
 import { TableSearch, SelectBox } from "../../../components/project-summary";
 import ProjectListTable from "./components/project-list-table";
+import { UserAuthContext } from "../../../../../App";
+import { getAllContractorProjects, getAllExecutorProjects, getAllProjects } from "../../../helper/project";
 
 const ProjectLists = ({
   updateShowFilter,
@@ -11,6 +14,40 @@ const ProjectLists = ({
   showFilter: boolean
 }) => {
   const [numRows, setNumRows] = useState(0);
+  const {user} = useContext(UserAuthContext);
+  const [projects, setProjects] = useState<[]|null>(null)
+
+  useEffect(() => {
+    const setUp = async () => {
+      let error, _projects;
+
+      switch (user?.role) {
+        case 'admin':
+          [error, _projects] = await getAllProjects();
+          break;
+        case 'contractor': 
+          [error, _projects] = await getAllContractorProjects(user._id?.toString()!);
+          break;
+        case 'executor':
+          [error, _projects] =await getAllExecutorProjects(user._id?.toString()!);
+          break;
+        default:
+          break;
+      }
+
+      if (error) {
+        alert('error fetching projects');
+        console.log(error)
+      }
+
+      if (_projects) {
+        console.log(_projects);
+        setProjects(_projects);
+      }
+    }
+
+    setUp()
+  }, [user?._id, user?.role])
   return (
     <div className="bg-white shadow-md rounded-md my-4 py-6 dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="flex flex-col sm:flex-row justify-between my-4 px-6 ">
@@ -50,7 +87,7 @@ const ProjectLists = ({
       </div>
 
       <div>
-        <ProjectListTable />
+        { projects && (<ProjectListTable projects={projects} />)}
         <div>
           <div className="flex flex-row justify-between px-4 py-4 sm:flex-row sm:items-center sm:space-y-0 sm:px-5">
             <div className="text-xs+">Footer Note</div>

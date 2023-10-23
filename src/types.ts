@@ -186,3 +186,65 @@ export interface Contract {
   acceptedAt: number;
   positions: Array<PositionInterface>;
 }
+
+export interface IProject {
+  _id: string;
+  contractor: string;
+  executors: string[];
+  status: typeof PROJECT_STATUS[number];
+  positions: ProjectPositions[];
+  shortagePositions: ProjectPositions[];
+  extraPositions: ProjectPositions[];
+  createdAt: string;
+  dueDate: string;
+  updatedAt: string;
+  external_id: string;
+  building: Building;
+  client: string;
+  rentalStatus: string;
+  construction_manager: Pick<User, 'email'| 'phone'> & {name: string};
+  commissioned_by: Pick<User, 'email'| 'phone'> & {name: string};
+  careTaker: Pick<User, 'email'| 'phone'> & {name: string};
+  construction_started: number;
+  paused_at: number;
+  billingDetails: string;
+  completed_at: number;
+  canceled_at: number;
+  sheduleByTrade: TradeSchedule[];
+}
+
+type TradeSchedule = {
+  string: string;
+}
+
+
+export const PROJECT_STATUS = ["CREATED", "ASSIGNED", "PAUSED", "COMPLETED", "NOT-FEASIBLE", "CANCELED"]
+
+export type createProjectParam = {
+  contractor_id: string; 
+  positions: ProjectPositions[]; 
+  dueDate: string; 
+  external_id: string; 
+  client: string;
+  building: Building;
+  commissioned_by: Pick<User, 'email'| 'phone'> & {name: string};
+  billingDetails: string;
+  rentalStatus: string;
+  careTaker: Pick<User, 'email'| 'phone'> & {name: string};
+}
+
+export type ProjectPositions = {
+  status: string;
+  billed: boolean;
+  comment?: string;
+  section?: string;
+  documentURL?: string;
+  position: number;
+} & Partial<PositionInterface>
+
+export type Building = {
+  address: string;
+  location: string;
+  description: string;
+  notes: string;
+}
