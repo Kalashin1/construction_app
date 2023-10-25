@@ -12,13 +12,35 @@ import AcceptProjectFloatingActionButton from "./components/accept-project";
 import DeclineProjectFloatingActionButton from "./components/decline-project";
 import DownloadProjectActionButton from "./components/download-button";
 import ProjectDownloadAction from "./components/project-download-action";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { IProject, PROJECT_STATUS } from "../../../../types";
+import { getProject } from "../../helper/project";
+import { UserAuthContext } from "../../../../App";
 
 const ProjectDetails = () => {
-  
+
   const navigate = useNavigate();
   const [showDownloadOption, updateShowDownloadOption] = useState(false);
+  const [project, setProject] = useState<IProject | null>(null);
+  const { user } = useContext(UserAuthContext)
+  const { id } = useParams();
+
+  useEffect(() => {
+    const setUp = async () => {
+      const [error, _project] = await getProject(id!);
+      if (error) {
+        alert('oops error getting project')
+        console.log(error)
+      } else if (_project) {
+        console.log(_project);
+        setProject(_project);
+      }
+    }
+
+
+    setUp();
+  }, [id])
 
   return (
     <Layout>
@@ -27,26 +49,33 @@ const ProjectDetails = () => {
           pageName="Project Detail"
           firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard' }}
           secondLevel={{ link: SCREENS.PROJECTS, text: 'Project' }}
-          thirdLevel={{ link: '', text: 'Detail' }}
+          thirdLevel={{ link: '', text: project?._id.slice(0, 10) as string }}
         />
-        <AcceptProjectFloatingActionButton />
-        <DeclineProjectFloatingActionButton />
+        {user && user.role === "executor" && project?.status === PROJECT_STATUS[0] && (
+          <>
+            <AcceptProjectFloatingActionButton />
+            <DeclineProjectFloatingActionButton />
+          </>
+        )}
+        <div className="my-6">
 
-        <ProjectCard />
-        <ConstructionSchedule />
-        <Documents />
-        <ScopeOfService />
-        <MainOrderItem />
-        <ExtraOrders />
-        { showDownloadOption && (<ProjectDownloadAction />)}
-        <FloatingActionButton 
-          action={() => navigate(SCREENS.CHAT)}
-        />
-        <DownloadProjectActionButton 
-          action={
-            () => updateShowDownloadOption(!showDownloadOption)
-          }
-        />
+          {project && (<ProjectCard project={project} />)}
+          <ConstructionSchedule />
+          <Documents />
+          <ScopeOfService />
+          <MainOrderItem />
+          <ExtraOrders />
+          {showDownloadOption && (<ProjectDownloadAction />)}
+          <FloatingActionButton
+            action={() => navigate(SCREENS.CHAT)}
+          />
+          <DownloadProjectActionButton
+            action={
+              () => updateShowDownloadOption(!showDownloadOption)
+            }
+          />
+        </div>
+
       </main>
     </Layout>
   )

@@ -1,12 +1,48 @@
 import { Link } from "react-router-dom";
 import EuroIcon from "../../../bills/ops/svg/euro";
 import { AdminIcon, CaretakerIcon, ContactPersonIcon, HouseIcon } from "../svgs";
+import { IProject } from "../../../../../types";
+import { Modal } from "../../../profie/components/account-settings";
+import { Dispatch, SetStateAction, useState } from "react";
 
-const ProjectCard = () => {
+const UserModal = ({
+  showModal,
+  title,
+  name,
+  email,
+  phone
+}: {
+  showModal: Dispatch<SetStateAction<boolean>>,
+  title: string;
+  name: string;
+  email: string;
+  phone: string;
+}) => {
+  return (
+    <Modal
+      closeModal={() => showModal(false)}
+      title={title}
+
+    >
+      <div className="grid grid-cols-4 gap-x-2 gap-y-4 my-4">
+        <h3>Name: </h3> <h3 className="col-span-3">{name}</h3>
+        <h3>Email: </h3> <h3 className="col-span-3">{email.slice(1)}</h3>
+        <h3>Phone: </h3> <h3 className="col-span-3">{phone}</h3>
+      </div>
+    </Modal>
+  )
+}
+
+const ProjectCard = ({ project }: {
+  project: IProject
+}) => {
+  console.log(project)
+  const [showConstructionManager, updateShowConstructionManager] = useState(false);
+  const [showCareTakerModal, updateShowCareTaker] = useState(false);
   return (
     <div className="bg-white rounded-md py-6 shadow dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="flex flex-col md:flex-row md:justify-between px-6 mb-4">
-        <h2>MAGGA-34087 (instructed)</h2>
+        <h2>MAGGA-{project._id.slice(0, 6)} ({project.status})</h2>
 
         <div className="md:w-1/2 my-4 md:my-0">
           <div className="progress h-6 bg-slate-150 dark:bg-navy-500">
@@ -20,39 +56,69 @@ const ProjectCard = () => {
       <div className="w-full flex flex-col md:flex-row justify-between">
         <div className="md:w-2/6 p-6">
           { /* // TODO: This should link to the house address https://maps.google.com/?q=address */}
-          <Link to={'https://maps.google.com/?q=N0%2019%20Mike%20Amadi%20Street%20Rukpokwu%20Port%20Harcourt%20Rivers,%20Nigeria'} className="text-blue-400 font-bold cursor-pointer" target="blank">
-            Musterstraße. XXXXX, Stadt
+          <Link to={'https://maps.google.com/?q=N0%2019%20Mike%20Amadi%20Street%20Rukpokwu%20Port%20Harcourt%20Rivers,%20Nigeria'} className="text-blue-400 text-xs cursor-pointer" target="blank">
+            {project.client.split('.').join(', ')}
           </Link>
-          <h3>Location: Location: Ground floor on the left, apartment 1</h3>
-          <h3>Rental Status: Empty</h3>
+          <h3>Location: {project.building.location}</h3>
+          <h3>Rental Status: {project.rentalStatus}</h3>
           <h3 className="font-bold">5270.9035.049.00211</h3>
         </div>
         <div className="p-6 grid grid-cols-2 gap-x-8">
-          <span>Stared At</span><span className="font-bold">June 28, 2023</span>
-          <span>Completion HA</span><span className="font-bold">July 27, 2023</span>
-          <span>Published</span><span className="font-bold">July 27, 2023</span>
-          <span>Completed</span><span className="font-bold">-</span>
-          <span>Vacant since</span><span className="font-bold">August 1, 2022</span>
-          <span>Rented</span><span className="font-bold">-</span>
+          <span>Stared At</span><span className="font-bold">
+            {project.construction_started ? new Date(project.construction_started).toDateString() : ''}
+          </span>
+          <span>Completion HA</span><span className="font-bold">
+            {project.completed_at ? new Date(project.completed_at).toDateString() : ''}
+          </span>
+          <span>Published</span><span className="font-bold">
+            {project.createdAt ? new Date(project.createdAt).toDateString() : ''}
+          </span>
+          <span>Completed</span><span className="font-bold">
+            {project.completed_at ? new Date(project.completed_at).toDateString() : ''}
+          </span>
+          {/* <span>Vacant since</span><span className="font-bold">August 1, 2022</span> */}
+          <span>Rented</span><span className="font-bold">
+            {project.rentalStatus}
+          </span>
         </div>
         <div className="p-6">
           {/* // TODO: OPEN A MODAL TO SHOW THE USER DETAILS */}
-          <Link  className="flex flex-row my-2 cursor" to={'/'}>
-            <AdminIcon width={15} color="#000" />
-            <h3 className="ml-4">Bauleiter</h3>
-          </Link >
-          <Link  className="flex flex-row my-2" to={'/'}>
+          <div>
+            <span className="cursor-pointer flex flex-row my-2" onClick={() => updateShowConstructionManager(true)}>
+              <AdminIcon width={15} color="#000" />
+              <h3 className="ml-4">Construction Manager</h3>
+            </span>
+            {showConstructionManager && (
+              <UserModal
+                showModal={updateShowConstructionManager}
+                title="Construction Manager"
+                email={project?.commissioned_by?.email}
+                name={project?.commissioned_by?.name}
+                phone={project?.commissioned_by?.phone}
+              />)}
+          </div >
+          <div className="flex flex-row my-2">
             <HouseIcon width={15} color="#000" />
-            <h3 className="ml-4">Innendienst</h3>
-          </Link>
-          <Link className="flex flex-row my-2" to={'/'}>
-            <CaretakerIcon width={15} color="#000" />
-            <h3 className="ml-4">Hauswart</h3>
-          </Link>
-          <Link className="flex flex-row my-2" to={'/'}>
+            <h3 className="ml-4">Inside Sales</h3>
+          </div>
+          <div className="flex flex-row my-2">
+            <span className="cursor-pointer flex flex-row my-2" onClick={() => updateShowCareTaker(true)}>
+              <CaretakerIcon width={15} color="#000" />
+              <h3 className="ml-4">Caretaker</h3>
+            </span>
+            {showCareTakerModal && (
+              <UserModal
+                showModal={updateShowCareTaker}
+                title="Care Taker"
+                email={project?.careTaker?.email}
+                name={project?.careTaker?.name}
+                phone={project?.careTaker?.phone}
+              />)}
+          </div>
+          <div className="flex flex-row my-2">
             <ContactPersonIcon width={15} color="#000" />
-            <h3 className="ml-4">Ansprechpartner</h3>
-          </Link>
+            <h3 className="ml-4">Contact Person</h3>
+          </div>
         </div>
       </div>
       <div className="md:w-2/6 p-6">

@@ -52,3 +52,14 @@ export const getAllExecutorProjects = async (executor_id: string) => {
     return [error, null]
   }
 }
+
+export const getProject = async (project_id: string) => {
+  const res = await fetch(`${API_BASE_URL}/project/id/${project_id}`);
+  if (res.ok) {
+    const payload = await res.json()
+    return [null, payload]
+  } else {
+    const error = await res.json()
+    return [error, null]
+  }
+}

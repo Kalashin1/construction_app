@@ -53,9 +53,11 @@ export const TradeIcons = {
   'electricity': ' fa-bolt-lightning'
 }
 
-export const uploadPostionFile = async (user_id: string, file: File): Promise<[null|Error, PositionInterface[]|null]> => {
+export const uploadPostionFile = async (user_id: string, files: File[]): Promise<[null|Error, [PositionInterface[]]|null]> => {
   const fd = new FormData();
-  fd.append('position', file);
+  files.forEach((file) => {
+    fd.append('position', file);
+  })
   const res = await fetch(`${API_BASE_URL}/position/upload/${user_id}`, {
     method: 'POST',
     body: fd,

@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+import { useNavigate } from "react-router-dom";
 import { UserAuthContext } from "../../../../../App";
+import { createProjectParam } from "../../../../../types";
 import { createProject } from "../../../helper/project";
 import { getFile, uploadProject } from "../../../helper/uploads";
-import {useContext} from 'react';
+import { useContext } from 'react';
+import { SCREENS } from "../../../../../navigation/constants";
 
 const Button = ({
   label,
@@ -23,7 +26,8 @@ const Button = ({
 };
 
 const CreateCard = () => {
-  const {user} = useContext(UserAuthContext)
+  const { user } = useContext(UserAuthContext)
+  const navigate = useNavigate()
   const uploadNewProject = async () => {
     const [err, file] = await getFile({
       'application/*': ['.pdf', '.xlsx', '.xls']
@@ -42,19 +46,25 @@ const CreateCard = () => {
       } else if (response) {
         alert('project uploaded successfully')
         console.log(response)
-        const [projectErr, project] = await createProject(response);
-        if (projectErr) {
-          alert('oops something happened! '+ projectErr.message)
-          console.log(projectErr);
-        }
-
-        else if (project) {
-          alert('project created successfully')
-          console.log(project)
-        }
+        await makeProject(response)
       }
     }
   }
+  const makeProject = async (response: createProjectParam) => {
+    const [projectErr, project] = await createProject(response);
+    if (projectErr) {
+      alert('oops something happened! ' + projectErr.message)
+      console.log(projectErr);
+    }
+
+    else if (project) {
+      alert('project created successfully');
+      console.log(project);
+      navigate(SCREENS.PROJECTS);
+    }
+  }
+
+
   return (
     <div className="bg-white rounded-sm shadow p-4 md:p-8 flex flex-col md:flex-row justify-between items-centera
     space-y-4 space-x-4 dark:border-navy-700 dark:bg-navy-800 dark:text-accent">

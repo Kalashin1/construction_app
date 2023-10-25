@@ -22,3 +22,16 @@ export const markAllNotificationAsRead = async (user_id: string) => {
     return [payload, null]
   }
 }
+
+export const readNotification = async (notification: string) => {
+  const res = await fetch(`${API_BASE_URL}/notification/id/${notification}`, {
+    method: 'PATCH'
+  });
+
+  const payload = await res.json()
+  if (res.ok) {
+    return [null, payload]
+  } else {
+    return [payload, null]
+  }
+}

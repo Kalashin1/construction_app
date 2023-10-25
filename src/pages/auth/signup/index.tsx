@@ -6,6 +6,7 @@ import Layout from "../layout";
 import { SCREENS } from "../../../navigation/constants";
 import { useCreateUserAccount } from "../hooks";
 import { completeRegistration } from "../../dashboard/helper/user";
+import { FormEvent } from "react";
 
 function Signup() {
 
@@ -35,7 +36,7 @@ function Signup() {
     setError,
   } = useCreateUserAccount();
 
-  const createAccount = async (e: Event) => {
+  const createAccount = async (e: Event|FormEvent) => {
     e.preventDefault();
     setPasswordError(false)
     setEmailError(false);
@@ -110,7 +111,7 @@ function Signup() {
 
           <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
         </div>
-        <div className="mt-4 space-y-4">
+        <form onSubmit={e => createAccount(e)} className="mt-4 space-y-4">
          
           <Input
             placeholder="magga@magga.de"
@@ -174,12 +175,12 @@ function Signup() {
               </Link>
             </p>
           </div>
-        </div>
         <Button
           label="Konto erstellen"
           action={(e: unknown) => createAccount(e as Event)}
           disabled={isLoading}
         />
+        </form>
         <div className="mt-4 text-center text-xs+">
           <p className="line-clamp-1">
             <span>
