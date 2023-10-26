@@ -1,9 +1,10 @@
 import { API_BASE_URL } from "../../../../../../navigation/constants"
+import { PositionInterface } from "../../../../../../types";
 
 export type CreateContractPayload = {
   contractor_id: string,
   executor_id: string,
-  position_ids: string[],
+  positions: PositionInterface[],
   trade_id: string,
 }
 
