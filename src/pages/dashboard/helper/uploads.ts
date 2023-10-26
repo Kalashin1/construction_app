@@ -7,7 +7,7 @@ export async function getFile(accept?: {
 }, 
 description?: string, 
 multiple = false
-): Promise<[null|Error, null|File|File[]]> {
+): Promise<[null|Error, null|File[]]> {
   if (!accept) {
     accept = {
       'image/*':  ['.png', '.gif', '.jpeg', '.jpg'],
@@ -28,12 +28,8 @@ multiple = false
   try {
     // @ts-ignore
     const fileHandle = await window.showOpenFilePicker(pickerOpts);
-    if (multiple) {
-      const files = await Promise.all(fileHandle.map(async (fileHandle: any) => await fileHandle.getFile()))
-      return [null, files];
-    }
-    const file = await fileHandle[0].getFile();
-    return [null, file];
+    const files = await Promise.all(fileHandle.map(async (fileHandle: any) => await fileHandle.getFile()))
+    return [null, files];
   } catch (error) {
     return [error as Error, null];
   }

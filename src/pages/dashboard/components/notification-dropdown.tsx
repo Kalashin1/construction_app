@@ -48,6 +48,7 @@ const NotificationDropdown = ({
       alert('oops something happened');
       console.log(error)
     }
+    setNotification([])
   }
   return (
     <div className="bg-gray-400 rounded-md shadow-md w-64 absolute top-12 -left-44">

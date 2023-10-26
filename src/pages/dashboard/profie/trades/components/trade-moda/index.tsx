@@ -14,6 +14,7 @@ import { uploadPostionFile } from "../helper";
 import { UserAuthContext } from "../../../../../../App";
 import { getFile } from "../../../../helper/uploads";
 import { CreateContractPayload, createContract } from "../../../../settings/contractors/details/frameworks/helper";
+import { NotificationComponent, notify } from "../../../../components/notification/toast";
 
 const AddTradeModal = ({
   closeModal,
@@ -37,22 +38,28 @@ const AddTradeModal = ({
 
   const assignTradeToUser = async (e: Event) => {
     e.preventDefault();
-    setIsLoading(true)
-    alert('trade addedd successfully!');
+    setIsLoading(true);
     const [, user] = await getUserById(_id);
-    await
-      closeModal();
     setUser(user!);
-
     const [error, positions] = await uploadPostionFile(user?._id!, files!)
     if (error) {
-      alert('oops something happened!');
+      notify(
+        (<NotificationComponent message={'oops something happened!'} />),
+        {
+          className: 'bg-danger font-bold text-white',
+        }
+      );
       console.log(error);
     }
 
     if (positions) {
       console.log(positions)
-      alert('positions uploaded successfully!')
+      notify(
+        (<NotificationComponent message={'Positions uploaded successfully!'} />),
+        {
+          className: 'bg-primary font-bold text-white',
+        }
+      );
       await Promise.all(positions.map(async (_positions) => {
         return await createNewContract({
           position_ids: _positions.map((position) => position._id),
@@ -61,7 +68,12 @@ const AddTradeModal = ({
           executor_id: executor
         });
       }))
-      alert('contract created successfully!')
+      notify(
+        (<NotificationComponent message={'contract created successfully!'} />),
+        {
+          className: 'bg-primary font-bold text-white',
+        }
+      );
     }
   }
 
@@ -77,17 +89,34 @@ const AddTradeModal = ({
 
     if (file) {
       console.log(file)
-      setFiles(file as File[]);
-
+      setFiles(file);
+      notify(
+        (<NotificationComponent message={`${file.length} files uploaded`} />),
+        {
+          className: 'bg-primary font-bold text-white',
+          autoClose: false
+        }
+      )
     }
   }
 
   const createNewContract = async (params: CreateContractPayload) => {
     const [error] = await createContract(params);
     if (error) {
-      alert('oops something happened')
+      notify(
+        (<NotificationComponent message={'oops something happened'} />),
+        {
+          className: 'bg-danger font-bold text-white',
+        }
+      )
       console.log(error);
     }
+    notify(
+      (<NotificationComponent message={`Contract generated`} />),
+      {
+        className: 'bg-primary font-bold text-white',
+      }
+    )
   }
 
 

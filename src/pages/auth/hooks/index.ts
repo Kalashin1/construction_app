@@ -22,8 +22,6 @@ export const useLogin = () => {
     const [err, _user] = await login({ email, password });
     setIsLoading(false);
     if (err) {
-      alert("oops something happened");
-      console.log(err);
       if (err.errorMessage.includes("incorrect password")) {
         updatePasswordError(true);
         updateErrorMessage(err.errorMessage);

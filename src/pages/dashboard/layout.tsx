@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AppWrapper from "./components/app-wrapper";
 import Sidebar from "./components/sidebar";
 import LeftSidePanel from "./components/left-sidepanel";
+import ToastComponent from "./components/notification/toast";
 
 
 type Props = {
@@ -79,7 +80,7 @@ const Layout: FC<Props> = ({
             updateShowDashboardDropdown!(false)
             updateShowNotifications!(false)
           }}>
-
+            <ToastComponent />
             {children}
           </div>
         </main>
@@ -93,6 +94,7 @@ const Layout: FC<Props> = ({
             updateShowDashboardDropdown!(false)
             updateShowNotifications!(false)
           }}>
+            <ToastComponent />
             {children}
           </div>
         </main>

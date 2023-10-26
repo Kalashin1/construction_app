@@ -6,6 +6,7 @@ import { createProject } from "../../../helper/project";
 import { getFile, uploadProject } from "../../../helper/uploads";
 import { useContext } from 'react';
 import { SCREENS } from "../../../../../navigation/constants";
+import { notify,NotificationComponent } from "../../../components/notification/toast";
 
 const Button = ({
   label,
@@ -38,13 +39,25 @@ const CreateCard = () => {
       console.log(file)
       const [error, response] = await uploadProject(
         user?._id!,
-        file
+        file[0]
       )
       if (error) {
-        alert('oops something happened!')
+        notify(
+          (<NotificationComponent message={'oops something happened!'} />),
+          {
+            className: `bg-red-700 font-bold text-white`,
+            closeOnClick: true,
+          }
+        )
         console.log(error);
       } else if (response) {
-        alert('project uploaded successfully')
+        notify(
+          (<NotificationComponent message={'project uploaded successfully'} />),
+          {
+            className: `bg-success font-bold text-white`,
+            closeOnClick: true,
+          }
+        )
         console.log(response)
         await makeProject(response)
       }
@@ -53,12 +66,24 @@ const CreateCard = () => {
   const makeProject = async (response: createProjectParam) => {
     const [projectErr, project] = await createProject(response);
     if (projectErr) {
-      alert('oops something happened! ' + projectErr.message)
+      notify(
+        (<NotificationComponent message={'oops something happened! ' + projectErr.message} />),
+        {
+          className: `bg-red-600 font-bold text-white`,
+          closeOnClick: true,
+        }
+      )
       console.log(projectErr);
     }
 
     else if (project) {
-      alert('project created successfully');
+      notify(
+        (<NotificationComponent message={'project created successfully'} />),
+        {
+          className: `bg-success font-bold text-white`,
+          closeOnClick: true,
+        }
+      )
       console.log(project);
       navigate(SCREENS.PROJECTS);
     }
