@@ -2,23 +2,37 @@ import { CONTRACT_STATUS, Contract } from "../../../../../../../../types";
 import { getPositions } from "../../../../../../profie/trades/components/helper";
 import * as XLSX from 'xlsx';
 import { acceptContract, acceptContractParams, rejectContract, terminateContract } from "../../helper";
-import {Dispatch, SetStateAction} from 'react';
+import { Dispatch, SetStateAction } from 'react';
+import { notify, NotificationComponent } from "../../../../../../components/notification/toast";
 
-const ContractHeader = ({ 
+const ContractHeader = ({
   contract,
   updateContract
-}: { 
-  contract: Contract, 
-  updateContract: Dispatch<SetStateAction<Contract>> 
+}: {
+  contract: Contract,
+  updateContract: Dispatch<SetStateAction<Contract>>
 }) => {
 
   const accept = async (params: acceptContractParams) => {
     const [error, payload] = await acceptContract(params);
     if (error) {
-      alert('oops something happened!')
-      console.log(error)
+      notify(
+        (<NotificationComponent message={`error something happened`} />),
+        {
+          className: `bg-red-700 font-bold text-white`,
+          closeOnClick: true,
+
+        }
+      )
     } else if (payload) {
-      alert('contract accepted successfully!');
+      notify(
+        (<NotificationComponent message={`contract accepted successfully!`} />),
+        {
+          className: `bg-red-700 font-bold text-white`,
+          closeOnClick: true,
+
+        }
+      )
       updateContract(payload);
     }
   }
@@ -26,10 +40,24 @@ const ContractHeader = ({
   const reject = async (params: acceptContractParams) => {
     const [error, payload] = await rejectContract(params);
     if (error) {
-      alert('oops something happened!')
+      notify(
+        (<NotificationComponent message={`oops something happened!`} />),
+        {
+          className: `bg-red-700 font-bold text-white`,
+          closeOnClick: true,
+
+        }
+      )
       console.log(error)
     } else if (payload) {
-      alert('contract accepted successfully!')
+      notify(
+        (<NotificationComponent message={`contract accepted successfully!`} />),
+        {
+          className: `bg-success font-bold text-white`,
+          closeOnClick: true,
+
+        }
+      )
       updateContract(payload)
     }
   }
@@ -37,11 +65,25 @@ const ContractHeader = ({
   const terminate = async (params: Pick<acceptContractParams, 'contract_id'>) => {
     const [error, payload] = await terminateContract(params);
     if (error) {
-      alert('oops something happened!')
-      console.log(error)
+      notify(
+        (<NotificationComponent message={'oops something happened!'} />),
+        {
+          className: `bg-red-700 font-bold text-white`,
+          closeOnClick: true,
+
+        }
+      )
+      console.log(error);
     } else if (payload) {
-      alert('contract accepted successfully!')
-      updateContract(payload)
+      notify(
+        (<NotificationComponent message={'contract accepted successfully!'} />),
+        {
+          className: `bg-success font-bold text-white`,
+          closeOnClick: true,
+
+        }
+      );
+      updateContract(payload);
     }
   }
 
@@ -49,7 +91,15 @@ const ContractHeader = ({
     console.log(trade_id)
     const [error, payload] = await getPositions(trade_id);
     if (error) {
-      alert('oops something happened!');
+      alert();
+      notify(
+        (<NotificationComponent message={'oops something happened!'} />),
+        {
+          className: `bg-red-500 font-bold text-white`,
+          closeOnClick: true,
+
+        }
+      );
       console.log(error);
     } else {
       const worksheet = XLSX.utils.json_to_sheet(payload);
@@ -94,7 +144,7 @@ const ContractHeader = ({
           Download
         </button>
         {contract.status === CONTRACT_STATUS[1] && ((
-          <button className="bg-red-500 text-white px-4 py-1 rounded-md shadow" onClick={() => terminate({ contract_id: contract._id})}>
+          <button className="bg-red-500 text-white px-4 py-1 rounded-md shadow" onClick={() => terminate({ contract_id: contract._id })}>
             <span className="mr-2">
               <i className="fas fa-times" />
             </span>
@@ -105,7 +155,7 @@ const ContractHeader = ({
           contract.status === CONTRACT_STATUS[0] && (
             <div>
               <button className="bg-green-500 text-white px-4 py-1 rounded-md shadow"
-                onClick={() => accept({ contract_id: contract._id, executor_id: contract.executor._id!})}
+                onClick={() => accept({ contract_id: contract._id, executor_id: contract.executor._id! })}
               >
                 <span className="mr-2">
                   <i className="fas fa-check" />
@@ -113,7 +163,7 @@ const ContractHeader = ({
                 Accept contract
               </button>
               <button className="ml-4 bg-red-500 text-white px-4 py-1 rounded-md shadow"
-                onClick={() => reject({ contract_id: contract._id, executor_id: contract.executor._id!})}
+                onClick={() => reject({ contract_id: contract._id, executor_id: contract.executor._id! })}
               >
                 <span className="mr-2">
                   <i className="fas fa-times" />
