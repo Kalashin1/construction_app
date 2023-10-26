@@ -62,7 +62,7 @@ const AddTradeModal = ({
       );
       await Promise.all(positions.map(async (_positions) => {
         return await createNewContract({
-          position_ids: _positions.map((position) => position._id),
+          positions: _positions,
           contractor_id: user?._id!,
           trade_id: _positions[0].trade,
           executor_id: executor
@@ -117,6 +117,7 @@ const AddTradeModal = ({
         className: 'bg-primary font-bold text-white',
       }
     )
+    closeModal()
   }
 
 
