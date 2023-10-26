@@ -6,6 +6,8 @@ import Layout from "../layout";
 import { SCREENS } from "../../../navigation/constants";
 import { useCreateUserAccount } from "../hooks";
 import { completeRegistration } from "../../dashboard/helper/user";
+import { FormEvent } from "react";
+import { notify, NotificationComponent } from "../../dashboard/components/notification/toast"
 
 function Signup() {
 
@@ -35,19 +37,19 @@ function Signup() {
     setError,
   } = useCreateUserAccount();
 
-  const createAccount = async (e: Event) => {
+  const createAccount = async (e: Event | FormEvent) => {
     e.preventDefault();
     setPasswordError(false)
     setEmailError(false);
     setIsLoading(true)
-    
+
     // const _user = await createUserAccount({ email, password, type: "EMAIL", role: 'admin' })
     // if (_user) {
     //   alert('account created successfully');
     //   sessionStorage.setItem('userToken', _user.token)
     //   navigate(SCREENS.PROFILE);
     // }
-    if(password !== passwordConfirm) {
+    if (password !== passwordConfirm) {
       setIsLoading(false)
       setPasswordError(true)
       setError('passwords do not match!')
@@ -69,8 +71,16 @@ function Signup() {
       }
     } else if (_user) {
       sessionStorage.setItem('userToken', _user.user.token)
-      console.log(_user.user.token);
-      navigate(SCREENS.PROFILE);
+      notify(
+        (<NotificationComponent message="account created successfully" />),
+        {
+          className: `bg-green-700 font-bold text-white`,
+          closeOnClick: true,
+          onClose() {
+            navigate(SCREENS.PROFILE);
+          }
+        }
+      )
     }
 
   }
@@ -110,8 +120,8 @@ function Signup() {
 
           <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
         </div>
-        <div className="mt-4 space-y-4">
-         
+        <form onSubmit={e => createAccount(e)} className="mt-4 space-y-4">
+
           <Input
             placeholder="magga@magga.de"
             type="email"
@@ -160,8 +170,8 @@ function Signup() {
               required
               onChange={() => setIAccept(!iAccept)}
             />
-            { 
-              !iAccept && error.includes(' accept the terms') && 
+            {
+              !iAccept && error.includes(' accept the terms') &&
               (<small className="text-red-500">Accept the terms and conditions</small>)
             }
             <p className="line-clamp-1">
@@ -174,12 +184,12 @@ function Signup() {
               </Link>
             </p>
           </div>
-        </div>
-        <Button
-          label="Konto erstellen"
-          action={(e: unknown) => createAccount(e as Event)}
-          disabled={isLoading}
-        />
+          <Button
+            label="Konto erstellen"
+            action={(e: unknown) => createAccount(e as Event)}
+            disabled={isLoading}
+          />
+        </form>
         <div className="mt-4 text-center text-xs+">
           <p className="line-clamp-1">
             <span>

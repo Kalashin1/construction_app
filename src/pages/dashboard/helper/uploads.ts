@@ -1,9 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_BASE_URL } from "../../../navigation/constants";
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 export async function getFile(accept?: {
   [key: string]: string[],
-}, description?: string): Promise<[null|Error, null|File]> {
+}, 
+description?: string, 
+multiple = false
+): Promise<[null|Error, null|File[]]> {
   if (!accept) {
     accept = {
       'image/*':  ['.png', '.gif', '.jpeg', '.jpg'],
@@ -19,13 +23,13 @@ export async function getFile(accept?: {
       },
     ],
     excludeAcceptAllOption: true,
-    multiple: false,
+    multiple,
   };
   try {
     // @ts-ignore
     const fileHandle = await window.showOpenFilePicker(pickerOpts);
-    const file = await fileHandle[0].getFile();
-    return [null, file];
+    const files = await Promise.all(fileHandle.map(async (fileHandle: any) => await fileHandle.getFile()))
+    return [null, files];
   } catch (error) {
     return [error as Error, null];
   }

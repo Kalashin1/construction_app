@@ -21,7 +21,7 @@ const DocumentsTable = () => {
     } else if (file) {
       const [error, payload] = await uploadDocument(
         user?._id!,
-        file,
+        file[0],
         documentType
       )
       if (error) {

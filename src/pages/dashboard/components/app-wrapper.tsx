@@ -5,12 +5,13 @@ import LightModeIcon from "../svg/light";
 import NotificationIcon from "../svg/notificaiton";
 import SquareIcon from "../svg/square";
 import DashboardButtonDropdown from "./dashboard-button-dropdown";
-import { FC, useEffect, useState } from 'react';
+import { FC, SetStateAction, useEffect, useState } from 'react';
 import { useContext } from "react";
 import { SidebarContext, UserAuthContext } from "../../../App";
 import NotificationDropdown from "./notification-dropdown";
 import { INotification } from "../../../types";
-import { getUserNotification, markAllNotificationAsRead } from "../helper/notifications";
+import { getUserNotification } from "../helper/notifications";
+import { Dispatch } from "react";
 
 type Props = {
   toggleSidebar: (...args: unknown[]) => void
@@ -40,14 +41,6 @@ const AppWrapper: FC<Props> = ({
 
   const [notifications, setNotifications] = useState<INotification[] | null>(null)
 
-  const readNotification = async () => {
-    const [error,] = await markAllNotificationAsRead(user?._id!);
-    if (error) {
-      alert('oops something happened');
-      console.log(error)
-      // setNotifications([])
-    }
-  }
 
   const switchMode = () => {
     const html = window.document.querySelector('html');
@@ -104,15 +97,14 @@ const AppWrapper: FC<Props> = ({
               onClick={(e) => {
                 e.stopPropagation();
                 updateShowNotifications!(true)
-                setTimeout(() => {
-                  readNotification()
-                }, 5000)
               }}
             >
               {notifications?.length! > 0 && (<div style={{ fontSize: '10px' }} className="h-4 w-4 rounded-full bg-red-500 relative left-1.5 text-white flex items-center justify-center font-bold">
                 {notifications!.length}
               </div>)}
-              {showNotifications && notifications && (<NotificationDropdown notifications={notifications} />)}
+              {showNotifications && notifications && (
+                <NotificationDropdown setNotification={setNotifications as Dispatch<SetStateAction<INotification[]>>} notifications={notifications} />
+              )}
               <span className="">
                 <NotificationIcon />
               </span>

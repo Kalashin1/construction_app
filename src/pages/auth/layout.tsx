@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { AuthHeader, AuthImage } from "./components";
+import ToastComponent from "../dashboard/components/notification/toast";
 
 type Props = {
   children: ReactNode
@@ -10,6 +11,7 @@ const Layout = ({
 }: Props) => {
   return (
     <>
+    <ToastComponent />
       <AuthHeader />
       <div className="flex flex-row w-screen">
         <AuthImage />

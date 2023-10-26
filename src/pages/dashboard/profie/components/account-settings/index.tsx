@@ -123,17 +123,14 @@ const AccountSettings = () => {
     } else if (file) {
       const [error, payload] = await uploadProfilePhoto(
         user?._id!,
-        file
+        file[0]
       )
       if (error) {
-        alert('oops something happened!');
-        console.log(error)
+        alert('oops something happened!, try again');
       } else if (payload) {
-        console.log(payload);
         alert(`profile photo updated successfully!`);
         setCurrentUser!(payload.user);
       }
-      console.log(file)
     }
   }
 

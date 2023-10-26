@@ -1,5 +1,5 @@
 import { EmailIcon, PasswordIcon } from "../svg";
-import { 
+import {
   Link,
   useNavigate
 } from "react-router-dom";
@@ -8,11 +8,12 @@ import { GoogleIcon } from "../svg/"
 import Layout from "../layout";
 import { SCREENS } from "../../../navigation/constants";
 import { useLogin } from "../hooks";
+import { FormEvent } from 'react';
+import { notify, NotificationComponent } from "../../dashboard/components/notification/toast";
 
 function Login() {
 
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
   const {
     email,
     setEmail,
@@ -24,31 +25,48 @@ function Login() {
     funcWrapper,
     isLoading
   } = useLogin();
-
-  const loginUser = async (e: Event) => {
+  
+  const loginUser = async (e: Event | FormEvent) => {
     e.preventDefault();
     const _user = await funcWrapper();
     if (_user) {
-      alert('login successful');
       sessionStorage.setItem('userToken', _user.token)
-      if(
-          !_user.first_name || 
-          !_user.last_name || 
-          !_user.avatar || 
-          !_user.address || 
-          !_user.bankDetails || 
-          !_user.phone ||
-          !_user.username || 
-          !_user.email || 
-          (_user.role === 'employee' && !_user.taxIdNumber)||
-          (_user.role === 'employee' && !_user.socialSecurityNumber)||
-          (_user.role !== 'employee' || 'admin' && !_user.billingDetails)||
-          (_user.role !== 'employee' || 'admin' && !_user.documents)
-        )
-        navigate(SCREENS.PROFILE)
-      else navigate(SCREENS.DASHBOARD);
-
+      notify(
+        (<NotificationComponent message="login successful" />),
+        {
+          className: `bg-green-700 font-bold text-white`,
+          closeOnClick: true,
+          onClose() {
+            setTimeout(() => {
+              if (
+                !_user.first_name ||
+                !_user.last_name ||
+                !_user.avatar ||
+                !_user.address ||
+                !_user.bankDetails ||
+                !_user.phone ||
+                !_user.username ||
+                !_user.email ||
+                // (_user.role === 'employee' && !_user.taxIdNumber) ||
+                // (_user.role === 'employee' && !_user.socialSecurityNumber) ||
+                (_user.role !== 'employee' || 'admin' && !_user.billingDetails) ||
+                (_user.role !== 'employee' || 'admin' && !_user.documents)
+              )
+                navigate(SCREENS.PROFILE)
+              else navigate(SCREENS.DASHBOARD);
+            }, 3000)
+          },
+        }
+      );
     } else {
+      notify(
+        (<NotificationComponent message={`error something happened ${errorMessage}`} />),
+        {
+          className: `bg-red-700 font-bold text-white`,
+          closeOnClick: true,
+
+        }
+      )
       console.log('something happened', errorMessage)
     }
   }
@@ -90,7 +108,7 @@ function Login() {
 
           <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
         </div>
-        <div className="mt-4 space-y-4">
+        <form onSubmit={e => loginUser(e)} className="mt-4 space-y-4">
           <Input
             placeholder="magga@magga.de"
             type="email"
@@ -109,12 +127,13 @@ function Login() {
             handleChange={setPassword}
             icon={<PasswordIcon />}
           />
-        </div>
-        <Button
-          label="Anmelden"
-          disabled={isLoading}
-          action={(e: unknown) => loginUser(e as Event)}
-        />
+          <Button
+            label="Anmelden"
+            disabled={isLoading}
+            action={(e: unknown) => loginUser(e as Event)}
+          />
+        </form>
+
         <div className="mt-4 text-center text-xs+">
           <p className="line-clamp-1">
             <span>
@@ -141,7 +160,7 @@ function Login() {
               to={`${SCREENS.FORGOT_PASSWORD}`}
             >
               {/* Sign up */}
-             Reset Password
+              Reset Password
             </Link>
           </p>
         </div>

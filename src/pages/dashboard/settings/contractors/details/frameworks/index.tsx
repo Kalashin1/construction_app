@@ -35,9 +35,11 @@ const ContactPerson = () => {
           pageName="Contractor Details"
           firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard' }}
           secondLevel={{ link: SCREENS.CONTRACTORS, text: 'General Contractor' }}
-          thirdLevel={{ link: SCREENS.CONTRACTOR_DETAILS, text: 'General contractor details' }}
+          thirdLevel={{ link: SCREENS.CONTRACTOR_DETAILS, text: 'Frameworks/Contracts' }}
         />
-        <Frameworks />
+        <main className="py-6">
+          <Frameworks />
+        </main>
       </section>
     </Layout>
   )

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "react-router-dom";
-import { SCREENS } from "../../../../../../navigation/constants";
 import { Dropdown } from "../../dropdown";
 import { useState } from "react";
 import { IProject } from "../../../../../../types";
@@ -33,7 +32,7 @@ const ProjectListTable = ({
           {projects && projects.map((project: IProject, index) => (
             <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500" key={index}>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <Link to={SCREENS.DETAIL} className="text-red-600">MAGGA-{project._id}</Link>
+                <Link to={`/detail/${project._id}`} className="text-red-600">MAGGA-{project._id}</Link>
                 <p className="text-xs my-2">({project.status})</p>
                 <p>{project.building.address}</p>
                 <p className="text-xs my-2">Location: {project.building.location}</p>

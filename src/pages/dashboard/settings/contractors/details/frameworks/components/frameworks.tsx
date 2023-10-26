@@ -20,14 +20,20 @@ const Frameworks = () => {
         executor: executor?._id!,
         status: CONTRACT_STATUS[0]
       });
-      if (error) {
+      const [err, __contracts] = await getContract({
+        contractor: user?._id!,
+        executor: executor?._id!,
+        status: CONTRACT_STATUS[1]
+      })
+      if (error || err) {
         alert('oops something happened!')
-        console.log(error)
+        console.log("error", error)
+        console.log("err", err)
       }
 
-      if (_contracts) {
-        setContracts(_contracts);
-        console.log(_contracts);
+      if (_contracts||__contracts) {
+        setContracts([..._contracts, ...__contracts]);
+        console.log([..._contracts, ...__contracts]);
       }
     }
 

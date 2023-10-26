@@ -12,24 +12,22 @@ const HeaderBar = ({
   const { user, setCurrentUser } = useContext(UserAuthContext)
 
   const uploadImage = async (type: string) => {
-    const [err, file] = await getFile();
+    const [err, _file] = await getFile();
     if (err) {
       console.log(err)
-    } else if (file) {
+    } else if (_file) {
       const [error, payload] = await uploadLogoURL(
         user?._id!,
         type,
-        file
+        _file[0]
       )
       if (error) {
         alert('oops something happened!');
         console.log(error)
       } else if (payload) {
-        console.log(payload);
         alert(`${type} updated successfully!`);
         setCurrentUser!(payload)
       }
-      console.log(file)
     }
   }
   return (

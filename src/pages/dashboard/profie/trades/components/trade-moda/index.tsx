@@ -4,17 +4,17 @@ import {
   SetStateAction,
   useRef,
   useState,
-  useEffect,
   useContext
 } from "react";
-import { User, TradeInterface } from "../../../../../../types";
+import { User } from "../../../../../../types";
 import { Button } from "../../../../../auth/components/index";
 import { getUserById } from "../../../../helper/user";
 import { Modal } from "../../../components/account-settings";
-import { getAllTrades, assignUserTrade, uploadPostionFile } from "../helper";
+import { uploadPostionFile } from "../helper";
 import { UserAuthContext } from "../../../../../../App";
 import { getFile } from "../../../../helper/uploads";
 import { CreateContractPayload, createContract } from "../../../../settings/contractors/details/frameworks/helper";
+import { NotificationComponent, notify } from "../../../../components/notification/toast";
 
 const AddTradeModal = ({
   closeModal,
@@ -29,109 +29,111 @@ const AddTradeModal = ({
 }) => {
   const form = useRef<HTMLFormElement | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [trades, setTrades] = useState<TradeInterface[]>()
-  const [file, setFile] = useState<File|null>(null)
+  const [files, setFiles] = useState<File[] | null>(null)
 
   const { user } = useContext(UserAuthContext)
 
   console.log(user)
 
-  useEffect(() => {
-    const getTrades = async () => {
-      const [error, _trades] = await getAllTrades();
 
-      if (error) {
-        alert('oops something happened!')
-        console.log(error)
-      } else if (_trades) {
-        console.log(_trades);
-        setTrades(_trades)
-      }
-    }
-    getTrades();
-  }, [])
-
-  const assignTradeToUser = async (e: Event, form: HTMLFormElement) => {
+  const assignTradeToUser = async (e: Event) => {
     e.preventDefault();
-    setIsLoading(true)
-    const { trade: { value: selectedTrade } } = form;
-    const [error, payload] = await assignUserTrade(_id, selectedTrade);
-    setIsLoading(false)
+    setIsLoading(true);
+    const [, user] = await getUserById(_id);
+    setUser(user!);
+    const [error, positions] = await uploadPostionFile(user?._id!, files!)
     if (error) {
-      alert('oops something happened!')
-    } else if (payload) {
-      alert('trade addedd successfully!');
-      const [, user] = await getUserById(_id);
-      await
-      closeModal();
-      setUser(user!);
+      notify(
+        (<NotificationComponent message={'oops something happened!'} />),
+        {
+          className: 'bg-danger font-bold text-white',
+        }
+      );
+      console.log(error);
+    }
 
-      const [error, positions] = await uploadPostionFile(user?._id!, file!)
-      if (error) {
-        alert('oops something happened!');
-        console.log(error);
-      }
-
-      if (positions) {
-        console.log(positions)
-        alert('positions uploaded successfully!')
-        const position_ids = positions.map((position) => position._id)
-        await createNewContract({
-          position_ids,
+    if (positions) {
+      console.log(positions)
+      notify(
+        (<NotificationComponent message={'Positions uploaded successfully!'} />),
+        {
+          className: 'bg-primary font-bold text-white',
+        }
+      );
+      await Promise.all(positions.map(async (_positions) => {
+        return await createNewContract({
+          position_ids: _positions.map((position) => position._id),
           contractor_id: user?._id!,
-          trade_id: selectedTrade,
+          trade_id: _positions[0].trade,
           executor_id: executor
-        })
-      }
+        });
+      }))
+      notify(
+        (<NotificationComponent message={'contract created successfully!'} />),
+        {
+          className: 'bg-primary font-bold text-white',
+        }
+      );
     }
   }
 
   const uploadPositions = async (e: Event) => {
     e.preventDefault()
-    const [, file] = await getFile({
-      'application/*': ['.xlsx', '.xls']
-    }, 'position');
+    const [, file] = await getFile(
+      {
+        'application/*': ['.xlsx', '.xls']
+      },
+      'position',
+      true
+    );
 
     if (file) {
-      setFile(file);
-      
+      console.log(file)
+      setFiles(file);
+      notify(
+        (<NotificationComponent message={`${file.length} files uploaded`} />),
+        {
+          className: 'bg-primary font-bold text-white',
+          autoClose: false
+        }
+      )
     }
   }
 
   const createNewContract = async (params: CreateContractPayload) => {
-    const [error, payload] = await createContract(params);
+    const [error] = await createContract(params);
     if (error) {
-      alert('oops something happened')
+      notify(
+        (<NotificationComponent message={'oops something happened'} />),
+        {
+          className: 'bg-danger font-bold text-white',
+        }
+      )
       console.log(error);
-    } else if (payload) {
-      alert('contract created successfully!')
-      console.log(payload);
     }
+    notify(
+      (<NotificationComponent message={`Contract generated`} />),
+      {
+        className: 'bg-primary font-bold text-white',
+      }
+    )
   }
 
 
   return (
     <Modal
-      title="Add Trade"
+      title="Send Contract"
       closeModal={closeModal}
     >
-      <form className="mt-4 space-y-4" ref={form}>
-        <label>
-          <p className="text-left">Please Select your Trade</p>
-          <select name="trade" className="w-full py-2 border border-gray-900 rounded-md">
-            {trades && trades.map((trade) => (
-              <option className="p-2" value={trade._id}>{trade.name}</option>
-            ))}
-          </select>
-        </label>
-
+      <form className="space-y-4" ref={form}>
         <Button
           label="upload Trades file"
           action={(e) => uploadPositions(e as Event)}
+          extraClass="bg-gray-600 hover:bg-gray-600 focus:bg-green-500"
         />
         <Button
-          label="Add Trade"
-          action={(e) => { assignTradeToUser(e as Event, form.current!) }}
+          label="Send Contract"
+          action={(e) => { assignTradeToUser(e as Event) }}
           disabled={isLoading}
         />
       </form>
