@@ -132,6 +132,17 @@ const AddTradeModal = ({
           action={(e) => uploadPositions(e as Event)}
           extraClass="bg-gray-600 hover:bg-gray-600 focus:bg-green-500"
         />
+        {files && files.map((file) => (
+          <div className="flex justify-start px-4">
+            <span className="mr-4">
+              <i className="fas fa-paperclip" />
+            </span>
+
+            <span>
+              {file.name} {Math.floor(file.size/1000)}kb
+            </span>
+          </div>
+        ))}
         <Button
           label="Send Contract"
           action={(e) => { assignTradeToUser(e as Event) }}

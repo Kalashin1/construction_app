@@ -32,12 +32,12 @@ const ProjectListTable = ({
           {projects && projects.map((project: IProject, index) => (
             <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500" key={index}>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <Link to={`/detail/${project._id}`} className="text-red-600">MAGGA-{project._id}</Link>
-                <p className="text-xs my-2">({project.status})</p>
-                <p>{project.building.address}</p>
-                <p className="text-xs my-2">Location: {project.building.location}</p>
+                <Link to={`/detail/${project?._id}`} className="text-red-600">MAGGA-{project?._id}</Link>
+                <p className="text-xs my-2">({project?.status})</p>
+                <p>{project?.building.address}</p>
+                <p className="text-xs my-2">Location: {project?.building.location}</p>
                 <p className="text-xs my-2">5270.9035.049.00211</p>
-                <span className="text-white px-4 rounded bg-gray-700">{project.external_id}</span>
+                <span className="text-white px-4 rounded bg-gray-700">{project?.external_id}</span>
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 <span>100% Completed</span>
@@ -53,14 +53,14 @@ const ProjectListTable = ({
                 </div>
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <p>Start of Execution: {project.construction_started ? new Date(project.construction_started).toDateString(): ''}</p>
+                <p>Start of Execution: {project?.construction_started ? new Date(project?.construction_started).toDateString(): ''}</p>
                 <p className="text-sm flex flex-row justify-between">
                   <span>Published:&nbsp;</span>
-                  <span>{" "+new Date(project.createdAt).toDateString()}</span>
+                  <span>{" "+new Date(project?.createdAt).toDateString()}</span>
                 </p>
                 <p className="text-sm flex flex-row justify-between">
                   <span>Completed: </span>
-                  <span>{project.completed_at ? new Date(project.completed_at).toDateString(): ''}</span>
+                  <span>{project?.completed_at ? new Date(project?.completed_at).toDateString(): ''}</span>
                 </p>
                 <p className="text-sm flex flex-row justify-between">
                   <span>OrderVolume:</span>
