@@ -56,7 +56,7 @@ const ProjectCard = ({ project }: {
       <div className="w-full flex flex-col md:flex-row justify-between">
         <div className="md:w-2/6 p-6">
           { /* // TODO: This should link to the house address https://maps.google.com/?q=address */}
-          <Link to={'https://maps.google.com/?q=N0%2019%20Mike%20Amadi%20Street%20Rukpokwu%20Port%20Harcourt%20Rivers,%20Nigeria'} className="text-blue-400 text-xs cursor-pointer" target="blank">
+          <Link to={`https://maps.google.com/?q=${project?.building?.address}`} className="text-blue-400 text-xs cursor-pointer" target="blank">
             {project.client.split('.').join(', ')}
           </Link>
           <h3>Location: {project.building.location}</h3>
@@ -150,33 +150,16 @@ const ProjectCard = ({ project }: {
       <div className="p-6">
         <h3>
           <span className="text-black mr-2 dark:text-white">Details:</span>
-          <span>62.77 m², bathroom (3.10 m²), kitchen (4.50 m²), entrance hallway, living room, bedroom, balcony, children's room</span>
+          <span>{project?.building?.description}</span>
         </h3>
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="p-6">
         <h3>
           <span className="text-black mr-2 dark:text-white">Noted:</span>
-          <span>If central heating system is present:
-            Please ensure that after the heating or plumbing work, any lines that have been shut off are reopened and the
-            Heating system is filled with water.
-            Heating:
-            Dismantling, storing and reassembling the radiator is necessary in order to reinstall the HK in the kitchen
-            Painter:
-            Painting closet in the hallway under the ceiling
-            Heating:
-            Conversion from gas water heater to electric water heater from kitchen to bathroom
-            Tiles:
-            Tiles: Remove the mortar bed from tiles/slabs in the hallway, then fill the screed
-            Carpenter:
-            Equip existing plastic balcony doors with double glazing
-            Electric:
-            Meter application/new application to the utility company
-            Demolition:
-            Thin bed tiles/plates remove individual areas 5.0 - 10.0 m² for the kitchen, then
-            Knock off the plaster and add plaster Created on June 13th, 2023 2:42 p.m. Page 1 of 8
-            Apartment: 5270.9035.049.00211, Eppmannsweg 9, ground floor left, apartment 1, 45896Order date: June 13th, 2023
-            Gelsenkirchen</span>
+          {project?.building.notes.split("\n").map((note, index) => (
+            <span key={index}>{note}</span>
+          ))}
         </h3>
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>

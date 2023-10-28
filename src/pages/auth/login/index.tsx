@@ -28,7 +28,7 @@ function Login() {
   
   const loginUser = async (e: Event | FormEvent) => {
     e.preventDefault();
-    const _user = await funcWrapper();
+    const [error, _user] = await funcWrapper();
     if (_user) {
       sessionStorage.setItem('userToken', _user.token)
       notify(
@@ -58,16 +58,18 @@ function Login() {
           },
         }
       );
-    } else {
+    } 
+    
+    if (error) {
       notify(
-        (<NotificationComponent message={`error something happened ${errorMessage}`} />),
+        (<NotificationComponent message={`error something happened ${error}`} />),
         {
           className: `bg-red-700 font-bold text-white`,
           closeOnClick: true,
 
         }
       )
-      console.log('something happened', errorMessage)
+      console.log('something happened', error)
     }
   }
 

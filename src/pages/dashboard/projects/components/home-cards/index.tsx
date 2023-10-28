@@ -55,7 +55,7 @@ const HomeCards = () => {
           [error, _projects] = await getAllContractorProjects(user._id?.toString()!);
           break;
         case 'executor':
-          [error, _projects] =await getAllExecutorProjects(user._id?.toString()!);
+          [error, _projects] = await getAllExecutorProjects(user._id?.toString()!);
           break;
         default:
           break;
@@ -78,7 +78,7 @@ const HomeCards = () => {
     {
       svg: ToolsIcon,
       text: 'New Project',
-      figure: projects?.filter((project) => project.status = PROJECT_STATUS[0]).length ?? 0,
+      figure: projects ? projects?.filter((project) => project.status = PROJECT_STATUS[0]).length : 0,
       color: 'bg-blue-500'
     },
     {
