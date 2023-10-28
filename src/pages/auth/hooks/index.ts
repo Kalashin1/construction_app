@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { useState } from "react";
 import { login, createAccount, SignupParam } from "../action";
 import { User } from "../../../types";
@@ -14,7 +15,7 @@ export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
-  const funcWrapper = async () => {
+  const funcWrapper = async (): Promise<[string|null, User|null]> => {
     updateEmailError(false);
     updatePasswordError(false);
     setIsLoading(true);
@@ -25,15 +26,16 @@ export const useLogin = () => {
       if (err.errorMessage.includes("incorrect password")) {
         updatePasswordError(true);
         updateErrorMessage(err.errorMessage);
-        return;
-      } else if (err.errorMessage.includes("no user with that email")) {
+      } else if (err.errorMessage.includes("incorrect email")) {
         updateEmailError(true);
         updateErrorMessage(err.errorMessage);
       }
-    } else if (_user) {
+    } 
+    if (_user) {
       setUser(_user);
-      return _user
     }
+    
+    return [err?.errorMessage!, _user];
   };
 
   return {

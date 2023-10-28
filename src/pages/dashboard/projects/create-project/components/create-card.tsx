@@ -67,31 +67,6 @@ const CreateCard = () => {
         }
       }
       navigate(SCREENS.PROJECTS);
-
-      // const [error, response] = await uploadProject(
-      //   user?._id!,
-      //   files[0]
-      // )
-      // if (error) {
-      //   notify(
-      //     (<NotificationComponent message={'oops something happened!'} />),
-      //     {
-      //       className: `bg-red-700 font-bold text-white`,
-      //       closeOnClick: true,
-      //     }
-      //   )
-      //   console.log(error);
-      // } else if (response) {
-      //   notify(
-      //     (<NotificationComponent message={'project uploaded successfully'} />),
-      //     {
-      //       className: `bg-success font-bold text-white`,
-      //       closeOnClick: true,
-      //     }
-      //   )
-      //   console.log(response)
-      //   await makeProject(response)
-      // }
     }
   }
   const makeProject = async (response: createProjectParam) => {

@@ -15,7 +15,7 @@ const CreateAccountButton = ({
   action: (...args: unknown[]) => void;
 }) => {
   return (
-    <button className="my-4 px-4 w-full bg-gray-200 text-left rounded-md shadow-md font-bold py-4 dark:bg-navy-600 dark:text-white flex justify-between flex-row"
+    <button className="my-4 px-4 w-full bg-gray-200 text-left text-dark rounded-md shadow-md font-bold py-4 dark:bg-navy-600 dark:text-white flex justify-between flex-row"
       onClick={action}
     >
       <span>Create Account</span>

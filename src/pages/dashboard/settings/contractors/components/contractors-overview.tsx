@@ -10,7 +10,7 @@ import { getContractors } from "../../helper";
 import { UserAuthContext } from "../../../../../App";
 import AddTradeModal from "../../../profie/trades/components/trade-moda";
 
-const ConstractorsTable = ({
+const  ConstractorsTable = ({
   contractors
 }: {
   contractors: User[] | null
