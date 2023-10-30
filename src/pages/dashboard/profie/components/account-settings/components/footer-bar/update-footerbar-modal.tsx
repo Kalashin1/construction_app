@@ -5,7 +5,7 @@ import { Button } from "../../../../../../auth/components";
 import { assignStandIn, retrieveEmployees } from "../../../../../helper/user";
 import { Modal } from "../..";
 import { UserAuthContext } from "../../../../../../../App";
-import EmployeeList from "../employee_list";
+// import EmployeeList from "../employee_list";
 
 const UpdateFooterBarModal = ({
   closeModal,
@@ -78,7 +78,7 @@ const UpdateFooterBarModal = ({
             type="text"
           />
         </label>
-        <EmployeeList />
+        {/* <EmployeeList /> */}
         <Button
           label="Add Bank Details"
           action={(e) => { assignNewStandIn(e as Event, form.current!) }}

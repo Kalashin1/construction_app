@@ -104,12 +104,12 @@ const Trades = () => {
         <ul className="list-disc">
 
           {contracts && contracts.map(({ trade, _id }) => (
-            <li className={`flex flex-row justify-between items-center rounded-md my-4 border-${trade?.color} border-2 p-4`}>
-              <div className={`text-${trade?.color} text-lg cursor-pointer`} onClick={() => getTradePositions(trade._id)}>
+            <li className={`flex flex-row justify-between items-center rounded-md my-4 ${TradeIcons[trade?.name]?.classNames} border-2 p-4`}>
+              <div className={`text-lg cursor-pointer`} onClick={() => getTradePositions(trade._id)}>
                 <span className="mr-2">
-                  <i className={TradeIcons[trade.name]} />
+                  <i className={TradeIcons[trade.name].icon} />
                 </span>
-                <span className={`text-${trade.color}`}>
+                <span>
                   {trade.name.slice(0, 1).toUpperCase() + trade.name.slice(1)} (i)
                 </span>
               </div>

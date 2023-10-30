@@ -1,4 +1,4 @@
-import {ProjectDetailCard} from "./main-order-item";
+// import {ProjectDetailCard} from "./main-order-item";
 
 const ExtraOrders = () => {
   return (
@@ -18,9 +18,10 @@ const ExtraOrders = () => {
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="">
-        <ProjectDetailCard 
+        {/* <ProjectDetailCard
+
           
-        />
+        /> */}
       </div>
     </div>
   );

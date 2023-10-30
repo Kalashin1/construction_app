@@ -54,7 +54,7 @@ function Login() {
               )
                 navigate(SCREENS.PROFILE)
               else navigate(SCREENS.DASHBOARD);
-            }, 3000)
+            }, 1500)
           },
         }
       );

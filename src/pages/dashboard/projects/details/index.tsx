@@ -14,7 +14,7 @@ import DownloadProjectActionButton from "./components/download-button";
 import ProjectDownloadAction from "./components/project-download-action";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { IProject, PROJECT_STATUS } from "../../../../types";
+import { IProject, PROJECT_STATUS, ProjectPositions } from "../../../../types";
 import { getProject } from "../../helper/project";
 import { UserAuthContext } from "../../../../App";
 
@@ -23,6 +23,7 @@ const ProjectDetails = () => {
   const navigate = useNavigate();
   const [showDownloadOption, updateShowDownloadOption] = useState(false);
   const [project, setProject] = useState<IProject | null>(null);
+  const [positions, setPositions] = useState<ProjectPositions[] | null>(null);
   const { user } = useContext(UserAuthContext)
   const { id } = useParams();
 
@@ -35,6 +36,16 @@ const ProjectDetails = () => {
       } else if (_project) {
         console.log(_project);
         setProject(_project);
+        const positions: ProjectPositions[] = [];
+        for (const key in _project.positions) {
+          const _positions = _project.positions[key].positions
+          _positions.forEach((pos) => {
+            pos.tradeName = key
+          })
+          positions.push(..._positions)
+        }
+        console.log(positions[0])
+        setPositions(positions)
       }
     }
 
@@ -63,7 +74,7 @@ const ProjectDetails = () => {
           <ConstructionSchedule />
           <Documents />
           <ScopeOfService />
-          <MainOrderItem />
+          {project && positions && (<MainOrderItem positions={positions} />)}
           <ExtraOrders />
           {showDownloadOption && (<ProjectDownloadAction />)}
           <FloatingActionButton
