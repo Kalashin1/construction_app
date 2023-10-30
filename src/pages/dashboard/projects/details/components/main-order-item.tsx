@@ -46,7 +46,7 @@ export const ProjectDetailCard = ({ position, index }: {
           </button>
         </div>
       </div>
-      {/* <MainOrderDropdown /> */}
+      <MainOrderDropdown />
     </div>
     <div className="p-4 col-span-4 md:col-span-1 my-4">
       <p className="font-bold">{position?.shortText}</p>
@@ -110,6 +110,7 @@ const MainOrderItem = ({ positions }: {
     "06.08.01.0090",
     "06.08.01.0200",
   ]
+  console.log(requiredPositions)
   return (
     <div className="my-12">
       <div className="bg-white shadow-md rounded py-6 dark:border-navy-700 dark:bg-navy-800 dark:text-white">
