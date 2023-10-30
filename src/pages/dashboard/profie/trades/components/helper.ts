@@ -48,9 +48,46 @@ export const removeUserTrade = async ( user_id: string,
 
 
 export const TradeIcons = {
-  'painting': 'fas fa-edit',
-  'plumbing': 'fas fa-sink',
-  'electricity': ' fa-bolt-lightning'
+  'painting':{
+    icon: 'fas fa-edit',
+    classNames: 'text-red-500 border-red-500'
+  },
+  'plumbing': {
+    icon: 'fas fa-sink',
+    classNames: 'text-blue-500 border-blue-500'
+  },
+  'Electricity': {
+    icon: 'fas fa-bolt-lightning',
+    classNames: 'text-green-500 border-green-500'
+  },
+  'bricklaying': {
+    icon: ' fas fa-brick',
+    classNames: 'text-gray-800 border-gray-800'
+  },
+  'carpentary': {
+    icon: 'fas fa-cog',
+    classNames: 'text-yellow-500 border-yellow-500'
+  },
+  'cleaning': {
+    icon: 'fas fa-broom',
+    classNames: 'text-brown-800 border-brown-800'
+  },
+  'flooring': {
+    icon: 'fas fa-floor',
+    classNames: 'text-teal-500 border-teal-500'
+  },
+  'abestos': {
+    icon: 'fas fa-roof',
+    classNames: 'text-orange-300 border-orange-300'
+  },
+  'other': {
+    icon: 'fas fa-list',
+    classNames: 'text-pink-800 border-pink-800'
+  },
+  'tiles': {
+    icon: 'fas fa-tiles',
+    classNames: 'text-purple-500 border-purple-500'
+  }
 }
 
 export const uploadPostionFile = async (user_id: string, files: File[]): Promise<[null|Error, [PositionInterface[]]|null]> => {

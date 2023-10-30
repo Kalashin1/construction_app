@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../../../navigation/constants";
-import { createProjectParam } from "../../../types";
+import { IProject, createProjectParam } from "../../../types";
 
 export const createProject = async (param: createProjectParam) => {
   const res = await fetch(`${API_BASE_URL}/project/create`, {
@@ -53,7 +53,7 @@ export const getAllExecutorProjects = async (executor_id: string) => {
   }
 }
 
-export const getProject = async (project_id: string) => {
+export const getProject = async (project_id: string): Promise<[object|null, IProject|null]> => {
   const res = await fetch(`${API_BASE_URL}/project/id/${project_id}`);
   if (res.ok) {
     const payload = await res.json()

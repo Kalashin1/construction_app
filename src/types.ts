@@ -41,8 +41,8 @@ export interface User {
 export type Address = {
   street: string;
   zip: string;
-  province: string
-}
+  province: string;
+};
 
 export type UserBankDetails = {
   bank: string;
@@ -77,23 +77,23 @@ export type StandIn = {
 
 export interface TradeInterface {
   _id: string;
-  name: 'painting'|'plumbing'|'electricity';
+  name: "painting" | "plumbing" | "electricity";
   color: TradeColorEnum;
 }
 
-export type NumberRangesType = 'DRAFT' | 'INVOICE';
+export type NumberRangesType = "DRAFT" | "INVOICE";
 
 export type NumberRanges = {
   prefix: string;
   nextNumber: number;
   type: NumberRangesType;
-}
+};
 
 export type LogoUrl = {
   logo: string;
   icon: string;
   invoiceLogo: string;
-}
+};
 // 650d6002aa58b8332aac7f02
 
 export type UserDocument = {
@@ -101,7 +101,7 @@ export type UserDocument = {
   fileUrl: string;
   uploadedAt: string;
   status: string;
-}
+};
 
 export type UserDocuments = {
   BusinessRegistration: string;
@@ -111,30 +111,30 @@ export type UserDocuments = {
   CertificateOfExistenceBusinessLiability: string;
   CertificateOfExemptionAccording: string;
   CertificateInTaxMatters: string;
-  MinimumWageProof: string; 
+  MinimumWageProof: string;
   GlobalMinimumWageCertificate: string;
   CertificareOfSafetyFromTheBG: string;
   CertificateOfClearanceOfHealthInsuranceAndSocialSecurity: string;
   SalesTaxIdentification: string;
   Letterhead: string;
   A1Certificate: string;
-  CertificateOfClearanceFromTheCollectiveSocialInsuranceFund: string
+  CertificateOfClearanceFromTheCollectiveSocialInsuranceFund: string;
   ProofOfOccupationalSafetyTraining: string;
   EmployeeList: string;
-  TrainingAndInstructionCertificates: string;  
+  TrainingAndInstructionCertificates: string;
   InstallerIDCard: string;
   ProofOfExpertiseAccordingToTRGS: string;
-}
+};
 
 export const UserDocumentsKeys = [
-  'BusinessRegistration',
+  "BusinessRegistration",
   "MasterScertificate",
   "CommercialRegisterExtract",
   "Craftscroll",
   "CertificateOfExistenceBusinessLiability",
   "CertificateOfExemptionAccording",
   "CertificateInTaxMatters",
-  "MinimumWageProof" ,
+  "MinimumWageProof",
   "GlobalMinimumWageCertificate",
   "CertificareOfSafetyFromTheBG",
   "CertificateOfClearanceOfHealthInsuranceAndSocialSecurity",
@@ -144,10 +144,10 @@ export const UserDocumentsKeys = [
   "CertificateOfClearanceFromTheCollectiveSocialInsuranceFund",
   "ProofOfOccupationalSafetyTraining",
   "EmployeeList",
-  "TrainingAndInstructionCertificates"  ,
+  "TrainingAndInstructionCertificates",
   "InstallerIDCard",
   "ProofOfExpertiseAccordingToTRGS",
-] as const
+] as const;
 
 export interface INotification {
   _id: string;
@@ -171,9 +171,15 @@ export interface PositionInterface {
   createdAt?: string;
   updatedAt: string;
   contractor?: string;
+  tradeName?: string;
 }
 
-export const CONTRACT_STATUS = ["GENERATED", "ACCEPTED", "REJECTED", "TERMINATED"];
+export const CONTRACT_STATUS = [
+  "GENERATED",
+  "ACCEPTED",
+  "REJECTED",
+  "TERMINATED",
+];
 
 export interface Contract {
   contractor: User;
@@ -191,10 +197,28 @@ export interface IProject {
   _id: string;
   contractor: string;
   executors: string[];
-  status: typeof PROJECT_STATUS[number];
-  positions: ProjectPositions[];
-  shortagePositions: ProjectPositions[];
-  extraPositions: ProjectPositions[];
+  status: (typeof PROJECT_STATUS)[number];
+  positions: {
+    [key: string]: {
+      positions: ProjectPositions[];
+      billed: false;
+      executor: string;
+    };
+  };
+  shortagePositions: {
+    [key: string]: {
+      positions: ProjectPositions[];
+      billed: false;
+      executor: string;
+    };
+  };
+  extraPositions: {
+    [key: string]: {
+      positions: ProjectPositions[];
+      billed: false;
+      executor: string;
+    };
+  };
   createdAt: string;
   dueDate: string;
   updatedAt: string;
@@ -202,9 +226,9 @@ export interface IProject {
   building: Building;
   client: string;
   rentalStatus: string;
-  construction_manager: Pick<User, 'email'| 'phone'> & {name: string};
-  commissioned_by: Pick<User, 'email'| 'phone'> & {name: string};
-  careTaker: Pick<User, 'email'| 'phone'> & {name: string};
+  construction_manager: Pick<User, "email" | "phone"> & { name: string };
+  commissioned_by: Pick<User, "email" | "phone"> & { name: string };
+  careTaker: Pick<User, "email" | "phone"> & { name: string };
   construction_started: number;
   paused_at: number;
   billingDetails: string;
@@ -215,23 +239,29 @@ export interface IProject {
 
 type TradeSchedule = {
   string: string;
-}
+};
 
-
-export const PROJECT_STATUS = ["CREATED", "ASSIGNED", "PAUSED", "COMPLETED", "NOT-FEASIBLE", "CANCELED"]
+export const PROJECT_STATUS = [
+  "CREATED",
+  "ASSIGNED",
+  "PAUSED",
+  "COMPLETED",
+  "NOT-FEASIBLE",
+  "CANCELED",
+];
 
 export type createProjectParam = {
-  contractor_id: string; 
-  positions: ProjectPositions[]; 
-  dueDate: string; 
-  external_id: string; 
+  contractor_id: string;
+  positions: ProjectPositions[];
+  dueDate: string;
+  external_id: string;
   client: string;
   building: Building;
-  commissioned_by: Pick<User, 'email'| 'phone'> & {name: string};
+  commissioned_by: Pick<User, "email" | "phone"> & { name: string };
   billingDetails: string;
   rentalStatus: string;
-  careTaker: Pick<User, 'email'| 'phone'> & {name: string};
-}
+  careTaker: Pick<User, "email" | "phone"> & { name: string };
+};
 
 export type ProjectPositions = {
   status: string;
@@ -240,11 +270,11 @@ export type ProjectPositions = {
   section?: string;
   documentURL?: string;
   position: number;
-} & Partial<PositionInterface>
+} & Partial<PositionInterface>;
 
 export type Building = {
   address: string;
   location: string;
   description: string;
   notes: string;
-}
+};
