@@ -150,6 +150,7 @@ const MainOrderItem = ({ positions }: {
 
     //others//
     "06.09.01.0010", 
+    //"06.09.01.0010", 
 
 
 
