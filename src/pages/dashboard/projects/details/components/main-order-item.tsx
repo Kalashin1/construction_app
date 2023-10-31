@@ -40,7 +40,7 @@ export const ProjectDetailCard = ({ position, index }: {
           <h3>{position?.units}&nbsp;|&nbsp;</h3>
           <h3>&nbsp;{position?.crowd}&nbsp;|&nbsp;</h3>
           <h3>{position?.price ?? '0.00'} €&nbsp;|&nbsp;</h3>
-          <h3>&nbsp;{(Number(position?.crowd) * position?.price!) ?? '0.00'} €</h3>
+          <h3>&nbsp;{(Number(position?.crowd) * position?.price!).toFixed(2) ?? '0.00'} €</h3>
           <button className="px-2">
             <i className="fas fa-ellipsis-vertical" />
           </button>

@@ -44,7 +44,6 @@ const ProjectDetails = () => {
           })
           positions.push(..._positions)
         }
-        console.log(positions[0])
         setPositions(positions)
       }
     }

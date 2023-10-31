@@ -193,32 +193,25 @@ export interface Contract {
   positions: Array<PositionInterface>;
 }
 
+export type ProjectPositionObject = {
+  [key: string]: {
+    positions: ProjectPositions[];
+    billed: false;
+    executor: string;
+    name: string;
+  contract?: string
+  id: string;
+  };
+};
+
 export interface IProject {
   _id: string;
   contractor: string;
   executors: string[];
   status: (typeof PROJECT_STATUS)[number];
-  positions: {
-    [key: string]: {
-      positions: ProjectPositions[];
-      billed: false;
-      executor: string;
-    };
-  };
-  shortagePositions: {
-    [key: string]: {
-      positions: ProjectPositions[];
-      billed: false;
-      executor: string;
-    };
-  };
-  extraPositions: {
-    [key: string]: {
-      positions: ProjectPositions[];
-      billed: false;
-      executor: string;
-    };
-  };
+  positions: ProjectPositionObject
+  shortagePositions: ProjectPositionObject
+  extraPositions: ProjectPositionObject
   createdAt: string;
   dueDate: string;
   updatedAt: string;
