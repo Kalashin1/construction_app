@@ -2,31 +2,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "react-router-dom";
 import { IProject } from "../../../../../../types";
-import { Modal } from "../../../../profie/components/account-settings";
-import { useState, useContext } from "react";
-import EmployeeList from "../../../../profie/components/account-settings/components/employee_list";
-import { UserAuthContext } from "../../../../../../App";
+import { useState } from "react";
+import AssignExecutorModal from "./assing-executor";
 
-const AssignExecutorModal = ({
-  closeModal,
-  project_id
-}: {
-  closeModal: (...args: unknown[]) => void;
-  project_id: string
-}) => {
-  console.log(project_id)
-  const {user} = useContext(UserAuthContext)
-  return (
-    <Modal
-      title="Select Exectutor"
-      closeModal={closeModal}
-    >
-      <div>
-        <EmployeeList userLists={user?.executors!} />
-      </div>
-    </Modal>
-  )
-}
 
 const ProjectListTable = ({
   projects
@@ -34,7 +12,7 @@ const ProjectListTable = ({
   projects: []
 }) => {
   const dataTitles = ['Project', 'Status', 'Info', 'Completion', ' ']
-  
+
   return (
     <div className="min-w-full overflow-x-auto my-4">
       <table className="w-full text-left">
@@ -64,7 +42,7 @@ const ProjectListTable = ({
   );
 };
 
-const ProjectTableRow = ({project}: {
+const ProjectTableRow = ({ project }: {
   project: IProject
 }) => {
   const [showModal, updateShowModal] = useState(false)
@@ -92,14 +70,14 @@ const ProjectTableRow = ({project}: {
         </div>
       </td>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-        <p>Start of Execution: {project?.construction_started ? new Date(project?.construction_started).toDateString(): ''}</p>
+        <p>Start of Execution: {project?.construction_started ? new Date(project?.construction_started).toDateString() : ''}</p>
         <p className="text-sm flex flex-row justify-between">
           <span>Published:&nbsp;</span>
-          <span>{" "+new Date(project?.createdAt).toDateString()}</span>
+          <span>{" " + new Date(project?.createdAt).toDateString()}</span>
         </p>
         <p className="text-sm flex flex-row justify-between">
           <span>Completed: </span>
-          <span>{project?.completed_at ? new Date(project?.completed_at).toDateString(): ''}</span>
+          <span>{project?.completed_at ? new Date(project?.completed_at).toDateString() : ''}</span>
         </p>
         <p className="text-sm flex flex-row justify-between">
           <span>OrderVolume:</span>
@@ -118,7 +96,7 @@ const ProjectTableRow = ({project}: {
           Assign
         </button>
 
-        {showModal && (<AssignExecutorModal project_id={project?._id} closeModal={() => updateShowModal(false)} />)}
+        {showModal && project && (<AssignExecutorModal positions={project.positions} project_id={project?._id} closeModal={() => updateShowModal(false)} />)}
       </td>
     </>
   )

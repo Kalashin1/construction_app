@@ -62,7 +62,6 @@ const CreateCard = () => {
               closeOnClick: true,
             }
           )
-          console.log(response)
           await makeProject(response)
         }
       }
@@ -80,6 +79,7 @@ const CreateCard = () => {
         }
       )
       console.log(projectErr);
+      return
     }
 
     else if (project) {
