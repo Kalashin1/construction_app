@@ -2,8 +2,9 @@ import { CONTRACT_STATUS, Contract } from "../../../../../../../../types";
 import { getPositions } from "../../../../../../profie/trades/components/helper";
 import * as XLSX from 'xlsx';
 import { acceptContract, acceptContractParams, rejectContract, terminateContract } from "../../helper";
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 import { notify, NotificationComponent } from "../../../../../../components/notification/toast";
+import { UserAuthContext } from "../../../../../../../../App";
 
 const ContractHeader = ({
   contract,
@@ -12,7 +13,7 @@ const ContractHeader = ({
   contract: Contract,
   updateContract: Dispatch<SetStateAction<Contract>>
 }) => {
-
+  const {user} = useContext(UserAuthContext)
   const accept = async (params: acceptContractParams) => {
     const [error, payload] = await acceptContract(params);
     if (error) {
@@ -109,6 +110,8 @@ const ContractHeader = ({
     }
   }
 
+  const isContractExecutor = user?._id === contract.executor._id
+
 
   return (
     <div className="bg-white rounded-md shadow-sm">
@@ -143,7 +146,7 @@ const ContractHeader = ({
           </span>
           Download
         </button>
-        {contract.status === CONTRACT_STATUS[1] && ((
+        {contract.status === CONTRACT_STATUS[1] && isContractExecutor && ((
           <button className="bg-red-500 text-white px-4 py-1 rounded-md shadow" onClick={() => terminate({ contract_id: contract._id })}>
             <span className="mr-2">
               <i className="fas fa-times" />
@@ -152,7 +155,7 @@ const ContractHeader = ({
           </button>
         ))}
         {
-          contract.status === CONTRACT_STATUS[0] && (
+          contract.status === CONTRACT_STATUS[0] && isContractExecutor && (
             <div>
               <button className="bg-green-500 text-white px-4 py-1 rounded-md shadow"
                 onClick={() => accept({ contract_id: contract._id, executor_id: contract.executor._id! })}

@@ -40,13 +40,14 @@ const AddTradeModal = ({
     e.preventDefault();
     setIsLoading(true);
     const [, user] = await getUserById(_id);
+    console.log(user)
     setUser(user!);
     const [error, positions] = await uploadPostionFile(user?._id!, files!)
     if (error) {
       notify(
         (<NotificationComponent message={'oops something happened!'} />),
         {
-          className: 'bg-danger font-bold text-white',
+          className: 'bg-red-500 font-bold text-white',
         }
       );
       console.log(error);
@@ -101,12 +102,13 @@ const AddTradeModal = ({
   }
 
   const createNewContract = async (params: CreateContractPayload) => {
+    console.log(params)
     const [error] = await createContract(params);
     if (error) {
       notify(
         (<NotificationComponent message={'oops something happened'} />),
         {
-          className: 'bg-danger font-bold text-white',
+          className: 'bg-red-500 font-bold text-white',
         }
       )
       console.log(error);

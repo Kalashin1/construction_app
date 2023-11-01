@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { IProject } from "../../../../../../types";
 import { useState } from "react";
 import AssignExecutorModal from "./assing-executor";
+import { TradeIcons } from '../../../details/helper';
 
 
 const ProjectListTable = ({
@@ -62,11 +63,12 @@ const ProjectTableRow = ({ project }: {
           <div className="w-9/12 rounded-full bg-warning"></div>
         </div>
         <div className="my-4">
-          <span className="bg-gray-200 py-1 px-2 text-black text-center rounded mx-1">5</span>
-          <span className="bg-warning py-1 px-2 text-white text-center rounded mx-1">0</span>
-          <span className="bg-success py-1 px-2 text-white text-center rounded mx-1">0</span>
-          <span className="bg-red-500 py-1 px-2 text-white text-center rounded mx-1">1</span>
-          <span className="bg-black py-1 px-2 text-white text-center rounded mx-1">50</span>
+          {project && Object.keys(project.positions).map((position) => {
+            if (project?.positions[position]?.positions?.length > 0) return (
+              <span className={`${TradeIcons[position]?.bg} ${TradeIcons[position]?.textColor} py-1 px-2 text-black text-center rounded mx-1`}>{project?.positions[position]?.positions?.length}</span>
+            )
+          })}
+          {/* <span classsName="bg-black py-1 px-2 text-white text-center rounded mx-1">50</span> */}
         </div>
       </td>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
