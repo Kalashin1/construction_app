@@ -61,8 +61,8 @@ const ProjectCard = ({ project }: {
         <div className="md:w-1/2 my-4 md:my-0">
           <div className="progress h-6 bg-slate-150 dark:bg-navy-500">
             <div
-              className="w-full py-1 text-white rounded-full bg-success dark:bg-accent text-right px-4"
-            ><p>100%</p></div>
+              className="w-1/12 py-1 text-white rounded-full bg-success dark:bg-accent text-right px-4"
+            ><p>0%</p></div>
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@ const ProjectCard = ({ project }: {
         <div className="md:w-2/6 p-6">
           { /* // TODO: This should link to the house address https://maps.google.com/?q=address */}
           <Link to={`https://maps.google.com/?q=${project?.building?.address}`} className="text-blue-400 text-xs cursor-pointer" target="blank">
-            {project.client.split('.').join(', ')}
+            {project?.building.address}
           </Link>
           <h3>Location: {project.building.location}</h3>
           <h3>Rental Status: {project.rentalStatus}</h3>

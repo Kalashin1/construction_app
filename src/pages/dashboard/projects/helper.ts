@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../../../navigation/constants";
-import { Draft, ProjectPositions } from "../../../types";
+import { CreateDraftParam, Draft, ProjectPositions } from "../../../types";
 
 export const assignProjectToExecutor = async (
   project_id: string,
@@ -94,7 +94,7 @@ export const rejectProject = async (
 };
 
 export const createNewDraft = async (
-  draft: Partial<Draft>
+  draft: CreateDraftParam
 ): Promise<[object | null, Draft | null]> => {
   const res = await fetch(
     `${API_BASE_URL}/draft/create`,

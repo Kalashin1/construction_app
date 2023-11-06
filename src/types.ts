@@ -277,13 +277,14 @@ export type Building = {
 export const INVOICE_STATUS = ["REQUESTED", "ACCEPTED", "DECLINED"] as const;
 
 export interface Draft {
-  project: string;
-  user_id: string;
-  reciepient: string;
+  project: IProject;
+  user_id: User;
+  reciepient: User;
   status: (typeof INVOICE_STATUS)[number];
   _id: string;
   createdAt: string;
   amount: number;
   positions: string[];
+  number: number;
   updatedAt: string;
 }
