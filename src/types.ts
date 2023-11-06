@@ -284,7 +284,16 @@ export interface Draft {
   _id: string;
   createdAt: string;
   amount: number;
-  positions: string[];
+  positions: ProjectPositions[];
   number: number;
   updatedAt: string;
+}
+
+export type CreateDraftParam = {
+  project: string;
+  user_id: string;
+  reciepient: string;
+  status: (typeof INVOICE_STATUS)[number];
+  amount: number;
+  positions: string[]
 }
