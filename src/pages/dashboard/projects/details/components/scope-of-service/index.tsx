@@ -1,4 +1,9 @@
-const ScopeOfService = () => {
+import { useState } from "react";
+import MultiplePositionModal from "./multiple-positions-modal";
+import { IProject } from "../../../../../../types";
+
+const ScopeOfService = ({ project }: { project: IProject }) => {
+  const [showSelectMultiplePositions, updateShowSelectMultiplePositions] = useState(false)
   return (
     <div>
       <h3 className="my-6 text-lg font-bold">Scope of services</h3>
@@ -6,7 +11,12 @@ const ScopeOfService = () => {
         <div className="p-6 flex flex-col md:flex-row justify-between">
           <h3>Actions & Filters</h3>
 
-          <button className="my-4 md:my-0 bg-transparent border-gray-800 border py-1 px-2 md:px-4 rounded-md">Multiple Selection</button>
+          <button
+            className="my-4 md:my-0 bg-transparent border-gray-800 border py-1 px-2 md:px-4 rounded-md"
+            onClick={() => updateShowSelectMultiplePositions(true)}
+          >
+            Multiple Selection
+          </button>
         </div>
         <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
         <div className="flex p-6 flex-col md:flex-row justify-between">
@@ -14,6 +24,7 @@ const ScopeOfService = () => {
           <button className="my-4 md:my-0 bg-transparent border-gray-800 border py-1 px-2 md:px-4 rounded-md">Show only your own positions</button>
         </div>
       </div>
+      {showSelectMultiplePositions && (<MultiplePositionModal closeModal={() => updateShowSelectMultiplePositions(false)} positions={project.positions} project_id={project._id} />)}
     </div>
   );
 };

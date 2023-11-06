@@ -10,7 +10,7 @@ import { TradeIcons } from "../../../details/helper";
 import { assignProjectToExecutor } from "../../../helper";
 import ExecutorList from "./executor-list";
 
-type _ProjectPosition = {
+export type _ProjectPosition = {
   [key: string]: {
     positions: ProjectPositions[];
     billed: false;

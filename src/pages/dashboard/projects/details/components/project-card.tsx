@@ -4,7 +4,7 @@ import EuroIcon from "../../../bills/ops/svg/euro";
 import { AdminIcon, CaretakerIcon, ContactPersonIcon, HouseIcon } from "../svgs";
 import { IProject } from "../../../../../types";
 import { Modal } from "../../../profie/components/account-settings";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { TradeIcons } from "../helper";
 import { formatter } from "../../../helper/tools";
 
@@ -39,7 +39,21 @@ const UserModal = ({
 const ProjectCard = ({ project }: {
   project: IProject
 }) => {
-  const getOrderVolume = ( ) => {
+  const getSubTotals = useCallback(() => {
+    const keys = Object.keys(project.positions);
+    const subTotals: { [key: string]: string, price: string }[] = [];
+    for (const key of keys) {
+      if (project.positions[key].executor) {
+        const positions = project.positions[key].positions;
+        const subTotal = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd))).reduce((prev, current) => prev + current);
+        subTotals.push({ key, price: formatter.format(subTotal) ?? '0.00' })
+      }
+    }
+    return subTotals;
+  }, [project.positions])
+
+
+  const getOrderVolume = useCallback(() => {
     const keys = Object.keys(project.positions);
     let price = 0;
     for (const key of keys) {
@@ -48,15 +62,17 @@ const ProjectCard = ({ project }: {
         // @ts-ignore
         price += positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd))).reduce((prev, current) => prev + current);
       }
-      return formatter.format(price);
     }
-  }
+    return formatter.format(price);
+  }, [project.positions])
+
   const [showConstructionManager, updateShowConstructionManager] = useState(false);
   const [showCareTakerModal, updateShowCareTaker] = useState(false);
+  console.log('subtotals', getSubTotals())
   return (
     <div className="bg-white rounded-md py-6 shadow dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="flex flex-col md:flex-row md:justify-between px-6 mb-4">
-        <h2>MAGGA-{project._id.slice(0, 6)} ({project.status})</h2>
+        <h2>{project.external_id} ({project.status})</h2>
 
         <div className="md:w-1/2 my-4 md:my-0">
           <div className="progress h-6 bg-slate-150 dark:bg-navy-500">
@@ -136,14 +152,14 @@ const ProjectCard = ({ project }: {
         </div>
       </div>
       <div className="md:w-2/6 p-6">
-        <span className="py-1 px-4 bg-gray-950 text-white rounded shadow">MAGGA-{project._id.slice(0,6)}</span>
+        <span className="py-1 px-4 bg-gray-950 text-white rounded shadow">MAGGA-{project._id.slice(0, 6)}</span>
         <p className="text-md my-4">MAGGA LV - (as of January 1st, 2023)</p>
 
 
         <div className="flex flex-row">
           {project && Object.keys(project.positions).map((position) => {
             if (project?.positions[position]?.positions?.length > 0) return (
-              <span className={`${TradeIcons[position]?.bg} ${TradeIcons[position]?.textColor} py-1 px-2 text-black text-center rounded mx-1`}>{project?.positions[position]?.positions?.length}</span>
+              <a href={`#${position}`} className={`${TradeIcons[position]?.bg} ${TradeIcons[position]?.textColor} py-1 px-2 text-black text-center rounded mx-1`}>{project?.positions[position]?.positions?.length}</a>
             )
           })}
         </div>
@@ -154,9 +170,15 @@ const ProjectCard = ({ project }: {
           <div className="bg-gray-950 py-2 px-6 md:px-4 w-1/12">
             <EuroIcon width={20} color="gray" />
           </div>
-          <div className="bg-gray-300 w-11/12 flex items-center flex-row justify-between py-1 px-4">
+          <div className="bg-gray-300 w-11/12 grid grid-cols-2 items-center flex-row content-between py-1 px-4">
             <h3 className="text-black">Order Value:</h3>
             <h3 className="text-black">{getOrderVolume() ?? '0.00'}</h3>
+            {getSubTotals().map((subTotal) => (
+              <>
+                <h3 className="text-black">{subTotal.key}</h3>
+                <h3 className="text-black">{subTotal.price}</h3>
+              </>
+            ))}
           </div>
         </div>
       </div>
