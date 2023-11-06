@@ -5,6 +5,7 @@ import { TableSearch, SelectBox } from "../../../components/project-summary";
 import ProjectListTable from "./components/project-list-table";
 import { UserAuthContext } from "../../../../../App";
 import { getAllContractorProjects, getAllExecutorProjects, getAllProjects } from "../../../helper/project";
+import { IProject } from "../../../../../types";
 
 const ProjectLists = ({
   updateShowFilter,
@@ -15,7 +16,7 @@ const ProjectLists = ({
 }) => {
   const [numRows, setNumRows] = useState(0);
   const {user} = useContext(UserAuthContext);
-  const [projects, setProjects] = useState<[]|null>(null)
+  const [projects, setProjects] = useState<IProject[]|null>(null)
 
   useEffect(() => {
     const setUp = async () => {
@@ -87,7 +88,7 @@ const ProjectLists = ({
       </div>
 
       <div>
-        { projects && (<ProjectListTable projects={projects} />)}
+        { projects && (<ProjectListTable projects={projects.filter((pro) => pro !== null) as IProject[]} />)}
         <div>
           <div className="flex flex-row justify-between px-4 py-4 sm:flex-row sm:items-center sm:space-y-0 sm:px-5">
             <div className="text-xs+">Footer Note</div>

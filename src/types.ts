@@ -199,8 +199,9 @@ export type ProjectPositionObject = {
     billed: false;
     executor: string;
     name: string;
-  contract?: string
-  id: string;
+    contract?: string;
+    id: string;
+    accepted: boolean;
   };
 };
 
@@ -209,9 +210,9 @@ export interface IProject {
   contractor: string;
   executors: string[];
   status: (typeof PROJECT_STATUS)[number];
-  positions: ProjectPositionObject
-  shortagePositions: ProjectPositionObject
-  extraPositions: ProjectPositionObject
+  positions: ProjectPositionObject;
+  shortagePositions: ProjectPositionObject;
+  extraPositions: ProjectPositionObject;
   createdAt: string;
   dueDate: string;
   updatedAt: string;
@@ -263,6 +264,7 @@ export type ProjectPositions = {
   section?: string;
   documentURL?: string;
   position: number;
+  executor?: string
 } & Partial<PositionInterface>;
 
 export type Building = {
@@ -271,3 +273,27 @@ export type Building = {
   description: string;
   notes: string;
 };
+
+export const INVOICE_STATUS = ["REQUESTED", "ACCEPTED", "DECLINED"] as const;
+
+export interface Draft {
+  project: IProject;
+  user_id: User;
+  reciepient: User;
+  status: (typeof INVOICE_STATUS)[number];
+  _id: string;
+  createdAt: string;
+  amount: number;
+  positions: ProjectPositions[];
+  number: number;
+  updatedAt: string;
+}
+
+export type CreateDraftParam = {
+  project: string;
+  user_id: string;
+  reciepient: string;
+  status: (typeof INVOICE_STATUS)[number];
+  amount: number;
+  positions: string[]
+}
