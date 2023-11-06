@@ -33,8 +33,8 @@ const CreateCard = () => {
     const [err, files] = await getFile(
       {
         'application/*': ['.pdf', '.xlsx', '.xls']
-      }, 
-      'project', 
+      },
+      'project',
       true
     );
     if (err) {
@@ -62,36 +62,35 @@ const CreateCard = () => {
               closeOnClick: true,
             }
           )
-          await makeProject(response)
+          const [projectErr, project] = await makeProject(response)
+          if (projectErr) {
+            notify(
+              (<NotificationComponent message={'oops something happened! ' + projectErr.message} />),
+              {
+                className: `bg-red-600 font-bold text-white`,
+                closeOnClick: true,
+              }
+            )
+            console.log(projectErr);
+          }
+
+          else if (project) {
+            notify(
+              (<NotificationComponent message={'project created successfully'} />),
+              {
+                className: `bg-success font-bold text-white`,
+                closeOnClick: true,
+              }
+            )
+            console.log(project);
+          }
         }
       }
       navigate(SCREENS.PROJECTS);
     }
   }
   const makeProject = async (response: createProjectParam) => {
-    const [projectErr, project] = await createProject(response);
-    if (projectErr) {
-      notify(
-        (<NotificationComponent message={'oops something happened! ' + projectErr.message} />),
-        {
-          className: `bg-red-600 font-bold text-white`,
-          closeOnClick: true,
-        }
-      )
-      console.log(projectErr);
-      return
-    }
-
-    else if (project) {
-      notify(
-        (<NotificationComponent message={'project created successfully'} />),
-        {
-          className: `bg-success font-bold text-white`,
-          closeOnClick: true,
-        }
-      )
-      console.log(project);
-    }
+    return createProject(response);
   }
 
 

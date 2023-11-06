@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../../../navigation/constants";
-import { CreateDraftParam, Draft, ProjectPositions } from "../../../types";
+import { CreateDraftParam, Draft, IProject, ProjectPositions } from "../../../types";
 
 export const assignProjectToExecutor = async (
   project_id: string,
@@ -137,6 +137,31 @@ export const uploadPositionFile = async (
     {
       method: "POST",
       body: fd,
+      headers: {
+        "Content-type": "application/json",
+      },
+    }
+  );
+
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+};
+
+export const updatePositionsByTrade = async (
+  project_id: string,
+  trade: string,
+  status: string
+): Promise<[object | null, IProject | null]> => {
+  const res = await fetch(
+    `${API_BASE_URL}/project/postitions/${project_id}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({ trade, status }),
       headers: {
         "Content-type": "application/json",
       },

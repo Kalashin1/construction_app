@@ -6,6 +6,8 @@ import ProjectListTable from "./components/project-list-table";
 import { UserAuthContext } from "../../../../../App";
 import { getAllContractorProjects, getAllExecutorProjects, getAllProjects } from "../../../helper/project";
 import { IProject } from "../../../../../types";
+import { useNavigate } from "react-router-dom";
+import { SCREENS } from "../../../../../navigation/constants";
 
 const ProjectLists = ({
   updateShowFilter,
@@ -49,16 +51,17 @@ const ProjectLists = ({
 
     setUp()
   }, [user?._id, user?.role])
+  const navigate = useNavigate()
   return (
     <div className="bg-white shadow-md rounded-md my-4 py-6 dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="flex flex-col sm:flex-row justify-between my-4 px-6 ">
         <h3 className="text-xl font-semibold">Projects</h3>
 
         <div className="mt-3 sm:my-0">
-          <Button
-            action={() => { }}
-            label="timeline"
-          />
+          {user?.role === 'contractor' && (<Button
+            action={() => {navigate(SCREENS.CREATE_PROJECT)}}
+            label="Create Project"
+          />)}
           <Button
             action={() => { }}
             label="Excel"
