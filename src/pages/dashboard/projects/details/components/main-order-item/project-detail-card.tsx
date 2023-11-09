@@ -7,6 +7,7 @@ import AddCommentModal from "../add-comment-modal";
 import UploadFileModal from "../upload-file-modal";
 import MainOrderDropdown from "./main-order-dropdown";
 import { updatePosition } from "./update-position";
+import UploadedFileModal from "./uploaded-file-modal";
 
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 export const ProjectDetailCard = ({ position, index, project_id }: {
@@ -17,6 +18,7 @@ export const ProjectDetailCard = ({ position, index, project_id }: {
   const [showDropdown, updateShowDropDown] = useState(false);
   const [showCommentModal, updateShowCommentModal] = useState(false);
   const [showUploadFileModal, updateShowUploadFileModal] = useState(false);
+  const [showFileModal, updateShowFileModal] = useState(false)
   const [executor, updateExecutor] = useState<User | null>(null)
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export const ProjectDetailCard = ({ position, index, project_id }: {
         <button className={`${TradeIcons[position?.tradeName!]?.bg} mx-2 px-2 py-1 text-small text-white rounded-md`}>
           {position?.external_id}
         </button>
-        <button>
+        <button onClick={() => updateShowFileModal(true)}>
           <FileIcon width={15} color={`${TradeIcons[position?.tradeName!]?.fileColor}`} />
         </button>
         <h3 className="font-bold ml-2">{position?.status}</h3>
@@ -70,7 +72,13 @@ export const ProjectDetailCard = ({ position, index, project_id }: {
             trade_id={position.trade!}
           />
         )}
-
+        {showFileModal && (
+          <UploadedFileModal
+            closeModal={() => updateShowFileModal(false)}
+            title={position?.external_id!}
+            image={position?.documentURL}
+          />
+        )}
         {showCommentModal && (
           <AddCommentModal
             action={updatePosition}

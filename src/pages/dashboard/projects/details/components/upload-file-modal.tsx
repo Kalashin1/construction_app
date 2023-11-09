@@ -22,7 +22,7 @@ const UploadFileModal = ({
     const [error, file] = await getFile(
       {
         'application/*': ['.pdf'],
-        'image/*': ['png', 'svg', 'jpeg', 'jpg']
+        'image/*': ['.png', '.svg', '.jpeg', '.jpg']
       },
       'project-document',
       true
@@ -35,6 +35,7 @@ const UploadFileModal = ({
           closeOnClick: true,
         }
       )
+      console.log(error)
     }
 
     if (file) {

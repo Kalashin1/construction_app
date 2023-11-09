@@ -278,7 +278,7 @@ export const INVOICE_STATUS = ["REQUESTED", "ACCEPTED", "DECLINED"] as const;
 
 export interface Draft {
   project: IProject;
-  user_id: User;
+  owner: User;
   reciepient: User;
   status: (typeof INVOICE_STATUS)[number];
   _id: string;

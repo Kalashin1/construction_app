@@ -1,9 +1,18 @@
 import { ProjectPositions } from "../../../../../../types";
 import { PlusIcon, ChevronRightIcon } from "../../svgs";
 import ProjectDetailCard from "./project-detail-card";
+import AddAddendum from "./add-addendum";
+import { useState } from "react";
 
-const Button = () => (
-  <button className="py-2 px-4 font-bold border border-gray-800 rounded-md shadow-md flex flex-row items-center justify-between">
+const Button = ({
+  action
+}: {
+  action: (...args: unknown[]) => void;
+}) => (
+  <button 
+    className="py-2 px-4 font-bold border border-gray-800 rounded-md shadow-md flex flex-row items-center justify-between"
+    onClick={action}
+  >
     <span>
       <PlusIcon width={10} color="#000" />
     </span>
@@ -18,6 +27,12 @@ const MainOrderItem = ({ positions, projectId }: {
   positions: ProjectPositions[],
   projectId: string
 }) => {
+  console.log(positions.filter((pos) => {
+    if (pos.documentURL) {
+      return pos
+    }
+  }))
+  const [showAddAddendum, updateShowAddAddendum] = useState(false)
   return (
     <div className="my-12">
       <div className="bg-white shadow-md rounded py-6 dark:border-navy-700 dark:bg-navy-800 dark:text-white">
@@ -27,9 +42,14 @@ const MainOrderItem = ({ positions, projectId }: {
             <h3 className="font-bold">Main order items</h3>
           </div>
           <div>
-            <Button />
+            <Button action={() => updateShowAddAddendum(true)} />
           </div>
         </div>
+        {showAddAddendum && (
+          <AddAddendum 
+            closeModal={() => updateShowAddAddendum(false)}
+          />
+        )}
         <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
         {positions && positions.map((position, index) => (
           <ProjectDetailCard position={position} index={index + 1} project_id={projectId} />

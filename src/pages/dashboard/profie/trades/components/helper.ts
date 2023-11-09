@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "../../../../../navigation/constants"
-import { PositionInterface } from "../../../../../types";
+import { PositionInterface, TradeInterface } from "../../../../../types";
 
-export const getAllTrades = async () => {
+export const getAllTrades = async (): Promise<[object|null, TradeInterface[]|null]> => {
   const res = await fetch(`${API_BASE_URL}/trade`);
 
   if(res.ok) {
