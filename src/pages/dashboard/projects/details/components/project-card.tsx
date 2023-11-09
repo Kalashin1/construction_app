@@ -171,14 +171,14 @@ const ProjectCard = ({ project }: {
             <EuroIcon width={20} color="gray" />
           </div>
           <div className="bg-gray-300 w-11/12 grid grid-cols-2 items-center flex-row content-between py-1 px-4">
-            <h3 className="text-black">Order Value:</h3>
-            <h3 className="text-black">{getOrderVolume() ?? '0.00'}</h3>
             {getSubTotals().map((subTotal) => (
               <>
-                <h3 className="text-black">{subTotal.key}</h3>
-                <h3 className="text-black">{subTotal.price}</h3>
+                <h3 className="text-gray-600">{subTotal.key}</h3>
+                <h3 className="text-gray-600">{subTotal.price}</h3>
               </>
             ))}
+            <h3 className="text-black font-bold">Order Value:</h3>
+            <h3 className="text-black font-bold">{getOrderVolume() ?? '0.00'}</h3>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { Draft } from "../../../../../types"
+import { Draft, INVOICE_STATUS } from "../../../../../types"
 import { formatter } from "../../../helper/tools"
 import DraftFooter from "./draft-footer"
 import DraftHeader from "./draft-header"
@@ -24,6 +24,10 @@ const DraftDetails = ({ draft, type }: {
         <DraftPositions positions={draft.positions} />
         <div className="my-7 h-px bg-slate-200 dark:bg-navy-500"></div>
         <DraftFooter total={formatter.format(draft.amount)} />
+      </div>
+      <div className="my-2 p-4 flex justify-between">
+      {draft.status === INVOICE_STATUS[0] && (<button className="bg-green-700 py-1 px-4 rounded text-white">Accept</button>)}
+      {draft.status === INVOICE_STATUS[0] && (<button className="bg-red-500 py-1 px-4 rounded text-white">Reject</button>)}
       </div>
     </div>
   )

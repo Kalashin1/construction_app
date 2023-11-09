@@ -77,7 +77,11 @@ const sidebarLinksArray = [
         link: SCREENS.PROJECTS,
         parent: SCREENS.PROJECTS
       },
-     
+      // {
+      //   text: 'Create Project',
+      //   link: SCREENS.CREATE_PROJECT,
+      //   parent: SCREENS.PROJECTS
+      // },
       {
         text: 'Shortage Orders',
         link: SCREENS.SHORTAGES,

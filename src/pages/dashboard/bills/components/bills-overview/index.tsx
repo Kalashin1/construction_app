@@ -3,20 +3,56 @@ import { useContext, useEffect, useState } from "react";
 import { Button } from "../../../components/current-projects";
 import Pagination from "../../../components/pagination";
 import { SelectBox, TableSearch } from "../../../components/project-summary";
-import { Draft } from "../../../../../types";
+import { Draft, INVOICE_STATUS } from "../../../../../types";
 import { UserAuthContext } from "../../../../../App";
-import { getUserDrafts } from "../../helper";
+import { getReciepientDraft, getUserDrafts, updateDraftStatus } from "../../helper";
 import { notify, NotificationComponent } from "../../../components/notification/toast";
 import { formatter } from "../../../helper/tools";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import AssignInvoiceIdModal from "./assign-invoice-id";
 
 const BillsTable = ({
   drafts
 }: {
   drafts: Draft[]
 }) => {
-  const dataTitles = ['The Invoice', 'Project', 'Recipient', 'Created At', 'Amount', 'Status'];
-  const navigate = useNavigate();
+
+  const { user } = useContext(UserAuthContext);
+  const dataTitles = ['The Invoice', 'Project', user?.role === 'executor' ? 'Recipient' : 'Creator', 'Created At', 'Amount', 'Status', 'Action'];
+  const [showInvoiceID, updateShowInvoiceID] = useState(false);
+  const updateDraft = async (draft_id: string, updateType: 'accept' | 'reject') => {
+    let error, payload
+    if (updateType === 'accept') {
+      [error, payload] = await updateDraftStatus(draft_id, 1)
+    }
+
+    if (updateType === 'reject') {
+      [error, payload] = await updateDraftStatus(draft_id, 2)
+    }
+
+    if (error) {
+      notify(
+        (<NotificationComponent message={'error updating status!'} />),
+        {
+          className: `bg-red-500 font-bold text-white`,
+          closeOnClick: true,
+        }
+      )
+      console.log(error)
+    }
+
+    if (payload) {
+      notify(
+        (<NotificationComponent message={`Status updated successfully, Draft ${updateType}ed`} />),
+        {
+          className: `bg-green-500 font-bold text-white`,
+          closeOnClick: true,
+        }
+      )
+      console.log(payload);
+      window.location.reload();
+    }
+  }
   return (
     <div className="is-scrollbar-hidden min-w-full overflow-x-auto my-4">
       <table className="w-full text-left">
@@ -36,23 +72,54 @@ const BillsTable = ({
         </thead>
         <tbody>
           {drafts && drafts.map((draft, index) => (
-            <tr key={index} className="border border-transparent border-b-slate-200 dark:border-b-navy-500 cursor-pointer" onClick={() => navigate(`/draft/${draft._id}`)}>
+            <tr key={index} className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">{index + 1}</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{draft?.project?.external_id}</td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5 underline text-primary">
+                <Link to={`/draft/${draft._id}`}>
+                  {draft?.project?.external_id}
+                </Link>
+              </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {draft.reciepient.first_name}
+                {user?.role === 'executor' && (draft.reciepient.first_name)}
+                {user?.role === 'contractor' && (draft.owner.first_name)}
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">{new Date(draft.createdAt).toDateString()}</td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">{formatter.format(draft.amount)}</td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <span className="bg-green-700 py-1 px-4 rounded text-white">{draft.status}</span>
+                <span className={`${draft.status === INVOICE_STATUS[0] && 'bg-yellow-500'} ${draft.status === INVOICE_STATUS[1] && 'bg-green-500'} ${draft.status === INVOICE_STATUS[2] && 'bg-red-500'} py-1 px-4 rounded text-white`}>{draft.status}</span>
               </td>
+              {draft?.reciepient._id === user?._id && (
+                <td>
+                  {draft.status === INVOICE_STATUS[0] && (<button
+                    className="btn h-9 w-9 rounded-full bg-info/10 p-0 font-medium text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25 mr-2"
+                    onClick={() => updateDraft(draft._id, 'accept')}
+                  >
+                    <i className="fas fa-check" />
+                  </button>)}
+                  {draft.status === INVOICE_STATUS[0] && (<button
+                    className="btn h-9 w-9 rounded-full bg-red-300 p-0 font-medium text-white hover:bg-red-600 focus:bg-info/20 active:bg-info/25"
+                    onClick={() => updateDraft(draft._id, 'reject')}
+                  >
+                    <i className="fas fa-times" />
+                  </button>)}
+                </td>
+              )}
+              {draft.owner._id === user?._id && (
+                <td>
+                  {draft.status === INVOICE_STATUS[1] && (<button
+                    className="btn h-9 w-9 rounded-full bg-info/10 p-0 font-medium text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25 mr-2"
+                    onClick={() => updateShowInvoiceID(true)}
+                  >
+                    <i className="fas fa-edit" />
+                  </button>)}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
-
       </table>
-    </div>
+      {showInvoiceID && (<AssignInvoiceIdModal closeModal={() => updateShowInvoiceID(false)} />)}
+    </div >
   );
 };
 
@@ -64,10 +131,15 @@ const BillsOverview = () => {
 
   useEffect(() => {
     const setUp = async () => {
-      const [error, data] = await getUserDrafts(user?._id!)
+      let error, data;
+      if (user?.role === 'executor') {
+        [error, data] = await getUserDrafts(user?._id!);
+      } else if (user?.role === 'contractor') {
+        [error, data] = await getReciepientDraft(user?._id!);
+      }
       if (error) {
         notify(
-          (<NotificationComponent message={'error fetching bills!'} />),
+          (<NotificationComponent message={'error fetching drafts!'} />),
           {
             className: `bg-red-700 font-bold text-white`,
             closeOnClick: true,
@@ -83,7 +155,7 @@ const BillsOverview = () => {
     }
 
     setUp();
-  }, [user?._id])
+  }, [user?._id, user?.role])
   return (
     <div className="bg-white p-6 rounded-lg shadow-md dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="md:w-3/6 my-4">

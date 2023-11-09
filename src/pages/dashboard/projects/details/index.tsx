@@ -87,7 +87,8 @@ const ProjectDetails = () => {
           {project && (<ProjectCard project={project} />)}
           <ConstructionSchedule />
           <Documents />
-          {project && (<ScopeOfService project={project} />)}
+          
+          {project && (<ScopeOfService project={project} updatePositions={setPositions} />)}
           {project && positions && (<MainOrderItem positions={positions} projectId={project._id} />)}
           <ExtraOrders />
           {showDownloadOption && (<ProjectDownloadAction />)}
