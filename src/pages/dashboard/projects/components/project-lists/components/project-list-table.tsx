@@ -56,7 +56,7 @@ const ProjectTableRow = ({ project }: {
       if (project.positions[key].executor) {
         const positions = project.positions[key].positions;
         // @ts-ignore
-        price += positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd))).reduce((prev, current) => prev + current);
+        price += positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd) ) ?? 0).reduce((prev, current) => prev + current);
       }
       return formatter.format(price);
     }

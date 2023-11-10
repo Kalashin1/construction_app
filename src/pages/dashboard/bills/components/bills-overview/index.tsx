@@ -86,7 +86,7 @@ const BillsTable = ({
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">{new Date(draft.createdAt).toDateString()}</td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">{formatter.format(draft.amount)}</td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <span className={`${draft.status === INVOICE_STATUS[0] && 'bg-yellow-500'} ${draft.status === INVOICE_STATUS[1] && 'bg-green-500'} ${draft.status === INVOICE_STATUS[2] && 'bg-red-500'} py-1 px-4 rounded text-white`}>{draft.status}</span>
+                <span className={`${draft.status === INVOICE_STATUS[0] && 'bg-yellow-500'} ${draft.status === INVOICE_STATUS[1] && 'bg-green-500'} ${draft.status === INVOICE_STATUS[2] && 'bg-red-500'} ${draft.status === INVOICE_STATUS[3] && 'bg-gray-800'} py-1 px-4 rounded text-white`}>{draft.status}</span>
               </td>
               {draft?.reciepient._id === user?._id && (
                 <td>
@@ -114,11 +114,11 @@ const BillsTable = ({
                   </button>)}
                 </td>
               )}
+              {showInvoiceID && (<AssignInvoiceIdModal closeModal={() => updateShowInvoiceID(false)} draft_id={draft?._id} />)}
             </tr>
           ))}
         </tbody>
       </table>
-      {showInvoiceID && (<AssignInvoiceIdModal closeModal={() => updateShowInvoiceID(false)} />)}
     </div >
   );
 };

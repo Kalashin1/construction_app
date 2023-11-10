@@ -45,8 +45,11 @@ const ProjectCard = ({ project }: {
     for (const key of keys) {
       if (project.positions[key].executor) {
         const positions = project.positions[key].positions;
-        const subTotal = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd))).reduce((prev, current) => prev + current);
-        subTotals.push({ key, price: formatter.format(subTotal) ?? '0.00' })
+        const mappedPositions = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd)))
+        if (mappedPositions[0]) {
+          const subTotal = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd)))?.reduce((prev, current) => prev + current);
+          subTotals.push({ key, price: formatter.format(subTotal) ?? '0.00' })
+        }
       }
     }
     return subTotals;
@@ -60,7 +63,10 @@ const ProjectCard = ({ project }: {
       if (project.positions[key].executor) {
         const positions = project.positions[key].positions;
         // @ts-ignore
-        price += positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd))).reduce((prev, current) => prev + current);
+        const mappedTotal = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd)));
+        if (mappedTotal[0]) {
+          price += mappedTotal.reduce((prev, current) => prev + current);
+        }
       }
     }
     return formatter.format(price);

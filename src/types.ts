@@ -274,7 +274,7 @@ export type Building = {
   notes: string;
 };
 
-export const INVOICE_STATUS = ["REQUESTED", "ACCEPTED", "DECLINED"] as const;
+export const INVOICE_STATUS = ["REQUESTED", "ACCEPTED", "DECLINED", "BILLED"] as const;
 
 export interface Draft {
   project: IProject;
@@ -296,4 +296,16 @@ export type CreateDraftParam = {
   status: (typeof INVOICE_STATUS)[number];
   amount: number;
   positions: string[]
+}
+
+
+export interface InvoiceInterface {
+  _id: string;
+  external_id: string;
+  draft: string;
+  createdAt?: string;
+  updatedAt?: string;
+  status: typeof INVOICE_STATUS[number]
+  owner: string;
+  receiver: string;
 }

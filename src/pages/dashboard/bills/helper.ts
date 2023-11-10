@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../../../navigation/constants";
-import { Draft } from "../../../types";
+import { Draft, InvoiceInterface } from "../../../types";
 
 export const getUserDrafts = async (
   user_id: string
@@ -53,9 +53,50 @@ export const updateDraftStatus = async (
     method: "PATCH",
     body: JSON.stringify({ status }),
     headers: {
-      'Content-Type': 'application/json'
-    }
+      "Content-Type": "application/json",
+    },
   });
+
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+};
+
+export const createInvoice = async (
+  draft: string,
+  owner: string,
+  external_id: string,
+  receiver: string
+): Promise<[object | null, Draft | null]> => {
+  console.log(draft)
+  const res = await fetch(`${API_BASE_URL}/invoice/create`, {
+    method: "POST",
+    body: JSON.stringify({
+      payload: { draft, owner, external_id, receiver },
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+};
+
+export const getUserInvoices = async (
+  user_id: string,
+  status: string
+): Promise<[object | null, InvoiceInterface[] | null]> => {
+  const res = await fetch(`${API_BASE_URL}/invoice/owner/${user_id}/${status}`);
 
   if (res.ok) {
     const payload = await res.json();
