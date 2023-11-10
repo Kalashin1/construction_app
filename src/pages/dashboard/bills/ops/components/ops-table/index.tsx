@@ -36,7 +36,7 @@ const BillsTable = ({
           {invoices && invoices.map((invoice, index) => (
             <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500" key={index}>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">Ibrahim Balde</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">Completed</td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{invoice.status}</td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 MAGGA-101
               </td>
