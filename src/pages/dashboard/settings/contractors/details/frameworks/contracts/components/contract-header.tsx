@@ -102,7 +102,7 @@ const ContractHeader = ({
         }
       );
       console.log(error);
-    } else {
+    } else if (payload) {
       const worksheet = XLSX.utils.json_to_sheet(payload);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Positions");
