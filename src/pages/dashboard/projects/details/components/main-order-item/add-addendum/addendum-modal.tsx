@@ -22,9 +22,9 @@ const AddendumModal = ({
 
 
         <div className="w-full">
-        <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
-          {title}
-        </h2>
+          <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
+            {title}
+          </h2>
           {children}
         </div>
       </div>

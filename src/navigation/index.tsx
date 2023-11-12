@@ -38,6 +38,7 @@ import Employee from '../pages/dashboard/settings/contractors/details/employees-
 import Employees from '../pages/dashboard/profie/employees';
 import Contract from '../pages/dashboard/settings/contractors/details/frameworks/contracts';
 import DraftDetails from '../pages/dashboard/bills/details';
+import AddAddenDum from '../pages/dashboard/projects/details/addendum/';
 
 
 const router = createBrowserRouter([
@@ -193,6 +194,10 @@ const router = createBrowserRouter([
   {
     path: SCREENS.DRAFT,
     element: (<DraftDetails />)
+  },
+  {
+    path: SCREENS.ADDENDUM,
+    element: (<AddAddenDum />)
   }
 ]);
 

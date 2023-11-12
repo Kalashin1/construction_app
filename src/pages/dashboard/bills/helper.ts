@@ -71,8 +71,7 @@ export const createInvoice = async (
   owner: string,
   external_id: string,
   receiver: string
-): Promise<[object | null, Draft | null]> => {
-  console.log(draft)
+): Promise<[object | null, InvoiceInterface | null]> => {
   const res = await fetch(`${API_BASE_URL}/invoice/create`, {
     method: "POST",
     body: JSON.stringify({

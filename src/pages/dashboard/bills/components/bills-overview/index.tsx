@@ -19,7 +19,7 @@ const BillsTable = ({
 
   const { user } = useContext(UserAuthContext);
   const dataTitles = ['The Invoice', 'Project', user?.role === 'executor' ? 'Recipient' : 'Creator', 'Created At', 'Amount', 'Status', 'Action'];
-  const [showInvoiceID, updateShowInvoiceID] = useState(false);
+
   const updateDraft = async (draft_id: string, updateType: 'accept' | 'reject') => {
     let error, payload
     if (updateType === 'accept') {
@@ -71,57 +71,70 @@ const BillsTable = ({
           </tr>
         </thead>
         <tbody>
-          {drafts && drafts.map((draft, index) => (
-            <tr key={index} className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{index + 1}</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5 underline text-primary">
-                <Link to={`/draft/${draft._id}`}>
-                  {draft?.project?.external_id}
-                </Link>
-              </td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {user?.role === 'executor' && (draft.reciepient.first_name)}
-                {user?.role === 'contractor' && (draft.owner.first_name)}
-              </td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{new Date(draft.createdAt).toDateString()}</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{formatter.format(draft.amount)}</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <span className={`${draft.status === INVOICE_STATUS[0] && 'bg-yellow-500'} ${draft.status === INVOICE_STATUS[1] && 'bg-green-500'} ${draft.status === INVOICE_STATUS[2] && 'bg-red-500'} ${draft.status === INVOICE_STATUS[3] && 'bg-gray-800'} py-1 px-4 rounded text-white`}>{draft.status}</span>
-              </td>
-              {draft?.reciepient._id === user?._id && (
-                <td>
-                  {draft.status === INVOICE_STATUS[0] && (<button
-                    className="btn h-9 w-9 rounded-full bg-info/10 p-0 font-medium text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25 mr-2"
-                    onClick={() => updateDraft(draft._id, 'accept')}
-                  >
-                    <i className="fas fa-check" />
-                  </button>)}
-                  {draft.status === INVOICE_STATUS[0] && (<button
-                    className="btn h-9 w-9 rounded-full bg-red-300 p-0 font-medium text-white hover:bg-red-600 focus:bg-info/20 active:bg-info/25"
-                    onClick={() => updateDraft(draft._id, 'reject')}
-                  >
-                    <i className="fas fa-times" />
-                  </button>)}
-                </td>
-              )}
-              {draft.owner._id === user?._id && (
-                <td>
-                  {draft.status === INVOICE_STATUS[1] && (<button
-                    className="btn h-9 w-9 rounded-full bg-info/10 p-0 font-medium text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25 mr-2"
-                    onClick={() => updateShowInvoiceID(true)}
-                  >
-                    <i className="fas fa-edit" />
-                  </button>)}
-                </td>
-              )}
-              {showInvoiceID && (<AssignInvoiceIdModal closeModal={() => updateShowInvoiceID(false)} draft_id={draft?._id} />)}
-            </tr>
-          ))}
+          {drafts && drafts.map((draft, index) => (<TableRow draft={draft} index={index} updateDraft={updateDraft} />))}
         </tbody>
       </table>
     </div >
   );
 };
+
+
+type TableRowProps = {
+  draft: Draft;
+  index: number;
+  updateDraft: (draft_id: string, updateType: 'accept' | 'reject') => Promise<void>;
+};
+
+const TableRow = ({ draft, index, updateDraft }: TableRowProps) => {
+  const { user } = useContext(UserAuthContext)
+  const [showInvoiceID, updateShowInvoiceID] = useState(false);
+  return (
+    <tr key={index} className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">{index + 1}</td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5 underline text-primary">
+        <Link to={`/draft/${draft._id}`}>
+          {draft?.project?.external_id}
+        </Link>
+      </td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+        {user?.role === 'executor' && (draft.reciepient.first_name)}
+        {user?.role === 'contractor' && (draft.owner.first_name)}
+      </td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">{new Date(draft.createdAt).toDateString()}</td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">{formatter.format(draft.amount)}</td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+        <span className={`${draft.status === INVOICE_STATUS[0] && 'bg-yellow-500'} ${draft.status === INVOICE_STATUS[1] && 'bg-green-500'} ${draft.status === INVOICE_STATUS[2] && 'bg-red-500'} ${draft.status === INVOICE_STATUS[3] && 'bg-gray-800'} py-1 px-4 rounded text-white`}>{draft.status}</span>
+      </td>
+      {draft?.reciepient._id === user?._id && (
+        <td>
+          {draft.status === INVOICE_STATUS[0] && (<button
+            className="btn h-9 w-9 rounded-full bg-info/10 p-0 font-medium text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25 mr-2"
+            onClick={() => updateDraft(draft._id, 'accept')}
+          >
+            <i className="fas fa-check" />
+          </button>)}
+          {draft.status === INVOICE_STATUS[0] && (<button
+            className="btn h-9 w-9 rounded-full bg-red-300 p-0 font-medium text-white hover:bg-red-600 focus:bg-info/20 active:bg-info/25"
+            onClick={() => updateDraft(draft._id, 'reject')}
+          >
+            <i className="fas fa-times" />
+          </button>)}
+        </td>
+      )}
+      {draft.owner._id === user?._id && (
+        <td>
+          {draft.status === INVOICE_STATUS[1] && (<button
+            className="btn h-9 w-9 rounded-full bg-info/10 p-0 font-medium text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25 mr-2"
+            onClick={() => updateShowInvoiceID(true)}
+          >
+            <i className="fas fa-edit" />
+          </button>)}
+        </td>
+      )}
+      {showInvoiceID && (<AssignInvoiceIdModal closeModal={() => updateShowInvoiceID(false)} draft_id={draft?._id} />)}
+    </tr>
+  )
+}
 
 
 const BillsOverview = () => {

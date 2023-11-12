@@ -32,7 +32,7 @@ export const Modal = ({
       >
 
 
-        <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
+        <h2 className="line-clamp-1 text-base font-medium tracking-wide text-gray-900 dark:text-navy-100 lg:text-xl">
           {title}
         </h2>
         <div className="mt-4 w-full">

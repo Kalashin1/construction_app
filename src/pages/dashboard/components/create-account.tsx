@@ -166,7 +166,12 @@ export const CreateAccountModal = ({
                 name="userRole"
                 className="form-select mt-1.5 w-full rounded-lg bg-slate-150 px-3 py-2 ring-primary/50 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
               >
-                {user?.role === 'admin' && (<option value="contractor">Contractor</option>)}
+                {user?.role === 'admin' && (
+                  <>
+                    <option value="contractor">Contractor</option>
+                    <option value="shop">Shop</option>
+                  </>
+                )}
                 {user?.role === 'contractor' && (
                   <>
                     <option value="executor">Executor</option>
@@ -199,8 +204,10 @@ export const CopyTokenModal = ({
   userId: string
 }) => {
   const [user, setUser] = useState<Partial<User>>()
+  const {user:_user} = useContext(UserAuthContext)
+  const [role, setRole] = useState('')
   const makeUser = async () => {
-    const _user = await generateUserId("contractor", userId);
+    const _user = await generateUserId(role, userId);
     console.log(_user)
     setUser(_user)
     alert('user created successfully');
@@ -223,11 +230,34 @@ export const CopyTokenModal = ({
       <div
         className="modal-content scrollbar-sm relative flex max-w-lg flex-col items-center overflow-y-auto rounded-lg bg-white px-4 py-10 text-center dark:bg-navy-700 sm:px-5 w-2/5"
       >
+        <h3 className="line-clamp-1 text-base mb-4 font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">Generate user Token</h3>
+        <label className="block text-left w-full">
+          Select user role
+          <select
+            name="userRole"
+            value={role}
+            onChange={e => setRole(e.target.value)}
+            className="form-select mt-1.5 w-full rounded-lg bg-slate-150 px-3 py-2 ring-primary/50 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
+          >
+            {_user?.role === 'admin' && (
+              <>
+                <option value="contractor">Contractor</option>
+                <option value="shop">Shop</option>
+              </>
+            )}
+            {_user?.role === 'contractor' && (
+              <>
+                <option value="executor">Executor</option>
+                <option value="employee">Employee</option>
+              </>
+            )}
+            {_user?.role === 'executor' && (<option value="employee">Employee</option>)}
+          </select>
+        </label>
 
-
-        <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
+       {user && (<h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
           Copy your token
-        </h2>
+        </h2>)}
         <div className="mt-4 w-full">
           <p ref={paraRef}>{user?._id ? user._id : ''}</p>
           {user ? (<Button

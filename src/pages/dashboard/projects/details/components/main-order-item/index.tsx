@@ -3,6 +3,7 @@ import { PlusIcon, ChevronRightIcon } from "../../svgs";
 import ProjectDetailCard from "./project-detail-card";
 import AddAddendum from "./add-addendum";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Button = ({
   action
@@ -27,6 +28,7 @@ const MainOrderItem = ({ positions, projectId }: {
   positions: ProjectPositions[],
   projectId: string
 }) => {
+  const navigate = useNavigate();
   console.log(positions.filter((pos) => {
     if (pos.documentURL) {
       return pos
@@ -42,7 +44,7 @@ const MainOrderItem = ({ positions, projectId }: {
             <h3 className="font-bold">Main order items</h3>
           </div>
           <div>
-            <Button action={() => updateShowAddAddendum(true)} />
+            <Button action={() => navigate(`/addendum/${projectId}`)} />
           </div>
         </div>
         {showAddAddendum && (

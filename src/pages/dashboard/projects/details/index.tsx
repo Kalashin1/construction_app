@@ -18,7 +18,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { IProject, ProjectPositions } from "../../../../types";
 import { getProject } from "../../helper/project";
 import { UserAuthContext } from "../../../../App";
-import { acceptProject } from "../helper";
+import { acceptProject, rejectProject } from "../helper";
+import { notify, NotificationComponent } from "../../components/notification/toast";
 
 const ProjectDetails = () => {
 
@@ -26,10 +27,52 @@ const ProjectDetails = () => {
   const [showDownloadOption, updateShowDownloadOption] = useState(false);
   const [project, setProject] = useState<IProject | null>(null);
   const [positions, setPositions] = useState<ProjectPositions[] | null>(null);
-  const [isAccepted, updateIsAccepted] = useState(true)
+  const [showAcceptButton, updateShowAcceptButton] = useState(false)
   const { user } = useContext(UserAuthContext)
   const { id } = useParams();
   const [assignedPositions, setAssignedPositions] = useState<string[]>([])
+
+  const interactWithProject = async (project_id: string, user_id: string, action: "accept" | "reject") => {
+    let error, payload;
+    const isAccept = action === 'accept'
+    if (isAccept) {
+      [error, payload] = await acceptProject(
+        project_id,
+        user_id,
+        assignedPositions
+      )
+    } else {
+      [error, payload] = await rejectProject(
+        project_id,
+        user_id,
+        assignedPositions
+      )
+    }
+    if (error) {
+      notify(
+        (<NotificationComponent message={`Error ${isAccept ? 'accepting' : 'rejecting'} project`} />),
+        {
+          className: `bg-red-500 font-bold text-white`,
+          closeOnClick: true,
+        }
+      );
+      console.log(error);
+    }
+
+    if (payload) {
+      setProject(payload)
+      if (isAccept) updateShowAcceptButton(false)
+      if (!isAccept) navigate(SCREENS.PROJECTS)
+      notify(
+        (<NotificationComponent message={`Project ${isAccept ? 'accepted' : 'rejected'} successfully!`} />),
+        {
+          className: `bg-green-500 font-bold text-white`,
+          closeOnClick: true,
+        }
+      );
+      console.log(payload);
+    }
+  }
 
   useEffect(() => {
     const setUp = async () => {
@@ -38,34 +81,38 @@ const ProjectDetails = () => {
         alert('oops error getting project')
         console.log(error)
       } else if (_project) {
+        if (user?.role === 'executor' && !_project.executors.find((exe) => exe === user?._id)) {
+          navigate(SCREENS.DASHBOARD)
+        }
         setProject(_project);
+        const _assingedPositions: string[] = []
         const positions: ProjectPositions[] = [];
+
         for (const key in _project.positions) {
           const _positions = _project.positions[key].positions
           _positions.forEach((pos) => {
             pos.tradeName = key
             pos.executor = _project.positions[key].executor
           })
-          if (_project.positions[key].accepted &&
-            _project.positions[key].executor === user?._id) {
-            console.log('not accepted')
-          }
 
           if (
             _project.positions[key].accepted == false &&
-            _project.positions[key].executor === user?._id 
+            _project.positions[key].executor === user?._id
           ) {
-            updateIsAccepted(false)
-            setAssignedPositions([...assignedPositions, key])
+            _assingedPositions.push(key);
           }
-          positions.push(..._positions)
-          setAssignedPositions([...assignedPositions, key])
+
+          positions.push(..._positions);
         }
+        console.log("_assingedPositions", _assingedPositions)
+        setAssignedPositions(_assingedPositions)
         setPositions(positions)
+        if (_assingedPositions.length > 1)
+          updateShowAcceptButton(true);
       }
     }
     setUp();
-  }, [id, user?._id])
+  }, [id, navigate, user?._id, user?.role])
 
   return (
     <Layout>
@@ -76,18 +123,18 @@ const ProjectDetails = () => {
           secondLevel={{ link: SCREENS.PROJECTS, text: 'Project' }}
           thirdLevel={{ link: '', text: project?._id.slice(0, 10) as string }}
         />
-        {user && (user.role === "executor") && (!isAccepted) && (
+        {showAcceptButton ? (
           <>
-            <AcceptProjectFloatingActionButton action={() => acceptProject(project?._id!, user?._id!, assignedPositions)} />
-            <DeclineProjectFloatingActionButton action={() => acceptProject(project?._id!, user?._id!, assignedPositions)} />
+            <AcceptProjectFloatingActionButton action={() => interactWithProject(project?._id!, user?._id!, "accept")} />
+            <DeclineProjectFloatingActionButton action={() => interactWithProject(project?._id!, user?._id!, "reject")} />
           </>
-        )}
+        ): (<></>)}
         <div className="my-6">
 
           {project && (<ProjectCard project={project} />)}
           <ConstructionSchedule />
           <Documents />
-          
+
           {project && (<ScopeOfService project={project} updatePositions={setPositions} />)}
           {project && positions && (<MainOrderItem positions={positions} projectId={project._id} />)}
           <ExtraOrders />

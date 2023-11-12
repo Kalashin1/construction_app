@@ -29,8 +29,8 @@ const Contract = () => {
         <BreadCrumb
           pageName="Contract Details"
           firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard' }}
-          secondLevel={{ link: SCREENS.CONTRACTORS, text: 'General Contractor' }}
-          thirdLevel={{ link: SCREENS.CONTRACTOR_DETAILS, text: 'General contractor details' }}
+          secondLevel={{ link: SCREENS.PROFILE, text: 'Profile' }}
+          thirdLevel={{ link: '', text: 'Contract' }}
         />
         <main className="my-6">
           {contract && (

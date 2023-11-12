@@ -4,9 +4,10 @@ import EuroIcon from "../../../bills/ops/svg/euro";
 import { AdminIcon, CaretakerIcon, ContactPersonIcon, HouseIcon } from "../svgs";
 import { IProject } from "../../../../../types";
 import { Modal } from "../../../profie/components/account-settings";
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState, useContext } from "react";
 import { TradeIcons } from "../helper";
 import { formatter } from "../../../helper/tools";
+import { UserAuthContext } from "../../../../../App";
 
 const UserModal = ({
   showModal,
@@ -39,6 +40,7 @@ const UserModal = ({
 const ProjectCard = ({ project }: {
   project: IProject
 }) => {
+  const {user} = useContext(UserAuthContext);
   const getSubTotals = useCallback(() => {
     const keys = Object.keys(project.positions);
     const subTotals: { [key: string]: string, price: string }[] = [];
@@ -46,14 +48,14 @@ const ProjectCard = ({ project }: {
       if (project.positions[key].executor) {
         const positions = project.positions[key].positions;
         const mappedPositions = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd)))
-        if (mappedPositions[0]) {
+        if (mappedPositions[0] && (user?._id === project.positions[key].executor || user?._id === project.contractor)) {
           const subTotal = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd)))?.reduce((prev, current) => prev + current);
           subTotals.push({ key, price: formatter.format(subTotal) ?? '0.00' })
         }
       }
     }
     return subTotals;
-  }, [project.positions])
+  }, [project.contractor, project.positions, user?._id])
 
 
   const getOrderVolume = useCallback(() => {

@@ -10,14 +10,13 @@ import { getContractors } from "../../helper";
 import { UserAuthContext } from "../../../../../App";
 import AddTradeModal from "../../../profie/trades/components/trade-moda";
 
-const  ConstractorsTable = ({
+const ConstractorsTable = ({
   contractors
 }: {
   contractors: User[] | null
 }) => {
   const dataTitles = ['S/N', 'Name', 'Street', 'Postcode', 'Location', 'e-mail', 'action'];
-  const { setCurrentUser, user } = useContext(UserAuthContext);
-  const [showTradeModal, updateShowTradeModal] = useState(false)
+  
   return (
     <div className="min-w-full overflow-x-auto my-4 relative">
       <table className="w-full text-left">
@@ -37,41 +36,7 @@ const  ConstractorsTable = ({
         </thead>
         <tbody>
           {contractors && contractors.map((con, index) => (
-            <tr
-              className="border border-transparent border-b-slate-200 dark:border-b-navy-500"
-              key={index}
-            >
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{index + 1}</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <Link className="text-red-500" to={`/contractor/${con._id}`}>
-                  {con.first_name}
-                </Link>
-              </td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {con?.address?.street ? con.address.street : 'Musterstraße. XXXXX, Stadt'}
-              </td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {con?.address?.zip ? con.address.zip : '45329'}
-              </td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {con?.address?.province ? con.address.province : ''}
-              </td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {con.email}
-                {/* <span className="bg-green-700 py-1 px-4 rounded text-white">success</span> */}
-              </td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <button className="border border-gray-700 px-4 py-1 rounded-lg" onClick={() => updateShowTradeModal(true)}>
-                  Send Contract
-                </button>
-              </td>
-              {showTradeModal && user?.role === "contractor" && (<AddTradeModal
-                closeModal={() => updateShowTradeModal(false)}
-                setUser={setCurrentUser!}
-                _id={user?._id!}
-                executor={con._id!}
-              />)}
-            </tr>
+           <TableRow con={con} index={index} />
           ))}
         </tbody>
 
@@ -80,6 +45,48 @@ const  ConstractorsTable = ({
     </div>
   );
 };
+
+const TableRow = ({con, index}: {con: User, index: number}) => {
+  const { setCurrentUser, user } = useContext(UserAuthContext);
+  const [showTradeModal, updateShowTradeModal] = useState(false)
+  return (
+    <tr
+      className="border border-transparent border-b-slate-200 dark:border-b-navy-500"
+      key={index}
+    >
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">{index + 1}</td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+        <Link className="text-red-500" to={`/contractor/${con._id}`}>
+          {con.first_name}
+        </Link>
+      </td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+        {con?.address?.street ? con.address.street : 'Musterstraße. XXXXX, Stadt'}
+      </td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+        {con?.address?.zip ? con.address.zip : '45329'}
+      </td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+        {con?.address?.province ? con.address.province : ''}
+      </td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+        {con.email}
+        {/* <span className="bg-green-700 py-1 px-4 rounded text-white">success</span> */}
+      </td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+        <button className="border border-gray-700 px-4 py-1 rounded-lg" onClick={() => updateShowTradeModal(true)}>
+          Send Contract
+        </button>
+      </td>
+      {showTradeModal && user?.role === "contractor" && (<AddTradeModal
+        closeModal={() => updateShowTradeModal(false)}
+        setUser={setCurrentUser!}
+        _id={user?._id!}
+        executor={con._id!}
+      />)}
+    </tr>
+  )
+}
 
 
 const ConstructorsOverview = () => {

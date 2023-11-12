@@ -29,7 +29,7 @@ const ContractHeader = ({
       notify(
         (<NotificationComponent message={`contract accepted successfully!`} />),
         {
-          className: `bg-red-700 font-bold text-white`,
+          className: `bg-green-500 font-bold text-white`,
           closeOnClick: true,
 
         }
@@ -54,7 +54,7 @@ const ContractHeader = ({
       notify(
         (<NotificationComponent message={`contract accepted successfully!`} />),
         {
-          className: `bg-success font-bold text-white`,
+          className: `bg-green-500 font-bold text-white`,
           closeOnClick: true,
 
         }
@@ -79,7 +79,7 @@ const ContractHeader = ({
       notify(
         (<NotificationComponent message={'contract accepted successfully!'} />),
         {
-          className: `bg-success font-bold text-white`,
+          className: `bg-green-500 font-bold text-white`,
           closeOnClick: true,
 
         }
@@ -102,7 +102,7 @@ const ContractHeader = ({
         }
       );
       console.log(error);
-    } else {
+    } else if (payload) {
       const worksheet = XLSX.utils.json_to_sheet(payload);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Positions");
@@ -114,11 +114,11 @@ const ContractHeader = ({
 
 
   return (
-    <div className="bg-white rounded-md shadow-sm">
+    <div className="bg-white dark:bg-navy-800 rounded-md shadow-sm">
       <div className="p-4">
         MAGGA contract Valid since: {contract.acceptedAt ? new Date(contract.acceptedAt).toDateString() : 'Not accepted'}
       </div>
-      <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+      <div className="h-px flex-1 bg-slate-200 dark:bg-navy-800 dark:bg-navy-500"></div>
       <div className="my-4 grid grid-cols-2 gap-x-2 px-4 gap-y-2">
 
         <h3>
@@ -137,7 +137,7 @@ const ContractHeader = ({
           {contract.trade.name}
         </span>
       </div>
-      <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+      <div className="h-px flex-1 bg-slate-200 dark:bg-navy-800"></div>
 
       <div className="flex justify-between p-4">
         <button className="border border-gray-800 px-4 py-1 rounded-md shadow" onClick={() => getTradePositions(contract.trade._id, contract)}>
