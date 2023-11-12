@@ -8,19 +8,19 @@ import { InvoiceInterface } from "../../../../../../types";
 import { getUserInvoices } from "../../../helper";
 import { UserAuthContext } from "../../../../../../App";
 import { NotificationComponent, notify } from "../../../../components/notification/toast";
+import { formatter } from "../../../../helper/tools";
 
 const BillsTable = ({
   invoices
 }: {
   invoices: InvoiceInterface[] | null
 }) => {
-  const dataTitles = ['Customer Name', 'Project Status', 'Project Number', 'Bill Number', 'Invoice Type', 'Invoice Date', 'Due Date', 'Invoice Amount', 'Payment Amount', 'Open', ' ']
+  const dataTitles = ['Customer Name', 'Project Status', 'Project Number', 'Bill Number', 'Invoice Type', 'Invoice Date', 'Invoice Amount', 'Open', ' ']
   return (
     <div className="is-scrollbar-hidden min-w-full overflow-x-auto my-4">
       <table className="w-full text-left">
         <thead>
           <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
-
             {dataTitles.map((dt, i) => (
               <th
                 className="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5"
@@ -29,23 +29,32 @@ const BillsTable = ({
                 {dt}
               </th>
             ))}
-
           </tr>
         </thead>
         <tbody>
           {invoices && invoices.map((invoice, index) => (
             <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500" key={index}>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">Ibrahim Balde</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{invoice.status}</td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                MAGGA-101
+                {invoice?.receiver?.first_name}
               </td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">type</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">Nov 20, 2023</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">Nov 20, 2023</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">$3,0000</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">$1,7000</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">$900</td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {invoice?.status}
+              </td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {invoice?.draft?.project?.external_id}
+              </td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {invoice?.external_id}
+              </td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {invoice?.type}
+              </td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {new Date(invoice?.createdAt!).toDateString()}
+              </td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+                {formatter.format(invoice?.draft?.amount)}
+              </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 <span className="bg-green-700 py-1 px-2 rounded text-white mr-2">x</span>
                 <span className="bg-green-700 py-1 px-2 rounded text-white mr-2">+</span>
@@ -54,7 +63,6 @@ const BillsTable = ({
             </tr>
           ))}
         </tbody>
-
       </table>
     </div>
   );
@@ -85,7 +93,8 @@ const BillsOverview = () => {
             closeOnClick: true,
           }
         )
-        setInvoices(_invoices)
+        setInvoices(_invoices);
+        console.log(_invoices);
       }
     }
 

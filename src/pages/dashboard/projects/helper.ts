@@ -53,7 +53,7 @@ export const acceptProject = async (
   project_id: string,
   executor_id: string,
   trades: string[]
-): Promise<[object | null, Draft | null]> => {
+): Promise<[object | null, IProject | null]> => {
   const res = await fetch(`${API_BASE_URL}/project/accept`, {
     method: "PATCH",
     body: JSON.stringify({ project_id, executor_id, trades }),
@@ -75,7 +75,7 @@ export const rejectProject = async (
   project_id: string,
   executor_id: string,
   trades: string[]
-): Promise<[object | null, Draft | null]> => {
+): Promise<[object | null, IProject | null]> => {
   const res = await fetch(`${API_BASE_URL}/project/reject`, {
     method: "PATCH",
     body: JSON.stringify({ project_id, executor_id, trades }),

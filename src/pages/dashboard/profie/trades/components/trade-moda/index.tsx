@@ -134,14 +134,22 @@ const AddTradeModal = ({
           action={(e) => uploadPositions(e as Event)}
           extraClass="bg-gray-600 hover:bg-gray-600 focus:bg-green-500"
         />
+        {files && files?.length > 1 && (<button className="text-left w-full py-2 px-4 my-2" onClick={() => setFiles([])}>Delete All Files</button>)}
         {files && files.map((file) => (
-          <div className="flex justify-start px-4">
+          <div className="flex px-4 items-center justify-between">
+            <div className="flex justify-start">
+
             <span className="mr-4">
               <i className="fas fa-paperclip" />
             </span>
 
             <span>
               {file.name} {Math.floor(file.size/1000)}kb
+            </span>
+            </div>
+
+            <span className="cursor-pointer" onClick={() => setFiles(files.filter((f) => f.name !== file.name))}>
+              <i className="fas fa-times" />
             </span>
           </div>
         ))}

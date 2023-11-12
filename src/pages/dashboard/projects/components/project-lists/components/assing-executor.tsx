@@ -77,6 +77,7 @@ const AssignExecutorModal = ({
             </span>
           </button>
           <AnimatePresence>
+            {showPositions &&(<button className="text-left" onClick={() => updateSelectedIds(Object.keys(positions))}>Select All</button>)}
             {showPositions && Object.keys(positions).map((position, index) => {
               if (!positions[position].executor) {
                 return (
@@ -86,19 +87,24 @@ const AssignExecutorModal = ({
                     animate={{ y: 0 }}
                     transition={{ type: "tween" }}
                     key={index}
-                    className={`px-6 py-2 my-1 text-left flex flex-row justify-between items-center w-full ${TradeIcons[position]?.border} border-2 rounded-md`}>
-                    <span className={`m-2 capitalize`}>
-                      {position}
-                    </span>
+                  >
+                    <div className={`px-6 py-2 my-1 text-left flex flex-row justify-between items-center w-full ${TradeIcons[position]?.border} border-2 rounded-md`}>
 
-                    <div>
-                      <input type="checkbox" onChange={(e) => {
-                        if (e.target.checked) {
-                          updateSelectedIds([...selectedIds, position])
-                        } else {
-                          updateSelectedIds(selectedIds.filter((selectedId) => selectedId !== position))
-                        }
-                      }} />
+                      <span className={`m-2 capitalize`}>
+                        {position}
+                      </span>
+
+                      <div>
+                        <input type="checkbox" onChange={(e) => {
+                          if (e.target.checked) {
+                            updateSelectedIds([...selectedIds, position])
+                          } else {
+                            updateSelectedIds(selectedIds.filter((selectedId) => selectedId !== position))
+                          }
+                        }}
+                          checked={selectedIds.find((id) => id == position) ? true : false}
+                        />
+                      </div>
                     </div>
                   </motion.div>
                 )

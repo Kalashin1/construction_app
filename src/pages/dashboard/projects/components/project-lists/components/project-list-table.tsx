@@ -3,10 +3,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "react-router-dom";
 import { IProject } from "../../../../../../types";
-import { useState } from "react";
+import { useCallback, useEffect, useState, useContext } from "react";
 import AssignExecutorModal from "./assing-executor";
 import { TradeIcons } from '../../../details/helper';
 import { formatter } from "../../../../helper/tools";
+import { UserAuthContext } from "../../../../../../App";
 
 
 const ProjectListTable = ({
@@ -49,18 +50,51 @@ const ProjectTableRow = ({ project }: {
   project: IProject
 }) => {
   const [showModal, updateShowModal] = useState(false);
-  const getOrderVolume = ( ) => {
+  const [showAssignButton, updateShowAssignButton] = useState(false);
+  const {user} = useContext(UserAuthContext)
+  useEffect(() => {
+    const keys = Object.keys(project.positions);
+    const notAssigned: string[] = [];
+    for (const key of keys) {
+      if ((!project?.positions[key]?.executor) || (project.positions[key].accepted = false))
+          notAssigned.push(key)
+      }
+  if (notAssigned.length > 1) {
+    updateShowAssignButton(true);
+  }
+  }, [project.positions])
+
+  // const Subtotals = useMemo(() => {
+  //   const keys = Object.keys(project.positions);
+  //   const subTotals: { [key: string]: string, price: string }[] = [];
+  //   for (const key of keys) {
+  //     if (project.positions[key].executor) {
+  //       const positions = project.positions[key].positions;
+  //       const mappedPositions = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd)))
+  //       if (mappedPositions[0]) {
+  //         const subTotal = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd)))?.reduce((prev, current) => prev + current);
+  //         subTotals.push({ key, price: formatter.format(subTotal) ?? '0.00' })
+  //       }
+  //     }
+  //   }
+  //   return subTotals;
+  // }, [project.positions])
+  
+  const getOrderVolume = useCallback(() => {
     const keys = Object.keys(project.positions);
     let price = 0;
     for (const key of keys) {
       if (project.positions[key].executor) {
         const positions = project.positions[key].positions;
         // @ts-ignore
-        price += positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd) ) ?? 0).reduce((prev, current) => prev + current);
+        const mappedTotal = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd)));
+        if (mappedTotal[0] && (user?._id === project.positions[key].executor || user?._id === project.contractor)) {
+          price += mappedTotal.reduce((prev, current) => prev + current);
+        }
       }
-      return formatter.format(price);
     }
-  }
+    return formatter.format(price);
+  }, [project.contractor, project.positions, user?._id])
   return (
     <>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
@@ -108,9 +142,9 @@ const ProjectTableRow = ({ project }: {
         <p className="font-bold">vor 38 Tagen</p>
       </td>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-        <button onClick={() => updateShowModal(true)} className="border rounded-lg px-4 py-1 border-black">
+        {showAssignButton && user?.role === 'contractor' && (<button onClick={() => updateShowModal(true)} className="border rounded-lg px-4 py-1 border-black">
           Assign
-        </button>
+        </button>)}
 
         {showModal && project && (<AssignExecutorModal positions={project.positions} project_id={project?._id} closeModal={() => updateShowModal(false)} />)}
       </td>

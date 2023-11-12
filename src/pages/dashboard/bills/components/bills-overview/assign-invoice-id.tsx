@@ -17,6 +17,7 @@ const AssignInvoiceIdModal: FC<AssignInvoiceIdModalProps> = ({
 }) => {
   const [external_id, setExternal_id] = useState('');
   const { user } = useContext(UserAuthContext);
+  console.log(draft_id)
   const makeInvoice = async () => {
     const [error, payload] = await createInvoice(draft_id, user?._id!, external_id, user?.creator?.id!);
     if (error) {
@@ -37,6 +38,7 @@ const AssignInvoiceIdModal: FC<AssignInvoiceIdModalProps> = ({
           closeOnClick: true,
         }
       )
+      console.log(payload)
       closeModal()
     }
   }

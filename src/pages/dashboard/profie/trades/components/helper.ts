@@ -108,7 +108,7 @@ export const uploadPostionFile = async (user_id: string, files: File[]): Promise
   }
 }
 
-export const getPositions = async (trade_id: string) => {
+export const getPositions = async (trade_id: string): Promise<[Error|null, PositionInterface[]|null]> => {
   const res = await fetch(`${API_BASE_URL}/position/trade/${trade_id}`);
   const paylaod = await res.json();
 

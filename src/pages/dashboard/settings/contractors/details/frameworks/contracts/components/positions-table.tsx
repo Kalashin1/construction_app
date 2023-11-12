@@ -7,7 +7,7 @@ export const PositionsOverview = ({ positions }: { positions: PositionInterface[
 
   const [numRows, setNumRows] = useState(0)
   return (
-    <div className="bg-white rounded-md shadow-sm my-8 overflow-x-scroll">
+    <div className="bg-white dark:bg-navy-800 rounded-md shadow-sm my-8 overflow-x-scroll">
       <div className="p-4">
         Contract positions
       </div>

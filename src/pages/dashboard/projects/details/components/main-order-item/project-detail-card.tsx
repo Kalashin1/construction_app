@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { ProjectPositions, User } from "../../../../../../types";
 import { getUserById } from "../../../../helper/user";
 import { TradeIcons } from "../../helper";
@@ -8,6 +8,8 @@ import UploadFileModal from "../upload-file-modal";
 import MainOrderDropdown from "./main-order-dropdown";
 import { updatePosition } from "./update-position";
 import UploadedFileModal from "./uploaded-file-modal";
+import { UserAuthContext } from "../../../../../../App";
+import { formatter } from "../../../../helper/tools";
 
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 export const ProjectDetailCard = ({ position, index, project_id }: {
@@ -20,6 +22,8 @@ export const ProjectDetailCard = ({ position, index, project_id }: {
   const [showUploadFileModal, updateShowUploadFileModal] = useState(false);
   const [showFileModal, updateShowFileModal] = useState(false)
   const [executor, updateExecutor] = useState<User | null>(null)
+  const {user} = useContext(UserAuthContext);
+  const isContractorOrOwner =  user?.role === 'contractor' || user?._id === executor?._id
 
   useEffect(() => {
     const getExecutor = async () => {
@@ -53,17 +57,17 @@ export const ProjectDetailCard = ({ position, index, project_id }: {
           <div className="flex flex-row my-2 justify-between">
             <h3>{position?.units}&nbsp;|&nbsp;</h3>
             <h3>&nbsp;{position?.crowd}&nbsp;|&nbsp;</h3>
-            <h3>{position?.price ?? '0.00'} €&nbsp;|&nbsp;</h3>
-            <h3>&nbsp;{(Number(position?.crowd) * position?.price!).toFixed(2) ?? '0.00'} €</h3>
-            <button className="px-2" onClick={(e) => {
+            <h3>{isContractorOrOwner && (formatter.format(position?.price ?? 0))}&nbsp;|&nbsp;</h3>
+            <h3>&nbsp;{isContractorOrOwner && (formatter.format((Number(position?.crowd) * position?.price!)) ?? '0.00')}</h3>
+            {isContractorOrOwner && (<button className="px-2" onClick={(e) => {
               updateShowDropDown(!showDropdown)
               e.stopPropagation()
             }}>
               <i className="fas fa-ellipsis-vertical" />
-            </button>
+            </button>)}
           </div>
         </div>
-        {showDropdown && (
+        {showDropdown && isContractorOrOwner && (
           <MainOrderDropdown
             updateShowUploadFileModal={updateShowUploadFileModal}
             updateShowCommentModal={updateShowCommentModal}
@@ -72,14 +76,14 @@ export const ProjectDetailCard = ({ position, index, project_id }: {
             trade_id={position.trade!}
           />
         )}
-        {showFileModal && (
+        {showFileModal &&  (
           <UploadedFileModal
             closeModal={() => updateShowFileModal(false)}
             title={position?.external_id!}
             image={position?.documentURL}
           />
         )}
-        {showCommentModal && (
+        {showCommentModal &&  isContractorOrOwner && (
           <AddCommentModal
             action={updatePosition}
             position={position}
@@ -87,7 +91,7 @@ export const ProjectDetailCard = ({ position, index, project_id }: {
             trade_id={position.trade!}
             closeModal={() => updateShowCommentModal(false)}
           />)}
-        {showUploadFileModal && (
+        {showUploadFileModal && isContractorOrOwner && (
           <UploadFileModal
             position={position}
             project_id={project_id}

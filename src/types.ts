@@ -1,4 +1,4 @@
-export type UserRoleType = "admin" | "contractor" | "executor" | "employee";
+export type UserRoleType = "admin" | "contractor" | "executor" | "employee" | "shop";
 
 export type TradeColorEnum =
   | "blue-500"
@@ -302,10 +302,18 @@ export type CreateDraftParam = {
 export interface InvoiceInterface {
   _id: string;
   external_id: string;
-  draft: string;
+  draft: Draft;
   createdAt?: string;
   updatedAt?: string;
   status: typeof INVOICE_STATUS[number]
+  owner: User;
+  type: "PROJECT" | "SHOP"
+  receiver: User;
+}
+
+export interface InvoicePayload {
+  external_id: string;
+  draft: string;
   owner: string;
   receiver: string;
 }
