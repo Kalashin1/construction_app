@@ -74,6 +74,29 @@ const ProjectCard = ({ project }: {
     return formatter.format(price);
   }, [project.positions])
 
+  const getProjectPercentage = useCallback(() => {
+    const keys = Object.keys(project.positions);
+    let price = 0;
+    let completedPrices = 0;
+    for (const key of keys) {
+      if (project.positions[key].executor) {
+        const positions = project.positions[key].positions;
+        // @ts-ignore
+        const mappedTotal = positions.map((position) => {
+          if (position.price && (position.status === "BILLED" || position.billed)) {
+            completedPrices += Math.ceil(Number(position?.price) * Number(position?.crowd));
+          }
+          return Math.ceil(Number(position?.price) * Number(position?.crowd))   
+        });
+        if (mappedTotal[0] && (user?._id === project.positions[key].executor || user?._id === project.contractor)) {
+          price += mappedTotal.reduce((prev, current) => prev + current);
+        }
+        
+      }
+    }
+    return (completedPrices/price * (100)).toFixed(0);
+  }, [project.contractor, project.positions, user?._id])
+
   const [showConstructionManager, updateShowConstructionManager] = useState(false);
   const [showCareTakerModal, updateShowCareTaker] = useState(false);
   console.log('subtotals', getSubTotals())
@@ -85,8 +108,9 @@ const ProjectCard = ({ project }: {
         <div className="md:w-1/2 my-4 md:my-0">
           <div className="progress h-6 bg-slate-150 dark:bg-navy-500">
             <div
-              className="w-1/12 py-1 text-white rounded-full bg-success dark:bg-accent text-right px-4"
-            ><p>0%</p></div>
+              className=" py-1 text-white rounded-full bg-success dark:bg-accent text-right px-4"
+              style={{ width: `${getProjectPercentage()}%`}}
+            ><p>{getProjectPercentage()}%</p></div>
           </div>
         </div>
       </div>

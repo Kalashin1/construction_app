@@ -3,7 +3,7 @@
 import { UserAuthContext } from "../../../App";
 import { INotification } from "../../../types";
 import { markAllNotificationAsRead, readNotification } from "../helper/notifications";
-import {Dispatch, SetStateAction, useContext} from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 
 
 type NotificationCardProps = INotification & {
@@ -13,7 +13,7 @@ type NotificationCardProps = INotification & {
 const MarkAsRead = async (id: string, setNotification: Dispatch<SetStateAction<INotification[]>>) => {
   const [, notifications] = await readNotification(id)
   setNotification(notifications)
-  
+
 }
 const NotificationCard = ({
   shortText,
@@ -27,10 +27,10 @@ const NotificationCard = ({
     {/* <Link to={'/'} className="text-sm">LWS-34352</Link>
     <Link className="text-xs text-red-900" to={'/'}>LWS Plus GmbH</Link> */}
     <div className="flex flex-row justify-between">
-    <p className="text-xs text-red-900 text-ellipsis">{shortText}</p>
-    <button onClick={() => MarkAsRead(_id, setNotification)}>
-      <i className="fas fa-times text-red-500" />
-    </button>
+      <p className="text-xs text-red-900 text-ellipsis">{shortText}</p>
+      <button onClick={() => MarkAsRead(_id, setNotification)}>
+        <i className="fas fa-times text-red-500" />
+      </button>
     </div>
     <p className="text-xs font-light">{new Date(createdAt!).toDateString()}</p>
   </div>
@@ -40,8 +40,8 @@ const NotificationCard = ({
 const NotificationDropdown = ({
   notifications,
   setNotification
-}:{ notifications: INotification[], setNotification: Dispatch<SetStateAction<INotification[]>>}) => {
-  const {user} = useContext(UserAuthContext)
+}: { notifications: INotification[], setNotification: Dispatch<SetStateAction<INotification[]>> }) => {
+  const { user } = useContext(UserAuthContext)
   const readAlllNotification = async () => {
     const [error,] = await markAllNotificationAsRead(user?._id!);
     if (error) {
@@ -52,8 +52,11 @@ const NotificationDropdown = ({
   }
   return (
     <div className="bg-gray-400 rounded-md shadow-md w-64 absolute top-12 -left-44">
-      <div className="p-4">
+      <div className="p-4 flex flex-row justify-between">
         <h3 className="text-white font-bold">Notifications</h3>
+        <button onClick={readAlllNotification}>
+          <i className="fas fa-trash text-white" />
+        </button>
       </div>
       {notifications && notifications.map((notification, index) => (
         <NotificationCard
@@ -63,10 +66,10 @@ const NotificationDropdown = ({
         />
       ))}
       <div className="flex items-center justify-center p-4">
-      <button onClick={readAlllNotification}>
-        <i className="fas fa-trash text-white" />
-      </button>
-        
+        <button onClick={readAlllNotification}>
+          <i className="fas fa-trash text-white" />
+        </button>
+
       </div>
     </div>
   )

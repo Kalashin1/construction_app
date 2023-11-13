@@ -9,13 +9,14 @@ import { getUserInvoices } from "../../../helper";
 import { UserAuthContext } from "../../../../../../App";
 import { NotificationComponent, notify } from "../../../../components/notification/toast";
 import { formatter } from "../../../../helper/tools";
+import { Link } from "react-router-dom";
 
 const BillsTable = ({
   invoices
 }: {
   invoices: InvoiceInterface[] | null
 }) => {
-  const dataTitles = ['Customer Name', 'Project Status', 'Project Number', 'Bill Number', 'Invoice Type', 'Invoice Date', 'Invoice Amount', 'Open', ' ']
+  const dataTitles = ['Customer Name', 'Project Status', 'Project Number', 'Bill Number', 'Invoice Type', 'Invoice Date', 'Invoice Amount']
   return (
     <div className="is-scrollbar-hidden min-w-full overflow-x-auto my-4">
       <table className="w-full text-left">
@@ -35,16 +36,22 @@ const BillsTable = ({
           {invoices && invoices.map((invoice, index) => (
             <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500" key={index}>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {invoice?.receiver?.first_name}
+                <Link className="underline text-blue-500" to={``}>
+                  {invoice?.receiver?.first_name}
+                </Link>
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {invoice?.status}
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {invoice?.draft?.project?.external_id}
+                <Link className="underline text-blue-500" to={`/detail/${invoice.draft.project._id}`}>
+                  {invoice?.draft?.project?.external_id}
+                </Link>
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                {invoice?.external_id}
+                <Link className="underline text-blue-500" to={`/draft/${invoice.draft._id}`}>
+                  {invoice?.external_id}
+                </Link>
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {invoice?.type}
@@ -55,11 +62,7 @@ const BillsTable = ({
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {formatter.format(invoice?.draft?.amount)}
               </td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <span className="bg-green-700 py-1 px-2 rounded text-white mr-2">x</span>
-                <span className="bg-green-700 py-1 px-2 rounded text-white mr-2">+</span>
-                <span className="bg-green-700 py-1 px-2 rounded text-white">?</span>
-              </td>
+
             </tr>
           ))}
         </tbody>
@@ -86,13 +89,6 @@ const BillsOverview = () => {
         )
       }
       if (_invoices) {
-        notify(
-          <NotificationComponent message="invoices retrieved" />,
-          {
-            className: `bg-green-500 font-bold text-white`,
-            closeOnClick: true,
-          }
-        )
         setInvoices(_invoices);
         console.log(_invoices);
       }

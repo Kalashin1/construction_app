@@ -263,7 +263,7 @@ export type ProjectPositions = {
   comment?: string;
   section?: string;
   documentURL?: string;
-  position: number;
+  position?: number;
   executor?: string
 } & Partial<PositionInterface>;
 
