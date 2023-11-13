@@ -176,3 +176,29 @@ export const updatePositionsByTrade = async (
     return [error, null];
   }
 };
+
+
+export const addNewAddendum = async (
+  project_id: string,
+  trade_id: string,
+  positions: ProjectPositions[]
+): Promise<[object | null, IProject | null]> => {
+  const res = await fetch(
+    `${API_BASE_URL}/project/extra/${project_id}`,
+    {
+      method: "POST",
+      body: JSON.stringify({ positions, trade_id }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    }
+  );
+
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+};

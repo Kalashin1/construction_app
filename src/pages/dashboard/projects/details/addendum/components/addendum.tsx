@@ -6,6 +6,8 @@ import { IProject, PositionInterface, TradeInterface } from "../../../../../../t
 import { useEffect, useState } from "react";
 import { getAllTrades, getPositions } from "../../../../profie/trades/components/helper";
 import { Button } from "../../../../components/current-projects";
+import { addNewAddendum } from "../../../helper";
+import { useNavigate } from 'react-router-dom'
 
 const AddAddenDum = () => {
   const { project_id } = useParams()
@@ -13,10 +15,13 @@ const AddAddenDum = () => {
 
 
   const [trades, updateTrades] = useState<TradeInterface[] | null>(null);
+  const navigate = useNavigate();
   const [selectedTrade, updateSelectedTrade] = useState<string | null>();
   // @ts-ignore
-  const [positions,] = useState<PositionInterface[] | null>(null)
+  const [positions, updatePositions] = useState<PositionInterface[] | null>(null)
   const [selectedPositions, updateSelectedPositions] = useState<string>()
+
+  const [crowd, updateCrowd] = useState(0);
 
   useEffect(() => {
     const setUp = async () => {
@@ -83,7 +88,42 @@ const AddAddenDum = () => {
           closeOnClick: true,
         }
       )
-     
+      updatePositions(positions)
+    }
+  }
+
+  const addNewPosition = async () => {
+    const positionParams = positions?.find((pos) => pos.external_id == selectedPositions)
+    const [error, payload] = await addNewAddendum(
+      project_id!,
+      selectedTrade!,
+      [{ 
+        ...positionParams!, 
+        crowd: crowd.toString(), 
+        status: 'ACCEPTED', 
+        billed: false,
+      }]
+    );
+    if (error) {
+      notify(
+        (<NotificationComponent message={'Error adding positions'} />),
+        {
+          className: `bg-red-700 font-bold text-white`,
+          closeOnClick: true,
+        }
+      )
+      console.log(error)
+    }
+
+    if (payload) {
+      notify(
+        (<NotificationComponent message={'Positions retrived successfully!'} />),
+        {
+          className: `bg-green-500 font-bold text-white`,
+          closeOnClick: true,
+        }
+      )
+      updatePositions(positions);
     }
   }
 
@@ -151,6 +191,8 @@ const AddAddenDum = () => {
               <input
                 className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-slate-150 dark:bg-navy-900 px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                 type="text"
+                defaultValue={crowd}
+                onChange={e => updateCrowd(Number(e.target.value))}
               />
             </label>
 
@@ -161,6 +203,7 @@ const AddAddenDum = () => {
               <input
                 className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-slate-150 dark:bg-navy-900 px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent cursor-not-allowed"
                 type="text"
+                defaultValue={positions?.find((pos) => pos.external_id === selectedPositions)?.units}
                 disabled
               />
             </label>
@@ -172,6 +215,7 @@ const AddAddenDum = () => {
               <input
                 className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-slate-150 dark:bg-navy-900 px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent cursor-not-allowed"
                 type="text"
+                value={positions?.find((pos) => pos.external_id === selectedPositions)?.price}
                 disabled
               />
             </label>
@@ -183,6 +227,7 @@ const AddAddenDum = () => {
               <input
                 className="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-slate-150 dark:bg-navy-900 px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent cursor-not-allowed"
                 type="text"
+                defaultValue={''}
                 disabled
               />
             </label>
@@ -206,6 +251,8 @@ const AddAddenDum = () => {
                 rows={4}
                 placeholder=" Enter Text"
                 className="form-textarea w-full resize-none rounded-lg bg-slate-150 p-2.5 placeholder:text-slate-400 dark:bg-navy-900 dark:placeholder:text-navy-300"
+                disabled
+                defaultValue={positions?.find((pos) => pos.external_id === selectedPositions)?.shortText}
               ></textarea>
             </label>
           </div>
@@ -216,6 +263,8 @@ const AddAddenDum = () => {
                 rows={4}
                 placeholder=" Enter Text"
                 className="form-textarea w-full resize-none rounded-lg bg-slate-150 p-2.5 placeholder:text-slate-400 dark:bg-navy-900 dark:placeholder:text-navy-300"
+                disabled
+                defaultValue={positions?.find((pos) => pos.external_id === selectedPositions)?.longText}
               ></textarea>
             </label>
           </div>
@@ -225,15 +274,15 @@ const AddAddenDum = () => {
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
 
       <div className="px-6 py-4 flex flex-row justify-between items-center space-x-4 my-2">
-        <Button 
+        <Button
           label="Cancel"
           color="bg-red-500 dark:bg-red-500"
-          action={() => {}}
+          action={() => navigate(`/detail/${project_id}`)}
         />
-        <Button 
+        <Button
           label="Add Addendum"
           color="bg-green-500 dark:bg-green-500"
-          action={() => {}}
+          action={addNewPosition}
         />
       </div>
 

@@ -95,6 +95,29 @@ const ProjectTableRow = ({ project }: {
     }
     return formatter.format(price);
   }, [project.contractor, project.positions, user?._id])
+
+  const getProjectPercentage = useCallback(() => {
+    const keys = Object.keys(project.positions);
+    let price = 0;
+    let completedPrices = 0;
+    for (const key of keys) {
+      if (project.positions[key].executor) {
+        const positions = project.positions[key].positions;
+        // @ts-ignore
+        const mappedTotal = positions.map((position) => {
+          if (position.price && (position.status === "BILLED" || position.billed)) {
+            completedPrices += Math.ceil(Number(position?.price) * Number(position?.crowd));
+          }
+          return Math.ceil(Number(position?.price) * Number(position?.crowd))   
+        });
+        if (mappedTotal[0] && (user?._id === project.positions[key].executor || user?._id === project.contractor)) {
+          price += mappedTotal.reduce((prev, current) => prev + current);
+        }
+        
+      }
+    }
+    return (completedPrices/price * (100)).toFixed(0);
+  }, [project.contractor, project.positions, user?._id])
   return (
     <>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
@@ -106,9 +129,9 @@ const ProjectTableRow = ({ project }: {
         <span className="text-white px-4 rounded bg-gray-700">{project?.external_id}</span>
       </td>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-        <span>100% Completed</span>
+        <span>{getProjectPercentage()}% Completed</span>
         <div className="progress my-2 h-2 bg-slate-150 dark:bg-navy-500">
-          <div className="w-9/12 rounded-full bg-warning"></div>
+          <div className={`rounded-full bg-warning`} style={{ width: `${Number(getProjectPercentage())}%`}}></div>
         </div>
         <div className="my-4">
           {project && Object.keys(project.positions).map((position) => {
