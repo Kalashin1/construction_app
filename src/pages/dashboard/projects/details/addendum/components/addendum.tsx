@@ -117,7 +117,7 @@ const AddAddenDum = () => {
 
     if (payload) {
       notify(
-        (<NotificationComponent message={'Positions retrived successfully!'} />),
+        (<NotificationComponent message={'Addendum added successfully!'} />),
         {
           className: `bg-green-500 font-bold text-white`,
           closeOnClick: true,

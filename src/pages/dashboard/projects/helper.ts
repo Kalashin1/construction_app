@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../../../navigation/constants";
-import { CreateDraftParam, Draft, IProject, ProjectPositions } from "../../../types";
+import { CreateDraftParam, Draft, IProject, Message, ProjectPositions } from "../../../types";
 
 export const assignProjectToExecutor = async (
   project_id: string,
@@ -188,6 +188,54 @@ export const addNewAddendum = async (
     {
       method: "POST",
       body: JSON.stringify({ positions, trade_id }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    }
+  );
+
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+};
+
+export const updateProjectExtraPosition = async (
+  project_id: string,
+  position: ProjectPositions,
+  trade_id: string
+) => {
+  const res = await fetch(
+    `${API_BASE_URL}/project/update-extra/${project_id}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({ position, trade_id }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    }
+  );
+
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+};
+
+export const addMessage = async (
+ payload: Message
+): Promise<[object | null, Message | null]> => {
+  const res = await fetch(
+    `${API_BASE_URL}/message/create`,
+    {
+      method: "POST",
+      body: JSON.stringify({ payload }),
       headers: {
         "Content-type": "application/json",
       },

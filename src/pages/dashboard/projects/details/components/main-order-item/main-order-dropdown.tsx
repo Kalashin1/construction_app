@@ -2,8 +2,7 @@
 import { Dispatch, SetStateAction, useContext } from "react";
 import { UserAuthContext } from "../../../../../../App";
 import { ProjectPositions } from "../../../../../../types";
-import { notify, NotificationComponent } from "../../../../components/notification/toast";
-import { createNewDraft, updateProjectPosition } from "../../../helper";
+import { updateProjectExtraPosition } from "../../../helper";
 import { Dropdown } from "../dropdown";
 import { updatePosition } from "./update-position";
 
@@ -12,77 +11,78 @@ const MainOrderDropdown = ({
   project_id,
   trade_id,
   updateShowCommentModal,
-  updateShowUploadFileModal
+  updateShowUploadFileModal,
+  type
 }: {
   project_id: string,
   position: ProjectPositions;
   trade_id: string;
   updateShowCommentModal: Dispatch<SetStateAction<boolean>>;
   updateShowUploadFileModal: Dispatch<SetStateAction<boolean>>;
-
+  type: string
 }) => {
   const { user } = useContext(UserAuthContext)
   console.log(user?.creator.id)
-  const billPosition = async () => {
-    if (user && user.role === 'executor') {
-      const [error, draft] = await createNewDraft({
-        amount: parseFloat((Number(position?.crowd) * position?.price!).toFixed(2)),
-        positions: [position?.external_id!],
-        project: project_id,
-        user_id: user?._id!,
-        reciepient: user?.creator?.id,
-        status: "REQUESTED"
-      });
-      if (error) {
-        console.log(error)
-        notify(
-          (<NotificationComponent message={'Error creating draft'} />),
-          {
-            className: `bg-red-400 font-bold text-white`,
-            closeOnClick: true,
-          }
-        );
-      }
+  // const billPosition = async () => {
+  //   if (user && user.role === 'executor') {
+  //     const [error, draft] = await createNewDraft({
+  //       amount: parseFloat((Number(position?.crowd) * position?.price!).toFixed(2)),
+  //       positions: [position?.external_id!],
+  //       project: project_id,
+  //       user_id: user?._id!,
+  //       reciepient: user?.creator?.id,
+  //       status: "REQUESTED"
+  //     });
+  //     if (error) {
+  //       console.log(error)
+  //       notify(
+  //         (<NotificationComponent message={'Error creating draft'} />),
+  //         {
+  //           className: `bg-red-400 font-bold text-white`,
+  //           closeOnClick: true,
+  //         }
+  //       );
+  //     }
 
-      if (draft) {
-        notify(
-          (<NotificationComponent message={'Draft created successfully!'} />),
-          {
-            className: `bg-green-500 font-bold text-white`,
-            closeOnClick: true,
-          }
-        );
-        console.log(draft)
-        const [err, payload] = await updateProjectPosition(project_id, { ...position, billed: true, status: 'BILLED' }, trade_id);
-        if (err) {
-          notify(
-            (<NotificationComponent message={'Error updating position'} />),
-            {
-              className: `bg-red-400 font-bold text-white`,
-              closeOnClick: true,
-            }
-          );
-          console.log(err)
-        }
-        if (payload) {
-          console.log(payload);
-          notify(
-            (<NotificationComponent message={'position updated successfully!'} />),
-            {
-              className: `bg-green-600 font-bold text-white`,
-              closeOnClick: true,
-            }
-          );
-        }
-      }
+  //     if (draft) {
+  //       notify(
+  //         (<NotificationComponent message={'Draft created successfully!'} />),
+  //         {
+  //           className: `bg-green-500 font-bold text-white`,
+  //           closeOnClick: true,
+  //         }
+  //       );
+  //       console.log(draft)
+  //       const [err, payload] = await updateProjectPosition(project_id, { ...position, billed: true, status: 'BILLED' }, trade_id);
+  //       if (err) {
+  //         notify(
+  //           (<NotificationComponent message={'Error updating position'} />),
+  //           {
+  //             className: `bg-red-400 font-bold text-white`,
+  //             closeOnClick: true,
+  //           }
+  //         );
+  //         console.log(err)
+  //       }
+  //       if (payload) {
+  //         console.log(payload);
+  //         notify(
+  //           (<NotificationComponent message={'position updated successfully!'} />),
+  //           {
+  //             className: `bg-green-600 font-bold text-white`,
+  //             closeOnClick: true,
+  //           }
+  //         );
+  //       }
+  //     }
 
-    }
-  }
+  //   }
+  // }
   const mainOrderLinks = [
-    { text: 'Completed', action: updatePosition, status: "COMPLETED" },
-    { text: 'Not Feasible', action: updatePosition, status: "NOT_FEASIBLE" },
+    { text: 'In Progress', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "IN PROGRESS" },
+    { text: 'Completed', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "COMPLETED" },
+    { text: 'Not Feasible', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "NOT_FEASIBLE" },
     { text: 'Upload Document', handler: () => updateShowUploadFileModal(true) },
-    { text: 'Bill', handler: () => billPosition() },
     { text: 'Add Comment', handler: () => updateShowCommentModal(true) },
   ];
   return (

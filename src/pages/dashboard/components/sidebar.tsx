@@ -66,7 +66,7 @@ const sidebarLinksArray = [
       },
     ]
   },
-  { 
+  {
     text: 'Projects Summary',
     link: SCREENS.PROJECTS,
     icon: FormIcon,
@@ -167,7 +167,7 @@ const Sidebar = ({
 }: Props) => {
   const deviceWidth = window.innerWidth;
   const location = useLocation()
-  const {user} = useContext(UserAuthContext)
+  const { user } = useContext(UserAuthContext)
 
   useEffect(() => {
     const sidebarLink = sidebarLinksArray.find(
@@ -232,31 +232,39 @@ const Sidebar = ({
           <div
             className="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6"
           >
-            {sidebarLinksArray.map((sidebarLink, index) => (
-              <SidebarLink
-                key={index}
-                link={sidebarLink.link}
-                svg={(<sidebarLink.icon />)}
-              />
+            {sidebarLinksArray.map((sidebarLink, index) => {
+              if (user?.role === 'shop' && sidebarLink.text !== 'Projects Summary') {
+                return (
+                  <SidebarLink
+                    key={index}
+                    link={sidebarLink.link}
+                    svg={(<sidebarLink.icon />)}
+                  />
 
-            ))}
+                )
+              }
+            })}
           </div>
 
           <div className="flex flex-col items-center space-y-3 py-3">
 
             {bottomLinks.map((bottomLink, index) => {
+              if (user?.role === 'shop' && (bottomLink.text.includes('General'))) {
+                return (
+                  <SidebarLink
+                    key={index}
+                    link={bottomLink.link}
+                    svg={(<bottomLink.icon />)}
+                  />
+                )
+              }
+
               if ((bottomLink.text.includes('General Contractors')) && (user?.role !== 'admin')) {
                 bottomLink.text = 'General Executors';
                 // @ts-ignore
                 bottomLink.children[0].text = 'Executors';
               }
-              return (
-                <SidebarLink
-                  key={index}
-                  link={bottomLink.link}
-                  svg={(<bottomLink.icon />)}
-                />
-              )
+
             })}
 
 

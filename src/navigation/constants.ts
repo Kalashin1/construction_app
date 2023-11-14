@@ -36,7 +36,8 @@ export enum SCREENS {
   EMPLOYEES = '/employees',
   CONTRACT = '/contract/:id',
   DRAFT = '/draft/:id',
-  ADDENDUM = '/addendum/:project_id'
+  ADDENDUM = '/addendum/:project_id',
+  ADD_PRODUCT = '/add-product/:shop_id'
 }
 
 export const API_BASE_URL = 

@@ -21,9 +21,7 @@ const Dashboard = () => {
   const [showCopyTokenModal, updateShowCopyTokenModal] = useState(false);
 
   const {user} = useContext(UserAuthContext);
-
   
-
   const links = [{
     text: 'Create Account',
     svg: 'fas fa-user',
@@ -48,8 +46,8 @@ const Dashboard = () => {
           <HomeCards />
         </div>
         <div className="relative" onClick={(e) => e.stopPropagation()}>
-          <CreateAccountButton action={() => updateShowAccountDropDown(!showAccountDropdown)} />
-          {showAccountModal && (<CreateAccountModal action={() => {
+          {(user?.role !== 'shop') && (user?.role !== 'employee') && (<CreateAccountButton action={() => updateShowAccountDropDown(!showAccountDropdown)} />)}
+          {showAccountModal && (user?.role !== 'shop') && (user?.role !== 'employee') &&  (<CreateAccountModal action={() => {
             updateShowAccountModal(false)
             updateShowAccountDropDown(false)
           }} />)}

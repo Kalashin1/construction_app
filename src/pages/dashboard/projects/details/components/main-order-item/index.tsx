@@ -54,7 +54,7 @@ const MainOrderItem = ({ positions, projectId }: {
         )}
         <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
         {positions && positions.map((position, index) => (
-          <ProjectDetailCard position={position} index={index + 1} project_id={projectId} />
+          <ProjectDetailCard type="position" position={position} index={index + 1} project_id={projectId} />
         ))}
       </div>
     </div>

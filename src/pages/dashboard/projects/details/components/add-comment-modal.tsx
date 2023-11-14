@@ -1,22 +1,66 @@
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { Button } from "../../../components/current-projects";
 import { Modal } from "../../../profie/components/account-settings"
-import { ProjectPositions } from "../../../../../types";
-import { useState } from "react";
+import { MESSAGE_STATUS, Message, ProjectPositions } from "../../../../../types";
+import { useContext, useEffect, useState } from "react";
+import { UserAuthContext } from "../../../../../App";
+import { getProject } from "../../../helper/project";
+import { NotificationComponent, notify } from "../../../components/notification/toast";
 
 const AddCommentModal = ({
   closeModal,
   position,
   project_id,
   trade_id,
+  executor,
   action
 }: {
   closeModal: (...args: unknown[]) => void;
   position: ProjectPositions;
   project_id: string;
   trade_id: string;
-  action: (project_id: string, position: ProjectPositions, trade_id: string) => Promise<void>
+  executor: string;
+  action: (message: Message, closeModal: (...args: unknown[]) => void) => Promise<void>
 }) => {
-  const [comment, updateComment] = useState('')
+  const [comment, updateComment] = useState('');
+  const { user } = useContext(UserAuthContext);
+  const [receivers, setReceivers] = useState<string[]>([]);
+
+  useEffect(() => {
+    const setUp = async () => {
+      const [error, _project] = await getProject(project_id);
+      if (error) {
+        notify(
+          (<NotificationComponent message="Error fetching project" />),
+          { className: "bg-red-500 text-white" }
+        )
+      }
+
+      if (_project) {
+        if (user?.role === 'contractor') {
+          setReceivers([executor])
+        } else if (user?.role === 'executor') {
+          setReceivers([_project.contractor])
+        }
+
+      }
+    }
+
+    setUp();
+  }, [executor, project_id, user?.role])
+
+
+  const generatePayload = (): Message => ({
+    content: comment,
+    owner_id: user?._id!,
+    status: MESSAGE_STATUS[0],
+    position_id: position._id,
+    project_id: project_id,
+    trade_id: trade_id,
+    reciever_id: receivers
+  })
+
   return (
     <Modal
       title="Add comment"
@@ -33,7 +77,7 @@ const AddCommentModal = ({
           ></textarea>
         </label>
 
-        <Button action={() => { action(project_id, {...position, comment }, trade_id)}} label="Add Comment" />
+        <Button action={() => { action(generatePayload(), closeModal) }} label="Add Comment" />
       </div>
     </Modal>
   )
