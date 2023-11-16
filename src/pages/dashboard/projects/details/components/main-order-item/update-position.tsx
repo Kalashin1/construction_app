@@ -1,6 +1,6 @@
-import { ProjectPositions } from "../../../../../../types";
+import { Message, ProjectPositions } from "../../../../../../types";
 import { notify, NotificationComponent } from "../../../../components/notification/toast";
-import { updateProjectPosition } from "../../../helper";
+import { addMessage, updateProjectPosition } from "../../../helper";
 
 export const updatePosition = async (
   project_id: string,
@@ -33,5 +33,32 @@ export const updatePosition = async (
       }
     );
     console.log(payload);
+  }
+}
+
+
+export const sendMessage = async (message: Message, closeModal: (...args: unknown[]) => void) => {
+  const [error, payload] = await addMessage(message);
+  if (error) {
+    notify(
+      (<NotificationComponent message={'oops something happened!'} />),
+      {
+        className: `bg-red-500 font-bold text-white`,
+        closeOnClick: true,
+      }
+    )
+    console.log(error)
+  }
+
+  if (payload) {
+    notify(
+      (<NotificationComponent message={'Message created successfully!'} />),
+      {
+        className: `bg-green-500 font-bold text-white`,
+        closeOnClick: true,
+      }
+    );
+    console.log(payload);
+    closeModal()
   }
 }

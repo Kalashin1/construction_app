@@ -317,3 +317,19 @@ export interface InvoicePayload {
   owner: string;
   receiver: string;
 }
+
+export interface Message {
+  _id?: string;
+  content: string;
+  assetUrl?: string;
+  owner_id: string;
+  reciever_id: string[];
+  project_id: string;
+  createdAt?: string;
+  position_id?: string;
+  trade_id?: string;
+  parentMessage?: string;
+  status: typeof MESSAGE_STATUS[number]
+}
+
+export const MESSAGE_STATUS = ['SENT', 'DELIVERED', 'READ', 'DELETED'] as const

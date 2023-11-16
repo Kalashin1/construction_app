@@ -6,24 +6,25 @@ import { FileIcon } from "../../svgs";
 import AddCommentModal from "../add-comment-modal";
 import UploadFileModal from "../upload-file-modal";
 import MainOrderDropdown from "./main-order-dropdown";
-import { updatePosition } from "./update-position";
+import { sendMessage } from "./update-position";
 import UploadedFileModal from "./uploaded-file-modal";
 import { UserAuthContext } from "../../../../../../App";
 import { formatter } from "../../../../helper/tools";
 
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-export const ProjectDetailCard = ({ position, index, project_id }: {
+export const ProjectDetailCard = ({ position, index, project_id, type }: {
   position: ProjectPositions;
   index: number;
   project_id: string;
+  type: string
 }) => {
   const [showDropdown, updateShowDropDown] = useState(false);
   const [showCommentModal, updateShowCommentModal] = useState(false);
   const [showUploadFileModal, updateShowUploadFileModal] = useState(false);
   const [showFileModal, updateShowFileModal] = useState(false)
   const [executor, updateExecutor] = useState<User | null>(null)
-  const {user} = useContext(UserAuthContext);
-  const isContractorOrOwner =  user?.role === 'contractor' || user?._id === executor?._id
+  const { user } = useContext(UserAuthContext);
+  const isContractorOrOwner = user?.role === 'contractor' || user?._id === executor?._id
 
   useEffect(() => {
     const getExecutor = async () => {
@@ -69,6 +70,7 @@ export const ProjectDetailCard = ({ position, index, project_id }: {
         </div>
         {showDropdown && isContractorOrOwner && (
           <MainOrderDropdown
+            type={type}
             updateShowUploadFileModal={updateShowUploadFileModal}
             updateShowCommentModal={updateShowCommentModal}
             position={position}
@@ -76,16 +78,17 @@ export const ProjectDetailCard = ({ position, index, project_id }: {
             trade_id={position.trade!}
           />
         )}
-        {showFileModal &&  (
+        {showFileModal && (
           <UploadedFileModal
             closeModal={() => updateShowFileModal(false)}
             title={position?.external_id!}
             image={position?.documentURL}
           />
         )}
-        {showCommentModal &&  isContractorOrOwner && (
+        {showCommentModal && isContractorOrOwner && (
           <AddCommentModal
-            action={updatePosition}
+            action={sendMessage}
+            executor={position?.executor!}
             position={position}
             project_id={project_id}
             trade_id={position.trade!}

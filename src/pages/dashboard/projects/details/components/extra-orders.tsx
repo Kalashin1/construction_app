@@ -1,6 +1,10 @@
-// import {ProjectDetailCard} from "./main-order-item";
+import { ProjectPositions } from "../../../../../types";
+import ProjectDetailCard from "./main-order-item/project-detail-card";
 
-const ExtraOrders = () => {
+const ExtraOrders = ({ positions, projectId }: {
+  positions: ProjectPositions[],
+  projectId: string
+}) => {
   return (
     <div className="bg-white rounded-lg shadow-md my-8 py-6 dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="p-6 m">
@@ -18,10 +22,9 @@ const ExtraOrders = () => {
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="">
-        {/* <ProjectDetailCard
-
-          
-        /> */}
+        {positions && positions.map((position, index) => (
+          <ProjectDetailCard type="extraPosition" position={position} index={index + 1} project_id={projectId} />
+        ))}
       </div>
     </div>
   );

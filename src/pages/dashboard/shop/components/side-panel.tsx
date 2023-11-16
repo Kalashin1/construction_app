@@ -1,3 +1,7 @@
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { UserAuthContext } from "../../../../App";
+
 type SidebarPanelHeaderProps = {
   headerText?: string;
   closeSidebar: (...args: unknown[]) => void
@@ -70,16 +74,17 @@ const SidebarPanelBody = ({
   secondLinks,
   closeSidebar
 }: SidebarPanelBodyProps) => {
+  const {user} = useContext(UserAuthContext);
   return (
     <div
       className="nav-wrapper h-[calc(100%-4.5rem)] min-h-screen overflow-x-hidden pb-6"
       data-simplebar
     >
       <div className="mt-4 flex px-4 pb-4 shadow-sm">
-        <button className="btn w-full space-x-2 rounded-full border border-slate-200 py-2 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-500 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90">
+       {user?.role === 'shop' && ( <button className="btn w-full space-x-2 rounded-full border border-slate-200 py-2 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-500 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90">
           <i className="fas fa-plus" />
-          <span>Add Product</span>
-        </button>
+          <Link to={`/add-product/${user?._id}`}>Add Product</Link>
+        </button>)}
       </div>
       <div className="ac-header mt-4 flex items-center justify-between px-4">
         <span className="text-xs font-medium uppercase">channels
@@ -117,9 +122,6 @@ const SidebarPanelBody = ({
     </div>
   )
 }
-
-
-
 
 
 type SidebarPanelProps = SidebarPanelHeaderProps & SidebarPanelBodyProps

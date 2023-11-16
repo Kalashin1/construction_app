@@ -27,6 +27,7 @@ const ProjectDetails = () => {
   const [showDownloadOption, updateShowDownloadOption] = useState(false);
   const [project, setProject] = useState<IProject | null>(null);
   const [positions, setPositions] = useState<ProjectPositions[] | null>(null);
+  const [extraPositions, setExtraPositions] = useState<ProjectPositions[] | null>(null)
   const [showAcceptButton, updateShowAcceptButton] = useState(false)
   const { user } = useContext(UserAuthContext)
   const { id } = useParams();
@@ -87,6 +88,7 @@ const ProjectDetails = () => {
         setProject(_project);
         const _assingedPositions: string[] = []
         const positions: ProjectPositions[] = [];
+        const extraPositions: ProjectPositions[] = []
 
         for (const key in _project.positions) {
           const _positions = _project.positions[key].positions
@@ -104,11 +106,24 @@ const ProjectDetails = () => {
 
           positions.push(..._positions);
         }
-        console.log("_assingedPositions", _assingedPositions)
+
+        for (const key in _project.extraPositions) {
+          const _positions = _project.extraPositions[key].positions
+          _positions.forEach((pos) => {
+            pos.tradeName = key
+            pos.executor = _project.positions[key].executor
+          })
+          extraPositions.push(..._positions);
+        }
+      
         setAssignedPositions(_assingedPositions)
         setPositions(positions)
-        if (_assingedPositions.length > 1)
+        setExtraPositions(extraPositions)
+
+        if (_assingedPositions[0]) {
+          console.log(_assingedPositions)
           updateShowAcceptButton(true);
+        }
       }
     }
     setUp();
@@ -128,7 +143,7 @@ const ProjectDetails = () => {
             <AcceptProjectFloatingActionButton action={() => interactWithProject(project?._id!, user?._id!, "accept")} />
             <DeclineProjectFloatingActionButton action={() => interactWithProject(project?._id!, user?._id!, "reject")} />
           </>
-        ): (<></>)}
+        ) : (<></>)}
         <div className="my-6">
 
           {project && (<ProjectCard project={project} />)}
@@ -137,7 +152,7 @@ const ProjectDetails = () => {
 
           {project && (<ScopeOfService project={project} updatePositions={setPositions} />)}
           {project && positions && (<MainOrderItem positions={positions} projectId={project._id} />)}
-          <ExtraOrders />
+          {project && extraPositions && (<ExtraOrders positions={extraPositions} projectId={project._id} />)}
           {showDownloadOption && (<ProjectDownloadAction />)}
           <FloatingActionButton
             action={() => navigate(SCREENS.CHAT)}
