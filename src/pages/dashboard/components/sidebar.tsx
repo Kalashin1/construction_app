@@ -233,7 +233,7 @@ const Sidebar = ({
             className="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6"
           >
             {sidebarLinksArray.map((sidebarLink, index) => {
-              if (user?.role === 'shop' && sidebarLink.text !== 'Projects Summary') {
+              if ((user?.role === 'shop' && sidebarLink.text !== 'Projects Summary') || user?.role === 'admin' || user?.role === 'contractor' || user?.role === 'employee') {
                 return (
                   <SidebarLink
                     key={index}
@@ -249,7 +249,7 @@ const Sidebar = ({
           <div className="flex flex-col items-center space-y-3 py-3">
 
             {bottomLinks.map((bottomLink, index) => {
-              if (user?.role === 'shop' && (bottomLink.text.includes('General'))) {
+              if ((user?.role === 'shop' && (bottomLink.text.includes('General'))) || user?.role === 'admin' || user?.role === 'contractor' || user?.role === 'employee') {
                 return (
                   <SidebarLink
                     key={index}
@@ -258,7 +258,7 @@ const Sidebar = ({
                   />
                 )
               }
-
+              // @ts-ignore
               if ((bottomLink.text.includes('General Contractors')) && (user?.role !== 'admin')) {
                 bottomLink.text = 'General Executors';
                 // @ts-ignore
