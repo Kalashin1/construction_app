@@ -332,4 +332,18 @@ export interface Message {
   status: typeof MESSAGE_STATUS[number]
 }
 
-export const MESSAGE_STATUS = ['SENT', 'DELIVERED', 'READ', 'DELETED'] as const
+export const MESSAGE_STATUS = ['SENT', 'DELIVERED', 'READ', 'DELETED'] as const;
+
+export interface Product {
+  _id?: string;
+  name: string;
+  imageUrls?: string[];
+  external_id: string;
+  shop: string;
+  price: string;
+  description: string;
+  createdAt?: string;
+  updatedAt?: string;
+  category: string;
+  subCategory?: string;
+}
