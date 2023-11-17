@@ -79,23 +79,27 @@ const AddProductForm = () => {
     })
     if (error) {
       notify(
-        (<NotificationComponent message="Error creating product" />)
+        (<NotificationComponent message="Error creating product" />),
+        {  className: 'bg-red-500 text-white'}
       )
       console.log(error)
     }
 
     if (product) {
+      console.table([shop_id, product._id])
      const [updateError, payload] = await updateProductImage(shop_id!, product._id!, files);
       if (updateError) {
         notify(
-          (<NotificationComponent message="Error creating product" />)
+          (<NotificationComponent message="Error uploading images" />),
+          {  className: 'bg-red-500 text-white'}
         )
         console.log(updateError)
       }
 
       if (payload) {
         notify(
-          (<NotificationComponent message="Product created successfully" />)
+          (<NotificationComponent message="Product created successfully" />),
+          {  className: 'bg-green-500 text-white'}
         );
         navigate(SCREENS.SHOP)
       }
@@ -112,7 +116,8 @@ const AddProductForm = () => {
     );
     if (error) {
       notify(
-        (<NotificationComponent message="Error fetching files" />)
+        (<NotificationComponent message="Error fetching files" />),
+        {  className: 'bg-red-500 text-white'}
       )
     }
     if (files) {
