@@ -8,9 +8,11 @@ import Heading from "./components/heading";
 import Products from "./components/products";
 import SidePanel from "./components/side-panel";
 import SidebarHeading from "./components/sidebar-Heading";
+import { useParams } from "react-router-dom";
 
 const Shop = () => {
   const [showCart, updateShowCart] = useState(false);
+  const {id: shop_id} = useParams();
   const {
     deviceWidth,
     showProjectMenu,
@@ -34,8 +36,8 @@ const Shop = () => {
               () => updateShowProjectMenu && updateShowProjectMenu(!showProjectMenu) :
               () => updateShowSidebar && updateShowSidebar(!showSidebar)
           }
-          links={[{icon: 'fas fa-house text-pink-600', text: 'Office'}]}
-          secondLinks={[{icon: 'fas fa-cog', text: 'Settings'}]}
+          links={[{icon: 'fas fa-house text-pink-600', text: 'Products', to: `/products/${shop_id}`}]}
+          secondLinks={[{icon: 'fas fa-cog', text: 'Settings', to: ''}]}
           headerText="Shop"
         />
       )}

@@ -17,14 +17,25 @@ const FileModal = ({
     >
       <div className="modal-overlay absolute inset-0 bg-slate-900/60" onClick={closeModal}></div>
       <div
-        className="modal-content scrollbar-sm relative flex max-w-lg flex-col items-center overflow-y-auto rounded-lg px-4 py-10 text-center dark:bg-navy-700 sm:px-5 md:w-2/5"
+        className="modal-content scrollbar-sm relative flex max-w-lg flex-col items-center overflow-y-auto rounded-lg text-center bg-gray-50 dark:bg-navy-700 md:w-2/5"
       >
 
+        <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl px-4 py-4 flex justify-between items-center flex-row w-full">
+          
+          <button>
+            <i className="fas fa-download" />
+          </button>
+          <span>
 
-        <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl">
           {title}
+          </span>
+          <button>
+            <i className="fas fa-trash" />
+          </button>
+
         </h2>
-        <div className="mt-4 w-full">
+
+        <div className="w-full">
           {children}
         </div>
       </div>

@@ -14,9 +14,7 @@ const UploadedFileModal = ({
       title={title}
       closeModal={closeModal}
     >
-      <div>
         <img className="w-full h-auto object-cover" src={image} />
-      </div>
     </FileModal>
   )
 }

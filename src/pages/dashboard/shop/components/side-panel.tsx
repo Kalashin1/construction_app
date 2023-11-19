@@ -51,22 +51,24 @@ const SidebarPanelHeader = ({
 }
 
 type SidebarPanelBodyProps = {
-  links: Array<{ icon: string, text: string }>
-  secondLinks?: Array<{ icon: string, text: string }>
+  links: Array<{ icon: string, text: string, to: string }>
+  secondLinks?: Array<{ icon: string, text: string, to: string }>
   closeSidebar: (...args: unknown[]) => void;
 }
 
 const ListItem = ({
   icon,
   text,
+  to,
 }: {
   icon: string;
-  text: string
+  text: string;
+  to: string;
 }) => (
-  <a className="group flex space-x-2 rounded-lg p-2 tracking-wide text-slate-800 outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:text-navy-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600 items-center" href="#">
+  <Link to={to} className="group flex space-x-2 rounded-lg p-2 tracking-wide text-slate-800 outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:text-navy-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600 items-center">
     <i className={`${icon}`} />
     <span>{text}</span>
-  </a>
+  </Link>
 )
 
 const SidebarPanelBody = ({
@@ -102,9 +104,9 @@ const SidebarPanelBody = ({
         <ul
           className="mt-1 space-y-1.5 px-2 font-inter text-xs+ font-medium"
         >
-          {links.map(({ icon, text }, index) => (
+          {links.map(({ icon, text, to }, index) => (
             <li key={index} onClick={closeSidebar} className="my-1">
-              <ListItem icon={icon} text={text} />
+              <ListItem icon={icon} text={text} to={to} />
             </li>
           ))}
         </ul>
@@ -112,9 +114,9 @@ const SidebarPanelBody = ({
         <ul
           className="mt-1 space-y-1.5 px-2 font-inter text-xs+ font-medium"
         >
-          {secondLinks && secondLinks.map(({ icon, text }, index) => (
+          {secondLinks && secondLinks.map(({ icon, text, to }, index) => (
             <li key={index} onClick={closeSidebar} className="my-1">
-              <ListItem icon={icon} text={text} />
+              <ListItem icon={icon} text={text} to={to} />
             </li>
           ))}
         </ul>

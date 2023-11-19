@@ -12,11 +12,13 @@ const MainOrderDropdown = ({
   trade_id,
   updateShowCommentModal,
   updateShowUploadFileModal,
-  type
+  type,
+  extraOrderId
 }: {
   project_id: string,
   position: ProjectPositions;
   trade_id: string;
+  extraOrderId?: string
   updateShowCommentModal: Dispatch<SetStateAction<boolean>>;
   updateShowUploadFileModal: Dispatch<SetStateAction<boolean>>;
   type: string
@@ -93,7 +95,7 @@ const MainOrderDropdown = ({
             if (link.status)
               return (
                 <li key={index}>
-                  <button onClick={() => link.action(project_id, { ...position, status: link.status ? link.status : position.status }, trade_id)} className="flex h-8 items-center space-x-3 px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 w-full dark:focus:bg-navy-600 dark:focus:text-navy-100">
+                  <button onClick={() => link.action(project_id, { ...position, status: link.status ? link.status : position.status }, trade_id, type === 'extraPosition' ? extraOrderId: '')} className="flex h-8 items-center space-x-3 px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 w-full dark:focus:bg-navy-600 dark:focus:text-navy-100">
 
                     <span> {link.text}</span></button>
                 </li>

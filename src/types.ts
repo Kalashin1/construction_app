@@ -205,6 +205,21 @@ export type ProjectPositionObject = {
   };
 };
 
+export type ExtraProjectPositionSuper = {
+  createdAt: number;
+  createdBy: {
+    _id: string;
+    role: UserRoleType;
+  };
+  acceptedBy?: {
+    _id: string;
+    role: UserRoleType;
+  }
+  id: string;
+  acceptedAt?: number
+  positions: ProjectPositionObject
+}
+
 export interface IProject {
   _id: string;
   contractor: string;
@@ -212,7 +227,7 @@ export interface IProject {
   status: (typeof PROJECT_STATUS)[number];
   positions: ProjectPositionObject;
   shortagePositions: ProjectPositionObject;
-  extraPositions: ProjectPositionObject;
+  extraPositions: ExtraProjectPositionSuper[];
   createdAt: string;
   dueDate: string;
   updatedAt: string;
@@ -344,6 +359,16 @@ export interface Product {
   description: string;
   createdAt?: string;
   updatedAt?: string;
+  category: TradeInterface;
+  subCategory?: PositionInterface;
+}
+
+export type CreateProductParam = {
+  shop: string;
+  price: string;
+  name: string;
+  description: string;
   category: string;
   subCategory?: string;
+  external_id: string;
 }

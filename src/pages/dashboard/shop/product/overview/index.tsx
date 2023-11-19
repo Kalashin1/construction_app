@@ -1,13 +1,14 @@
 import Layout from "../../../layout";
 import BreadCrumb from "../../../components/bread-crumb";
 import { SCREENS } from "../../../../../navigation/constants";
-import AddProductForm from "./components/product-form";
+import ProductsOverview from "./components/products-table";
 import { useContext } from "react";
+import { SidebarContext } from "../../../../../App";
 import SidePanel from "../../components/side-panel";
 import { useParams } from "react-router-dom";
-import { SidebarContext } from "../../../../../App";
 
-const AddProductPage = () => {
+
+const ProductsOverviewPage = () => {
   const {
     deviceWidth,
     showProjectMenu,
@@ -37,14 +38,14 @@ const AddProductPage = () => {
           pageName="Add Product"
           firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard' }}
           secondLevel={{ link: SCREENS.SHOP, text: 'Shop' }}
-          thirdLevel={{ link: '', text: 'Add Product' }}
+          thirdLevel={{ link: '', text: 'Products' }}
         />
         <main className="my-6">
-          <AddProductForm />
+          <ProductsOverview />
         </main>
       </section>
     </Layout>
   )
 };
 
-export default AddProductPage;
+export default ProductsOverviewPage;
