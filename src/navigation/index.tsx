@@ -40,6 +40,7 @@ import Contract from '../pages/dashboard/settings/contractors/details/frameworks
 import DraftDetails from '../pages/dashboard/bills/details';
 import AddAddenDum from '../pages/dashboard/projects/details/addendum/';
 import AddProductPage from '../pages/dashboard/shop/product/add';
+import ProductOverview from '../pages/dashboard/shop/product/overview';
 
 
 const router = createBrowserRouter([
@@ -203,6 +204,10 @@ const router = createBrowserRouter([
   {
     path: SCREENS.ADD_PRODUCT,
     element: (<AddProductPage />)
+  },
+  {
+    path: SCREENS.SHOP_PRODUCTS,
+    element: (<ProductOverview />)
   },
 ]);
 

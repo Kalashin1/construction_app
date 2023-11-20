@@ -21,19 +21,25 @@ import { UserAuthContext } from "../../../../App";
 import { acceptProject, rejectProject } from "../helper";
 import { notify, NotificationComponent } from "../../components/notification/toast";
 
+type ExtraPositionType = { createdAt: number, positions: ProjectPositions[], id: string }[]
+
 const ProjectDetails = () => {
 
   const navigate = useNavigate();
   const [showDownloadOption, updateShowDownloadOption] = useState(false);
   const [project, setProject] = useState<IProject | null>(null);
   const [positions, setPositions] = useState<ProjectPositions[] | null>(null);
-  const [extraPositions, setExtraPositions] = useState<ProjectPositions[] | null>(null)
+  const [__extraPositions, __setExtraPositions] = useState<ExtraPositionType | null>(null)
   const [showAcceptButton, updateShowAcceptButton] = useState(false)
   const { user } = useContext(UserAuthContext)
   const { id } = useParams();
   const [assignedPositions, setAssignedPositions] = useState<string[]>([])
 
-  const interactWithProject = async (project_id: string, user_id: string, action: "accept" | "reject") => {
+  const interactWithProject = async (
+    project_id: string,
+    user_id: string,
+    action: "accept" | "reject"
+  ) => {
     let error, payload;
     const isAccept = action === 'accept'
     if (isAccept) {
@@ -88,7 +94,7 @@ const ProjectDetails = () => {
         setProject(_project);
         const _assingedPositions: string[] = []
         const positions: ProjectPositions[] = [];
-        const extraPositions: ProjectPositions[] = []
+        const __extraPositions: ExtraPositionType = []
 
         for (const key in _project.positions) {
           const _positions = _project.positions[key].positions
@@ -107,20 +113,23 @@ const ProjectDetails = () => {
           positions.push(..._positions);
         }
 
-        for (const key in _project.extraPositions) {
-          const _positions = _project.extraPositions[key].positions
-          _positions.forEach((pos) => {
-            pos.tradeName = key
-            pos.executor = _project.positions[key].executor
-          })
-          extraPositions.push(..._positions);
+        for (const extraPosition of _project.extraPositions) {
+          for (const key in extraPosition.positions) {
+            const _positions = extraPosition.positions[key].positions
+            _positions.forEach((pos) => {
+              pos.tradeName = key
+              pos.executor = _project.positions[key].executor
+            })
+            __extraPositions.push({ id: extraPosition.id, createdAt: extraPosition.createdAt, positions: [..._positions] })
+          }
         }
-      
+
         setAssignedPositions(_assingedPositions)
         setPositions(positions)
-        setExtraPositions(extraPositions)
+        __setExtraPositions(__extraPositions)
+        console.log('__extraPositions', __extraPositions)
 
-        if (_assingedPositions[0]) {
+        if (_assingedPositions.length > 1 && _assingedPositions[0]) {
           console.log(_assingedPositions)
           updateShowAcceptButton(true);
         }
@@ -140,8 +149,12 @@ const ProjectDetails = () => {
         />
         {showAcceptButton ? (
           <>
-            <AcceptProjectFloatingActionButton action={() => interactWithProject(project?._id!, user?._id!, "accept")} />
-            <DeclineProjectFloatingActionButton action={() => interactWithProject(project?._id!, user?._id!, "reject")} />
+            <AcceptProjectFloatingActionButton
+              action={() => interactWithProject(project?._id!, user?._id!, "accept")} 
+            />
+            <DeclineProjectFloatingActionButton 
+              action={() => interactWithProject(project?._id!, user?._id!, "reject")}
+               />
           </>
         ) : (<></>)}
         <div className="my-6">
@@ -150,9 +163,31 @@ const ProjectDetails = () => {
           <ConstructionSchedule />
           <Documents />
 
-          {project && (<ScopeOfService project={project} updatePositions={setPositions} />)}
-          {project && positions && (<MainOrderItem positions={positions} projectId={project._id} />)}
-          {project && extraPositions && (<ExtraOrders positions={extraPositions} projectId={project._id} />)}
+          {project && 
+            (
+              <ScopeOfService 
+                project={project}
+                updatePositions={setPositions} 
+              />
+            )
+          }
+          {project && positions && (
+            <MainOrderItem 
+              positions={positions}
+              projectId={project._id} 
+            />
+          )}
+
+          {project && __extraPositions && __extraPositions.map((_extraPositions) => (
+            (
+              <ExtraOrders
+                createdAt={_extraPositions.createdAt}
+                positions={_extraPositions.positions}
+                projectId={project._id}
+                extraOrderId={_extraPositions.id}
+              />
+            )
+          ))}
           {showDownloadOption && (<ProjectDownloadAction />)}
           <FloatingActionButton
             action={() => navigate(SCREENS.CHAT)}

@@ -94,6 +94,7 @@ const ProjectCard = ({ project }: {
         
       }
     }
+    console.log('completed', completedPrices)
     return (completedPrices/price * (100)).toFixed(0);
   }, [project.contractor, project.positions, user?._id])
 

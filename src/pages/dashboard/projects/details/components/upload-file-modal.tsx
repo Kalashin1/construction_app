@@ -49,6 +49,7 @@ const UploadFileModal = ({
             closeOnClick: true,
           }
         )
+        console.log(err)
       }
 
       if (payload) {

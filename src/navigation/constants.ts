@@ -11,7 +11,7 @@ export enum SCREENS {
   PERFORMANCE = '/performance',
   REPORTS = '/reports',
   SHORTAGES = '/shortages',
-  SHOP = '/shop',
+  SHOP = '/shop/:id',
   CREATE_PROJECT ='/create-project',
   OPS_ADMINISTRATION = '/ops',
   DETAIL = '/detail/:id',
@@ -37,7 +37,8 @@ export enum SCREENS {
   CONTRACT = '/contract/:id',
   DRAFT = '/draft/:id',
   ADDENDUM = '/addendum/:project_id',
-  ADD_PRODUCT = '/add-product/:shop_id'
+  ADD_PRODUCT = '/add-product/:shop_id',
+  SHOP_PRODUCTS = '/products/:shop_id',
 }
 
 export const API_BASE_URL = 

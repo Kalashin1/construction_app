@@ -12,11 +12,12 @@ import { UserAuthContext } from "../../../../../../App";
 import { formatter } from "../../../../helper/tools";
 
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-export const ProjectDetailCard = ({ position, index, project_id, type }: {
+export const ProjectDetailCard = ({ position, index, project_id, type, extraOrderId }: {
   position: ProjectPositions;
   index: number;
   project_id: string;
-  type: string
+  type: string;
+  extraOrderId?: string
 }) => {
   const [showDropdown, updateShowDropDown] = useState(false);
   const [showCommentModal, updateShowCommentModal] = useState(false);
@@ -71,6 +72,7 @@ export const ProjectDetailCard = ({ position, index, project_id, type }: {
         {showDropdown && isContractorOrOwner && (
           <MainOrderDropdown
             type={type}
+            extraOrderId={extraOrderId}
             updateShowUploadFileModal={updateShowUploadFileModal}
             updateShowCommentModal={updateShowCommentModal}
             position={position}

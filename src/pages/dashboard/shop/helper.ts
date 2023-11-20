@@ -1,11 +1,11 @@
 import { API_BASE_URL } from "../../../navigation/constants";
-import { Product } from "../../../types";
+import { CreateProductParam, Product } from "../../../types";
 
 type _Error = {
   message: string
 }
 
-export const createProduct = async (product: Product): Promise<[null | _Error, Product|null]> => {
+export const createProduct = async (product: CreateProductParam): Promise<[null | _Error, Product|null]> => {
   const res = await fetch(`${API_BASE_URL}/product/create`, {
     method: 'POST',
     headers: {
@@ -29,6 +29,32 @@ export const updateProductImage = async (shop_id: string, product_id: string, im
   const res = await fetch(`${API_BASE_URL}/product/image/${shop_id}/${product_id}`, {
     method: 'PATCH',
     body: fd,
+  })
+
+  if (res.ok) {
+    const data = await res.json();
+    return [null, data]
+  } else {
+    const error = await res.json();
+    return [error, null]
+  }
+}
+
+export const getStoreProdutcs = async (store_id: string) => {
+  const res = await fetch(`${API_BASE_URL}/product/shop/${store_id}`)
+
+  if (res.ok) {
+    const data = await res.json();
+    return [null, data]
+  } else {
+    const error = await res.json();
+    return [error, null]
+  }
+}
+
+export const deleteStoreProduct = async (product_id: string) => {
+  const res = await fetch(`${API_BASE_URL}/product/id/${product_id}`, {
+    method: 'DELETE'
   })
 
   if (res.ok) {

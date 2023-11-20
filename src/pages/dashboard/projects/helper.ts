@@ -131,15 +131,12 @@ export const uploadPositionFile = async (
   ]
 > => {
   const fd = new FormData();
-  fd.append("project-document", file);
+  fd.append("position-document", file);
   const res = await fetch(
     `${API_BASE_URL}/project/position/${project_id}/${trade_id}/${position}`,
     {
       method: "POST",
       body: fd,
-      headers: {
-        "Content-type": "application/json",
-      },
     }
   );
 
@@ -181,13 +178,15 @@ export const updatePositionsByTrade = async (
 export const addNewAddendum = async (
   project_id: string,
   trade_id: string,
-  positions: ProjectPositions[]
+  positions: ProjectPositions[],
+  creator: string
 ): Promise<[object | null, IProject | null]> => {
+  console.log("creator", creator)
   const res = await fetch(
     `${API_BASE_URL}/project/extra/${project_id}`,
     {
       method: "POST",
-      body: JSON.stringify({ positions, trade_id }),
+      body: JSON.stringify({ positions, trade_id, creator }),
       headers: {
         "Content-type": "application/json",
       },
@@ -206,13 +205,14 @@ export const addNewAddendum = async (
 export const updateProjectExtraPosition = async (
   project_id: string,
   position: ProjectPositions,
-  trade_id: string
+  trade_id: string,
+  extraOrderId?: string,
 ) => {
   const res = await fetch(
     `${API_BASE_URL}/project/update-extra/${project_id}`,
     {
       method: "PATCH",
-      body: JSON.stringify({ position, trade_id }),
+      body: JSON.stringify({ position, trade_id, extraOrderId }),
       headers: {
         "Content-type": "application/json",
       },

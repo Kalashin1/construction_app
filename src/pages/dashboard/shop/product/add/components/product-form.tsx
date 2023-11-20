@@ -8,14 +8,13 @@ import Select from 'react-select'
 import { getFile } from "../../../../helper/uploads";
 import { createProduct, updateProductImage } from "../../../helper";
 import { useNavigate, useParams } from "react-router-dom";
-import { SCREENS } from "../../../../../../navigation/constants";
 
 const AddProductForm = () => {
 
   const [trades, setTrades] = useState<TradeInterface[]>([]);
-  const [selectedTrade, updateSelectedTrade] = useState<TradeInterface>({} as TradeInterface);
+  const [selectedTrade, updateSelectedTrade] = useState('');
   const [positions, updatePositions] = useState<PositionInterface[]>([])
-  const [selectedPositions, updateSelectedPositions] = useState<PositionInterface>()
+  const [selectedPositions, updateSelectedPositions] = useState('')
   const addProductForm = useRef<null | HTMLFormElement>(null)
   const [files, updateFiles] = useState<File[]>([])
   const navigate = useNavigate();
@@ -68,9 +67,10 @@ const AddProductForm = () => {
       external_id: { value: external_id },
       description: { value: description }
     } = form
+    
     const [error, product] = await createProduct({
-      category: selectedTrade._id,
-      subCategory: selectedPositions?.external_id,
+      category: selectedTrade,
+      subCategory: selectedPositions,
       name,
       price,
       description,
@@ -101,7 +101,7 @@ const AddProductForm = () => {
           (<NotificationComponent message="Product created successfully" />),
           {  className: 'bg-green-500 text-white'}
         );
-        navigate(SCREENS.SHOP)
+        navigate(`/products/${shop_id}`)
       }
     }
   }
@@ -143,7 +143,7 @@ const AddProductForm = () => {
               <Select
                 options={trades && trades.map((trade) => ({ label: trade.name, value: trade._id }))}
                 // @ts-ignore
-                onChange={updateSelectedTrade}
+                onChange={v => updateSelectedTrade(v?.value)}
               />
 
             </label>
@@ -155,7 +155,7 @@ const AddProductForm = () => {
               <Select
                 options={positions && positions.map((pos) => ({ label: pos.shortText, value: pos.external_id }))}
                 // @ts-ignore
-                onChange={updateSelectedPositions}
+                onChange={v => updateSelectedPositions(v?.value)}
               />
             </label>
           </div>

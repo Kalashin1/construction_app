@@ -1,9 +1,11 @@
 import { ProjectPositions } from "../../../../../types";
 import ProjectDetailCard from "./main-order-item/project-detail-card";
 
-const ExtraOrders = ({ positions, projectId }: {
-  positions: ProjectPositions[],
-  projectId: string
+const ExtraOrders = ({ positions, projectId, createdAt, extraOrderId }: {
+  positions: ProjectPositions[];
+  projectId: string;
+  createdAt: number;
+  extraOrderId: string
 }) => {
   return (
     <div className="bg-white rounded-lg shadow-md my-8 py-6 dark:border-navy-700 dark:bg-navy-800 dark:text-white">
@@ -13,7 +15,7 @@ const ExtraOrders = ({ positions, projectId }: {
         </h3>
         <h3>
           <span>Created At :</span>
-          <span>June 28, 2023</span>
+          <span>{new Date(createdAt).toDateString()}</span>
         </h3>
         <h3>
           <span>Comment: </span>
@@ -23,7 +25,7 @@ const ExtraOrders = ({ positions, projectId }: {
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="">
         {positions && positions.map((position, index) => (
-          <ProjectDetailCard type="extraPosition" position={position} index={index + 1} project_id={projectId} />
+          <ProjectDetailCard extraOrderId={extraOrderId} type="extraPosition" position={position} index={index + 1} project_id={projectId} />
         ))}
       </div>
     </div>
