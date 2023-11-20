@@ -206,7 +206,7 @@ export const updateProjectExtraPosition = async (
   project_id: string,
   position: ProjectPositions,
   trade_id: string,
-  extraOrderId: string,
+  extraOrderId?: string,
 ) => {
   const res = await fetch(
     `${API_BASE_URL}/project/update-extra/${project_id}`,
