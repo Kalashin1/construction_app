@@ -51,17 +51,17 @@ const ProjectTableRow = ({ project }: {
 }) => {
   const [showModal, updateShowModal] = useState(false);
   const [showAssignButton, updateShowAssignButton] = useState(false);
-  const {user} = useContext(UserAuthContext)
+  const { user } = useContext(UserAuthContext)
   useEffect(() => {
     const keys = Object.keys(project.positions);
     const notAssigned: string[] = [];
     for (const key of keys) {
       if ((!project?.positions[key]?.executor) || (project.positions[key].accepted = false))
-          notAssigned.push(key)
-      }
-  if (notAssigned.length > 1) {
-    updateShowAssignButton(true);
-  }
+        notAssigned.push(key)
+    }
+    if (notAssigned.length > 1) {
+      updateShowAssignButton(true);
+    }
   }, [project.positions])
 
   // const Subtotals = useMemo(() => {
@@ -79,7 +79,7 @@ const ProjectTableRow = ({ project }: {
   //   }
   //   return subTotals;
   // }, [project.positions])
-  
+
   const getOrderVolume = useCallback(() => {
     const keys = Object.keys(project.positions);
     let price = 0;
@@ -105,18 +105,25 @@ const ProjectTableRow = ({ project }: {
         const positions = project.positions[key].positions;
         // @ts-ignore
         const mappedTotal = positions.map((position) => {
-          if (position.price && (position.status === "BILLED" || position.billed)) {
+          if (
+            (project.positions[key].executor === user?._id || project.contractor === user?._id) &&
+            position.price &&
+            (
+              position.status === "BILLED" ||
+              position.billed ||
+              position.status === "COMPLETED"
+            )) {
             completedPrices += Math.ceil(Number(position?.price) * Number(position?.crowd));
           }
-          return Math.ceil(Number(position?.price) * Number(position?.crowd))   
+          return Math.ceil(Number(position?.price) * Number(position?.crowd))
         });
         if (mappedTotal[0] && (user?._id === project.positions[key].executor || user?._id === project.contractor)) {
           price += mappedTotal.reduce((prev, current) => prev + current);
         }
-        
+
       }
     }
-    return (completedPrices/price * (100)).toFixed(0);
+    return (completedPrices / price * (100)).toFixed(0);
   }, [project.contractor, project.positions, user?._id])
   return (
     <>
@@ -131,7 +138,7 @@ const ProjectTableRow = ({ project }: {
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
         <span>{getProjectPercentage()}% Completed</span>
         <div className="progress my-2 h-2 bg-slate-150 dark:bg-navy-500">
-          <div className={`rounded-full bg-warning`} style={{ width: `${Number(getProjectPercentage())}%`}}></div>
+          <div className={`rounded-full bg-warning`} style={{ width: `${Number(getProjectPercentage())}%` }}></div>
         </div>
         <div className="my-4">
           {project && Object.keys(project.positions).map((position) => {
@@ -145,8 +152,8 @@ const ProjectTableRow = ({ project }: {
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
         <p>Start of Execution: {project?.construction_started ? new Date(project?.construction_started).toDateString() : ''}</p>
         <p className="text-sm flex flex-row justify-between">
-          <span>Published:&nbsp;</span>
-          <span>{" " + new Date(project?.createdAt).toDateString()}</span>
+          <span>End Of Execution:&nbsp;</span>
+          <span>{" " + new Date(project?.dueDate).toDateString()}</span>
         </p>
         <p className="text-sm flex flex-row justify-between">
           <span>Completed: </span>
@@ -158,7 +165,7 @@ const ProjectTableRow = ({ project }: {
         </p>
         <p className="text-sm flex flex-row justify-between">
           <span>Construction Manager:</span>
-          <span> {project?.construction_manager?.name}</span>
+          <span>{project?.commissioned_by?.name}</span>
         </p>
       </td>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">

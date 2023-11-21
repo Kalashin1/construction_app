@@ -116,7 +116,6 @@ const ProjectDetails = () => {
           positions.push(..._positions);
         }
         if (_project?.extraPositions) {
-
           for (const extraPosition of _project.extraPositions) {
             for (const key in extraPosition.positions) {
               const _positions = extraPosition.positions[key].positions

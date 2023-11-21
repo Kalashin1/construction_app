@@ -65,12 +65,13 @@ const ProjectCard = ({ project }: {
       if (project.positions[key].executor) {
         const positions = project.positions[key].positions;
         // @ts-ignore
-        const mappedTotal = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd)));
+        const mappedTotal = positions.map((position) => Math.ceil(parseFloat(position?.price) * parseFloat(position?.crowd)));
         if (mappedTotal[0]) {
-          price += mappedTotal.reduce((prev, current) => prev + current);
+          price += Math.ceil(mappedTotal.reduce((prev, current) => prev + current));
         }
       }
     }
+    console.log('orderVolumePrice', price)
     return formatter.format(price);
   }, [project.positions])
 
@@ -83,7 +84,14 @@ const ProjectCard = ({ project }: {
         const positions = project.positions[key].positions;
         // @ts-ignore
         const mappedTotal = positions.map((position) => {
-          if (position.price && (position.status === "BILLED" || position.billed)) {
+          if (
+            project.positions[key].executor === user?._id &&
+            position.price &&
+            (
+             
+              position.billed ||
+              position.status === "COMPLETED"
+            )) {
             completedPrices += Math.ceil(Number(position?.price) * Number(position?.crowd));
           }
           return Math.ceil(Number(position?.price) * Number(position?.crowd))
@@ -91,9 +99,11 @@ const ProjectCard = ({ project }: {
         if (mappedTotal[0] && (user?._id === project.positions[key].executor || user?._id === project.contractor)) {
           price += mappedTotal.reduce((prev, current) => prev + current);
         }
-
+        console.log(mappedTotal)
       }
     }
+    console.log('completed prices', completedPrices)
+    console.log('price', price);
     return (completedPrices / price * (100)).toFixed(0);
   }, [project.contractor, project.positions, user?._id])
 
@@ -118,7 +128,7 @@ const ProjectCard = ({ project }: {
       <div className="w-full flex flex-col md:flex-row justify-between">
         <div className="md:w-2/6 p-6">
           { /* // TODO: This should link to the house address https://maps.google.com/?q=address */}
-          <Link to={`https://maps.google.com/?q=${project?.building?.address}`} className="text-blue-400 text-xs cursor-pointer" target="blank">
+          <Link to={`https://maps.google.com/?q=${project?.building?.address}`} className="text-blue-400 text-lg font-bold cursor-pointer" target="blank">
             {project?.building.address}
           </Link>
           <h3>Location: {project.building.location}</h3>
@@ -146,9 +156,9 @@ const ProjectCard = ({ project }: {
         <div className="p-6">
           {/* // TODO: OPEN A MODAL TO SHOW THE USER DETAILS */}
           <div>
-            <span className="cursor-pointer flex flex-row my-2" onClick={() => updateShowConstructionManager(true)}>
+            <span className="cursor-pointer flex text-blue-500 flex-row my-2" onClick={() => updateShowConstructionManager(true)}>
               <AdminIcon width={15} color="#000" />
-              <h3 className="ml-4">Construction Manager</h3>
+              <h3 className="ml-4 text-blue-500">Construction Manager</h3>
             </span>
             {showConstructionManager && (
               <UserModal
@@ -161,10 +171,10 @@ const ProjectCard = ({ project }: {
           </div >
           <div className="flex flex-row my-2">
             <HouseIcon width={15} color="#000" />
-            <h3 className="ml-4">Inside Sales</h3>
+            <h3 className="ml-4 text-blue-500">Inside Sales</h3>
           </div>
           <div className="flex flex-row my-2">
-            <span className="cursor-pointer flex flex-row my-2" onClick={() => updateShowCareTaker(true)}>
+            <span className="cursor-pointer text-blue-500 flex flex-row my-2" onClick={() => updateShowCareTaker(true)}>
               <CaretakerIcon width={15} color="#000" />
               <h3 className="ml-4">Caretaker</h3>
             </span>
@@ -179,7 +189,7 @@ const ProjectCard = ({ project }: {
           </div>
           <div className="flex flex-row my-2">
             <ContactPersonIcon width={15} color="#000" />
-            <h3 className="ml-4">Contact Person</h3>
+            <h3 className="ml-4 text-blue-500">Contact Person</h3>
           </div>
         </div>
       </div>
