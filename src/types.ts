@@ -1,4 +1,9 @@
-export type UserRoleType = "admin" | "contractor" | "executor" | "employee" | "shop";
+export type UserRoleType =
+  | "admin"
+  | "contractor"
+  | "executor"
+  | "employee"
+  | "shop";
 
 export type TradeColorEnum =
   | "blue-500"
@@ -214,11 +219,11 @@ export type ExtraProjectPositionSuper = {
   acceptedBy?: {
     _id: string;
     role: UserRoleType;
-  }
+  };
   id: string;
-  acceptedAt?: number
-  positions: ProjectPositionObject
-}
+  acceptedAt?: number;
+  positions: ProjectPositionObject;
+};
 
 export interface IProject {
   _id: string;
@@ -279,7 +284,7 @@ export type ProjectPositions = {
   section?: string;
   documentURL?: string;
   position?: number;
-  executor?: string
+  executor?: string;
 } & Partial<PositionInterface>;
 
 export type Building = {
@@ -289,7 +294,12 @@ export type Building = {
   notes: string;
 };
 
-export const INVOICE_STATUS = ["REQUESTED", "ACCEPTED", "DECLINED", "BILLED"] as const;
+export const INVOICE_STATUS = [
+  "REQUESTED",
+  "ACCEPTED",
+  "DECLINED",
+  "BILLED",
+] as const;
 
 export interface Draft {
   project: IProject;
@@ -310,9 +320,8 @@ export type CreateDraftParam = {
   reciepient: string;
   status: (typeof INVOICE_STATUS)[number];
   amount: number;
-  positions: string[]
-}
-
+  positions: string[];
+};
 
 export interface InvoiceInterface {
   _id: string;
@@ -320,9 +329,9 @@ export interface InvoiceInterface {
   draft: Draft;
   createdAt?: string;
   updatedAt?: string;
-  status: typeof INVOICE_STATUS[number]
+  status: (typeof INVOICE_STATUS)[number];
   owner: User;
-  type: "PROJECT" | "SHOP"
+  type: "PROJECT" | "SHOP";
   receiver: User;
 }
 
@@ -344,10 +353,10 @@ export interface Message {
   position_id?: string;
   trade_id?: string;
   parentMessage?: string;
-  status: typeof MESSAGE_STATUS[number]
+  status: (typeof MESSAGE_STATUS)[number];
 }
 
-export const MESSAGE_STATUS = ['SENT', 'DELIVERED', 'READ', 'DELETED'] as const;
+export const MESSAGE_STATUS = ["SENT", "DELIVERED", "READ", "DELETED"] as const;
 
 export interface Product {
   _id?: string;
@@ -371,7 +380,22 @@ export type CreateProductParam = {
   category: string;
   subCategory?: string;
   external_id: string;
-}
+};
 
-export const PROJECT_POSITION_STATUS = ["IN-PROGRESS","COMPLETED","NOT-FEASIBLE"] as const;
-export const PROJECT_POSITION_TEXT = ['Completed', 'In Progress', 'Not Feasible'] as const;
+export const PROJECT_POSITION_STATUS = [
+  "IN-PROGRESS",
+  "COMPLETED",
+  "NOT-FEASIBLE",
+] as const;
+export const PROJECT_POSITION_TEXT = [
+  "Completed",
+  "In Progress",
+  "Not Feasible",
+] as const;
+
+export type InteractWithAddendumPayload = {
+  project_id: string;
+  user_id: string;
+  addendum_id: string;
+  action: "ACCEPT" | "REJECT";
+};

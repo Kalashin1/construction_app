@@ -85,19 +85,23 @@ const ProjectCard = ({ project }: {
         // @ts-ignore
         const mappedTotal = positions.map((position) => {
           if (
-            project.positions[key].executor === user?._id &&
+            (project.positions[key].executor === user?._id || user?._id === project.contractor) &&
             position.price &&
             (
-             
+              position.status === "BILLED" ||
               position.billed ||
               position.status === "COMPLETED"
             )) {
             completedPrices += Math.ceil(Number(position?.price) * Number(position?.crowd));
           }
-          return Math.ceil(Number(position?.price) * Number(position?.crowd))
+          if ((project.positions[key].executor === user?._id || user?._id === project.contractor) && position.price)
+            return Math.ceil(Number(position?.price) * Number(position?.crowd))
         });
         if (mappedTotal[0] && (user?._id === project.positions[key].executor || user?._id === project.contractor)) {
-          price += mappedTotal.reduce((prev, current) => prev + current);
+          for (const _price of mappedTotal) {
+            if (_price)
+              price += _price;
+          }
         }
         console.log(mappedTotal)
       }

@@ -22,7 +22,7 @@ import { UserAuthContext } from "../../../../App";
 import { acceptProject, rejectProject } from "../helper";
 import { notify, NotificationComponent } from "../../components/notification/toast";
 
-type ExtraPositionType = { createdAt: number, positions: ProjectPositions[], id: string }[]
+type ExtraPositionType = { createdAt: number, positions: ProjectPositions[], id: string; createdBy: { role: string, _id: string } }[]
 
 const ProjectDetails = () => {
 
@@ -123,7 +123,7 @@ const ProjectDetails = () => {
                 pos.tradeName = key
                 pos.executor = _project.positions[key].executor
               })
-              __extraPositions.push({ id: extraPosition.id, createdAt: extraPosition.createdAt, positions: [..._positions] })
+              __extraPositions.push({ id: extraPosition.id, createdAt: extraPosition.createdAt, positions: [..._positions], createdBy: extraPosition.createdBy  })
             }
           }
         }
@@ -185,9 +185,10 @@ const ProjectDetails = () => {
           {project && __extraPositions && __extraPositions.map((_extraPositions) => (
             (
               <ExtraOrders
-                createdAt={_extraPositions.createdAt}
-                positions={_extraPositions.positions}
-                projectId={project._id}
+                createdAt={_extraPositions?.createdAt}
+                positions={_extraPositions?.positions}
+                projectId={project?._id}
+                createdBy={_extraPositions?.createdBy?._id}
                 extraOrderId={_extraPositions.id}
               />
             )

@@ -2,10 +2,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "../../../../components/current-projects";
 import { Modal } from "../../../../profie/components/account-settings";
 import { TradeIcons } from "../../helper";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { _ProjectPosition } from "../../../components/project-lists/components/assing-executor";
 import { updatePositionsByTrade } from "../../../helper";
 import { NotificationComponent, notify } from "../../../../components/notification/toast";
+import { UserAuthContext } from "../../../../../../App";
+// import { ProjectPositions } from "../../../../../../types";
 
 const MultiplePositionModal = ({
   closeModal,
@@ -19,7 +21,11 @@ const MultiplePositionModal = ({
   const [showPositions, updateShowPositions] = useState(false);
   const [showActions, updateShowActions] = useState(false);
   const [selectedIds, updateSelectedIds] = useState<string[]>([]);
-  const actions = [{text: 'BILL', action: "BILLED"}, { text: 'COMPLETE', action: "COMPLETED"},{text: "NOT FEASIBLE", action: "NOT FEASIBLE"}] as const;
+  // const [showBillButton, updateBillButton] = useState(false);
+
+  const { user } = useContext(UserAuthContext);
+  const actions = [
+    { text: 'BILL', action: "BILLED" }, { text: 'COMPLETE', action: "COMPLETED" }, { text: "NOT FEASIBLE", action: "NOT FEASIBLE" }] as const;
   const [action, setAction] = useState<typeof actions[number]>(actions[2])
   const updateMultiplePositionStatus = async (trade: string, action: string) => {
     const [error, payload] = await updatePositionsByTrade(project_id, trade, action);
@@ -66,29 +72,37 @@ const MultiplePositionModal = ({
             </span>
           </button>
           <AnimatePresence>
-            {showPositions && Object.keys(positions).map((position, index) => (
-              <motion.div
-                exit={{ y: 400 }}
-                initial={{ y: -400 }}
-                animate={{ y: 0 }}
-                transition={{ type: "tween" }}
-                key={index}
-                className={`px-6 py-2 my-1 text-left flex flex-row justify-between items-center w-full ${TradeIcons[position]?.border} border-2 rounded-md`}>
-                <span className={`m-2 capitalize`}>
-                  {position}
-                </span>
+            {showPositions && Object.keys(positions).map((position, index) => {
+              if (
+                positions[position].executor === user?._id &&
+                !(
+                  positions[position].positions[0].status === 'BILLED'
+                )
+              )
+                return (
+                  <motion.div
+                    exit={{ y: 400 }}
+                    initial={{ y: -400 }}
+                    animate={{ y: 0 }}
+                    transition={{ type: "tween" }}
+                    key={index}
+                    className={`px-6 py-2 my-1 text-left flex flex-row justify-between items-center w-full ${TradeIcons[position]?.border} border-2 rounded-md`}>
+                    <span className={`m-2 capitalize`}>
+                      {position}
+                    </span>
 
-                <div>
-                  <input type="checkbox" onChange={(e) => {
-                    if (e.target.checked) {
-                      updateSelectedIds([...selectedIds, position])
-                    } else {
-                      updateSelectedIds(selectedIds.filter((selectedId) => selectedId !== position))
-                    }
-                  }} />
-                </div>
-              </motion.div>
-            ))}
+                    <div>
+                      <input type="checkbox" onChange={(e) => {
+                        if (e.target.checked) {
+                          updateSelectedIds([...selectedIds, position])
+                        } else {
+                          updateSelectedIds(selectedIds.filter((selectedId) => selectedId !== position))
+                        }
+                      }} />
+                    </div>
+                  </motion.div>
+                )
+            })}
           </AnimatePresence>
         </div>
       </div>
@@ -110,8 +124,8 @@ const MultiplePositionModal = ({
               animate={{ y: 0 }}
               transition={{ type: "tween" }}
               key={index}
-              className={`${action.action === _action.action ? 'bg-black': 'bg-gray-500'} px-6 py-2 my-1 text-left text-white flex flex-row justify-between items-center w-full border-2 rounded-md`}
-              onClick={() => setAction(_action)}  
+              className={`${action.action === _action.action ? 'bg-black' : 'bg-gray-500'} px-6 py-2 my-1 text-left text-white flex flex-row justify-between items-center w-full border-2 rounded-md`}
+              onClick={() => setAction(_action)}
             >
               <span className={`m-2 capitalize font-bold`}>
                 {_action.text}
@@ -120,7 +134,7 @@ const MultiplePositionModal = ({
           ))}
         </AnimatePresence>
 
-        <Button action={() => updateForMultipleTrade(selectedIds, action)} label="Assign Positions" />
+        <Button action={() => updateForMultipleTrade(selectedIds, action)} label="Assign Positions" color="bg-gray-300 dar" />
       </div>
     </Modal>
   )
