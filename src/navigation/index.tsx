@@ -42,6 +42,7 @@ import AddAddenDum from '../pages/dashboard/projects/details/addendum/';
 import AddProductPage from '../pages/dashboard/shop/product/add';
 import ProductOverview from '../pages/dashboard/shop/product/overview';
 import AddendumDetail from '../pages/dashboard/projects/details/addendum/details';
+import MultipleProductUpload from '../pages/dashboard/shop/product/multiple-product-upload';
 
 
 const router = createBrowserRouter([
@@ -213,6 +214,10 @@ const router = createBrowserRouter([
   {
     path: SCREENS.ADDENDUM_DETAIL,
     element: (<AddendumDetail />)
+  },
+  {
+    path: SCREENS.UPLOAD_MULTIPLE_PRODUCTS,
+    element: (<MultipleProductUpload />)
   },
 ]);
 

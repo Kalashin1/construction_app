@@ -21,6 +21,7 @@ import { getProject } from "../../helper/project";
 import { UserAuthContext } from "../../../../App";
 import { acceptProject, rejectProject } from "../helper";
 import { notify, NotificationComponent } from "../../components/notification/toast";
+import ShopFloatingActionButton from "./shop-fab";
 
 type ExtraPositionType = { createdAt: number, positions: ProjectPositions[], id: string; createdBy: { role: string, _id: string } }[]
 
@@ -123,7 +124,7 @@ const ProjectDetails = () => {
                 pos.tradeName = key
                 pos.executor = _project.positions[key].executor
               })
-              __extraPositions.push({ id: extraPosition.id, createdAt: extraPosition.createdAt, positions: [..._positions], createdBy: extraPosition.createdBy  })
+              __extraPositions.push({ id: extraPosition.id, createdAt: extraPosition.createdAt, positions: [..._positions], createdBy: extraPosition.createdBy })
             }
           }
         }
@@ -197,6 +198,7 @@ const ProjectDetails = () => {
           <FloatingActionButton
             action={() => navigate(SCREENS.CHAT)}
           />
+          <ShopFloatingActionButton action={() => navigate(`/shop/`)} />
           <DownloadProjectActionButton
             action={
               () => updateShowDownloadOption(!showDownloadOption)
