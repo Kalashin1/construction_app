@@ -1,5 +1,9 @@
+import { useEffect, useState } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import { TradeInterface } from '../../../../types';
+import { getAllTrades } from '../../profie/trades/components/helper';
+import { NotificationComponent, notify } from '../../components/notification/toast';
 
 const responsive = {
   desktop: {
@@ -19,21 +23,11 @@ const responsive = {
   }
 };
 
-const categories = [
-  'Plumbery',
-  'Paint',
-  'Power',
-  'Floor',
-  'Furniture',
-  'Masonry',
-  'Kitchen'
-]
-
-const SlideItem = ({item}: {
+const SlideItem = ({ item }: {
   item: string;
 }) => (
   <div className="flex flex-col items-center rounded-lg px-2 py-4 bg-white shadow-md m-2 md:m-4 dark:border-navy-700 dark:bg-navy-800" >
-    <img className="w-12" src="images/100x100.png" alt="image" />
+    <img className="w-12" src="/images/100x100.png" alt="image" />
     <h3 className="line-clamp-1 pt-2 font-medium tracking-wide text-xs
     ">
       {item}
@@ -41,6 +35,28 @@ const SlideItem = ({item}: {
   </div>
 )
 const Categories = () => {
+  const [trades, setTrades] = useState<TradeInterface[]>([])
+
+  useEffect(() => {
+    const setUp = async () => {
+      const [error, _trades] = await getAllTrades();
+      if (error) {
+        notify(
+          (<NotificationComponent message='Error fetching trades' />),
+          {
+            className: 'bg-red-400 text-white'
+          })
+
+        console.log(error)
+      }
+
+      if (_trades) {
+        setTrades(_trades)
+      }
+    }
+
+    setUp()
+  }, [])
   return (
     <div>
       <Carousel
@@ -59,10 +75,10 @@ const Categories = () => {
         itemClass="carousel-item-padding-40-px"
       >
 
-        {categories.map((c) => (
+        {trades && trades.map((trade, i) => (
           <SlideItem
-            item={c}
-            key={c}
+            item={trade.name}
+            key={i}
           />
         ))}
       </Carousel>;

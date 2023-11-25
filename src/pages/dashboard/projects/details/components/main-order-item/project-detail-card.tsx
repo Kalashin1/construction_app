@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, Dispatch, SetStateAction } from "react";
 import { ProjectPositions, User } from "../../../../../../types";
 import { getUserById } from "../../../../helper/user";
 import { TradeIcons } from "../../helper";
@@ -12,12 +12,22 @@ import { UserAuthContext } from "../../../../../../App";
 import { formatter } from "../../../../helper/tools";
 
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-export const ProjectDetailCard = ({ position, index, project_id, type, extraOrderId }: {
+export const ProjectDetailCard = ({
+  position,
+  index,
+  project_id,
+  type,
+  extraOrderId,
+  selectedIds,
+  updateSelectedId
+}: {
   position: ProjectPositions;
   index: number;
   project_id: string;
   type: string;
-  extraOrderId?: string
+  extraOrderId?: string;
+  selectedIds?: string[];
+  updateSelectedId?: Dispatch<SetStateAction<string[]>>
 }) => {
   const [showDropdown, updateShowDropDown] = useState(false);
   const [showCommentModal, updateShowCommentModal] = useState(false);
@@ -38,9 +48,24 @@ export const ProjectDetailCard = ({ position, index, project_id, type, extraOrde
     getExecutor()
   }, [position?.executor])
 
+  const isSelectd = selectedIds?.find((id => id === position.external_id));
+
+  const selectPosition = () => {
+    updateShowDropDown(false);
+    if (!isSelectd && updateSelectedId) {
+      updateSelectedId([...selectedIds as string[], position?.external_id!]);
+      return;
+    }
+    updateSelectedId && updateSelectedId(selectedIds?.filter((id) => id !== position?.external_id!)!)
+  }
+
   return (
-    <div id={position.tradeName} className={`${TradeIcons[position?.tradeName!]?.border} rounded-md border-2 m-4 py-6 grid grid-cols-4`} onClick={() => updateShowDropDown(false)}>
-      <div className="flex flex-row items-center justify-between md:col-span-1 col-span-4 px-4 md:px-2">
+    <div
+      id={position.tradeName}
+      className={`${!isSelectd && TradeIcons[position?.tradeName!]?.border} rounded-md border-2 m-4 py-6 grid grid-cols-4 ${isSelectd && TradeIcons[position?.tradeName!].bg} ${isSelectd && TradeIcons[position?.tradeName!].textColor}`}
+      onClick={selectPosition}
+    >
+      <div className={`flex flex-row items-center justify-between md:col-span-1 col-span-4 px-4 md:px-2`}>
         <span className="bg-gray-900 py-1 px-3 rounded-md text-white">
           {index}
         </span>
@@ -48,7 +73,7 @@ export const ProjectDetailCard = ({ position, index, project_id, type, extraOrde
           {position?.external_id}
         </button>
         <button onClick={() => updateShowFileModal(true)}>
-          <FileIcon width={15} color={`${TradeIcons[position?.tradeName!]?.fileColor}`} />
+          <FileIcon width={15} color={`${!isSelectd ? TradeIcons[position?.tradeName!]?.fileColor : 'white'}`} />
         </button>
         <h3 className="font-bold ml-2">{position?.status}</h3>
       </div>

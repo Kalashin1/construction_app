@@ -1,17 +1,41 @@
-import { ProjectPositions } from "../../../../../types";
+import { useEffect, useState } from "react";
+import { ProjectPositions, User } from "../../../../../types";
 import ProjectDetailCard from "./main-order-item/project-detail-card";
+import { getUserById } from "../../../helper/user";
+import { NotificationComponent, notify } from "../../../components/notification/toast";
 
-const ExtraOrders = ({ positions, projectId, createdAt, extraOrderId }: {
+const ExtraOrders = ({ positions, projectId, createdAt, extraOrderId, createdBy }: {
   positions: ProjectPositions[];
   projectId: string;
   createdAt: number;
-  extraOrderId: string
+  extraOrderId: string;
+  createdBy: string;
 }) => {
+  const [user, setUser] = useState<User>()
+  useEffect(() => {
+    const setUp = async () => {
+      const [error, _user] = await getUserById(createdBy);
+      if (error) {
+        notify(
+          (<NotificationComponent message="error fetching addendum creator" />),
+          { className: 'bg-red-400 text-white' }
+        );
+        console.log(error);
+      }
+
+      if (_user) {
+        setUser(_user);
+      }
+    }
+
+    setUp();
+  }, [createdBy])
+
   return (
     <div className="bg-white rounded-lg shadow-md my-8 py-6 dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="p-6 m">
         <h3>
-          <span>Addendum</span>(main order items) - <span>ARMEN AVOIAN</span>
+          <span>Addendum</span>(main order items) - <span>{user && user.first_name}</span>
         </h3>
         <h3>
           <span>Created At :</span>

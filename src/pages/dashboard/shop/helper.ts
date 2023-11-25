@@ -65,3 +65,21 @@ export const deleteStoreProduct = async (product_id: string) => {
     return [error, null]
   }
 }
+
+
+export const uploadMultipleProducts = async (shop_id: string, files: File[]) => {
+  const fd = new FormData();
+  files.forEach((file) => fd.append('s',  file))
+  const res = await fetch(`${API_BASE_URL}/product/shop/${shop_id}`, {
+    method: 'POST',
+    body: fd
+  })
+
+  if (res.ok) {
+    const data = await res.json();
+    return [null, data]
+  } else {
+    const error = await res.json();
+    return [error, null]
+  }
+}

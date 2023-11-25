@@ -39,6 +39,8 @@ export enum SCREENS {
   ADDENDUM = '/addendum/:project_id',
   ADD_PRODUCT = '/add-product/:shop_id',
   SHOP_PRODUCTS = '/products/:shop_id',
+  ADDENDUM_DETAIL = '/addendum-detail/:project_id/:id',
+  UPLOAD_MULTIPLE_PRODUCTS = '/products/multiple/:shop_id'
 }
 
 export const API_BASE_URL = 

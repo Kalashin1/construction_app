@@ -13,6 +13,15 @@ import { useParams } from "react-router-dom";
 const Shop = () => {
   const [showCart, updateShowCart] = useState(false);
   const {id: shop_id} = useParams();
+  const links = [{
+    icon: 'fas fa-house text-pink-600',
+    text: 'Products', 
+    to: `/products/${shop_id}`
+  }, {
+    icon: 'fas fa-file',
+    text: 'Multiple Product',
+    to: `/products/multiple/${shop_id}`
+  }];
   const {
     deviceWidth,
     showProjectMenu,
@@ -36,7 +45,7 @@ const Shop = () => {
               () => updateShowProjectMenu && updateShowProjectMenu(!showProjectMenu) :
               () => updateShowSidebar && updateShowSidebar(!showSidebar)
           }
-          links={[{icon: 'fas fa-house text-pink-600', text: 'Products', to: `/products/${shop_id}`}]}
+          links={links}
           secondLinks={[{icon: 'fas fa-cog', text: 'Settings', to: ''}]}
           headerText="Shop"
         />

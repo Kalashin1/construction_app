@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../../../navigation/constants";
-import { CreateDraftParam, Draft, IProject, Message, ProjectPositions } from "../../../types";
+import { CreateDraftParam, Draft, IProject, InteractWithAddendumPayload, Message, ProjectPositions } from "../../../types";
 
 export const assignProjectToExecutor = async (
   project_id: string,
@@ -250,3 +250,49 @@ export const addMessage = async (
     return [error, null];
   }
 };
+
+export const updateMultiplePositionStatus = async (project_id: string, position_ids: string[], status: string) => {
+  const res = await fetch(
+    `${API_BASE_URL}/project/multiple/status`,
+    {
+      method: "POST",
+      body: JSON.stringify({ 
+        project_id,
+        position_ids,
+        status 
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    }
+  );
+
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+}
+
+export const interactWithProjectAddendum = async (payload: InteractWithAddendumPayload) => {
+  const res = await fetch(
+    `${API_BASE_URL}/project/addendum`,
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-type": "application/json",
+      },
+    }
+  );
+
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+}
