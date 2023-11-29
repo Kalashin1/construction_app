@@ -14,7 +14,7 @@ const AddendumPage = () => {
   const { project_id, id } = useParams();
   const [addendum, setAddendum] = useState<ExtraProjectPositionSuper>()
   const [positions, setPositions] = useState<ProjectPositions[]>([])
-  const [showAcceptButton, updateShowAcceptButton] = useState(true);
+  const [showAcceptButton, updateShowAcceptButton] = useState(false);
   const { user } = useContext(UserAuthContext);
 
   useEffect(() => {
@@ -39,22 +39,15 @@ const AddendumPage = () => {
             _positions.push(pos)
           }
         }
-        console.log(payload);
+
         setPositions(_positions);
         console.log(user?.role)
-        if (extraPosition?.createdBy.role === 'executor' && extraPosition.createdBy._id === user?._id) {
+        if (extraPosition?.createdBy._id === user?._id) {
           updateShowAcceptButton(false);
         }
+        if (extraPosition?.acceptedAt) updateShowAcceptButton(false)
 
-        if (extraPosition?.createdBy.role === 'executor' && extraPosition.createdBy._id !== user?._id && user?.role === 'contractor') {
-          updateShowAcceptButton(true);
-        }
-
-        if (extraPosition?.createdBy.role === 'contractor' && extraPosition.createdBy._id === user?._id) {
-          updateShowAcceptButton(false);
-        }
-
-        if (extraPosition?.acceptedBy?.role === 'contractor' && extraPosition.createdBy._id !== user?._id && user?.role === 'executor') {
+        if (extraPosition?.createdBy._id !== user?._id && user?._id === extraPosition?.acceptedBy?._id && !extraPosition?.acceptedAt) {
           updateShowAcceptButton(true);
         }
       }
@@ -79,6 +72,7 @@ const AddendumPage = () => {
         { className: 'bg-red-500 text-white' }
       );
       console.log(data);
+      location.reload();
     }
   }
   return (

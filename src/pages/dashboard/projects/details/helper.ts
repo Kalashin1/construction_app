@@ -62,6 +62,13 @@ export const TradeIcons = {
     fileColor: "pink",
     textColor: "text-white"
   },
+  'other': {
+    icon: 'fas fa-list',
+    border: 'border-pink-800',
+    bg: "bg-pink-800",
+    fileColor: "pink",
+    textColor: "text-white"
+  },
   'tiles': {
     icon: 'fas fa-tiles',
     border: 'border-purple-500',

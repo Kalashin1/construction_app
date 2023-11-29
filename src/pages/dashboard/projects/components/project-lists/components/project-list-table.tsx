@@ -87,14 +87,28 @@ const ProjectTableRow = ({ project }: {
       if (project.positions[key].executor) {
         const positions = project.positions[key].positions;
         // @ts-ignore
-        const mappedTotal = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd)));
-        if (mappedTotal[0] && (user?._id === project.positions[key].executor || user?._id === project.contractor)) {
-          price += mappedTotal.reduce((prev, current) => prev + current);
+        const mappedTotal = positions.map((position) => Math.ceil(parseFloat(position?.price) * parseFloat(position?.crowd)));
+        if (mappedTotal[0]) {
+          price += Math.ceil(mappedTotal.reduce((prev, current) => prev + current));
         }
       }
     }
+
+    project.extraPositions?.forEach((extraPos) => {
+      for (const key in extraPos.positions) {
+        if (extraPos?.positions[key]?.executor) {
+          const positions = extraPos?.positions[key].positions;
+          // @ts-ignore
+          const mappedTotal = positions.map((position) => Math.ceil(position?.price) * parseFloat(position?.crowd));
+          if (mappedTotal[0]) {
+            price += Math.ceil(mappedTotal.reduce((prev, current) => prev + current));
+          }
+        }
+      }
+    })
+    console.log('orderVolumePrice', price)
     return formatter.format(price);
-  }, [project.contractor, project.positions, user?._id])
+  }, [project.extraPositions, project.positions])
 
   const getProjectPercentage = useCallback(() => {
     const keys = Object.keys(project.positions);
@@ -103,10 +117,11 @@ const ProjectTableRow = ({ project }: {
     for (const key of keys) {
       if (project.positions[key].executor) {
         const positions = project.positions[key].positions;
+
         // @ts-ignore
         const mappedTotal = positions.map((position) => {
           if (
-            (project.positions[key].executor === user?._id || project.contractor === user?._id) &&
+            (project.positions[key].executor === user?._id || user?._id === project.contractor) &&
             position.price &&
             (
               position.status === "BILLED" ||
@@ -115,16 +130,53 @@ const ProjectTableRow = ({ project }: {
             )) {
             completedPrices += Math.ceil(Number(position?.price) * Number(position?.crowd));
           }
-          return Math.ceil(Number(position?.price) * Number(position?.crowd))
+          if ((project.positions[key].executor === user?._id || user?._id === project.contractor) && position.price)
+            return Math.ceil(Number(position?.price) * Number(position?.crowd))
         });
         if (mappedTotal[0] && (user?._id === project.positions[key].executor || user?._id === project.contractor)) {
-          price += mappedTotal.reduce((prev, current) => prev + current);
+          for (const _price of mappedTotal) {
+            if (_price)
+              price += _price;
+          }
         }
-
+        console.log(mappedTotal)
       }
     }
+    project.extraPositions?.forEach((extraPos) => {
+      for (const key in extraPos.positions) {
+        if (extraPos?.positions[key]?.executor) {
+          console.log(extraPos.positions)
+          const positions = extraPos?.positions[key].positions;
+
+          // @ts-ignore
+          const mappedTotal = positions.map((position) => {
+            if (
+              (extraPos?.positions[key].executor === user?._id || user?._id === project.contractor) &&
+              position.price &&
+              (
+                position.status === "BILLED" ||
+                position.billed ||
+                position.status === "COMPLETED"
+              )) {
+              completedPrices += Math.ceil(Number(position?.price) * Number(position?.crowd));
+            }
+            if ((extraPos?.positions[key].executor === user?._id || user?._id === project.contractor) && position.price)
+              return Math.ceil(Number(position?.price) * Number(position?.crowd))
+          });
+          if (mappedTotal[0] && (user?._id === extraPos?.positions[key].executor || user?._id === project.contractor)) {
+            for (const _price of mappedTotal) {
+              if (_price)
+                price += _price;
+            }
+          }
+          console.log(mappedTotal)
+        }
+      }
+    })
+    console.log('completed prices', completedPrices)
+    console.log('price', price);
     return (completedPrices / price * (100)).toFixed(0);
-  }, [project.contractor, project.positions, user?._id])
+  }, [project.contractor, project.extraPositions, project.positions, user?._id])
   return (
     <>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
@@ -146,8 +198,15 @@ const ProjectTableRow = ({ project }: {
               <span className={`${TradeIcons[position]?.bg} ${TradeIcons[position]?.textColor} py-1 px-2 text-black text-center rounded mx-1`}>{project?.positions[position]?.positions?.length}</span>
             )
           })}
-          {/* <span classsName="bg-black py-1 px-2 text-white text-center rounded mx-1">50</span> */}
         </div>
+        {project.extraPositions && (<div className="flex flex-row my-2">
+          {project && project.extraPositions.map((extraPosition) => {
+            const keys = Object.keys(extraPosition.positions)
+            return keys.map((key) => (
+              <a href={`#`} className={`${TradeIcons[key]?.bg} ${TradeIcons[key]?.textColor} py-1 px-2 text-black text-center rounded mx-1`}>{extraPosition?.positions[key]?.positions?.length}</a>
+            ))
+          })}
+        </div>)}
       </td>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
         <p>Start of Execution: {project?.construction_started ? new Date(project?.construction_started).toDateString() : ''}</p>
