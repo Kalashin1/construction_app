@@ -36,6 +36,8 @@ const AddAddenDum = () => {
   const [longText, updateLongText] = useState('');
   const [units, setUnits] = useState('')
 
+  const [comment, setComment] = useState('')
+
   const [addendums, setAddendums] = useState<ProjectPositions[]>([]);
 
   useEffect(() => {
@@ -118,7 +120,8 @@ const AddAddenDum = () => {
       selectedTrade?.id!,
       addendums,
       user?._id!,
-      user?.role === 'executor' ? project?.contractor! : executor
+      user?.role === 'executor' ? project?.contractor! : executor,
+      comment
     );
     if (error) {
       notify(
@@ -349,6 +352,18 @@ const AddAddenDum = () => {
           setExecutor(v?.value!);
         }}
       />)}
+      <div className="w-full">
+        <label className="block">
+          <span>Add Comment</span>
+          <textarea
+            rows={4}
+            placeholder=" Enter Text"
+            className="form-textarea w-full resize-none rounded-lg bg-slate-150 p-2.5 placeholder:text-slate-400 dark:bg-navy-900 dark:placeholder:text-navy-300"
+            onChange={(e) => setComment(e.target.value)}
+            defaultValue={comment}
+          ></textarea>
+        </label>
+      </div>
       <div className="flex justify-center items-center my-2">
         <Button color="bg-gray-300 shadow-md dark:bg-navy-700" label="Add Addendum" action={addNewPosition}></Button>
       </div>
