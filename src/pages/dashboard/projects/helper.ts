@@ -179,14 +179,16 @@ export const addNewAddendum = async (
   project_id: string,
   trade_id: string,
   positions: ProjectPositions[],
-  creator: string
+  creator: string,
+  acceptor: string,
+  comment: string
 ): Promise<[object | null, IProject | null]> => {
   console.log("creator", creator)
   const res = await fetch(
     `${API_BASE_URL}/project/extra/${project_id}`,
     {
       method: "POST",
-      body: JSON.stringify({ positions, trade_id, creator }),
+      body: JSON.stringify({ positions, trade_id, creator, acceptor, comment }),
       headers: {
         "Content-type": "application/json",
       },

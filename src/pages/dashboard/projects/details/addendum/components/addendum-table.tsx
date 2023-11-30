@@ -10,11 +10,12 @@ const AddendumTable = ({
   addendums: ProjectPositions[]
   updateAddendums: Dispatch<SetStateAction<ProjectPositions[]>>
 }) => {
-  const dataTitles = ['Trade', 'External_Id', 'Crowd', 'Unit', 'Price', 'short Description', ''];
+  const dataTitles = ['External_Id', 'Crowd', 'Unit', 'Price', 'short Description', ''];
   
   const removeaddendum = (id: string) => {
     updateAddendums(addendums.filter((addendum) => addendum._id !== id));
   };
+  console.log(addendums)
 
   return (
     <div className="min-w-full overflow-x-auto my-10">
@@ -34,11 +35,7 @@ const AddendumTable = ({
         <tbody>
           {addendums && addendums.map((addendum, index) => (
             <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500" key={index}>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <Link className="underline text-blue-500" to={``}>
-                  {addendum?.tradeName}
-                </Link>
-              </td>
+            
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
                 {addendum?.external_id}
               </td>

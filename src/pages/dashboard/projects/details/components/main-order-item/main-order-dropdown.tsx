@@ -92,6 +92,22 @@ const MainOrderDropdown = ({
       <Dropdown>
         <ul>
           {mainOrderLinks.map((link, index) => {
+            // if the position has been billed you cannot update the status of the position 
+            if ((position.status == 'BILLED' || position.billed) && link.status && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS')) return
+
+            // if the position has not been accepted you cannot update the status of the position
+            if ((position.status === 'CREATED' || position.status === 'ASSIGNED') && link.status && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS')) return;
+
+            // if the position has been completed or is not feasible 
+            // you cannot update the status of the position
+            if (link.status && (position.status === 'COMPLETED'|| position.status === 'NOT_FEASIBLE' ) && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS') ){
+              return;
+            }
+
+            // if the position is already in progress you cannot mark it as in progress again
+            if (link.status && position.status === 'IN PROGRESS' && link.status === 'IN PROGRESS') return
+
+
             if (link.status)
               return (
                 <li key={index}>

@@ -168,7 +168,7 @@ export interface PositionInterface {
   _id: string;
   shortText: string;
   crowd: string;
-  units: "pcs";
+  units: string;
   price: number;
   trade: string;
   longText: string;

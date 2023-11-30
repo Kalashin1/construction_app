@@ -54,8 +54,24 @@ const ProjectCard = ({ project }: {
         }
       }
     }
+    project.extraPositions?.forEach((extraPos, index) => {
+      for (const key in extraPos?.positions) {
+        if (extraPos.positions[key].executor) {
+          const positions = extraPos.positions[key].positions
+          const mappedPositions = positions.map((position) => Math.ceil(Number(position?.price)) * Number(position.crowd));
+          if (mappedPositions[0] && (user?._id === extraPos.positions[key].executor || user?._id === project.contractor)) {
+            const subTotal = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd)))?.reduce((prev, current) => prev + current);
+            if (subTotals[key]) {
+              subTotals[key] += subTotal
+            } else {
+              subTotals.push({ key: `${key} - Addendum-${index}`, price: formatter.format(subTotal) ?? '0.00' })
+            }
+          }
+        }
+      }
+    })
     return subTotals;
-  }, [project.contractor, project.positions, user?._id])
+  }, [project.contractor, project.extraPositions, project.positions, user?._id])
 
 
   const getOrderVolume = useCallback(() => {
@@ -71,9 +87,22 @@ const ProjectCard = ({ project }: {
         }
       }
     }
+
+    project.extraPositions?.forEach((extraPos) => {
+      for (const key in extraPos.positions) {
+        if (extraPos?.positions[key]?.executor) {
+          const positions = extraPos?.positions[key].positions;
+          // @ts-ignore
+          const mappedTotal = positions.map((position) => Math.ceil(position?.price) * parseFloat(position?.crowd));
+          if (mappedTotal[0]) {
+            price += Math.ceil(mappedTotal.reduce((prev, current) => prev + current));
+          }
+        }
+      }
+    })
     console.log('orderVolumePrice', price)
     return formatter.format(price);
-  }, [project.positions])
+  }, [project.extraPositions, project.positions])
 
   const getProjectPercentage = useCallback(() => {
     const keys = Object.keys(project.positions);
@@ -82,6 +111,7 @@ const ProjectCard = ({ project }: {
     for (const key of keys) {
       if (project.positions[key].executor) {
         const positions = project.positions[key].positions;
+
         // @ts-ignore
         const mappedTotal = positions.map((position) => {
           if (
@@ -106,10 +136,41 @@ const ProjectCard = ({ project }: {
         console.log(mappedTotal)
       }
     }
+    project.extraPositions?.forEach((extraPos) => {
+      for (const key in extraPos.positions) {
+        if (extraPos?.positions[key]?.executor) {
+          console.log(extraPos.positions)
+          const positions = extraPos?.positions[key].positions;
+
+          // @ts-ignore
+          const mappedTotal = positions.map((position) => {
+            if (
+              (extraPos?.positions[key].executor === user?._id || user?._id === project.contractor) &&
+              position.price &&
+              (
+                position.status === "BILLED" ||
+                position.billed ||
+                position.status === "COMPLETED"
+              )) {
+              completedPrices += Math.ceil(Number(position?.price) * Number(position?.crowd));
+            }
+            if ((extraPos?.positions[key].executor === user?._id || user?._id === project.contractor) && position.price)
+              return Math.ceil(Number(position?.price) * Number(position?.crowd))
+          });
+          if (mappedTotal[0] && (user?._id === extraPos?.positions[key].executor || user?._id === project.contractor)) {
+            for (const _price of mappedTotal) {
+              if (_price)
+                price += _price;
+            }
+          }
+          console.log(mappedTotal)
+        }
+      }
+    })
     console.log('completed prices', completedPrices)
     console.log('price', price);
     return (completedPrices / price * (100)).toFixed(0);
-  }, [project.contractor, project.positions, user?._id])
+  }, [project.contractor, project.extraPositions, project.positions, user?._id])
 
   const [showConstructionManager, updateShowConstructionManager] = useState(false);
   const [showCareTakerModal, updateShowCareTaker] = useState(false);
@@ -131,7 +192,6 @@ const ProjectCard = ({ project }: {
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="w-full flex flex-col md:flex-row justify-between">
         <div className="md:w-2/6 p-6">
-          { /* // TODO: This should link to the house address https://maps.google.com/?q=address */}
           <Link to={`https://maps.google.com/?q=${project?.building?.address}`} className="text-blue-400 text-lg font-bold cursor-pointer" target="blank">
             {project?.building.address}
           </Link>
@@ -209,6 +269,18 @@ const ProjectCard = ({ project }: {
             )
           })}
         </div>
+        {project.extraPositions && (<div className="flex flex-col my-2">
+          {project && project.extraPositions.map((extraPosition) => {
+            const keys = Object.keys(extraPosition.positions);
+            return (
+              <div className="flex flex-row my-2">
+                {keys.map((key) => (
+                  <a href={`#`} className={`${TradeIcons[key]?.bg} ${TradeIcons[key]?.textColor} py-1 px-2 text-black text-center rounded mx-1`}>{extraPosition?.positions[key]?.positions?.length}</a>
+                ))}
+              </div>
+            )
+          })}
+        </div>)}
       </div>
 
       <div className="w-full p-6">
@@ -231,10 +303,10 @@ const ProjectCard = ({ project }: {
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="px-4 py-6 flex flex-col">
         {
-          project.extraPositions && project.extraPositions.map((extraPos) => {
+          project.extraPositions && project.extraPositions.map((extraPos, index) => {
             return (
-              <Link className="text-blue-500 underline font-bold" to={`/addendum-detail/${project._id}/${extraPos.id}`}>
-                Addendum - {extraPos.id.slice(0, 10)} - {new Date(extraPos.createdAt).toDateString()}
+              <Link key={index} className="text-blue-500 underline font-bold" to={`/addendum-detail/${project._id}/${extraPos.id}`}>
+                Addendum - {index + 1}
               </Link>
             )
           })
@@ -264,7 +336,7 @@ const ProjectCard = ({ project }: {
           <span className="ml-4">Download PDF</span>
         </button>
       </div>
-    </div>
+    </div >
   );
 };
 

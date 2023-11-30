@@ -122,7 +122,7 @@ const ProjectDetails = () => {
               const _positions = extraPosition.positions[key].positions
               _positions.forEach((pos) => {
                 pos.tradeName = key
-                pos.executor = _project.positions[key].executor
+                pos.executor = extraPosition.acceptedBy?.role === 'executor' ? extraPosition.acceptedBy._id : extraPosition.createdBy._id
               })
               __extraPositions.push({ id: extraPosition.id, createdAt: extraPosition.createdAt, positions: [..._positions], createdBy: extraPosition.createdBy })
             }
