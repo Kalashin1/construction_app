@@ -81,9 +81,10 @@ const MainOrderDropdown = ({
   //   }
   // }
   const mainOrderLinks = [ 
+    { text: 'Reset', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "ACCEPTED" },
     { text: 'In Progress', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "IN PROGRESS" },
     { text: 'Completed', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "COMPLETED" },
-    { text: 'Not Feasible', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "NOT_FEASIBLE" },
+    { text: user?.role === 'executor' ? 'Not Feasible': 'Cancel', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "NOT_FEASIBLE" },
     { text: 'Upload Document', handler: () => updateShowUploadFileModal(true) },
     { text: 'Add Comment', handler: () => updateShowCommentModal(true) },
   ];
@@ -92,15 +93,21 @@ const MainOrderDropdown = ({
       <Dropdown>
         <ul>
           {mainOrderLinks.map((link, index) => {
-            // if the position has been billed you cannot update the status of the position 
-            if ((position.status == 'BILLED' || position.billed) && link.status && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS')) return
+
+            // if the position has been accepted you cannot reset it
+            if ((position.status === 'ACCEPTED') && link.status === 'ACCEPTED') return
+
+            // if the position has been billed or not feasable 
+            // you cannot update the status of the position 
+            if ((position.status == 'BILLED' || position.billed || position.status === 'NOT_FEASIBLE' ) && link.status && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS' || link.status === 'ACCEPTED' )) return
 
             // if the position has not been accepted you cannot update the status of the position
-            if ((position.status === 'CREATED' || position.status === 'ASSIGNED') && link.status && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS')) return;
+            if ((position.status === 'CREATED' || position.status === 'ASSIGNED') && link.status && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS' || link.status === 'ACCEPTED')) return;
 
-            // if the position has been completed or is not feasible 
-            // you cannot update the status of the position
-            if (link.status && (position.status === 'COMPLETED'|| position.status === 'NOT_FEASIBLE' ) && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS') ){
+            // if the position has been completed
+            // you cannot update the status of the position but 
+            // you can still reset the status of the position
+            if (link.status && (position.status === 'COMPLETED') && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS') ){
               return;
             }
 

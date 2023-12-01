@@ -13,6 +13,7 @@ import Select from 'react-select'
 import AddendumTable from "./addendum-table";
 import { UserAuthContext } from "../../../../../../App";
 import { getUserById } from "../../../../helper/user";
+import { getFile } from "../../../../helper/uploads";
 
 const AddAddenDum = () => {
   const { project_id } = useParams()
@@ -29,12 +30,13 @@ const AddAddenDum = () => {
   const [executors, setExecutors] = useState<User[]>([])
   const [executor, setExecutor] = useState<string>('')
 
-  const [crowd, updateCrowd] = useState(0);
+  const [crowd, updateCrowd] = useState(1);
   const [additive, updateAdditive] = useState('');
   const [price, updatePrice] = useState(0);
   const [shortText, updateShortText] = useState('');
   const [longText, updateLongText] = useState('');
   const [units, setUnits] = useState('')
+  const [files, setFiles] = useState<File[]>([])
 
   const [comment, setComment] = useState('')
 
@@ -115,35 +117,37 @@ const AddAddenDum = () => {
   }
 
   const addNewPosition = async () => {
-    const [error, payload] = await addNewAddendum(
-      project_id!,
-      selectedTrade?.id!,
-      addendums,
-      user?._id!,
-      user?.role === 'executor' ? project?.contractor! : executor,
-      comment
-    );
-    if (error) {
-      notify(
-        (<NotificationComponent message={'Error adding positions'} />),
-        {
-          className: `bg-red-700 font-bold text-white`,
-          closeOnClick: true,
-        }
-      )
-      console.log(error)
-    }
+    if (confirm(('Are you sure you want to add this addedum'))) {
+      const [error, payload] = await addNewAddendum(
+        project_id!,
+        selectedTrade?.id!,
+        addendums,
+        user?._id!,
+        user?.role === 'executor' ? project?.contractor! : executor,
+        comment
+      );
+      if (error) {
+        notify(
+          (<NotificationComponent message={'Error adding positions'} />),
+          {
+            className: `bg-red-700 font-bold text-white`,
+            closeOnClick: true,
+          }
+        )
+        console.log(error)
+      }
 
-    if (payload) {
-      notify(
-        (<NotificationComponent message={'Addendum added successfully!'} />),
-        {
-          className: `bg-green-500 font-bold text-white`,
-          closeOnClick: true,
-        }
-      )
-      updatePositions(positions);
-      navigate(`/detail/${project_id}`)
+      if (payload) {
+        notify(
+          (<NotificationComponent message={'Addendum added successfully!'} />),
+          {
+            className: `bg-green-500 font-bold text-white`,
+            closeOnClick: true,
+          }
+        )
+        updatePositions(positions);
+        navigate(`/detail/${project_id}`)
+      }
     }
   }
 
@@ -173,6 +177,29 @@ const AddAddenDum = () => {
       tradeName: selectedTrade?.name,
       section: additive,
     }])
+
+  }
+
+  const selectAddendumFile = async () => {
+    const [error, file] = await getFile(
+      {
+        'application/*': ['.pdf', '.xlsx', '.xls'],
+        'image/*': ['.png', '.jpg', '.jpeg', '.svg']
+      },
+      'extraOrder',
+      true
+    )
+    if (error) {
+      notify(
+        (<NotificationComponent message="Error fetching file" />),
+        { className: 'bg-red-400 text-white' }
+      )
+      console.log(error)
+    }
+
+    if (file) {
+      setFiles(file)
+    }
 
   }
 
@@ -352,17 +379,39 @@ const AddAddenDum = () => {
           setExecutor(v?.value!);
         }}
       />)}
-      <div className="w-full">
-        <label className="block">
-          <span>Add Comment</span>
-          <textarea
-            rows={4}
-            placeholder=" Enter Text"
-            className="form-textarea w-full resize-none rounded-lg bg-slate-150 p-2.5 placeholder:text-slate-400 dark:bg-navy-900 dark:placeholder:text-navy-300"
-            onChange={(e) => setComment(e.target.value)}
-            defaultValue={comment}
-          ></textarea>
-        </label>
+      <div className="w-full my-4 flex flex-row justify-between items-center">
+        <div className="w-8/12 mr-4">
+          <label className="block">
+            <span>Add Comment</span>
+            <textarea
+              rows={4}
+              placeholder=" Enter Text"
+              className="form-textarea w-full resize-none rounded-lg bg-slate-150 p-2.5 placeholder:text-slate-400 dark:bg-navy-900 dark:placeholder:text-navy-300"
+              onChange={(e) => setComment(e.target.value)}
+              defaultValue={comment}
+            ></textarea>
+          </label>
+        </div>
+        <div className="w-4/12">
+          <Button
+            label="Select File"
+            color="bg-gray-300 dark:bg-gray-600 dark:text-white"
+            action={selectAddendumFile}
+          />
+        </div>
+      </div>
+      <div className="overflow-y-scroll is-scrollbar-hidden">
+        {files && files.map((file) => (
+          <div className="flex flex-row justify-between items-center py-2">
+            <span className="font-bold text-ellipsis">{file.name.slice(0, 40)}... </span>
+
+            <span className="cursor-pointer" onClick={() => {
+              setFiles(files.filter((_file) => _file.name !== file.name))
+            }}>
+              <i className="fas fa-times" />
+            </span>
+          </div>
+        ))}
       </div>
       <div className="flex justify-center items-center my-2">
         <Button color="bg-gray-300 shadow-md dark:bg-navy-700" label="Add Addendum" action={addNewPosition}></Button>
