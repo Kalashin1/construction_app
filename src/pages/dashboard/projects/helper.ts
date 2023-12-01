@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../../../navigation/constants";
-import { CreateDraftParam, Draft, IProject, InteractWithAddendumPayload, Message, ProjectPositions } from "../../../types";
+import { CreateDraftParam, Draft, ExtraProjectPositionSuper, IProject, InteractWithAddendumPayload, Message, ProjectPositions } from "../../../types";
 
 export const assignProjectToExecutor = async (
   project_id: string,
@@ -182,7 +182,7 @@ export const addNewAddendum = async (
   creator: string,
   acceptor: string,
   comment: string
-): Promise<[object | null, IProject | null]> => {
+): Promise<[object | null, ExtraProjectPositionSuper | null]> => {
   console.log("creator", creator)
   const res = await fetch(
     `${API_BASE_URL}/project/extra/${project_id}`,
@@ -296,5 +296,37 @@ export const interactWithProjectAddendum = async (payload: InteractWithAddendumP
   } else {
     const error = await res.json();
     return [error, null];
+  }
+}
+
+type UploadAddendumFilesType = {
+  project_id: string;
+  order_id: string;
+  files: File[]
+}
+
+export const uploadProjectImage = async ({
+  project_id,
+  order_id,
+  files
+}: UploadAddendumFilesType) => {
+  const fd = new FormData();
+
+  files.forEach((file) => {
+    fd.append('extraOrder', file)
+  })
+
+  const res = await fetch(`
+  ${API_BASE_URL}/upload/project/addendum/${project_id}/${order_id}`, {
+    method: 'PATCH',
+    body: fd
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+    return [null, data];
+  } else {
+    const error = await res.json();
+    return [error, null]
   }
 }

@@ -199,14 +199,20 @@ const ProjectTableRow = ({ project }: {
             )
           })}
         </div>
-        {project.extraPositions && (<div className="flex flex-row my-2">
-          {project && project.extraPositions.map((extraPosition) => {
-            const keys = Object.keys(extraPosition.positions)
-            return keys.map((key) => (
-              <a href={`#`} className={`${TradeIcons[key]?.bg} ${TradeIcons[key]?.textColor} py-1 px-2 text-black text-center rounded mx-1`}>{extraPosition?.positions[key]?.positions?.length}</a>
-            ))
-          })}
-        </div>)}
+        {project.extraPositions && (
+          <div className="flex flex-col my-2">
+            {project && project.extraPositions.map((extraPosition) => {
+              const keys = Object.keys(extraPosition.positions);
+              return (
+                <div className="flex flex-row my-2">
+                  {keys.map((key) => (
+                    <a href={`#`} className={`${TradeIcons[key]?.bg} ${TradeIcons[key]?.textColor} py-1 px-2 text-black text-center rounded mx-1`}>{extraPosition?.positions[key]?.positions?.length}</a>
+                  ))}
+                </div>
+              )
+            })}
+          </div>
+        )}
       </td>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
         <p>Start of Execution: {project?.construction_started ? new Date(project?.construction_started).toDateString() : ''}</p>

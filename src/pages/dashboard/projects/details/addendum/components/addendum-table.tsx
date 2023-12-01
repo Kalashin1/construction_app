@@ -56,11 +56,7 @@ const AddendumTable = ({
                 {addendum?.shortText}
               </td>
              
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <button
-                  className="btn h-9 w-9 rounded-full bg-green-300 p-0 font-medium text-white hover:bg-green-600 focus:bg-info/20 active:bg-info/25 mr-2">
-                  <i className="fas fa-edit" />
-                </button>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5"> 
                 <button
                   className="btn h-9 w-9 rounded-full bg-red-300 p-0 font-medium text-white hover:bg-red-600 
                   focus:bg-danger/20 active:bg-info/25"

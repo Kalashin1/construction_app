@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateMultiplePositionStatus } from "../../../helper";
 import { NotificationComponent, notify } from "../../../../components/notification/toast";
-import PositionActionDropdown, {links as Links} from "./postion-action-dropdown";
+import PositionActionDropdown, { links as Links } from "./postion-action-dropdown";
 
 const Button = ({
   action
@@ -41,12 +41,12 @@ const MainOrderItem = ({ positions, projectId }: {
   const [selectedIds, updateSelectedId] = useState<string[]>([]);
 
   const updatePositionsStatus = () => {
-    return async (status: "COMPLETED"|"IN-PROGRESS"|"NOT-FEASIBLE") => {
+    return async (status: "COMPLETED" | "IN-PROGRESS" | "NOT-FEASIBLE") => {
       const [error, payload] = await updateMultiplePositionStatus(projectId, selectedIds, status);
       if (error) {
         notify(
           (<NotificationComponent message="Error updating positions status" />),
-          { className: 'bg-red-300 text-white'}
+          { className: 'bg-red-300 text-white' }
         );
         console.log(error)
         updateShowPositionActionDropdown(false)
@@ -55,19 +55,19 @@ const MainOrderItem = ({ positions, projectId }: {
         console.log(payload);
         notify(
           <NotificationComponent message="Positions updated successfully!" />,
-          { className: 'bg-green-400 text-white'}
+          { className: 'bg-green-400 text-white' }
         )
         updateShowPositionActionDropdown(false)
         location.reload()
       }
     }
-  } 
+  }
 
-  
-  const mainOrderLinks: Links[] = [ 
+
+  const mainOrderLinks: Links[] = [
     { text: 'In Progress', action: updatePositionsStatus(), status: "IN-PROGRESS" },
-    { text: 'Completed', action:updatePositionsStatus(), status: "COMPLETED" },
-    { text: 'Not Feasible', action:updatePositionsStatus(), status: "NOT-FEASIBLE" },
+    { text: 'Completed', action: updatePositionsStatus(), status: "COMPLETED" },
+    { text: 'Not Feasible', action: updatePositionsStatus(), status: "NOT-FEASIBLE" },
   ];
 
   const [showPositionActionDropdown, updateShowPositionActionDropdown] = useState(false)
@@ -86,7 +86,11 @@ const MainOrderItem = ({ positions, projectId }: {
               <i className="fas fa-chevron-down" />
             </button>
 
-            {showPositionActionDropdown && (<PositionActionDropdown mainOrderLinks={mainOrderLinks} />)}
+            {showPositionActionDropdown && (
+              <div className="absolute right-6 top-8">
+                <PositionActionDropdown mainOrderLinks={mainOrderLinks} />
+              </div>
+            )}
           </div>
           <div>
             <Button action={() => navigate(`/addendum/${projectId}`)} />
