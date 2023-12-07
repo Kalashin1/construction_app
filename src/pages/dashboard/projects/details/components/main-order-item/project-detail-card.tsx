@@ -109,7 +109,7 @@ export const ProjectDetailCard = ({
           <UploadedFileModal
             closeModal={() => updateShowFileModal(false)}
             title={position?.external_id!}
-            image={position?.documentURL}
+            image={position?.documentURL as string[]}
           />
         )}
         {showCommentModal && isContractorOrOwner && (

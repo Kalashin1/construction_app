@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "react-router-dom";
-import { IProject } from "../../../../../../types";
+import { IProject, ProjectPositions } from "../../../../../../types";
 import { useCallback, useEffect, useState, useContext } from "react";
 import AssignExecutorModal from "./assing-executor";
 import { TradeIcons } from '../../../details/helper';

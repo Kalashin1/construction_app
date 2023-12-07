@@ -1,11 +1,9 @@
 import { ReactNode } from "react";
 
 const FileModal = ({
-  title,
   closeModal,
   children
 }: {
-  title: string;
   closeModal: (...args: unknown[]) => void;
   children: ReactNode
 }) => {

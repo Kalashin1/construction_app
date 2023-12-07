@@ -30,7 +30,6 @@ const UploadedFileModal = ({
   }, [currentImage, images])
   return (
     <FileModal
-      title={title}
       closeModal={closeModal}
     >
       <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl px-4 py-4 flex justify-between items-center flex-row w-full">
