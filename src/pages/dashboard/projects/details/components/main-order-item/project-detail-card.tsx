@@ -61,7 +61,7 @@ export const ProjectDetailCard = ({
 
   return (
     <div
-      id={position.tradeName}
+      id={type === 'position' ? position.tradeName : `addendum-${position.tradeName}`}
       className={`${!isSelectd && TradeIcons[position?.tradeName!]?.border} rounded-md border-2 m-4 py-6 grid grid-cols-4 ${isSelectd && TradeIcons[position?.tradeName!].bg} ${isSelectd && TradeIcons[position?.tradeName!].textColor}`}
       onClick={selectPosition}
     >
@@ -72,9 +72,9 @@ export const ProjectDetailCard = ({
         <button className={`${TradeIcons[position?.tradeName!]?.bg} mx-2 px-2 py-1 text-small text-white rounded-md`}>
           {position?.external_id}
         </button>
-        <button onClick={() => updateShowFileModal(true)}>
+        {position.documentURL && (<button onClick={() => updateShowFileModal(true)}>
           <FileIcon width={15} color={`${!isSelectd ? TradeIcons[position?.tradeName!]?.fileColor : 'white'}`} />
-        </button>
+        </button>)}
         <h3 className="font-bold ml-2">{position?.status}</h3>
       </div>
       <div className="md:col-span-3 col-span-4 my-2 relative">
@@ -109,7 +109,7 @@ export const ProjectDetailCard = ({
           <UploadedFileModal
             closeModal={() => updateShowFileModal(false)}
             title={position?.external_id!}
-            image={position?.documentURL}
+            image={position?.documentURL as string[]}
           />
         )}
         {showCommentModal && isContractorOrOwner && (

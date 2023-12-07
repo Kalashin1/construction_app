@@ -53,7 +53,15 @@ const UploadFileModal = ({
       }
 
       if (payload) {
-        const [_error, data] = await updateProjectPosition(project_id, { ...position, documentURL: payload.publicUrl }, trade)
+        const documentURL: string[] = [];
+        if (position.documentURL)
+          documentURL.push(...position.documentURL)
+
+        documentURL.push(payload.publicUrl)
+        const [_error, data] = await updateProjectPosition(project_id, {
+          ...position,
+          documentURL,
+        }, trade)
         if (_error) {
           console.log('upload position _error', _error);
           notify(
@@ -74,6 +82,7 @@ const UploadFileModal = ({
               closeOnClick: true,
             }
           )
+          window.location.reload()
         }
       }
     }

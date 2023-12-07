@@ -2,9 +2,8 @@
 import { Dispatch, SetStateAction, useContext } from "react";
 import { UserAuthContext } from "../../../../../../App";
 import { ProjectPositions } from "../../../../../../types";
-import { updateProjectExtraPosition } from "../../../helper";
 import { Dropdown } from "../dropdown";
-import { updatePosition } from "./update-position";
+import { changeExtraPosition, updatePosition } from "./update-position";
 
 const MainOrderDropdown = ({
   position,
@@ -24,7 +23,7 @@ const MainOrderDropdown = ({
   type: string
 }) => {
   const { user } = useContext(UserAuthContext)
-  console.log(user?.creator.id)
+  console.log('trade_id', trade_id)
   // const billPosition = async () => {
   //   if (user && user.role === 'executor') {
   //     const [error, draft] = await createNewDraft({
@@ -80,11 +79,11 @@ const MainOrderDropdown = ({
 
   //   }
   // }
-  const mainOrderLinks = [ 
-    { text: 'Reset', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "ACCEPTED" },
-    { text: 'In Progress', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "IN PROGRESS" },
-    { text: 'Completed', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "COMPLETED" },
-    { text: user?.role === 'executor' ? 'Not Feasible': 'Cancel', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "NOT_FEASIBLE" },
+  const mainOrderLinks = [
+    { text: 'Reset', action: type === 'position' ? updatePosition : changeExtraPosition, status: "ACCEPTED" },
+    { text: 'In Progress', action: type === 'position' ? updatePosition : changeExtraPosition, status: "IN PROGRESS" },
+    { text: 'Completed', action: type === 'position' ? updatePosition : changeExtraPosition, status: "COMPLETED" },
+    { text: user?.role === 'executor' ? 'Not Feasible' : 'Cancel', action: type === 'position' ? updatePosition : changeExtraPosition, status: "NOT_FEASIBLE" },
     { text: 'Upload Document', handler: () => updateShowUploadFileModal(true) },
     { text: 'Add Comment', handler: () => updateShowCommentModal(true) },
   ];
@@ -99,19 +98,21 @@ const MainOrderDropdown = ({
 
             // if the position has been billed or not feasable 
             // you cannot update the status of the position 
-            if ((position.status == 'BILLED' || position.billed || position.status === 'NOT_FEASIBLE' ) && link.status && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS' || link.status === 'ACCEPTED' )) return
+            if ((position.status == 'BILLED' || position.billed || position.status === 'NOT_FEASIBLE') && link.status && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS' || link.status === 'ACCEPTED')) return
 
-            // if the position has not been accepted you cannot update the status of the position
+            // if the position has not been accepted 
+            // you cannot update the status of the position
             if ((position.status === 'CREATED' || position.status === 'ASSIGNED') && link.status && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS' || link.status === 'ACCEPTED')) return;
 
             // if the position has been completed
             // you cannot update the status of the position but 
             // you can still reset the status of the position
-            if (link.status && (position.status === 'COMPLETED') && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS') ){
+            if (link.status && (position.status === 'COMPLETED') && (link.status === 'COMPLETED' || link.status === 'NOT_FEASIBLE' || link.status === 'IN PROGRESS')) {
               return;
             }
 
-            // if the position is already in progress you cannot mark it as in progress again
+            // if the position is already in progress 
+            // you cannot mark it as in progress again
             if (link.status && position.status === 'IN PROGRESS' && link.status === 'IN PROGRESS') return
 
 

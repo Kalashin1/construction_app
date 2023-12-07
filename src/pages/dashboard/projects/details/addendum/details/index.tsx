@@ -12,7 +12,7 @@ const AddendumDetail = () => {
         <BreadCrumb
           pageName="Addendum Details"
           firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard' }}
-          secondLevel={{ link: `/details/${project_id}`, text: 'Project' }}
+          secondLevel={{ link: `/detail/${project_id}`, text: 'Project' }}
           thirdLevel={{ link: '', text: 'Addendum Details'}}
         />
         <main className="my-6">

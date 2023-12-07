@@ -27,7 +27,7 @@ const MultiplePositionModal = ({
   const actions = [
     { text: 'BILL', action: "BILLED" }, { text: 'COMPLETE', action: "COMPLETED" }, { text: "NOT FEASIBLE", action: "NOT FEASIBLE" }] as const;
   const [action, setAction] = useState<typeof actions[number]>(actions[2])
-  const updateMultiplePositionStatus = async (trade: string, action: string) => {
+  const updateMultiplePositionStatus = async (trade: string[], action: string) => {
     const [error, payload] = await updatePositionsByTrade(project_id, trade, action);
     if (error) {
       notify(
@@ -52,8 +52,8 @@ const MultiplePositionModal = ({
     }
   }
 
-  const updateForMultipleTrade = async (trades: string[], action: typeof actions[number]) => {
-    await Promise.all(trades.map((trade) => updateMultiplePositionStatus(trade, action.action)))
+  const updateForMultipleTrade = (trades: string[], action: typeof actions[number]) => {
+    updateMultiplePositionStatus(trades, action.action)
   }
   return (
     <Modal

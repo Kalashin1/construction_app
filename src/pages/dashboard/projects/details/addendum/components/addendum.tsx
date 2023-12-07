@@ -7,7 +7,7 @@ import { IProject, PositionInterface, ProjectPositions, TradeInterface, User } f
 import { useContext, useEffect, useState } from "react";
 import { getAllTrades, getPositions } from "../../../../profie/trades/components/helper";
 import { Button } from "../../../../components/current-projects";
-import { addNewAddendum } from "../../../helper";
+import { addNewAddendum, uploadAddendumFiles } from "../../../helper";
 import { useNavigate } from 'react-router-dom'
 import Select from 'react-select'
 import AddendumTable from "./addendum-table";
@@ -41,6 +41,8 @@ const AddAddenDum = () => {
   const [comment, setComment] = useState('')
 
   const [addendums, setAddendums] = useState<ProjectPositions[]>([]);
+
+  console.log("selectPosition", selectedPositions)
 
   useEffect(() => {
     const setUp = async () => {
@@ -136,7 +138,6 @@ const AddAddenDum = () => {
         )
         console.log(error)
       }
-
       if (payload) {
         notify(
           (<NotificationComponent message={'Addendum added successfully!'} />),
@@ -145,6 +146,34 @@ const AddAddenDum = () => {
             closeOnClick: true,
           }
         )
+
+        if (files.length) {
+          const [_error, _payload] = await uploadAddendumFiles({
+            project_id: project_id!,
+            order_id: payload.id,
+            files
+          })
+          if (_error) {
+            console.log(_error);
+            notify(
+              (<NotificationComponent message={'Error adding positions'} />),
+              {
+                className: `bg-red-700 font-bold text-white`,
+                closeOnClick: true,
+              }
+            )
+          }
+
+          if (_payload) {
+            notify(
+              (<NotificationComponent message={'Image added successfully!'} />),
+              {
+                className: `bg-green-500 font-bold text-white`,
+                closeOnClick: true,
+              }
+            )
+          }
+        }
         updatePositions(positions);
         navigate(`/detail/${project_id}`)
       }
@@ -163,20 +192,23 @@ const AddAddenDum = () => {
         shortText,
         longText,
         units,
+        trade: selectedTrade.id,
         external_id: '06.09.01.00X0'
       }])
       return;
     }
     const positionParams = positions?.find((pos) => pos.external_id == selectedPositions)
-    console.log(positionParams)
-    setAddendums([...addendums, {
-      ...positionParams!,
-      crowd: crowd.toString(),
-      status: 'CREATED',
-      billed: false,
-      tradeName: selectedTrade?.name,
-      section: additive,
-    }])
+    if (positionParams) {
+      console.log("positionParams", positionParams)
+      setAddendums([...addendums, {
+        ...positionParams,
+        crowd: crowd.toString(),
+        status: 'CREATED',
+        billed: false,
+        tradeName: selectedTrade?.name,
+        section: additive,
+      }])
+    }
 
   }
 
@@ -239,7 +271,9 @@ const AddAddenDum = () => {
                   // @ts-ignore
                   options={positions && positions.map((pos) => ({ label: pos.shortText, value: pos.external_id }))}
                   // @ts-ignore
-                  onChange={v => updateSelectedPositions(v?.value)}
+                  onChange={v => {
+                    updateSelectedPositions(v?.value!)
+                  }}
                 />
 
               </label>

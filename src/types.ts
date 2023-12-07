@@ -222,6 +222,9 @@ export type ExtraProjectPositionSuper = {
   };
   id: string;
   acceptedAt?: number;
+  comment: string;
+  fileURL?: string[];
+  rejectedAt?: number;
   positions: ProjectPositionObject;
 };
 
@@ -282,7 +285,7 @@ export type ProjectPositions = {
   billed: boolean;
   comment?: string;
   section?: string;
-  documentURL?: string;
+  documentURL?: string[];
   position?: number;
   executor?: string;
 } & Partial<PositionInterface>;
@@ -383,7 +386,7 @@ export type CreateProductParam = {
 };
 
 export const PROJECT_POSITION_STATUS = [
-  "IN-PROGRESS",
+  "IN PROGRESS",
   "COMPLETED",
   "NOT-FEASIBLE",
 ] as const;

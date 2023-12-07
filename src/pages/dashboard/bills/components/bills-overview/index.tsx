@@ -18,7 +18,7 @@ const BillsTable = ({
 }) => {
 
   const { user } = useContext(UserAuthContext);
-  const dataTitles = ['The Invoice', 'Project', user?.role === 'executor' ? 'Recipient' : 'Creator', 'Created At', 'Amount', 'Status', 'Action'];
+  const dataTitles = ['Draft', 'Project', user?.role === 'executor' ? 'Recipient' : 'Creator', 'Created At', 'Amount', 'Status', 'Action'];
 
   const updateDraft = async (draft_id: string, updateType: 'accept' | 'reject') => {
     let error, payload
@@ -88,11 +88,16 @@ type TableRowProps = {
 const TableRow = ({ draft, index, updateDraft }: TableRowProps) => {
   const { user } = useContext(UserAuthContext)
   const [showInvoiceID, updateShowInvoiceID] = useState(false);
+  console.log("draft", draft);
   return (
     <tr key={index} className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
-      <td className="whitespace-nowrap px-4 py-3 sm:px-5">{index + 1}</td>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5 underline text-primary">
         <Link to={`/draft/${draft._id}`}>
+          {draft._id.slice(0, 8)}
+        </Link>
+      </td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5 underline text-primary">
+        <Link to={`/detail/${draft.project._id}`}>
           {draft?.project?.external_id}
         </Link>
       </td>
@@ -107,7 +112,7 @@ const TableRow = ({ draft, index, updateDraft }: TableRowProps) => {
       </td>
       {draft?.reciepient._id === user?._id && (
         <td>
-          {draft.status === INVOICE_STATUS[0] && (<button
+          {(draft.status === INVOICE_STATUS[0]) && (<button
             className="btn h-9 w-9 rounded-full bg-info/10 p-0 font-medium text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25 mr-2"
             onClick={() => updateDraft(draft._id, 'accept')}
           >
