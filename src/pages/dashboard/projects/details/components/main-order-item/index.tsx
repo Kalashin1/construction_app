@@ -41,7 +41,7 @@ const MainOrderItem = ({ positions, projectId }: {
   const [selectedIds, updateSelectedId] = useState<string[]>([]);
 
   const updatePositionsStatus = () => {
-    return async (status: "COMPLETED" | "IN-PROGRESS" | "NOT-FEASIBLE") => {
+    return async (status: "COMPLETED" | "IN PROGRESS" | "NOT-FEASIBLE") => {
       const [error, payload] = await updateMultiplePositionStatus(projectId, selectedIds, status);
       if (error) {
         notify(
@@ -65,7 +65,7 @@ const MainOrderItem = ({ positions, projectId }: {
 
 
   const mainOrderLinks: Links[] = [
-    { text: 'In Progress', action: updatePositionsStatus(), status: "IN-PROGRESS" },
+    { text: 'In Progress', action: updatePositionsStatus(), status: "IN PROGRESS" },
     { text: 'Completed', action: updatePositionsStatus(), status: "COMPLETED" },
     { text: 'Not Feasible', action: updatePositionsStatus(), status: "NOT-FEASIBLE" },
   ];

@@ -44,12 +44,12 @@ const BillsTable = ({
                 {invoice?.status}
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <Link className="underline text-blue-500" to={`/detail/${invoice.draft.project._id}`}>
+                <Link className="underline text-blue-500" to={`/detail/${invoice?.draft?.project?._id}`}>
                   {invoice?.draft?.project?.external_id}
                 </Link>
               </td>
               <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-                <Link className="underline text-blue-500" to={`/draft/${invoice.draft._id}`}>
+                <Link className="underline text-blue-500" to={`/draft/${invoice?.draft?._id}`}>
                   {invoice?.external_id}
                 </Link>
               </td>
@@ -133,7 +133,7 @@ const BillsOverview = () => {
 
       </div>
       <div>
-        <BillsTable invoices={invoices} />
+        {invoices && (<BillsTable invoices={invoices} />)}
         <Pagination />
       </div>
     </div>

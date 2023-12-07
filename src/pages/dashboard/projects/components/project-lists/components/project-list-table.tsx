@@ -201,13 +201,31 @@ const ProjectTableRow = ({ project }: {
         </div>
         {project.extraPositions && (
           <div className="flex flex-col my-2">
+            {/* loop through the extra positions */}
             {project && project.extraPositions.map((extraPosition) => {
+              // get all the trades on the addendum
               const keys = Object.keys(extraPosition.positions);
+              // create a data structure to track the positions on the trade on the addendum
+              const positions: { amount: number, positions: ProjectPositions[] }[] = [];
+              // loop throgh all the keys (trades ) on the addendum
+              keys.forEach((key) => {
+                extraPosition.positions[key].positions.forEach((pos) => {
+                  const filtered = extraPosition.positions[key].positions?.filter((_pos) => _pos.tradeName === pos.tradeName)
+                  if (!(positions.find((pos) => pos.positions[0].tradeName === filtered[0].tradeName))) {
+                    positions.push({ amount: filtered.length, positions: filtered })
+                  }
+                })
+              })
               return (
                 <div className="flex flex-row my-2">
-                  {keys.map((key) => (
-                    <a href={`#`} className={`${TradeIcons[key]?.bg} ${TradeIcons[key]?.textColor} py-1 px-2 text-black text-center rounded mx-1`}>{extraPosition?.positions[key]?.positions?.length}</a>
-                  ))}
+                  {positions.map(({ amount, positions }) => {
+
+                    return (
+                      <a href={`#`} className={`${TradeIcons[positions[0].tradeName!]?.bg} ${TradeIcons[positions[0].tradeName!]?.textColor} py-1 px-2 text-black text-center rounded mx-1`}>
+                        {amount}
+                      </a>
+                    )
+                  })}
                 </div>
               )
             })}

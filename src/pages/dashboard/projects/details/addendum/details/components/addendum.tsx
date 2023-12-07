@@ -34,7 +34,6 @@ const AddendumPage = () => {
         const _positions: ProjectPositions[] = [];
         for (const key in extraPosition?.positions) {
           for (const pos of extraPosition.positions[key].positions) {
-            pos.tradeName = key
             pos.executor = extraPosition.positions[key].executor
             _positions.push(pos)
           }
@@ -79,6 +78,7 @@ const AddendumPage = () => {
     <div>
       {addendum && positions && (
         <ExtraOrders
+          comment={addendum.comment}
           createdAt={addendum?.createdAt}
           extraOrderId={id!}
           positions={positions}

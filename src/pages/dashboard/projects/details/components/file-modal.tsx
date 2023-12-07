@@ -19,25 +19,7 @@ const FileModal = ({
       <div
         className="modal-content scrollbar-sm relative flex max-w-lg flex-col items-center overflow-y-auto rounded-lg text-center bg-gray-50 dark:bg-navy-700 md:w-2/5"
       >
-
-        <h2 className="line-clamp-1 text-base font-medium tracking-wide text-slate-700 dark:text-navy-100 lg:text-xl px-4 py-4 flex justify-between items-center flex-row w-full">
-          
-          <button>
-            <i className="fas fa-download" />
-          </button>
-          <span>
-
-          {title}
-          </span>
-          <button>
-            <i className="fas fa-trash" />
-          </button>
-
-        </h2>
-
-        <div className="w-full">
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   )

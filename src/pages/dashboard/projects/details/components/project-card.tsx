@@ -2,12 +2,15 @@
 import { Link } from "react-router-dom";
 import EuroIcon from "../../../bills/ops/svg/euro";
 import { AdminIcon, CaretakerIcon, ContactPersonIcon, HouseIcon } from "../svgs";
-import { IProject } from "../../../../../types";
+import { IProject, ProjectPositions } from "../../../../../types";
 import { Modal } from "../../../profie/components/account-settings";
 import { Dispatch, SetStateAction, useCallback, useState, useContext } from "react";
 import { TradeIcons } from "../helper";
 import { formatter } from "../../../helper/tools";
 import { UserAuthContext } from "../../../../../App";
+import { Button } from "../../../components/current-projects";
+import { billMultipleExtraOrderPositions } from "../../helper";
+import { NotificationComponent, notify } from "../../../components/notification/toast";
 
 const UserModal = ({
   showModal,
@@ -64,7 +67,7 @@ const ProjectCard = ({ project }: {
             if (subTotals[key]) {
               subTotals[key] += subTotal
             } else {
-              subTotals.push({ key: `${key} - Addendum-${index}`, price: formatter.format(subTotal) ?? '0.00' })
+              subTotals.push({ key: `Addendum-${index + 1}`, price: formatter.format(subTotal) ?? '0.00' })
             }
           }
         }
@@ -174,6 +177,31 @@ const ProjectCard = ({ project }: {
 
   const [showConstructionManager, updateShowConstructionManager] = useState(false);
   const [showCareTakerModal, updateShowCareTaker] = useState(false);
+
+  const [selectedAddendums, updateSelectedAddendums] = useState<string[]>([])
+
+  const billMultipleAddendums = async () => {
+    const [error, payload] = await billMultipleExtraOrderPositions(
+      selectedAddendums,
+      project._id,
+      user?._id as string
+    )
+    if (error) {
+      notify(
+        (<NotificationComponent message={`Error billing positions ${error.message}`} />),
+        { className: 'bg-red-500 text-white' }
+      );
+      console.log(error);
+    }
+    if (payload) {
+      notify(
+        (<NotificationComponent message="Positions billed successfully!" />),
+        { className: 'bg-green-500 text-white' }
+      )
+    }
+    console.log(payload);
+  }
+
   console.log('subtotals', getSubTotals())
   return (
     <div className="bg-white rounded-md py-6 shadow dark:border-navy-700 dark:bg-navy-800 dark:text-white">
@@ -269,18 +297,38 @@ const ProjectCard = ({ project }: {
             )
           })}
         </div>
-        {project.extraPositions && (<div className="flex flex-col my-2">
-          {project && project.extraPositions.map((extraPosition) => {
-            const keys = Object.keys(extraPosition.positions);
-            return (
-              <div className="flex flex-row my-2">
-                {keys.map((key) => (
-                  <a href={`#`} className={`${TradeIcons[key]?.bg} ${TradeIcons[key]?.textColor} py-1 px-2 text-black text-center rounded mx-1`}>{extraPosition?.positions[key]?.positions?.length}</a>
-                ))}
-              </div>
-            )
-          })}
-        </div>)}
+        {project.extraPositions && (
+          <div className="flex flex-col my-2">
+            {/* loop through the extra positions */}
+            {project && project.extraPositions.map((extraPosition) => {
+              // get all the trades on the addendum
+              const keys = Object.keys(extraPosition.positions);
+              // create a data structure to track the positions on the trade on the addendum
+              const positions: { amount: number, positions: ProjectPositions[] }[] = [];
+              // loop throgh all the keys (trades ) on the addendum
+              keys.forEach((key) => {
+                extraPosition.positions[key].positions.forEach((pos) => {
+                  const filtered = extraPosition.positions[key].positions?.filter((_pos) => _pos.tradeName === pos.tradeName)
+                  if (!(positions.find((pos) => pos.positions[0].tradeName === filtered[0].tradeName))) {
+                    positions.push({ amount: filtered.length, positions: filtered })
+                  }
+                })
+              })
+              return (
+                <div className="flex flex-row my-2">
+                  {positions.map(({ amount, positions }) => {
+
+                    return (
+                      <a href={`#addendum-${positions[0].tradeName}`} className={`${TradeIcons[positions[0].tradeName!]?.bg} ${TradeIcons[positions[0].tradeName!]?.textColor} py-1 px-2 text-black text-center rounded mx-1`}>
+                        {amount}
+                      </a>
+                    )
+                  })}
+                </div>
+              )
+            })}
+          </div>
+        )}
       </div>
 
       <div className="w-full p-6">
@@ -301,13 +349,33 @@ const ProjectCard = ({ project }: {
         </div>
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
-      <div className="px-4 py-6 flex flex-col">
+      <div className="px-4 py-6">
+        {user?.role === 'executor' && (<Button
+          label="Bill"
+          action={billMultipleAddendums}
+          textColor="w-1/6 bg-gray-300 dark:bg-navy-500 text-gray-900 dark:text-white"
+        />)}
         {
           project.extraPositions && project.extraPositions.map((extraPos, index) => {
             return (
-              <Link key={index} className="text-blue-500 underline font-bold" to={`/addendum-detail/${project._id}/${extraPos.id}`}>
-                Addendum - {index + 1}
-              </Link>
+              <div className="flex flex-row justify-between w-full items-center mb-4">
+                <Link key={index} className="text-blue-500 underline font-bold" to={`/addendum-detail/${project._id}/${extraPos.id}`}>
+                  Addendum - {index + 1}
+                </Link>
+                <input
+                  type="checkbox"
+                  checked={selectedAddendums.find((ad) => ad === extraPos.id) ? true : false}
+                  onChange={() => {
+                    if (selectedAddendums.find((ad) => ad === extraPos.id)) {
+                      updateSelectedAddendums(
+                        selectedAddendums.filter((ad) => ad !== extraPos.id)
+                      )
+                      return
+                    }
+                    updateSelectedAddendums([...selectedAddendums, extraPos.id])
+                  }}
+                />
+              </div>
             )
           })
         }

@@ -93,7 +93,7 @@ const ConstructionSchedule = () => {
             </div>
           </li>
         </ol>
-        <div className="bg-white my-4 rounded-md shadow p-6 w-full dark:border-navy-700 dark:bg-navy-800 dark:text-white">
+        {/* <div className="bg-white my-4 rounded-md shadow p-6 w-full dark:border-navy-700 dark:bg-navy-800 dark:text-white">
           <FullCalendar
             plugins={[dayGridPlugin]}
             initialView="dayGridMonth"
@@ -101,7 +101,7 @@ const ConstructionSchedule = () => {
               { title: 'event 1', start: '2023-11-25', durationEditable: true, overlap: true, end: '2023-11-30' }
             ]}          
           />
-        </div>
+        </div> */}
       </div>
     </div>
   )

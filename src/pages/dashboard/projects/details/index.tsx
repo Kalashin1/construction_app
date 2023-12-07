@@ -21,9 +21,15 @@ import { getProject } from "../../helper/project";
 import { UserAuthContext } from "../../../../App";
 import { acceptProject, rejectProject } from "../helper";
 import { notify, NotificationComponent } from "../../components/notification/toast";
-import ShopFloatingActionButton from "./shop-fab";
+import ShopFloatingActionButton from "./components/shop-fab";
+import BackToTopFloatingActionButton from "./components/back-to-top";
+import ChatFloatingActionButton from "./components/chat-action-button";
+import {
+  AnimatePresence,
+  motion
+} from 'framer-motion'
 
-type ExtraPositionType = { createdAt: number, positions: ProjectPositions[], id: string; createdBy: { role: string, _id: string } }[]
+type ExtraPositionType = { createdAt: number, positions: ProjectPositions[], id: string; createdBy: { role: string, _id: string }, comment: string }[]
 
 const ProjectDetails = () => {
 
@@ -33,6 +39,7 @@ const ProjectDetails = () => {
   const [positions, setPositions] = useState<ProjectPositions[] | null>(null);
   const [__extraPositions, __setExtraPositions] = useState<ExtraPositionType | null>(null)
   const [showAcceptButton, updateShowAcceptButton] = useState(false)
+  const [showActionButtons, updateShowActionButton] = useState(false);
   const { user } = useContext(UserAuthContext)
   const { id } = useParams();
   const [assignedPositions, setAssignedPositions] = useState<string[]>([])
@@ -110,7 +117,6 @@ const ProjectDetails = () => {
             _project.positions[key].executor === user?._id &&
             _project.positions[key].accepted === false
           ) {
-            console.log(_project.positions[key])
             _assingedPositions.push(key);
           }
 
@@ -121,22 +127,20 @@ const ProjectDetails = () => {
             for (const key in extraPosition.positions) {
               const _positions = extraPosition.positions[key].positions
               _positions.forEach((pos) => {
-                pos.tradeName = key
+                // pos.tradeName = key
                 pos.executor = extraPosition.acceptedBy?.role === 'executor' ? extraPosition.acceptedBy._id : extraPosition.createdBy._id
               })
-              __extraPositions.push({ id: extraPosition.id, createdAt: extraPosition.createdAt, positions: [..._positions], createdBy: extraPosition.createdBy })
+              __extraPositions.push({ id: extraPosition.id, createdAt: extraPosition.createdAt, positions: [..._positions], createdBy: extraPosition.createdBy, comment: extraPosition.comment })
             }
           }
         }
 
         if (_assingedPositions.length > 1 && _assingedPositions[0]) {
-          console.log("_assingedPositions", _assingedPositions)
           updateShowAcceptButton(true);
         }
         setAssignedPositions(_assingedPositions)
         setPositions(positions)
         __setExtraPositions(__extraPositions)
-        console.log('__extraPositions', __extraPositions)
 
       }
     }
@@ -191,19 +195,33 @@ const ProjectDetails = () => {
                 projectId={project?._id}
                 createdBy={_extraPositions?.createdBy?._id}
                 extraOrderId={_extraPositions.id}
+                comment={_extraPositions.comment}
               />
             )
           ))}
           {showDownloadOption && (<ProjectDownloadAction />)}
           <FloatingActionButton
-            action={() => navigate(SCREENS.CHAT)}
+            action={() => updateShowActionButton(!showActionButtons)}
           />
-          <ShopFloatingActionButton action={() => navigate(`/shop/`)} />
-          <DownloadProjectActionButton
-            action={
-              () => updateShowDownloadOption(!showDownloadOption)
-            }
-          />
+          <AnimatePresence>
+            {showActionButtons && (
+              <motion.div
+                exit={{ y: 400 }}
+                initial={{ y: -400 }}
+                animate={{ y: 0 }}
+                transition={{ type: "tween" }}
+              >
+                <ChatFloatingActionButton action={() => navigate(`/shop/`)} />
+                <ShopFloatingActionButton action={() => navigate(`/shop/`)} />
+                <BackToTopFloatingActionButton action={() => navigate(`/shop/`)} />
+                <DownloadProjectActionButton
+                  action={
+                    () => updateShowDownloadOption(!showDownloadOption)
+                  }
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
       </main>

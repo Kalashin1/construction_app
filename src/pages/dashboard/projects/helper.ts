@@ -1,5 +1,13 @@
 import { API_BASE_URL } from "../../../navigation/constants";
-import { CreateDraftParam, Draft, ExtraProjectPositionSuper, IProject, InteractWithAddendumPayload, Message, ProjectPositions } from "../../../types";
+import {
+  CreateDraftParam,
+  Draft,
+  ExtraProjectPositionSuper,
+  IProject,
+  InteractWithAddendumPayload,
+  Message,
+  ProjectPositions,
+} from "../../../types";
 
 export const assignProjectToExecutor = async (
   project_id: string,
@@ -96,16 +104,13 @@ export const rejectProject = async (
 export const createNewDraft = async (
   draft: CreateDraftParam
 ): Promise<[object | null, Draft | null]> => {
-  const res = await fetch(
-    `${API_BASE_URL}/draft/create`,
-    {
-      method: "POST",
-      body: JSON.stringify({ payload: draft }),
-      headers: {
-        "Content-type": "application/json",
-      },
-    }
-  );
+  const res = await fetch(`${API_BASE_URL}/draft/create`, {
+    method: "POST",
+    body: JSON.stringify({ payload: draft }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
 
   if (res.ok) {
     const payload = await res.json();
@@ -151,19 +156,16 @@ export const uploadPositionFile = async (
 
 export const updatePositionsByTrade = async (
   project_id: string,
-  trade: string,
+  trade: string[],
   status: string
 ): Promise<[object | null, IProject | null]> => {
-  const res = await fetch(
-    `${API_BASE_URL}/project/postitions/${project_id}`,
-    {
-      method: "PATCH",
-      body: JSON.stringify({ trade, status }),
-      headers: {
-        "Content-type": "application/json",
-      },
-    }
-  );
+  const res = await fetch(`${API_BASE_URL}/project/postitions/${project_id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ trade, status }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
 
   if (res.ok) {
     const payload = await res.json();
@@ -174,7 +176,6 @@ export const updatePositionsByTrade = async (
   }
 };
 
-
 export const addNewAddendum = async (
   project_id: string,
   trade_id: string,
@@ -183,17 +184,14 @@ export const addNewAddendum = async (
   acceptor: string,
   comment: string
 ): Promise<[object | null, ExtraProjectPositionSuper | null]> => {
-  console.log("creator", creator)
-  const res = await fetch(
-    `${API_BASE_URL}/project/extra/${project_id}`,
-    {
-      method: "POST",
-      body: JSON.stringify({ positions, trade_id, creator, acceptor, comment }),
-      headers: {
-        "Content-type": "application/json",
-      },
-    }
-  );
+  console.log("creator", creator);
+  const res = await fetch(`${API_BASE_URL}/project/extra/${project_id}`, {
+    method: "POST",
+    body: JSON.stringify({ positions, trade_id, creator, acceptor, comment }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
 
   if (res.ok) {
     const payload = await res.json();
@@ -208,7 +206,7 @@ export const updateProjectExtraPosition = async (
   project_id: string,
   position: ProjectPositions,
   trade_id: string,
-  extraOrderId?: string,
+  extraOrderId?: string
 ) => {
   const res = await fetch(
     `${API_BASE_URL}/project/update-extra/${project_id}`,
@@ -231,18 +229,15 @@ export const updateProjectExtraPosition = async (
 };
 
 export const addMessage = async (
- payload: Message
+  payload: Message
 ): Promise<[object | null, Message | null]> => {
-  const res = await fetch(
-    `${API_BASE_URL}/message/create`,
-    {
-      method: "POST",
-      body: JSON.stringify({ payload }),
-      headers: {
-        "Content-type": "application/json",
-      },
-    }
-  );
+  const res = await fetch(`${API_BASE_URL}/message/create`, {
+    method: "POST",
+    body: JSON.stringify({ payload }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
 
   if (res.ok) {
     const payload = await res.json();
@@ -253,21 +248,22 @@ export const addMessage = async (
   }
 };
 
-export const updateMultiplePositionStatus = async (project_id: string, position_ids: string[], status: string) => {
-  const res = await fetch(
-    `${API_BASE_URL}/project/multiple/status`,
-    {
-      method: "POST",
-      body: JSON.stringify({ 
-        project_id,
-        position_ids,
-        status 
-      }),
-      headers: {
-        "Content-type": "application/json",
-      },
-    }
-  );
+export const updateMultiplePositionStatus = async (
+  project_id: string,
+  position_ids: string[],
+  status: string
+) => {
+  const res = await fetch(`${API_BASE_URL}/project/multiple/status`, {
+    method: "POST",
+    body: JSON.stringify({
+      project_id,
+      position_ids,
+      status,
+    }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
 
   if (res.ok) {
     const payload = await res.json();
@@ -276,19 +272,26 @@ export const updateMultiplePositionStatus = async (project_id: string, position_
     const error = await res.json();
     return [error, null];
   }
-}
+};
 
-export const interactWithProjectAddendum = async (payload: InteractWithAddendumPayload) => {
-  const res = await fetch(
-    `${API_BASE_URL}/project/addendum`,
-    {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: {
-        "Content-type": "application/json",
-      },
-    }
-  );
+export const updateMultipleExtraOrderPositions = async (
+  project_id: string,
+  positions: string[],
+  status: string,
+  addendum_id: string
+) => {
+  const res = await fetch(`${API_BASE_URL}/project/addendum/multiple/status`, {
+    method: "POST",
+    body: JSON.stringify({
+      project_id,
+      positions,
+      status,
+      addendum_id,
+    }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
 
   if (res.ok) {
     const payload = await res.json();
@@ -297,36 +300,85 @@ export const interactWithProjectAddendum = async (payload: InteractWithAddendumP
     const error = await res.json();
     return [error, null];
   }
-}
+};
+
+export const billMultipleExtraOrderPositions = async (
+  addendum_ids: string[], 
+  project_id: string, 
+  executor_id: string
+) => {
+  const res = await fetch(`${API_BASE_URL}/project/addendum/multiple/bill`, {
+    method: "POST",
+    body: JSON.stringify({
+      project_id,
+      addendum_ids,
+      executor_id,
+    }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+};
+
+export const interactWithProjectAddendum = async (
+  payload: InteractWithAddendumPayload
+) => {
+  const res = await fetch(`${API_BASE_URL}/project/addendum`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+};
 
 type UploadAddendumFilesType = {
   project_id: string;
   order_id: string;
-  files: File[]
-}
+  files: File[];
+};
 
-export const uploadProjectImage = async ({
+export const uploadAddendumFiles = async ({
   project_id,
   order_id,
-  files
+  files,
 }: UploadAddendumFilesType) => {
   const fd = new FormData();
 
   files.forEach((file) => {
-    fd.append('extraOrder', file)
-  })
-
-  const res = await fetch(`
-  ${API_BASE_URL}/upload/project/addendum/${project_id}/${order_id}`, {
-    method: 'PATCH',
-    body: fd
+    fd.append("extraOrder", file);
   });
+
+  const res = await fetch(
+    `
+  ${API_BASE_URL}/upload/project/addendum/${project_id}/${order_id}`,
+    {
+      method: "PATCH",
+      body: fd,
+    }
+  );
 
   if (res.ok) {
     const data = await res.json();
     return [null, data];
   } else {
     const error = await res.json();
-    return [error, null]
+    return [error, null];
   }
-}
+};

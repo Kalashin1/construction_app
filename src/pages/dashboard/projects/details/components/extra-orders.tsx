@@ -4,17 +4,47 @@ import ProjectDetailCard from "./main-order-item/project-detail-card";
 import { getUserById } from "../../../helper/user";
 import { NotificationComponent, notify } from "../../../components/notification/toast";
 import PositionActionDropdown, { links as Links } from "./main-order-item/postion-action-dropdown";
+import { updateMultipleExtraOrderPositions } from "../../helper";
 
-const ExtraOrders = ({ positions, projectId, createdAt, extraOrderId, createdBy }: {
+const ExtraOrders = ({
+  positions,
+  projectId,
+  createdAt,
+  extraOrderId,
+  createdBy,
+  comment
+}: {
   positions: ProjectPositions[];
   projectId: string;
   createdAt: number;
   extraOrderId: string;
   createdBy: string;
+  comment: string;
 }) => {
+  console.log(positions)
   const [user, setUser] = useState<User>()
   const [selectedIds, updateSelectedId] = useState<string[]>([]);
   const [showPositionActionDropdown, updateShowPositionActionDropdown] = useState(false);
+
+  const updateExtraPosition = async (project_id, positions, status, addendum_id) => {
+    const [error, payload] = await updateMultipleExtraOrderPositions(project_id, positions, status, addendum_id);
+    if (error) {
+      notify(
+        (<NotificationComponent message="error updating status" />),
+        { className: 'bg-red-400 text-white' }
+      );
+      console.log(error);
+    }
+
+    if (payload) {
+      notify(
+        (<NotificationComponent message="status updated successfully" />),
+        { className: 'bg-green-600 text-white' }
+      );
+      console.log(payload);
+      location.reload()
+    }
+  }
   useEffect(() => {
     const setUp = async () => {
       const [error, _user] = await getUserById(createdBy);
@@ -35,14 +65,14 @@ const ExtraOrders = ({ positions, projectId, createdAt, extraOrderId, createdBy 
   }, [createdBy])
 
   const mainOrderLinks: Links[] = [
-    { text: 'In Progress', action: () => { }, status: "IN-PROGRESS" },
-    { text: 'Completed', action: () => { }, status: "COMPLETED" },
-    { text: 'Not Feasible', action: () => { }, status: "NOT-FEASIBLE" },
+    { text: 'In Progress', action: (status: string) => updateExtraPosition(projectId, selectedIds, status, extraOrderId), status: "IN PROGRESS" },
+    { text: 'Completed', action: (status: string) => updateExtraPosition(projectId, selectedIds, status, extraOrderId), status: "COMPLETED" },
+    { text: 'Not Feasible', action: (status: string) => updateExtraPosition(projectId, selectedIds, status, extraOrderId), status: "NOT-FEASIBLE" },
   ];
 
 
   return (
-    <div 
+    <div
       className="bg-white rounded-lg shadow-md my-8 py-6 dark:border-navy-700 dark:bg-navy-800 dark:text-white"
       onClick={() => updateShowPositionActionDropdown(false)}
     >
@@ -56,7 +86,7 @@ const ExtraOrders = ({ positions, projectId, createdAt, extraOrderId, createdBy 
         </h3>
         <h3>
           <span>Comment: </span>
-          <span>See chat history</span>
+          <span>{comment}</span>
           <button className="ml-6 outline-0 focus-within:outline-none text-black" onClick={(e) => {
             e.stopPropagation();
             updateShowPositionActionDropdown(true);
