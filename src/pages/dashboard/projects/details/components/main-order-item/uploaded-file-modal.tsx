@@ -1,14 +1,22 @@
 import { useState, useCallback } from "react";
 import FileModal from "../file-modal"
+import { ProjectPositions } from "../../../../../../types";
+import { updateProjectPosition } from "../../../helper";
+import { NotificationComponent, notify } from "../../../../components/notification/toast";
 
 const UploadedFileModal = ({
   title,
   closeModal,
-  image: images
+  image: images,
+  position,
+  project_id
 }: {
   title: string;
   closeModal: (...args: unknown[]) => void;
-  image: string[]
+  image: string[];
+  project_id: string;
+  position: ProjectPositions
+
 }) => {
   const [currentImage, setCurrentImage] = useState(images[0])
   console.log(images)
@@ -28,6 +36,32 @@ const UploadedFileModal = ({
     }
     setCurrentImage(previousImage)
   }, [currentImage, images])
+
+  const deleteImage = async () => {
+    const [error, payload] = await updateProjectPosition(
+      project_id,
+      {
+        ...position,
+        documentURL: images.filter((image) => image !== currentImage)
+      },
+      position.trade as string
+    );
+    if (error) {
+      notify(
+        (<NotificationComponent message="Error deleting file" />),
+        { className: 'bg-red-500 text-whitr' }
+      )
+      console.log(error);
+    }
+
+    if (payload) {
+      notify(
+        (<NotificationComponent message="File deleted successfully!" />),
+        { className: 'bg-green-500 text-whitr' }
+      )
+      location.reload()
+    }
+  }
   return (
     <FileModal
       closeModal={closeModal}
@@ -41,7 +75,9 @@ const UploadedFileModal = ({
 
           {title}
         </span>
-        <button>
+        <button
+          onClick={deleteImage}
+        >
           <i className="fas fa-trash" />
         </button>
 

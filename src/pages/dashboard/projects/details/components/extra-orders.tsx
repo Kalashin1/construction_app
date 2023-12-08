@@ -105,8 +105,16 @@ const ExtraOrders = ({
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="">
         {positions && positions.map((position, index) => (
-          <ProjectDetailCard selectedIds={selectedIds}
-            updateSelectedId={updateSelectedId} extraOrderId={extraOrderId} type="extraPosition" position={position} index={index + 1} project_id={projectId} />
+          <ProjectDetailCard
+            selectedIds={selectedIds}
+            updateSelectedId={updateSelectedId}
+            extraOrderId={extraOrderId}
+            type="extraPosition"
+            position={position}
+            index={index + 1}
+            project_id={projectId}
+            addendum_id={extraOrderId}
+          />
         ))}
       </div>
     </div>

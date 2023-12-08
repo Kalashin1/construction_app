@@ -3,22 +3,29 @@ import { Modal } from "../../../profie/components/account-settings"
 import { Button as UploadButton } from "../../../../auth/components";
 import { getFile } from "../../../helper/uploads";
 import { NotificationComponent, notify } from "../../../components/notification/toast";
-import { updateProjectPosition, uploadPositionFile } from "../../helper";
+import { updateProjectExtraPosition, updateProjectPosition, uploadExtraPositionFile, uploadPositionFile } from "../../helper";
 import { ProjectPositions } from "../../../../../types";
+import { useState } from "react";
 
 const UploadFileModal = ({
   closeModal,
   position,
   project_id,
-  trade
+  trade,
+  type,
+  addendum_id
 }: {
   closeModal: (...args: unknown[]) => void;
   project_id: string;
   position: ProjectPositions;
+  type: string
   trade: string;
+  addendum_id?: string
 }) => {
+  const [isLoading, setIsLoading] = useState(false)
 
   const uploadDocument = async () => {
+    setIsLoading(true)
     const [error, file] = await getFile(
       {
         'application/*': ['.pdf'],
@@ -27,6 +34,7 @@ const UploadFileModal = ({
       'project-document',
       true
     )
+    setIsLoading(false)
     if (error) {
       notify(
         (<NotificationComponent message={'error getting file!'} />),
@@ -39,7 +47,15 @@ const UploadFileModal = ({
     }
 
     if (file) {
-      const [err, payload] = await uploadPositionFile(project_id, position?.external_id!, trade, file[0])
+      setIsLoading(true)
+      type returnType = Awaited<ReturnType<typeof uploadPositionFile>>
+      let err: returnType[0], payload: returnType[1];
+      if (type === 'position') {
+        [err, payload] = await uploadPositionFile(project_id, position?.external_id!, trade, file)
+      } else {
+        [err, payload] = await uploadExtraPositionFile(project_id, position?.external_id!, addendum_id!, file)
+      }
+      setIsLoading(false)
       if (err) {
         console.log(err)
         notify(
@@ -53,15 +69,32 @@ const UploadFileModal = ({
       }
 
       if (payload) {
+        
+        console.log(payload)
         const documentURL: string[] = [];
+        setIsLoading(true)
         if (position.documentURL)
           documentURL.push(...position.documentURL)
 
-        documentURL.push(payload.publicUrl)
-        const [_error, data] = await updateProjectPosition(project_id, {
-          ...position,
-          documentURL,
-        }, trade)
+        documentURL.push(...payload)
+        let _error, data;
+        if (type === 'project') {
+          [_error, data] = await updateProjectPosition(project_id, {
+            ...position,
+            documentURL,
+          }, trade)
+        } else {
+          [_error, data] = await updateProjectExtraPosition(
+            project_id,
+            {
+              ...position,
+              documentURL,
+            },
+            position.trade!,
+            addendum_id
+          )
+        }
+        setIsLoading(false)
         if (_error) {
           console.log('upload position _error', _error);
           notify(
@@ -95,6 +128,7 @@ const UploadFileModal = ({
       <div className="card">
         <UploadButton
           label="Select File"
+          disabled={isLoading}
           action={uploadDocument}
         />
       </div>

@@ -125,20 +125,51 @@ export const uploadPositionFile = async (
   project_id: string,
   position: string,
   trade_id: string,
-  file: File
+  files: File[]
 ): Promise<
   [
     object | null,
-    {
-      message: string;
-      publicUrl: string;
-    } | null
+    string[] | null
   ]
 > => {
   const fd = new FormData();
-  fd.append("position-document", file);
+  files.forEach((file) => {
+    fd.append("position-document", file);
+  })
   const res = await fetch(
     `${API_BASE_URL}/project/position/${project_id}/${trade_id}/${position}`,
+    {
+      method: "POST",
+      body: fd,
+    }
+  );
+
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+};
+
+export const uploadExtraPositionFile = async (
+  project_id: string,
+  position: string,
+  addendum: string,
+  files: File[]
+): Promise<
+  [
+    object | null,
+    string[] | null
+  ]
+> => {
+  const fd = new FormData();
+  files.forEach((file) => {
+    fd.append("addendum-document", file);
+  })
+  const res = await fetch(
+    `${API_BASE_URL}/project/extra-position/${project_id}/${addendum}/${position}`,
     {
       method: "POST",
       body: fd,
@@ -178,7 +209,6 @@ export const updatePositionsByTrade = async (
 
 export const addNewAddendum = async (
   project_id: string,
-  trade_id: string,
   positions: ProjectPositions[],
   creator: string,
   acceptor: string,
@@ -187,7 +217,7 @@ export const addNewAddendum = async (
   console.log("creator", creator);
   const res = await fetch(`${API_BASE_URL}/project/extra/${project_id}`, {
     method: "POST",
-    body: JSON.stringify({ positions, trade_id, creator, acceptor, comment }),
+    body: JSON.stringify({ positions, creator, acceptor, comment }),
     headers: {
       "Content-type": "application/json",
     },
@@ -303,8 +333,8 @@ export const updateMultipleExtraOrderPositions = async (
 };
 
 export const billMultipleExtraOrderPositions = async (
-  addendum_ids: string[], 
-  project_id: string, 
+  addendum_ids: string[],
+  project_id: string,
   executor_id: string
 ) => {
   const res = await fetch(`${API_BASE_URL}/project/addendum/multiple/bill`, {

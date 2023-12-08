@@ -19,7 +19,8 @@ export const ProjectDetailCard = ({
   type,
   extraOrderId,
   selectedIds,
-  updateSelectedId
+  updateSelectedId,
+  addendum_id
 }: {
   position: ProjectPositions;
   index: number;
@@ -28,6 +29,7 @@ export const ProjectDetailCard = ({
   extraOrderId?: string;
   selectedIds?: string[];
   updateSelectedId?: Dispatch<SetStateAction<string[]>>
+  addendum_id?: string
 }) => {
   const [showDropdown, updateShowDropDown] = useState(false);
   const [showCommentModal, updateShowCommentModal] = useState(false);
@@ -107,6 +109,8 @@ export const ProjectDetailCard = ({
         )}
         {showFileModal && (
           <UploadedFileModal
+            project_id={project_id}
+            position={position}
             closeModal={() => updateShowFileModal(false)}
             title={position?.external_id!}
             image={position?.documentURL as string[]}
@@ -124,7 +128,9 @@ export const ProjectDetailCard = ({
         {showUploadFileModal && isContractorOrOwner && (
           <UploadFileModal
             position={position}
+            type={type}
             project_id={project_id}
+            addendum_id={addendum_id}
             trade={position.trade!}
             closeModal={() => updateShowUploadFileModal(false)}
           />)}
