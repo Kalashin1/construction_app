@@ -202,7 +202,6 @@ const ProjectCard = ({ project }: {
     console.log(payload);
   }
 
-  console.log('subtotals', getSubTotals())
   return (
     <div className="bg-white rounded-md py-6 shadow dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="flex flex-col md:flex-row md:justify-between px-6 mb-4">
@@ -348,38 +347,42 @@ const ProjectCard = ({ project }: {
           </div>
         </div>
       </div>
-      <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
-      <div className="px-4 py-6">
-        {user?.role === 'executor' && (<Button
-          label="Bill"
-          action={billMultipleAddendums}
-          textColor="w-1/6 bg-gray-300 dark:bg-navy-500 text-gray-900 dark:text-white"
-        />)}
-        {
-          project.extraPositions && project.extraPositions.map((extraPos, index) => {
-            return (
-              <div className="flex flex-row justify-between w-full items-center mb-4">
-                <Link key={index} className="text-blue-500 underline font-bold" to={`/addendum-detail/${project._id}/${extraPos.id}`}>
-                  Addendum - {index + 1}
-                </Link>
-                <input
-                  type="checkbox"
-                  checked={selectedAddendums.find((ad) => ad === extraPos.id) ? true : false}
-                  onChange={() => {
-                    if (selectedAddendums.find((ad) => ad === extraPos.id)) {
-                      updateSelectedAddendums(
-                        selectedAddendums.filter((ad) => ad !== extraPos.id)
-                      )
-                      return
-                    }
-                    updateSelectedAddendums([...selectedAddendums, extraPos.id])
-                  }}
-                />
-              </div>
-            )
-          })
-        }
-      </div>
+      {project.extraPositions && (
+        <>
+          <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+          <div className="px-4 py-6">
+            {user?.role === 'executor' && (<Button
+              label="Bill"
+              action={billMultipleAddendums}
+              textColor="w-1/6 bg-gray-300 dark:bg-navy-500 text-gray-900 dark:text-white"
+            />)}
+            {
+              project.extraPositions && project.extraPositions.map((extraPos, index) => {
+                return (
+                  <div className="flex flex-row justify-between w-full items-center mb-4">
+                    <Link key={index} className="text-blue-500 underline font-bold" to={`/addendum-detail/${project._id}/${extraPos.id}`}>
+                      Addendum - {index + 1}
+                    </Link>
+                    <input
+                      type="checkbox"
+                      checked={selectedAddendums.find((ad) => ad === extraPos.id) ? true : false}
+                      onChange={() => {
+                        if (selectedAddendums.find((ad) => ad === extraPos.id)) {
+                          updateSelectedAddendums(
+                            selectedAddendums.filter((ad) => ad !== extraPos.id)
+                          )
+                          return
+                        }
+                        updateSelectedAddendums([...selectedAddendums, extraPos.id])
+                      }}
+                    />
+                  </div>
+                )
+              })
+            }
+          </div>
+        </>
+      )}
 
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="p-6">

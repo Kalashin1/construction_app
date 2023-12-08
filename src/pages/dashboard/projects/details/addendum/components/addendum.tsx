@@ -122,7 +122,6 @@ const AddAddenDum = () => {
     if (confirm(('Are you sure you want to add this addedum'))) {
       const [error, payload] = await addNewAddendum(
         project_id!,
-        selectedTrade?.id!,
         addendums,
         user?._id!,
         user?.role === 'executor' ? project?.contractor! : executor,
