@@ -63,17 +63,29 @@ const ProjectCard = ({ project }: {
           const positions = extraPos.positions[key].positions
           const mappedPositions = positions.map((position) => Math.ceil(Number(position?.price)) * Number(position.crowd));
           if (mappedPositions[0] && (user?._id === extraPos.positions[key].executor || user?._id === project.contractor)) {
-            const subTotal = positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd)))?.reduce((prev, current) => prev + current);
-            if (subTotals[key]) {
-              subTotals[key] += subTotal
+            const subTotal = mappedPositions?.reduce((prev, current) => prev + current);
+            const existingSubTotal = subTotals.find((item) => item.key === `Addendum-${index + 1}`);
+            if (existingSubTotal) {
+              const _price = subTotals[
+                // @ts-ignore
+                subTotals.indexOf(existingSubTotal)
+              ].price;
+              const priceParsedAsNumber = parseFloat(_price);
+              const updatedPrice = subTotal + priceParsedAsNumber;
+              existingSubTotal.price = `${updatedPrice}`;
             } else {
-              subTotals.push({ key: `Addendum-${index + 1}`, price: formatter.format(subTotal) ?? '0.00' })
+              subTotals.push({ key: `Addendum-${index + 1}`, price: `${subTotal}` ?? '0.00' })
             }
           }
         }
       }
     })
-    return subTotals;
+    return subTotals.map((subTotal) => {
+      if (subTotal.key.includes('Addendum')) {
+        return ({ price: formatter.format(parseFloat(subTotal.price)), key: subTotal.key });
+      }
+      return ({ price: subTotal.price, key: subTotal.key })
+    });
   }, [project.contractor, project.extraPositions, project.positions, user?._id])
 
 

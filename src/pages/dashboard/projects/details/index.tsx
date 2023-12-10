@@ -172,7 +172,7 @@ const ProjectDetails = () => {
           <ConstructionSchedule />
           <Documents />
 
-          {project &&
+          {project && user?.role !== 'contractor' &&
             (
               <ScopeOfService
                 project={project}
