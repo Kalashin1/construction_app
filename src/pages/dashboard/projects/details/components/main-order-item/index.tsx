@@ -1,12 +1,14 @@
-import { ProjectPositions } from "../../../../../../types";
+import { IProject, ProjectPositions } from "../../../../../../types";
 import { PlusIcon, ChevronRightIcon } from "../../svgs";
 import ProjectDetailCard from "./project-detail-card";
 import AddAddendum from "./add-addendum";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateMultiplePositionStatus } from "../../../helper";
 import { NotificationComponent, notify } from "../../../../components/notification/toast";
 import PositionActionDropdown, { links as Links } from "./postion-action-dropdown";
+import { UserAuthContext } from "../../../../../../App";
+import { getProject } from "../../../../helper/project";
 
 const Button = ({
   action
@@ -32,13 +34,29 @@ const MainOrderItem = ({ positions, projectId }: {
   projectId: string
 }) => {
   const navigate = useNavigate();
-  console.log(positions.filter((pos) => {
-    if (pos.documentURL) {
-      return pos
+  useEffect(() => {
+    const setUp = async () => {
+      const [error, _project] = await getProject(projectId);
+      if (error) {
+        notify(
+          (<NotificationComponent message="Error fetching project" />),
+          { className: 'bg-red-500 text-white' }
+        );
+        console.log(error);
+      }
+
+      
+      if (_project) {
+        setProject(_project);
+      }
     }
-  }))
+
+    setUp()
+  }, [projectId])
   const [showAddAddendum, updateShowAddAddendum] = useState(false)
   const [selectedIds, updateSelectedId] = useState<string[]>([]);
+  const [project, setProject] = useState<IProject>()
+  const { user } = useContext(UserAuthContext);
 
   const updatePositionsStatus = () => {
     return async (status: "COMPLETED" | "IN PROGRESS" | "NOT-FEASIBLE") => {
@@ -79,12 +97,12 @@ const MainOrderItem = ({ positions, projectId }: {
           <div className="flex flex-row items-center justify-evenly w-3/6 md:w-3/12 my-4 relative">
             <ChevronRightIcon width={10} color="#000" />
             <h3 className="font-bold">Main order items</h3>
-            <button className="outline-0 focus-within:outline-none" onClick={(e) => {
+            {user && user.role !== 'contractor' && project?.executors.find((exe) => exe === user?._id) && (<button className="outline-0 focus-within:outline-none" onClick={(e) => {
               e.stopPropagation();
               updateShowPositionActionDropdown(true);
             }}>
               <i className="fas fa-chevron-down" />
-            </button>
+            </button>)}
 
             {showPositionActionDropdown && (
               <div className="absolute right-6 top-8">

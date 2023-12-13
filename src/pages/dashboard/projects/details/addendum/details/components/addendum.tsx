@@ -25,7 +25,6 @@ const AddendumPage = () => {
           (<NotificationComponent message="Error fetching project" />),
           { className: 'bg-red-500 text-white' }
         )
-        console.log(error)
       }
 
       if (payload) {
@@ -40,7 +39,6 @@ const AddendumPage = () => {
         }
 
         setPositions(_positions);
-        console.log(user?.role)
         if (extraPosition?.createdBy._id === user?._id) {
           updateShowAcceptButton(false);
         }
@@ -62,7 +60,6 @@ const AddendumPage = () => {
         (<NotificationComponent message="Error interact with addendum" />),
         { className: 'bg-red-500 text-white' }
       )
-      console.log(error)
     }
 
     if (data) {
@@ -70,7 +67,6 @@ const AddendumPage = () => {
         (<NotificationComponent message="You have interacted with addendum" />),
         { className: 'bg-red-500 text-white' }
       );
-      console.log(data);
       location.reload();
     }
   }

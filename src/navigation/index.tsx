@@ -43,6 +43,7 @@ import AddProductPage from '../pages/dashboard/shop/product/add';
 import ProductOverview from '../pages/dashboard/shop/product/overview';
 import AddendumDetail from '../pages/dashboard/projects/details/addendum/details';
 import MultipleProductUpload from '../pages/dashboard/shop/product/multiple-product-upload';
+import ConstructionSchedule from '../pages/dashboard/projects/details/schedule';
 
 
 const router = createBrowserRouter([
@@ -218,6 +219,10 @@ const router = createBrowserRouter([
   {
     path: SCREENS.UPLOAD_MULTIPLE_PRODUCTS,
     element: (<MultipleProductUpload />)
+  },
+  {
+    path: SCREENS.CONSTRUCTION_SCHEDULE,
+    element: (<ConstructionSchedule />)
   },
 ]);
 
