@@ -169,10 +169,10 @@ const ProjectDetails = () => {
         <div className="my-6">
 
           {project && (<ProjectCard project={project} />)}
-          <ConstructionSchedule />
+          {project && (<ConstructionSchedule project_id={project?._id} />)}
           <Documents />
 
-          {project &&
+          {project && user?.role !== 'contractor' &&
             (
               <ScopeOfService
                 project={project}

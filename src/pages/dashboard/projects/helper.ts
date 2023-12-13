@@ -126,16 +126,11 @@ export const uploadPositionFile = async (
   position: string,
   trade_id: string,
   files: File[]
-): Promise<
-  [
-    object | null,
-    string[] | null
-  ]
-> => {
+): Promise<[object | null, string[] | null]> => {
   const fd = new FormData();
   files.forEach((file) => {
     fd.append("position-document", file);
-  })
+  });
   const res = await fetch(
     `${API_BASE_URL}/project/position/${project_id}/${trade_id}/${position}`,
     {
@@ -158,16 +153,11 @@ export const uploadExtraPositionFile = async (
   position: string,
   addendum: string,
   files: File[]
-): Promise<
-  [
-    object | null,
-    string[] | null
-  ]
-> => {
+): Promise<[object | null, string[] | null]> => {
   const fd = new FormData();
   files.forEach((file) => {
     fd.append("addendum-document", file);
-  })
+  });
   const res = await fetch(
     `${API_BASE_URL}/project/extra-position/${project_id}/${addendum}/${position}`,
     {
@@ -403,6 +393,22 @@ export const uploadAddendumFiles = async ({
       body: fd,
     }
   );
+
+  if (res.ok) {
+    const data = await res.json();
+    return [null, data];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+};
+
+export const updateProject = async (project_id: string, project: Partial<IProject>) => {
+  const res = await fetch(`${API_BASE_URL}/project/update/${project_id}`, {
+    method: "POST",
+    body: JSON.stringify(project),
+    headers: { "Content-Type": "application/json" },
+  });
 
   if (res.ok) {
     const data = await res.json();

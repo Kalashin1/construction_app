@@ -21,7 +21,6 @@ const ExtraOrders = ({
   createdBy: string;
   comment: string;
 }) => {
-  console.log(positions)
   const [user, setUser] = useState<User>()
   const [selectedIds, updateSelectedId] = useState<string[]>([]);
   const [showPositionActionDropdown, updateShowPositionActionDropdown] = useState(false);
@@ -41,7 +40,6 @@ const ExtraOrders = ({
         (<NotificationComponent message="status updated successfully" />),
         { className: 'bg-green-600 text-white' }
       );
-      console.log(payload);
       location.reload()
     }
   }
@@ -53,7 +51,6 @@ const ExtraOrders = ({
           (<NotificationComponent message="error fetching addendum creator" />),
           { className: 'bg-red-400 text-white' }
         );
-        console.log(error);
       }
 
       if (_user) {

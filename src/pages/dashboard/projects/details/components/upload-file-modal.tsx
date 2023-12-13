@@ -78,11 +78,11 @@ const UploadFileModal = ({
 
         documentURL.push(...payload)
         let _error, data;
-        if (type === 'project') {
+        if (type === 'position') {
           [_error, data] = await updateProjectPosition(project_id, {
             ...position,
             documentURL,
-          }, trade)
+          }, position?.trade!)
         } else {
           [_error, data] = await updateProjectExtraPosition(
             project_id,

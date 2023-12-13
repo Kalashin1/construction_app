@@ -251,12 +251,14 @@ export interface IProject {
   billingDetails: string;
   completed_at: number;
   canceled_at: number;
-  sheduleByTrade: TradeSchedule[];
+  sheduleByTrade: ConstructionScheduleType[];
+}
+export type ConstructionScheduleType = {
+  name?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
-type TradeSchedule = {
-  string: string;
-};
 
 export const PROJECT_STATUS = [
   "CREATED",
