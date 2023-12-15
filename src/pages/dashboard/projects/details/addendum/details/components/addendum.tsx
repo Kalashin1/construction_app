@@ -57,15 +57,15 @@ const AddendumPage = () => {
     const [error, data] = await interactWithProjectAddendum(payload);
     if (error) {
       notify(
-        (<NotificationComponent message="Error interact with addendum" />),
+        (<NotificationComponent message="Error interacting with addendum" />),
         { className: 'bg-red-500 text-white' }
       )
     }
 
     if (data) {
       notify(
-        (<NotificationComponent message="You have interacted with addendum" />),
-        { className: 'bg-red-500 text-white' }
+        (<NotificationComponent message={`Addendum ${payload.action}`} />),
+        { className: 'bg-green-500 text-white' }
       );
       location.reload();
     }

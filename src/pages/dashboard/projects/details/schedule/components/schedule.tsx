@@ -30,6 +30,9 @@ const ScheduleProject = () => {
 
       if (_project) {
         setProject(_project);
+        if (_project.sheduleByTrade) {
+          updateConstructionSchedule(_project.sheduleByTrade)
+        }
       }
     }
 
@@ -37,11 +40,12 @@ const ScheduleProject = () => {
   }, [id]);
 
   const changeConstructionSchedule = async () => {
-    const [error, payload] = await updateProject(id!, {sheduleByTrade: constructionSchedule});
+    console.log(constructionSchedule)
+    const [error, payload] = await updateProject(id!, { sheduleByTrade: constructionSchedule });
     if (error) {
       notify(
         (<NotificationComponent message="Error updatign construction schedule" />),
-        { className: 'bg-red-500 text-white'}
+        { className: 'bg-red-500 text-white' }
       );
       console.log(error)
     }
@@ -75,12 +79,17 @@ const ScheduleProject = () => {
             <div className={`px-4 py-2 border border-gray-300 rounded-md my-4`} key={index}>
               <Flatpickr
                 data-enable-time
-                value={constructionSchedule.find((consSche) => consSche.name === _key)?.startDate}
+                value={constructionSchedule?.find((consSche) => consSche.name === _key)?.startDate}
                 onChange={([date]) => {
-                  const schedule = constructionSchedule.find((consSche) => consSche.name === _key)
-                  const filteredShedule = constructionSchedule.filter((consSche) => consSche.name !== _key)
-                  const updatedSchedule = [...filteredShedule, { startDate: date, endDate: schedule?.endDate, name: _key }]
-                  updateConstructionSchedule(updatedSchedule)
+                  const schedule = constructionSchedule?.find((consSche) => consSche.name === _key)
+                  if (schedule) {
+                    const filteredShedule = constructionSchedule?.filter((consSche) => consSche.name !== _key)
+                    const updatedSchedule = [...filteredShedule, { startDate: date, endDate: schedule?.endDate, name: _key }]
+                    updateConstructionSchedule(updatedSchedule)
+                  } else {
+                    constructionSchedule.push({ startDate: date, endDate: new Date().toDateString(), name: _key })
+                    updateConstructionSchedule(constructionSchedule)
+                  }
                 }}
               />
             </div>
@@ -92,12 +101,17 @@ const ScheduleProject = () => {
             <div className={`px-4 py-2 border border-gray-300 rounded-md my-4`} key={index}>
               <Flatpickr
                 data-enable-time
-                value={constructionSchedule.find((consSche) => consSche.name === _key)?.endDate}
+                value={constructionSchedule?.find((consSche) => consSche.name === _key)?.endDate}
                 onChange={([date]) => {
-                  const schedule = constructionSchedule.find((consSche) => consSche.name === _key)
-                  const filteredShedule = constructionSchedule.filter((consSche) => consSche.name !== _key)
-                  const updatedSchedule = [...filteredShedule, { startDate: schedule?.startDate, name: _key, endDate: date }]
-                  updateConstructionSchedule(updatedSchedule)
+                  const schedule = constructionSchedule?.find((consSche) => consSche.name === _key)
+                  if (schedule) {
+
+                    const filteredShedule = constructionSchedule?.filter((consSche) => consSche.name !== _key)
+                    const updatedSchedule = [...filteredShedule, { startDate: schedule?.startDate, name: _key, endDate: date }]
+                    updateConstructionSchedule(updatedSchedule)
+                  } else {
+                    updateConstructionSchedule([...constructionSchedule, { startDate: new Date().toDateString(), name: _key, endDate: date }])
+                  }
                 }}
               />
             </div>

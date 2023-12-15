@@ -1,14 +1,25 @@
-import { User } from "../../../../../types";
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+import { Timeline, User } from "../../../../../types";
+import "flatpickr/dist/themes/material_green.css";
+import { Dispatch, SetStateAction } from "react";
+import Flatpickr from "react-flatpickr";
 
 const DraftUsers = ({
   type,
   number,
   createdAt,
-  sentTo
+  sentTo,
+  timeline,
+  setTimeline
 }: {
-  type: "INVOICE"|"DRAFT";
+  type: "INVOICE" | "DRAFT";
   number: number;
   createdAt: string;
+  timeline?: {
+    startDate: string;
+    endDate: string;
+  };
+  setTimeline: Dispatch<SetStateAction<Timeline>>
   sentTo: Pick<User, '_id' | 'email' | 'first_name' | 'address'>
 }) => {
   return (
@@ -24,6 +35,32 @@ const DraftUsers = ({
           </p>
           <p>Due: <span className="font-semibold"> July 23, 2021</span></p>
         </div>
+      </div>
+      <div>
+        <span className="flex flex-row space-x-2 items-center">
+          <h3>Start Date</h3>
+          <div className={`px-4 py-2 border border-gray-300 rounded-md my-4 ml-4`}>
+            <Flatpickr
+              data-enable-time
+              value={timeline?.startDate ?? new Date()}
+              onChange={([date]) => {
+                setTimeline({ startDate: date, endDate: timeline?.endDate! })
+              }}
+            />
+          </div>
+        </span>
+        <span className="flex flex-row space-x-2 items-center">
+          <h3>End Date</h3>
+          <div className={`px-4 py-2 border border-gray-300 rounded-md my-4 ml-4`}>
+            <Flatpickr
+              data-enable-time
+              value={timeline?.endDate ?? new Date()}
+              onChange={([date]) => {
+                setTimeline({ startDate: timeline?.endDate!, endDate: date })
+              }}
+            />
+          </div>
+        </span>
       </div>
       <div className="mt-4 text-center sm:mt-0 sm:text-right">
         <p className="text-lg font-medium text-slate-600 dark:text-navy-100">

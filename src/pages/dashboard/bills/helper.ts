@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../../../navigation/constants";
-import { Draft, InvoiceInterface } from "../../../types";
+import { Draft, InvoiceInterface, Timeline } from "../../../types";
 
 export const getUserDrafts = async (
   user_id: string
@@ -47,11 +47,12 @@ export const getDraftById = async (
 
 export const updateDraftStatus = async (
   draft_id: string,
-  status: number
+  status: number,
+  timeline?: Timeline
 ): Promise<[object | null, Draft | null]> => {
   const res = await fetch(`${API_BASE_URL}/draft/update/${draft_id}`, {
     method: "PATCH",
-    body: JSON.stringify({ status }),
+    body: JSON.stringify({ status, timeline }),
     headers: {
       "Content-Type": "application/json",
     },
@@ -105,4 +106,3 @@ export const getUserInvoices = async (
     return [error, null];
   }
 };
-

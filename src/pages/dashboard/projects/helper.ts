@@ -179,7 +179,7 @@ export const updatePositionsByTrade = async (
   project_id: string,
   trade: string[],
   status: string
-): Promise<[object | null, IProject | null]> => {
+): Promise<[object | null, IProject | null | Draft]> => {
   const res = await fetch(`${API_BASE_URL}/project/postitions/${project_id}`, {
     method: "PATCH",
     body: JSON.stringify({ trade, status }),
