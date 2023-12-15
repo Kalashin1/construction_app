@@ -1,24 +1,27 @@
 import { useContext, useState } from "react"
 import { Draft, INVOICE_STATUS, Timeline } from "../../../../../types"
 import { formatter } from "../../../helper/tools"
-import DraftFooter from "./draft-footer"
-import DraftHeader from "./draft-header"
-import DraftPositions from "./draft-positions"
-import DraftUsers from "./draft-users"
-import { UserAuthContext } from "../../../../../App"
-import { notify, NotificationComponent } from "../../../components/notification/toast"
-import { updateDraftStatus } from "../../helper"
+import DraftFooter from "./draft-footer";
+import DraftHeader from "./draft-header";
+import DraftPositions from "./draft-positions";
+import DraftUsers from "./draft-users";
+import { UserAuthContext } from "../../../../../App";
+import { notify, NotificationComponent } from "../../../components/notification/toast";
+import { updateDraftStatus } from "../../helper";
+import { useNavigate } from "react-router-dom";
 
 const DraftDetails = ({ draft, type }: {
   draft: Draft,
   type: "DRAFT" | "INVOICE"
 }) => {
   const { user } = useContext(UserAuthContext);
+  const navigate = useNavigate();
+  console.log(draft)
   const [timeline, setTimeLine] = useState<Timeline>({
     startDate: new Date().toDateString(),
     endDate: new Date().toDateString(),
   })
-  const updateDraft = async (draft_id: string, updateType: 'accept' | 'reject' | 'confirm') => {
+  const updateDraft = async (draft_id: string, updateType: 'accept' | 'reject' | 'confirm' | 'delete') => {
     let error, payload
     if (updateType === 'accept') {
       [error, payload] = await updateDraftStatus(draft_id, 2)
@@ -30,6 +33,10 @@ const DraftDetails = ({ draft, type }: {
 
     if (updateType === 'confirm') {
       [error, payload] = await updateDraftStatus(draft_id, 1, timeline)
+    }
+
+    if (updateType === 'delete') {
+      [error, payload] = await updateDraftStatus(draft_id, -1)
     }
 
     if (error) {
@@ -51,6 +58,9 @@ const DraftDetails = ({ draft, type }: {
           closeOnClick: true,
         }
       )
+      if (updateType === 'delete') {
+        return navigate(`/detail/${draft?.project?._id}`)
+      }
       window.location.reload();
     }
   }
@@ -73,14 +83,38 @@ const DraftDetails = ({ draft, type }: {
         <DraftFooter total={formatter.format(draft.amount)} />
       </div>
       <div className="my-2 p-4 flex justify-between">
-        {(draft.reciepient._id === user?._id && draft.status === INVOICE_STATUS[0]) || (draft.status === 'PENDING') && (<button className="bg-green-700 py-1 px-4 rounded text-white" onClick={() => {
-          if (draft.status === 'PENDING') {
-            updateDraft(draft._id, 'confirm')
-          } else {
-            updateDraft(draft._id, 'accept')
-          }
-        }}>Accept</button>)}
-        {draft.reciepient._id === user?._id && draft.status === INVOICE_STATUS[0] && (<button className="bg-red-500 py-1 px-4 rounded text-white" onClick={() => updateDraft(draft._id, 'reject')}>Reject</button>)}
+        {(draft.status === 'PENDING') && (draft?.owner?._id === user?._id) && (
+          <button
+            className="bg-green-700 py-1 px-4 rounded text-white"
+            onClick={() => updateDraft(draft._id, 'confirm')
+            }>
+            Accept
+          </button>
+        )}
+        {(draft.reciepient._id === user?._id && draft.status === INVOICE_STATUS[0]) && (
+          <button
+            className="bg-green-700 py-1 px-4 rounded text-white"
+            onClick={() => updateDraft(draft._id, 'accept')}
+          >
+            Accept
+          </button>
+        )}
+        {draft.reciepient._id === user?._id && draft.status === INVOICE_STATUS[0] && (
+          <button
+            className="bg-red-500 py-1 px-4 rounded text-white"
+            onClick={() => updateDraft(draft._id, 'reject')}
+          >
+            Reject
+          </button>
+        )}
+        {(draft.status === 'PENDING') && (draft?.owner?._id === user?._id) && (
+          <button
+            className="bg-red-500 py-1 px-4 rounded text-white"
+            onClick={() =>  updateDraft(draft._id, 'delete')}
+          >
+            Reject
+          </button>
+        )}
       </div>
     </div>
   )
