@@ -7,6 +7,7 @@ import { _ProjectPosition } from "../../../components/project-lists/components/a
 import { updatePositionsByTrade } from "../../../helper";
 import { NotificationComponent, notify } from "../../../../components/notification/toast";
 import { UserAuthContext } from "../../../../../../App";
+import { useNavigate } from "react-router-dom";
 // import { ProjectPositions } from "../../../../../../types";
 
 const MultiplePositionModal = ({
@@ -18,6 +19,8 @@ const MultiplePositionModal = ({
   positions: _ProjectPosition;
   project_id: string
 }) => {
+  const navigate = useNavigate();
+
   const [showPositions, updateShowPositions] = useState(false);
   const [showActions, updateShowActions] = useState(false);
   const [selectedIds, updateSelectedIds] = useState<string[]>([]);
@@ -27,6 +30,8 @@ const MultiplePositionModal = ({
   const actions = [
     { text: 'BILL', action: "BILLED" }, { text: 'COMPLETE', action: "COMPLETED" }, { text: "NOT FEASIBLE", action: "NOT FEASIBLE" }] as const;
   const [action, setAction] = useState<typeof actions[number]>(actions[2])
+
+
   const updateMultiplePositionStatus = async (trade: string[], action: string) => {
     const [error, payload] = await updatePositionsByTrade(project_id, trade, action);
     if (error) {
@@ -48,6 +53,9 @@ const MultiplePositionModal = ({
           closeOnClick: true,
         }
       )
+      if (action === 'BILLED' && 'reciepient' in payload) {
+        navigate(`/draft/${payload._id}`)
+      }
       console.log(payload);
     }
   }
@@ -74,9 +82,9 @@ const MultiplePositionModal = ({
           <AnimatePresence>
             {showPositions && Object.keys(positions).map((position, index) => {
               if (
-                positions[position].executor === user?._id &&
+                positions[position]?.executor === user?._id &&
                 !(
-                  positions[position].positions[0].status === 'BILLED'
+                  positions[position]?.positions[0]?.status === 'BILLED'
                 )
               )
                 return (

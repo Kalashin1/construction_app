@@ -7,7 +7,6 @@ import moment from 'moment'
 import { Link } from "react-router-dom";
 import { getProject } from '../../../helper/project';
 import { NotificationComponent, notify } from '../../../components/notification/toast';
-import { IProject } from '../../../../../types';
 import { FC, useEffect, useState } from 'react';
 import { TradeIcons } from '../helper';
 
@@ -32,7 +31,6 @@ const ConstructionSchedule = ({
 }: {
   project_id: string
 }) => {
-  const [project, setProject] = useState<IProject>();
   const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
@@ -49,16 +47,13 @@ const ConstructionSchedule = ({
       }
 
       if (payload) {
-        setProject(payload);
-        const _events = payload.sheduleByTrade.map((trade, index) => ({ id: index, title: trade.name!, start: new Date(trade.startDate!), end: new Date(trade.endDate!), allDay: true }))
+        const _events = payload?.sheduleByTrade?.map((trade, index) => ({ id: index, title: trade.name!, start: new Date(trade.startDate!), end: new Date(trade.endDate!), allDay: true }))
         setEvents(_events)
       }
     }
 
     setUp()
   }, [project_id])
-
-  console.log('project', project?.sheduleByTrade);
   return (
     <div className="w-full">
       <div className="flex flex-row justify-between items-center">
@@ -156,7 +151,7 @@ const ConstructionSchedule = ({
           </li>
         </ol> */}
         <div className="bg-white my-4 rounded-md shadow p-6 w-full dark:border-navy-700 dark:bg-navy-800 dark:text-white">
-          {events && (<Calendar
+          {(<Calendar
             localizer={localizer}
             events={events}
             startAccessor="start"

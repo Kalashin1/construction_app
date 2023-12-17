@@ -306,18 +306,36 @@ export const INVOICE_STATUS = [
   "BILLED",
 ] as const;
 
+
+export const DRAFT_STATUS = [
+  "PENDING",
+  "REQUESTED",
+  "ACCEPTED",
+  "DECLINED",
+  "BILLED",
+] as const;
+
 export interface Draft {
   project: IProject;
   owner: User;
   reciepient: User;
-  status: (typeof INVOICE_STATUS)[number];
+  status: (typeof DRAFT_STATUS)[number];
   _id: string;
   createdAt: string;
   amount: number;
   positions: ProjectPositions[];
   number: number;
   updatedAt: string;
+  timeline?: { 
+    startDate: string; 
+    endDate: string; 
+  }; 
 }
+
+export type Timeline = { 
+  startDate: string; 
+  endDate: string; 
+};
 
 export type CreateDraftParam = {
   project: string;

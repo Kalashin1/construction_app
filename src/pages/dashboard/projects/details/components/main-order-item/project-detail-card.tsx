@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, Dispatch, SetStateAction } from "react";
 import { ProjectPositions, User } from "../../../../../../types";
 import { getUserById } from "../../../../helper/user";
-import { TradeIcons } from "../../helper";
+import { TradeIcons, requiredPositions } from "../../helper";
 import { FileIcon } from "../../svgs";
 import AddCommentModal from "../add-comment-modal";
 import UploadFileModal from "../upload-file-modal";
@@ -74,6 +74,11 @@ export const ProjectDetailCard = ({
         <button className={`${TradeIcons[position?.tradeName!]?.bg} mx-2 px-2 py-1 text-small text-white rounded-md`}>
           {position?.external_id}
         </button>
+        {requiredPositions.find((ext_id) => ext_id === position.external_id) && !position.documentURL && (
+          <button onClick={() => updateShowFileModal(true)}>
+            <i style={{ color: `${!isSelectd ? TradeIcons[position?.tradeName!]?.fileColor : 'white'}` }} className="fas fa-cloud-arrow-up text-xl" />
+          </button>
+        )}
         {position.documentURL && (<button onClick={() => updateShowFileModal(true)}>
           <FileIcon width={15} color={`${!isSelectd ? TradeIcons[position?.tradeName!]?.fileColor : 'white'}`} />
         </button>)}
