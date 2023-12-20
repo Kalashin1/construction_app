@@ -205,6 +205,7 @@ export type ProjectPositionObject = {
     executor: string;
     name: string;
     contract?: string;
+    status: string;
     id: string;
     accepted: boolean;
   };
@@ -257,8 +258,7 @@ export type ConstructionScheduleType = {
   name?: string;
   startDate?: string;
   endDate?: string;
-}
-
+};
 
 export const PROJECT_STATUS = [
   "CREATED",
@@ -306,7 +306,6 @@ export const INVOICE_STATUS = [
   "BILLED",
 ] as const;
 
-
 export const DRAFT_STATUS = [
   "PENDING",
   "REQUESTED",
@@ -324,17 +323,27 @@ export interface Draft {
   createdAt: string;
   amount: number;
   positions: ProjectPositions[];
+  addendums: {
+    id: string;
+    positions: ProjectPositions[];
+    comment: string;
+    createdBy: {
+      _id: string,
+      role: string
+    };
+    createdAt: number;
+  }[];
   number: number;
   updatedAt: string;
-  timeline?: { 
-    startDate: string; 
-    endDate: string; 
-  }; 
+  timeline?: {
+    startDate: string;
+    endDate: string;
+  };
 }
 
-export type Timeline = { 
-  startDate: string; 
-  endDate: string; 
+export type Timeline = {
+  startDate: string;
+  endDate: string;
 };
 
 export type CreateDraftParam = {

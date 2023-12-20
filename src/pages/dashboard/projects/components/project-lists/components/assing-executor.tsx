@@ -12,6 +12,7 @@ import ExecutorList from "./executor-list";
 
 export type _ProjectPosition = {
   [key: string]: {
+    status: string;
     positions: ProjectPositions[];
     billed: false;
     executor: string;

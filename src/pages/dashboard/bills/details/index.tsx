@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getDraftById } from "../helper";
 import { notify, NotificationComponent } from "../../components/notification/toast";
 import { Draft } from "../../../../types";
-import DraftDetails from "./components/draft-details";
+import DraftDetails from "./components/draft";
 
 const DraftPage = () => {
   const { id } = useParams();

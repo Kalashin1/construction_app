@@ -9,6 +9,7 @@ import { UserAuthContext } from "../../../../../App";
 import { notify, NotificationComponent } from "../../../components/notification/toast";
 import { updateDraftStatus } from "../../helper";
 import { useNavigate } from "react-router-dom";
+import ExtraOrders from "../../../projects/details/components/extra-orders";
 
 const DraftDetails = ({ draft, type }: {
   draft: Draft,
@@ -16,7 +17,7 @@ const DraftDetails = ({ draft, type }: {
 }) => {
   const { user } = useContext(UserAuthContext);
   const navigate = useNavigate();
-  console.log(draft)
+  console.log(draft.addendums)
   const [timeline, setTimeLine] = useState<Timeline>({
     startDate: new Date().toDateString(),
     endDate: new Date().toDateString(),
@@ -78,9 +79,19 @@ const DraftDetails = ({ draft, type }: {
           setTimeline={setTimeLine}
         />
         <div className="my-7 h-px bg-slate-200 dark:bg-navy-500"></div>
-        <DraftPositions positions={draft.positions} />
+        {draft && (<DraftPositions positions={draft.positions} project_id={draft.project?._id} />)}
+        {draft && draft?.addendums?.map((addendum, index) => (
+          <ExtraOrders
+            key={index}
+            positions={addendum.positions}
+            extraOrderId={addendum.id}
+            createdBy={addendum.createdBy._id}
+            projectId={draft.project._id}
+            comment={addendum.comment}
+            createdAt={addendum.createdAt}
+          />))}
         <div className="my-7 h-px bg-slate-200 dark:bg-navy-500"></div>
-        <DraftFooter total={formatter.format(draft.amount)} />
+        <DraftFooter positions={draft.positions} addendums={draft.addendums} total={formatter.format(draft.amount)} />
       </div>
       <div className="my-2 p-4 flex justify-between">
         {(draft.status === 'PENDING') && (draft?.owner?._id === user?._id) && (
@@ -88,7 +99,7 @@ const DraftDetails = ({ draft, type }: {
             className="bg-green-700 py-1 px-4 rounded text-white"
             onClick={() => updateDraft(draft._id, 'confirm')
             }>
-            Accept
+            Submit
           </button>
         )}
         {(draft.reciepient._id === user?._id && draft.status === INVOICE_STATUS[0]) && (
@@ -110,9 +121,9 @@ const DraftDetails = ({ draft, type }: {
         {(draft.status === 'PENDING') && (draft?.owner?._id === user?._id) && (
           <button
             className="bg-red-500 py-1 px-4 rounded text-white"
-            onClick={() =>  updateDraft(draft._id, 'delete')}
+            onClick={() => updateDraft(draft._id, 'delete')}
           >
-            Reject
+            Cancel
           </button>
         )}
       </div>

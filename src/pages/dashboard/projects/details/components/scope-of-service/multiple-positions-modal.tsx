@@ -57,6 +57,7 @@ const MultiplePositionModal = ({
         navigate(`/draft/${payload._id}`)
       }
       console.log(payload);
+      location.reload();
     }
   }
 
@@ -84,7 +85,7 @@ const MultiplePositionModal = ({
               if (
                 positions[position]?.executor === user?._id &&
                 !(
-                  positions[position]?.positions[0]?.status === 'BILLED'
+                  positions[position]?.status == 'BILLED'
                 )
               )
                 return (
