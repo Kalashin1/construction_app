@@ -113,7 +113,7 @@ const AssignExecutorModal = ({
             })}
           </AnimatePresence>
         </div>
-        <Button action={assingPositions} label="Assign Positions" />
+        <Button action={assingPositions} label="Submit" />
       </div>
     </Modal>
   )

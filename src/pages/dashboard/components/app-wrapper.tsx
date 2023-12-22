@@ -5,16 +5,17 @@ import LightModeIcon from "../svg/light";
 import NotificationIcon from "../svg/notificaiton";
 import SquareIcon from "../svg/square";
 import DashboardButtonDropdown from "./dashboard-button-dropdown";
-import { FC, SetStateAction, useEffect, useState } from 'react';
+import { FC, SetStateAction } from 'react';
 import { useContext } from "react";
 import { SidebarContext, UserAuthContext } from "../../../App";
 import NotificationDropdown from "./notification-dropdown";
 import { INotification } from "../../../types";
-import { getUserNotification } from "../helper/notifications";
 import { Dispatch } from "react";
 
 type Props = {
-  toggleSidebar: (...args: unknown[]) => void
+  toggleSidebar: (...args: unknown[]) => void,
+  notifications: INotification[],
+  setNotifications: Dispatch<SetStateAction<INotification[]>>
 }
 
 <div className="avatar mr-3 hidden h-9 w-9 lg:flex">
@@ -26,7 +27,9 @@ type Props = {
 </div>
 
 const AppWrapper: FC<Props> = ({
-  toggleSidebar
+  toggleSidebar,
+  notifications,
+  setNotifications,
 }) => {
 
   const {
@@ -39,32 +42,11 @@ const AppWrapper: FC<Props> = ({
   } = useContext(SidebarContext);
   const { user } = useContext(UserAuthContext);
 
-  const [notifications, setNotifications] = useState<INotification[] | null>(null)
+ const switchMode = () => {
+   const html = window.document.querySelector('html');
+   html?.classList.toggle('dark')
+ }
 
-
-  const switchMode = () => {
-    const html = window.document.querySelector('html');
-    html?.classList.toggle('dark')
-  }
-
-  useEffect(() => {
-    const setUp = async () => {
-      if (user) {
-        console.log("user", user)
-        const [error, _notifications] = await getUserNotification(user?._id!);
-        if (error) {
-          console.log(error)
-        }
-
-        if (_notifications) {
-          setNotifications(_notifications);
-          console.log("notifications", _notifications);
-        }
-      }
-    }
-
-    setUp()
-  }, [user])
 
   return (
     <nav className="header print:hidden relative z-0" onClick={() => {

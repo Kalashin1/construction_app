@@ -5,7 +5,7 @@ import BreadCrumb from "../../components/bread-crumb";
 import { SCREENS } from "../../../../navigation/constants";
 import ProjectCard from "./components/project-card";
 import ConstructionSchedule from "./components/construction-schedule";
-import Documents from "./components/documents";
+// import Documents from "./components/documents";
 import ScopeOfService from "./components/scope-of-service";
 import MainOrderItem from "./components/main-order-item";
 import ExtraOrders from "./components/extra-orders";
@@ -118,6 +118,7 @@ const ProjectDetails = () => {
             _project.positions[key].accepted === false
           ) {
             _assingedPositions.push(key);
+            updateShowAcceptButton(true)
           }
 
           positions.push(..._positions);
@@ -135,7 +136,7 @@ const ProjectDetails = () => {
           }
         }
 
-        if (_assingedPositions.length > 1 && _assingedPositions[0]) {
+        if (_assingedPositions.length > 1) {
           updateShowAcceptButton(true);
         }
         setAssignedPositions(_assingedPositions)
@@ -170,7 +171,7 @@ const ProjectDetails = () => {
 
           {project && (<ProjectCard project={project} />)}
           {project && (<ConstructionSchedule project_id={project?._id} />)}
-          <Documents />
+          {/* <Documents /> */}
 
           {project && user?.role !== 'contractor' &&
             (

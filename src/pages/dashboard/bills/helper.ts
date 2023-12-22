@@ -96,7 +96,24 @@ export const getUserInvoices = async (
   user_id: string,
   status: string
 ): Promise<[object | null, InvoiceInterface[] | null]> => {
-  const res = await fetch(`${API_BASE_URL}/invoice/owner/${user_id}/${status}`);
+  const res = await fetch(
+    `${API_BASE_URL}/invoice/owner/${user_id}/${status}`
+  );
+
+  if (res.ok) {
+    const payload = await res.json();
+    return [null, payload];
+  } else {
+    const error = await res.json();
+    return [error, null];
+  }
+};
+
+export const getReceiverInvoices = async (
+  user_id: string,
+  status: string
+): Promise<[object | null, InvoiceInterface[] | null]> => {
+  const res = await fetch(`${API_BASE_URL}/invoice/receiver/${user_id}/${status}`);
 
   if (res.ok) {
     const payload = await res.json();

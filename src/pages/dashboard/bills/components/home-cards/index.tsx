@@ -8,8 +8,8 @@ import {
 } from './svg';
 import { UserAuthContext } from '../../../../../App';
 import { notify, NotificationComponent } from '../../../components/notification/toast';
-import { getUserDrafts } from '../../helper';
-import { Draft, INVOICE_STATUS } from '../../../../../types';
+import { getReceiverInvoices, getReciepientDraft, getUserDrafts, getUserInvoices } from '../../helper';
+import { DRAFT_STATUS, Draft, INVOICE_STATUS, InvoiceInterface } from '../../../../../types';
 
 export type CardProps = {
   svg: ReactNode;
@@ -42,12 +42,22 @@ export const Card = ({
 
 const HomeCards = () => {
   const [bills, setBills] = useState<Draft[] | null>(null);
+  const [invoices, setInvoices] = useState<InvoiceInterface[] | null>(null);
   const { user } = useContext(UserAuthContext);
 
   useEffect(() => {
     const setUp = async () => {
-      const [error, data] = await getUserDrafts(user?._id!)
-      if (error) {
+      let error, data
+      let _error, _invoices
+      if (user?.role === 'executor') {
+        [error, data] = await getUserDrafts(user?._id!);
+        [_error, _invoices] = await getUserInvoices(user?._id!, "ACCEPTED");
+        console.log("executor", _invoices)
+      } else if (user?.role === 'contractor') {
+        [error, data] = await getReciepientDraft(user?._id!);
+        [_error, _invoices] = await getReceiverInvoices(user?._id!, "ACCEPTED");
+      }
+      if (error || _error) {
         notify(
           (<NotificationComponent message={'error fetching bills!'} />),
           {
@@ -56,11 +66,17 @@ const HomeCards = () => {
           }
         )
         console.log(error);
+        console.log(_error);
       }
 
       if (data) {
         setBills(data);
         console.log(data);
+      }
+
+      if (_invoices) {
+        setInvoices(_invoices);
+        console.log(_invoices)
       }
     }
 
@@ -70,25 +86,25 @@ const HomeCards = () => {
     {
       svg: NewInvoiceIcon,
       text: 'New Invoices',
-      figure:'0',
+      figure: invoices?.filter((invoice) => invoice.status === "ACCEPTED").length.toString(),
       color: 'bg-gray-600 border-blue-500'
     },
     {
       svg: RejectedInvoiceIcon,
       text: 'Reject & Reduced',
-      figure: '16.0',
+      figure: bills?.filter((bill) => bill.status === DRAFT_STATUS[3]).length.toString(),
       color: 'bg-gray-700 border-red-500'
     },
     {
       svg: NewBillsIcon,
       text: 'New Drafts',
-      figure:  bills ? bills.filter((bill) => bill.status === INVOICE_STATUS[0]).length.toString(): '0',
+      figure: bills?.filter((bill) => bill.status === INVOICE_STATUS[1]).length.toString(),
       color: 'bg-slate-800 border-blue-500'
     },
     {
       svg: AllInvoiceIcon,
       text: 'All Bills',
-      figure: '16.0',
+      figure: String(bills?.length! + invoices?.length!),
       color: 'bg-gray-900 border-green-500'
     }
   ]
@@ -101,7 +117,7 @@ const HomeCards = () => {
 
         {cards.map((card, index) => (
           <Card
-            figure={card.figure}
+            figure={card.figure as string}
             svg={(<card.svg width={50} fill="#fff" />)}
             text={card.text}
             color={card.color}

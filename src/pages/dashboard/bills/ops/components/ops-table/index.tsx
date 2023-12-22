@@ -5,7 +5,7 @@ import Pagination from "../../../../components/pagination";
 import { SelectBox, TableSearch } from "../../../../components/project-summary";
 import DownloadIcon from "../../svg/donwload";
 import { InvoiceInterface } from "../../../../../../types";
-import { getUserInvoices } from "../../../helper";
+import { getReceiverInvoices, getUserInvoices } from "../../../helper";
 import { UserAuthContext } from "../../../../../../App";
 import { NotificationComponent, notify } from "../../../../components/notification/toast";
 import { formatter } from "../../../../helper/tools";
@@ -78,7 +78,13 @@ const BillsOverview = () => {
   const { user } = useContext(UserAuthContext);
   useEffect(() => {
     const getInvoices = async () => {
-      const [error, _invoices] = await getUserInvoices(user?._id!, "ACCEPTED");
+      let error, _invoices
+      if (user?.role === 'executor') {
+        [error, _invoices] = await getUserInvoices(user?._id!, "ACCEPTED");
+        console.log("executor", _invoices)
+      } else if (user?.role === 'contractor') {
+        [error, _invoices] = await getReceiverInvoices(user?._id!, "ACCEPTED");
+      }
       if (error) {
         notify(
           <NotificationComponent message="error fetching invoices" />,

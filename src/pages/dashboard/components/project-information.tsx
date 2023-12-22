@@ -1,5 +1,9 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { UserAuthContext } from "../../../App";
+import { INotification } from "../../../types";
+import { getUserNotification } from "../helper/notifications";
 
 const CheckBox = ({
   label
@@ -20,14 +24,24 @@ const CheckBox = ({
   )
 }
 
-const ProjectInfoChild = () => (
+const ProjectInfoChild = ({
+  notification
+}: {
+  notification: INotification
+}) => (
   <div className="flex flex-row justify-between my-6">
     <div className="flex justify-between">
       <div className="w-1 h-6 bg-secondary mr-4"></div>
       <div>
-        <h3>08/23/2023 - 1:28 p.m</h3>
-        <Link to="/">Addendum rejected</Link>
-        <Link to={'/'}>(MAGGA-34439)</Link>
+        <h3>{new Date(notification?.createdAt!).toDateString()}</h3>
+
+        <p>{notification.shortText}</p>
+        {notification.objectId && notification.type === "PROJECT" && (
+          <Link to={`/detail/${notification.objectId}`}>(MAGGA-{notification.objectId?.slice(0, 6)})</Link>
+        )}
+        {notification.objectId && notification.type === "DRAFT" && (
+          <Link to={`/draft/${notification.objectId}`}>(MAGGA-{notification.objectId?.slice(0, 6)})</Link>
+        )}
       </div>
     </div>
     <CheckBox />
@@ -35,6 +49,31 @@ const ProjectInfoChild = () => (
 )
 
 const ProjectInformation = () => {
+
+  const { user } = useContext(UserAuthContext)
+
+  const [notifications, setNotifications] = useState<INotification[] | null>(null)
+
+
+  useEffect(() => {
+    const setUp = async () => {
+      if (user) {
+        console.log("user", user)
+        const [error, _notifications] = await getUserNotification(user?._id!);
+        if (error) {
+          console.log(error)
+        }
+
+        if (_notifications) {
+          setNotifications(_notifications);
+          console.log("notifications", _notifications);
+        }
+      }
+    }
+
+    setUp()
+  }, [user])
+
   return (
     <div
       className="rounded-sm shadow-md bg-white py-2 lg:w-2/4 my-4 md:my-0 lg:mx-4 dark:border-navy-700 dark:bg-navy-800 dark:text-white"
@@ -47,13 +86,14 @@ const ProjectInformation = () => {
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
 
       <div className="mx-4 my-4">
-        {[0, 1, 2].map((_, index) => (
-          <ProjectInfoChild 
+        {notifications && notifications.slice(0, 4).map((notificaiton, index) => (
+          <ProjectInfoChild
             key={index}
+            notification={notificaiton}
           />
         ))}
       </div>
-      
+
     </div>
   );
 };

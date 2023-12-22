@@ -5,23 +5,52 @@ import CurrentProjects from "./components/current-projects";
 import ProjectInformation from "./components/project-information";
 import ProjectSummary from "./components/project-summary";
 import BreadCrumb from "./components/bread-crumb";
-import DashboardNotification from "./components/dashboard-notification";
+// import DashboardNotification from "./components/dashboard-notification";
 import CreateAccountButton, {
   CreateAccountDropdown,
   CreateAccountModal,
   CopyTokenModal
 } from "./components/create-account";
 import { SCREENS } from "../../navigation/constants";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserAuthContext } from "../../App";
+import { notify, NotificationComponent } from "./components/notification/toast";
+import { getUserTasks, getAssignedTasks } from "./helper/dashboard";
+import { Todo } from "../../types";
 
 const Dashboard = () => {
   const [showAccountDropdown, updateShowAccountDropDown] = useState(false)
   const [showAccountModal, updateShowAccountModal] = useState(false)
   const [showCopyTokenModal, updateShowCopyTokenModal] = useState(false);
 
-  const {user} = useContext(UserAuthContext);
-  
+  const { user } = useContext(UserAuthContext);
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    const setUp = async () => {
+      let error, payload;
+      if (user?.role === 'contractor') {
+        [error, payload] = await getUserTasks(user?._id as string, -1);
+      } else if (user?.role === 'executor') {
+        [error, payload] = await getAssignedTasks(user?._id as string, -1);
+      }
+      if (error) {
+        notify(
+          (<NotificationComponent message='Error fetching tasks' />),
+          { className: 'bg-red-500 text-white' }
+        )
+        console.log(error);
+      }
+
+      if (payload) {
+        console.log(payload)
+        setTodos(payload);
+      }
+    }
+
+    setUp()
+  }, [user?._id, user?.role])
+
   const links = [{
     text: 'Create Account',
     svg: 'fas fa-user',
@@ -43,11 +72,11 @@ const Dashboard = () => {
           />
         </div>
         <div>
-          <HomeCards />
+          <HomeCards todos={todos} />
         </div>
         <div className="relative" onClick={(e) => e.stopPropagation()}>
           {(user?.role !== 'shop') && (user?.role !== 'employee') && (<CreateAccountButton action={() => updateShowAccountDropDown(!showAccountDropdown)} />)}
-          {showAccountModal && (user?.role !== 'shop') && (user?.role !== 'employee') &&  (<CreateAccountModal action={() => {
+          {showAccountModal && (user?.role !== 'shop') && (user?.role !== 'employee') && (<CreateAccountModal action={() => {
             updateShowAccountModal(false)
             updateShowAccountDropDown(false)
           }} />)}
@@ -61,11 +90,11 @@ const Dashboard = () => {
           <ProjectInformation />
           <CurrentProjects />
         </div>
-        <div className="my-12">
+        {/* <div className="my-12">
           <DashboardNotification />
-        </div>
+        </div> */}
         <div className="my-12">
-          <ProjectSummary />
+          <ProjectSummary todos={todos} />
         </div>
       </div>
     </Layout>
