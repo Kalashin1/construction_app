@@ -16,8 +16,6 @@ type Props = {
   lang?: string;
 }
 
-
-
 const Layout: FC<Props> = ({
   children,
   sidePanel,
