@@ -158,6 +158,9 @@ export interface INotification {
   _id: string;
   user_id: string;
   shortText: string;
+  objectId?: string /* this is the primary object on which this notification happens, it is closely related to the type of the NOTIFICATION */;
+  subjectId?: string /* This is the secondary object which this notification happens, it helpes to construct a second param in case where the frontend needs to fetch resource from a route which is like route/:objectId/:subjectId */;
+  fileUrl?: string;
   isRead: boolean;
   type: string;
   createdAt: string;
@@ -328,8 +331,8 @@ export interface Draft {
     positions: ProjectPositions[];
     comment: string;
     createdBy: {
-      _id: string,
-      role: string
+      _id: string;
+      role: string;
     };
     createdAt: number;
   }[];
@@ -431,3 +434,23 @@ export type InteractWithAddendumPayload = {
   addendum_id: string;
   action: "ACCEPT" | "REJECT";
 };
+
+export const TASK_STATUS = [
+  "ASSIGNED",
+  "IN-PROGRESS",
+  "COMPLETED",
+  "OVER-DUE",
+] as const;
+
+export interface Todo {
+  _id: string;
+  user_id: string;
+  type: string;
+  description?: string;
+  status: (typeof TASK_STATUS)[number];
+  object_id: string;
+  createdAt?: string;
+  updatedAt?: string;
+  assignedTo: string;
+  dueDate?: string;
+}

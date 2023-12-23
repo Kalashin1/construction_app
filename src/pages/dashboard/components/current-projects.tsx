@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { useNavigate } from "react-router-dom";
 import { SCREENS } from "../../../navigation/constants";
+import { useContext, useEffect, useState } from "react";
+import { UserAuthContext } from "../../../App";
+import { ProjectPositions } from "../../../types";
+import { getUserProjectStats } from "../helper/dashboard";
 
 type ProjectStatsProps = {
   title: string;
@@ -37,10 +42,10 @@ type ButtonProps = {
 export const Button = ({
   label,
   action,
-  color='bg-slate-150',
-  textColor='text-slate-800',
+  color = 'bg-slate-150',
+  textColor = 'text-slate-800',
   disabled,
-  type="button"
+  type = "button"
 }: ButtonProps) => (
   <button
     className={`btn ${color} font-medium ${textColor} hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90 mr-4 my-2`}
@@ -52,36 +57,29 @@ export const Button = ({
   </button>
 )
 
-const projectStatsData = [
-  {
-    title: 'Total Project Positions',
-    figure: 512,
-    progressWidth: 'w-4/12'
-  },
-  {
-    title: 'Not Accepted',
-    figure: 0,
-    progressWidth: 'w-0'
-  },
-  {
-    title: 'Pending Supplements',
-    figure: 0,
-    progressWidth: 'w-0'
-  },
-  {
-    title: 'Completed',
-    figure: 0,
-    progressWidth: 'w-0'
-  },
-  {
-    title: 'Billed',
-    figure: 61,
-    progressWidth: 'w-3/12'
-  },
-]
 
 const CurrentProjects = () => {
   const navigate = useNavigate();
+  const { user } = useContext(UserAuthContext)
+
+
+  const [stats, setStats] = useState<{ title: string; positions: ProjectPositions[]; }[]>([])
+  useEffect(() => {
+    const setUp = async () => {
+      const [error, payload] = await getUserProjectStats(user?._id!)
+      if (error) {
+       
+        console.log(error);
+      }
+
+      if (payload) {
+        setStats(payload)
+      }
+    }
+
+    setUp()
+  }, [user?._id])
+
   return (
     <div
       className="rounded-sm shadow-md bg-white py-2 lg:w-2/4 my-2 lg:my-0 dark:border-navy-700 dark:bg-navy-800 dark:text-white"
@@ -90,27 +88,29 @@ const CurrentProjects = () => {
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
 
       <div className="mx-4 my-4">
-        {projectStatsData.map((p, index) => (
+        {stats && stats.map((p, index) => (
           <ProjectStats
             key={index}
             title={p.title}
-            figure={p.figure}
-            progressWidth={p.progressWidth}
+            figure={p.positions.length}
+            progressWidth={'w-4/12'}
           />
         ))}
       </div>
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="flex flex-row justify-end py-4 px-4 items-center">
-        <Button 
+        <Button
           label="Filter Positions"
-          action={() => {{
-            sessionStorage.setItem('showProjectFilter', 'yes');
-            navigate(SCREENS.PROJECTS)
-          }}}
+          action={() => {
+            {
+              sessionStorage.setItem('showProjectFilter', 'yes');
+              navigate(SCREENS.PROJECTS)
+            }
+          }}
         />
-        <Button 
+        <Button
           label="All Projects"
-          action={() => {}}
+          action={() => { }}
         />
       </div>
     </div>

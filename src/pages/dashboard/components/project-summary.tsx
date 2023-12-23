@@ -1,9 +1,16 @@
 import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { Button } from "./current-projects";
 import Pagination from "./pagination";
+import { TASK_STATUS, Todo } from "../../../types";
+import { Link } from "react-router-dom";
+import { addDays } from "../helper/dashboard";
 
-const ProjectSummaryTable = () => {
-  const dataTitles = ['Task', 'Construction Projects', 'Project', 'Designation', 'Due']
+const ProjectSummaryTable = ({
+  todos
+}: {
+  todos: Todo[]
+}) => {
+  const dataTitles = ['Task', 'Project', 'Status', 'Due']
   return (
     <div className="is-scrollbar-hidden min-w-full overflow-x-auto my-4">
       <table className="w-full text-left">
@@ -22,15 +29,21 @@ const ProjectSummaryTable = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">1</td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">Cy Ganderton</td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-              Quality Control Specialist
-            </td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">Blue</td>
-            <td className="whitespace-nowrap px-4 py-3 sm:px-5">Blue</td>
-          </tr>
+          {todos && todos.map((todo, index) => (
+            <tr key={index} className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{index + 1}</td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+               {todo.type === "PROJECT_ASSIGNMENT" &&(<Link className="text-blue-500 underline" to={`/detail/${todo.object_id}`}>
+                  {todo.object_id.slice(0, 6)}
+                </Link>)}
+               {todo.type === "DRAFT" &&(<Link className="text-blue-500 underline" to={`/draft/${todo.object_id}`}>
+                  {todo.object_id.slice(0, 6)}
+                </Link>)}
+              </td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{todo.status}</td>
+              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{addDays(todo.createdAt!, 3)}</td>
+            </tr>
+          ))}
         </tbody>
 
       </table>
@@ -72,12 +85,18 @@ export const TableSearch = () => (
   </label>
 )
 
-const ProjectSummary = () => {
+const ProjectSummary = ({
+  todos
+}: {
+  todos: Todo[]
+}) => {
   const [numRows, setNumRows] = useState(0)
   return (
     <div className="bg-white p-6 rounded-lg shadow-md dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="md:w-3/6 my-4">
-        <h3 className="text-md font-bold underline">System Tasks(0)</h3>
+        <h3 className="text-md font-bold underline">
+          System Tasks ({todos.filter((todo) => todo.status === TASK_STATUS[0]).length})
+        </h3>
       </div>
 
       <div className="flex flex-col md:flex-row md:items-center justify-between">
@@ -100,7 +119,7 @@ const ProjectSummary = () => {
         </div>
       </div>
       <div>
-        <ProjectSummaryTable />
+        <ProjectSummaryTable todos={todos.filter((todo) => todo.status === TASK_STATUS[0])} />
         <Pagination />
       </div>
     </div>

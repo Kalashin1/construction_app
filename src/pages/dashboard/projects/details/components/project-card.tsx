@@ -8,9 +8,7 @@ import { Dispatch, SetStateAction, useCallback, useState, useContext } from "rea
 import { TradeIcons } from "../helper";
 import { formatter } from "../../../helper/tools";
 import { UserAuthContext } from "../../../../../App";
-import { Button } from "../../../components/current-projects";
-import { billMultipleExtraOrderPositions } from "../../helper";
-import { NotificationComponent, notify } from "../../../components/notification/toast";
+// import PositionBreakDown from "./position-break-donw";
 
 const UserModal = ({
   showModal,
@@ -190,29 +188,31 @@ const ProjectCard = ({ project }: {
   const [showConstructionManager, updateShowConstructionManager] = useState(false);
   const [showCareTakerModal, updateShowCareTaker] = useState(false);
 
-  const [selectedAddendums, updateSelectedAddendums] = useState<string[]>([])
+  // const [selectedAddendums, updateSelectedAddendums] = useState<string[]>([])
 
-  const billMultipleAddendums = async () => {
-    const [error, payload] = await billMultipleExtraOrderPositions(
-      selectedAddendums,
-      project._id,
-      user?._id as string
-    )
-    if (error) {
-      notify(
-        (<NotificationComponent message={`Error billing positions ${error.message}`} />),
-        { className: 'bg-red-500 text-white' }
-      );
-      console.log(error);
-    }
-    if (payload) {
-      notify(
-        (<NotificationComponent message="Positions billed successfully!" />),
-        { className: 'bg-green-500 text-white' }
-      )
-    }
-    console.log(payload);
-  }
+  // const billMultipleAddendums = async () => {
+  //   const [error, payload] = await billMultipleExtraOrderPositions(
+  //     selectedAddendums,
+  //     project._id,
+  //     user?._id as string
+  //   )
+  //   if (error) {
+  //     notify(
+  //       (<NotificationComponent message={`Error billing positions ${error.message}`} />),
+  //       { className: 'bg-red-500 text-white' }
+  //     );
+  //     console.log(error);
+  //   }
+  //   if (payload) {
+  //     notify(
+  //       (<NotificationComponent message="Positions billed successfully!" />),
+  //       { className: 'bg-green-500 text-white' }
+  //     )
+  //   }
+  //   console.log(payload);
+  // }
+
+  console.log('sub totals', getSubTotals());
 
   return (
     <div className="bg-white rounded-md py-6 shadow dark:border-navy-700 dark:bg-navy-800 dark:text-white">
@@ -222,9 +222,9 @@ const ProjectCard = ({ project }: {
         <div className="md:w-1/2 my-4 md:my-0">
           <div className="progress h-6 bg-slate-150 dark:bg-navy-500">
             <div
-              className=" py-1 text-white rounded-full bg-success dark:bg-accent text-right px-4"
+              className={`py-1 text-white rounded-full bg-success dark:bg-accent text-right px-4 l ${Number(getProjectPercentage()) < 100 && 'bg-warning' }  ${Number(getProjectPercentage()) < 0 && 'bg-white'}  ${Number(getProjectPercentage()) === 100 && 'bg-success'}`}
               style={{ width: `${getProjectPercentage()}%` }}
-            ><p>{getProjectPercentage()}%</p></div>
+            ><p className="relative -top-1">{getProjectPercentage()}%</p></div>
           </div>
         </div>
       </div>
@@ -243,13 +243,13 @@ const ProjectCard = ({ project }: {
             {project.construction_started ? new Date(project.construction_started).toDateString() : ''}
           </span>
           <span>Completion HA</span><span className="font-bold">
-            {project.completed_at ? new Date(project.completed_at).toDateString() : ''}
+            {new Date(project.dueDate).toDateString()}
           </span>
           <span>Published</span><span className="font-bold">
             {project.createdAt ? new Date(project.createdAt).toDateString() : ''}
           </span>
           <span>Completed</span><span className="font-bold">
-            {project.completed_at ? new Date(project.completed_at).toDateString() : ''}
+            {new Date(project.dueDate).toDateString()}
           </span>
           {/* <span>Vacant since</span><span className="font-bold">August 1, 2022</span> */}
           <span>Rented</span><span className="font-bold">
@@ -347,7 +347,8 @@ const ProjectCard = ({ project }: {
           <div className="bg-gray-950 py-2 px-6 md:px-4 w-1/12">
             <EuroIcon width={20} color="gray" />
           </div>
-          <div className="bg-gray-300 w-11/12 grid grid-cols-2 items-center flex-row content-between py-1 px-4">
+          <div className="bg-gray-300 w-11/12 grid grid-cols-2 items-center flex-row content-between py-2 px-4">
+           
             {getSubTotals().map((subTotal) => (
               <>
                 <h3 className="text-gray-600">{subTotal.key}</h3>
@@ -359,7 +360,8 @@ const ProjectCard = ({ project }: {
           </div>
         </div>
       </div>
-      {project.extraPositions && (
+       {/* <PositionBreakDown /> */}
+      {/* {project.extraPositions && (
         <>
           <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
           <div className="px-4 py-6">
@@ -394,7 +396,7 @@ const ProjectCard = ({ project }: {
             }
           </div>
         </>
-      )}
+      )} */}
 
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="p-6">

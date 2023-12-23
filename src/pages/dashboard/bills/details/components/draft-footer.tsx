@@ -64,12 +64,14 @@ const DraftFooter = ({
           <p>Tax : <span className="font-medium">0%</span></p>
           <p className="text-lg text-primary dark:text-accent-light">
             Total: <span className="font-medium">
-              {formatter.format(
+              {addendumBreakdown.length > 0 ?formatter.format(
                 getMainOrderBreakdown + addendumBreakdown.map(
                   (ad) => (ad.amount)
-                ).reduce(
+                )?.reduce(
                   (prev, current) => (prev + current)
                 )
+              ): formatter.format(
+                getMainOrderBreakdown
               )}
             </span>
           </p>

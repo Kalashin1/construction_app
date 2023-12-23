@@ -30,63 +30,66 @@ const CreateCard = () => {
   const { user } = useContext(UserAuthContext)
   const navigate = useNavigate()
   const uploadNewProject = async () => {
-    const [err, files] = await getFile(
-      {
-        'application/*': ['.pdf', '.xlsx', '.xls']
-      },
-      'project',
-      true
-    );
-    if (err) {
-      console.log(err)
-    } else if (files) {
-      console.log(files)
-      for (const file of files) {
-        const [error, response] = await uploadProject(user?._id!, file);
-        if (error) {
-          notify(
-            (<NotificationComponent message={'oops something happened!'} />),
-            {
-              className: `bg-red-700 font-bold text-white`,
-              closeOnClick: true,
-            }
-          )
-          console.log(error);
-        }
+    if (confirm('do You want do want to create this project')) {
 
-        if (response) {
-          notify(
-            (<NotificationComponent message={'project uploaded successfully'} />),
-            {
-              className: `bg-success font-bold text-white`,
-              closeOnClick: true,
-            }
-          )
-          const [projectErr, project] = await makeProject(response)
-          if (projectErr) {
+      const [err, files] = await getFile(
+        {
+          'application/*': ['.pdf', '.xlsx', '.xls']
+        },
+        'project',
+        true
+      );
+      if (err) {
+        console.log(err)
+      } else if (files) {
+        console.log(files)
+        for (const file of files) {
+          const [error, response] = await uploadProject(user?._id!, file);
+          if (error) {
             notify(
-              (<NotificationComponent message={'oops something happened! ' + projectErr.message} />),
+              (<NotificationComponent message={'oops something happened!'} />),
               {
-                className: `bg-red-600 font-bold text-white`,
+                className: `bg-red-700 font-bold text-white`,
                 closeOnClick: true,
               }
             )
-            console.log(projectErr);
+            console.log(error);
           }
 
-          else if (project) {
+          if (response) {
             notify(
-              (<NotificationComponent message={'project created successfully'} />),
+              (<NotificationComponent message={'project uploaded successfully'} />),
               {
                 className: `bg-success font-bold text-white`,
                 closeOnClick: true,
               }
             )
-            console.log(project);
+            const [projectErr, project] = await makeProject(response)
+            if (projectErr) {
+              notify(
+                (<NotificationComponent message={'oops something happened! ' + projectErr.message} />),
+                {
+                  className: `bg-red-600 font-bold text-white`,
+                  closeOnClick: true,
+                }
+              )
+              console.log(projectErr);
+            }
+
+            else if (project) {
+              notify(
+                (<NotificationComponent message={'project created successfully'} />),
+                {
+                  className: `bg-success font-bold text-white`,
+                  closeOnClick: true,
+                }
+              )
+              console.log(project);
+            }
           }
         }
+        navigate(SCREENS.PROJECTS);
       }
-      navigate(SCREENS.PROJECTS);
     }
   }
   const makeProject = async (response: createProjectParam) => {

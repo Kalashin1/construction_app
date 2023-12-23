@@ -91,13 +91,13 @@ const HomeCards = () => {
     {
       svg: DoubleCheckIcon,
       text: 'Completed',
-      figure: '16.0',
+      figure: projects ? projects?.filter((project) => (project.status === PROJECT_STATUS[3])).length: 0,
       color: 'bg-green-500'
     },
     {
       svg: RectangleListIcon,
       text: 'All Projects',
-      figure: '16.0',
+      figure: projects ? projects.length: 0,
       color: 'bg-gray-800'
     }
   ]

@@ -8,6 +8,7 @@ import AssignExecutorModal from "./assing-executor";
 import { TradeIcons } from '../../../details/helper';
 import { formatter } from "../../../../helper/tools";
 import { UserAuthContext } from "../../../../../../App";
+import { getDaysDifference } from "../../../helper";
 
 
 const ProjectListTable = ({
@@ -37,7 +38,7 @@ const ProjectListTable = ({
         <tbody className="relative">
           {projects && projects.map((project: IProject, index) => (
             <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500" key={index}>
-              <ProjectTableRow project={project} />
+              <ProjectTableRow project={project} index={index} />
             </tr>
           ))}
         </tbody>
@@ -46,8 +47,9 @@ const ProjectListTable = ({
   );
 };
 
-const ProjectTableRow = ({ project }: {
-  project: IProject
+const ProjectTableRow = ({ project, index }: {
+  project: IProject,
+  index: number
 }) => {
   const [showModal, updateShowModal] = useState(false);
   const [showAssignButton, updateShowAssignButton] = useState(false);
@@ -180,7 +182,9 @@ const ProjectTableRow = ({ project }: {
   return (
     <>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-        <Link to={`/detail/${project?._id}`} className="text-red-600">MAGGA-{project?._id}</Link>
+        <Link to={`/detail/${project?._id}`} className="text-red-600">
+        MAGGA-{String(index + 1).length === 1 && `00${index + 1}`} {String(index + 1).length === 2 && `0${index + 1}`}
+        </Link>
         <p className="text-xs my-2">({project?.status})</p>
         <p>{project?.building.address}</p>
         <p className="text-xs my-2">Location: {project?.building.location}</p>
@@ -190,7 +194,7 @@ const ProjectTableRow = ({ project }: {
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
         <span>{getProjectPercentage()}% Completed</span>
         <div className="progress my-2 h-2 bg-slate-150 dark:bg-navy-500">
-          <div className={`rounded-full bg-warning`} style={{ width: `${Number(getProjectPercentage())}%` }}></div>
+          <div className={`rounded-full ${Number(getProjectPercentage()) < 100 && 'bg-warning' }  ${Number(getProjectPercentage()) < 0 && 'bg-white'}  ${Number(getProjectPercentage()) === 100 && 'bg-success'}`} style={{ width: `${Number(getProjectPercentage())}%` }}></div>
         </div>
         <div className="my-4">
           {project && Object.keys(project.positions).map((position) => {
@@ -240,7 +244,7 @@ const ProjectTableRow = ({ project }: {
         </p>
         <p className="text-sm flex flex-row justify-between">
           <span>Completed: </span>
-          <span>{project?.completed_at ? new Date(project?.completed_at).toDateString() : ''}</span>
+          <span>{new Date(project?.dueDate).toDateString()}</span>
         </p>
         <p className="text-sm flex flex-row justify-between">
           <span>OrderVolume:</span>
@@ -252,7 +256,9 @@ const ProjectTableRow = ({ project }: {
         </p>
       </td>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-        <p className="font-bold">vor 38 Tagen</p>
+        <p className="font-bold">
+          {getDaysDifference(project.dueDate) > 1 ? `${getDaysDifference(project.dueDate)} Days Left` : `${String(getDaysDifference(project.dueDate)).slice(1)} Days Ago`}
+        </p>
       </td>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
         {showAssignButton && user?.role === 'contractor' && (<button onClick={() => updateShowModal(true)} className="border rounded-lg px-4 py-1 border-black">

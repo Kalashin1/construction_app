@@ -418,3 +418,20 @@ export const updateProject = async (project_id: string, project: Partial<IProjec
     return [error, null];
   }
 };
+
+
+export function getDaysDifference(dateString: string): number {
+  // Parse the input date string into a Date object
+  const inputDate = new Date(dateString);
+
+  // Get the current date
+  const currentDate = new Date();
+
+  // Calculate the difference in milliseconds
+  const differenceInMilliseconds = inputDate.getTime() - currentDate.getTime();
+
+  // Convert the difference to days and ensure it's a signed integer
+  const differenceInDays = Math.floor(differenceInMilliseconds / (1000 * 3600 * 24));
+
+  return differenceInDays;
+}

@@ -1,10 +1,12 @@
-import {ReactNode} from 'react';
+import { ReactNode } from 'react';
 import {
   CompletedIcon,
   DispatchIcon,
   PendingIcon,
   IncomeIcon
 } from './svg';
+import { getDayDifference } from '../../helper/dashboard';
+import { TASK_STATUS, Todo } from '../../../../types';
 
 type CardProps = {
   svg: ReactNode;
@@ -13,32 +15,6 @@ type CardProps = {
   color: string;
 }
 
-const cards = [
-  {
-    svg: IncomeIcon,
-    text: 'New Tasks',
-    figure: '16.0',
-    color: 'bg-blue-500 border-blue-500',
-  },
-  {
-    svg: PendingIcon,
-    text: 'Tasks Due',
-    figure: '16.0',
-    color: 'bg-yellow-500 border-yellow-500',
-  },
-  {
-    svg: CompletedIcon,
-    text: 'Over Due Tasks',
-    figure: '16.0',
-    color: 'bg-red-500 border-red-500',
-  },
-  {
-    svg: DispatchIcon,
-    text: 'All Tasks',
-    figure: '16.0',
-    color: 'bg-gray-800 border-gray-800',
-  }
-]
 
 const Card = ({
   svg,
@@ -61,22 +37,58 @@ const Card = ({
   )
 }
 
-const HomeCards = () => {
+const HomeCards = ({
+  todos
+}: {
+  todos: Todo[]
+}) => {
+ 
+  const cards = [
+    {
+      svg: IncomeIcon,
+      text: 'New Tasks',
+      figure: todos.filter((todo) => {
+        if (getDayDifference(todo.createdAt!) < 1) return todo
+      }).length.toString(),
+      color: 'bg-blue-500 border-blue-500',
+    },
+    {
+      svg: PendingIcon,
+      text: 'Tasks Due',
+      figure: todos.filter((todo) => todo.status === TASK_STATUS[2]).length.toString(),
+      color: 'bg-yellow-500 border-yellow-500',
+    },
+    {
+      svg: CompletedIcon,
+      text: 'Over Due Tasks',
+      figure: todos.filter((todo) => {
+        if (getDayDifference(todo.createdAt!) > 3) return todo;
+      }).length.toString(),
+      color: 'bg-red-500 border-red-500',
+    },
+    {
+      svg: DispatchIcon,
+      text: 'All Tasks',
+      figure: todos.length.toString(),
+      color: 'bg-gray-800 border-gray-800',
+    }
+  ]
+
   return (
     <div className="col-span-12 lg:col-span-11">
       <div
         className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4"
       >
 
-       {cards.map((card, index) => (
-        <Card 
-          figure={card.figure}
-          svg={(<card.svg width={50} fill="#fff" />)}
-          text={card.text}
-          color={card.color}
-          key={index}
+        {cards.map((card, index) => (
+          <Card
+            figure={card.figure}
+            svg={(<card.svg width={50} fill="#fff" />)}
+            text={card.text}
+            color={card.color}
+            key={index}
           />
-       ))}
+        ))}
 
       </div>
     </div>

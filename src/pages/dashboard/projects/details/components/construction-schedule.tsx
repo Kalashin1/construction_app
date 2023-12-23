@@ -7,8 +7,9 @@ import moment from 'moment'
 import { Link } from "react-router-dom";
 import { getProject } from '../../../helper/project';
 import { NotificationComponent, notify } from '../../../components/notification/toast';
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { TradeIcons } from '../helper';
+import { UserAuthContext } from '../../../../../App';
 
 type Event = {
   id: number,
@@ -32,6 +33,8 @@ const ConstructionSchedule = ({
   project_id: string
 }) => {
   const [events, setEvents] = useState<Event[]>([]);
+
+  const {user} = useContext(UserAuthContext);
 
   useEffect(() => {
     const setUp = async () => {
@@ -58,9 +61,9 @@ const ConstructionSchedule = ({
     <div className="w-full">
       <div className="flex flex-row justify-between items-center">
         <h3 className="my-6 text-lg font-bold">Construction schedule</h3>
-        <Link to={`/project/schedule/${project_id}`}>
+        {user?.role === "contractor" && (<Link to={`/project/schedule/${project_id}`}>
           <i className="fas fa-edit" />
-        </Link>
+        </Link>)}
       </div>
 
       <div className="grid grid-cols-1">

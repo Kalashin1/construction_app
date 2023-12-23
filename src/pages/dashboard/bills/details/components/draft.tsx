@@ -68,7 +68,7 @@ const DraftDetails = ({ draft, type }: {
   return (
     <div className="grid grid-cols-1">
       <div className="card px-5 py-12 sm:px-18">
-        <DraftHeader />
+        <DraftHeader draft={draft} />
         <div className="my-7 h-px bg-slate-200 dark:bg-navy-500"></div>
         <DraftUsers
           createdAt={draft.createdAt}
