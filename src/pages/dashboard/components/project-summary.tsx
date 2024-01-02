@@ -1,9 +1,10 @@
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
 import { Button } from "./current-projects";
 import Pagination from "./pagination";
 import { TASK_STATUS, Todo } from "../../../types";
 import { Link } from "react-router-dom";
 import { addDays } from "../helper/dashboard";
+import { UserAuthContext } from "../../../App";
 
 const ProjectSummaryTable = ({
   todos
@@ -90,13 +91,14 @@ const ProjectSummary = ({
 }: {
   todos: Todo[]
 }) => {
-  const [numRows, setNumRows] = useState(0)
+  const [numRows, setNumRows] = useState(0);
+  const {user} = useContext(UserAuthContext);
   return (
     <div className="bg-white p-6 rounded-lg shadow-md dark:border-navy-700 dark:bg-navy-800 dark:text-white">
       <div className="md:w-3/6 my-4">
-        <h3 className="text-md font-bold underline">
+        {user && (<Link to={`/todo/${user._id}`} className="text-md font-bold underline">
           System Tasks ({todos.filter((todo) => todo.status === TASK_STATUS[0]).length})
-        </h3>
+        </Link>)}
       </div>
 
       <div className="flex flex-col md:flex-row md:items-center justify-between">

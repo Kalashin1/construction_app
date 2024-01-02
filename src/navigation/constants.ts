@@ -24,7 +24,7 @@ export enum SCREENS {
   TARGET_SALES = '/target-sales/:id',
   USER_EMPLOYEES = '/user-employee/:id',
   CHAT = '/chat',
-  TODO = '/todo',
+  TODO = '/todo/:user_id',
   APPS = '/apps',
   FILE_MANAGER = '/files',
   MAIL = '/mail',

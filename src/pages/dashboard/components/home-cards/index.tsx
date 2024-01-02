@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import {
   CompletedIcon,
   DispatchIcon,
@@ -7,6 +7,8 @@ import {
 } from './svg';
 import { getDayDifference } from '../../helper/dashboard';
 import { TASK_STATUS, Todo } from '../../../../types';
+import { UserAuthContext } from '../../../../App';
+import { Link } from 'react-router-dom';
 
 type CardProps = {
   svg: ReactNode;
@@ -22,8 +24,9 @@ const Card = ({
   text,
   color
 }: CardProps) => {
+  const {user} = useContext(UserAuthContext);
   return (
-    <div className={`rounded-lg ${color} p-4 dark:bg-navy-700 border-l-4`}>
+    <Link to={`/todo/${user?._id}`} className={`rounded-lg ${color} p-4 dark:bg-navy-700 border-l-4`}>
       <div className="flex justify-between space-x-1">
         <p
           className="text-xl text-white font-bold dark:text-navy-100"
@@ -33,7 +36,7 @@ const Card = ({
         {svg}
       </div>
       <p className="mt-1 text-xs+ text-white">{text}</p>
-    </div>
+    </Link>
   )
 }
 

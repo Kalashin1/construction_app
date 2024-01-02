@@ -25,7 +25,8 @@ const Dashboard = () => {
 
   const { user } = useContext(UserAuthContext);
   const [todos, setTodos] = useState<Todo[]>([]);
-
+  // * there is a second component using this same exact function, 
+  // TODO: later extract this hook outside of this component so the two of them are importing from another file.
   useEffect(() => {
     const setUp = async () => {
       let error, payload;
