@@ -8,7 +8,7 @@ import AssignExecutorModal from "./assing-executor";
 import { TradeIcons } from '../../../details/helper';
 import { formatter } from "../../../../helper/tools";
 import { UserAuthContext } from "../../../../../../App";
-import { getDaysDifference } from "../../../helper";
+import { getDaysDifference, padNumber } from "../../../helper";
 
 
 const ProjectListTable = ({
@@ -47,7 +47,7 @@ const ProjectListTable = ({
   );
 };
 
-const ProjectTableRow = ({ project, index }: {
+const ProjectTableRow = ({ project  }: {
   project: IProject,
   index: number
 }) => {
@@ -183,7 +183,7 @@ const ProjectTableRow = ({ project, index }: {
     <>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
         <Link to={`/detail/${project?._id}`} className="text-red-600">
-        MAGGA-{String(index + 1).length === 1 && `00${index + 1}`} {String(index + 1).length === 2 && `0${index + 1}`}
+        MAGGA-{padNumber(project.projectNumber)}
         </Link>
         <p className="text-xs my-2">({project?.status})</p>
         <p>{project?.building.address}</p>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { User } from "../../../../../../types";
 import { Button, Input } from "../../../../../auth/components";
@@ -5,6 +6,9 @@ import { EmailIcon, PasswordIcon, UserIcon } from "../../../../../auth/svg";
 import { assingEmployee } from "../../../../helper/user";
 import { Modal } from "../../../../profie/components/account-settings";
 import { createAccount } from "../../../../../auth/action";
+import Select from 'react-select';
+
+const positions = ['Painting', 'Plumbing', 'Electricity', 'Inside-Sales', 'Contact-Person'];
 
 export const CreateEmployeeAccountModal = ({
   closeModal,
@@ -17,6 +21,7 @@ export const CreateEmployeeAccountModal = ({
 }) => {
   const form = useRef<HTMLFormElement | null>(null);
   const [error, setError] = useState(false);
+  const [selectedPosition, setPosition] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const createEmployeeAccount = async (
@@ -31,8 +36,9 @@ export const CreateEmployeeAccountModal = ({
       password: {value: password}, 
       first_name: {value: first_name},
       last_name: {value: last_name},
-      position: {value: position},
     } = form;
+
+    
     const [err, employee] = await createAccount({
       email,
       password,
@@ -40,7 +46,7 @@ export const CreateEmployeeAccountModal = ({
       role: 'employee',
       first_name,
       last_name,
-      position,
+      position: selectedPosition,
     });
     if (err) {
       alert('oops something happened!')
@@ -92,10 +98,10 @@ export const CreateEmployeeAccountModal = ({
           name="password"
           icon={<PasswordIcon />}
         />
-        <select name="position" className="w-full border-2 borde-gray-900 p-2">
-          <option value="plumbing">Plumber</option>
-          <option value="painting">Painter</option>
-        </select>
+        <Select
+          options={positions.map((position) => ({ value: position, label: position }))}
+          onChange={(v) => setPosition(v?.value!)}
+        />
         <Button
           label="Create account"
           type="submit"

@@ -240,6 +240,7 @@ export interface IProject {
   positions: ProjectPositionObject;
   shortagePositions: ProjectPositionObject;
   extraPositions: ExtraProjectPositionSuper[];
+  projectNumber: number;
   createdAt: string;
   dueDate: string;
   updatedAt: string;

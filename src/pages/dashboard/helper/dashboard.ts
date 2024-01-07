@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "../../../navigation/constants";
-import { ProjectPositions } from "../../../types";
+import { ProjectPositions, Todo } from "../../../types";
 
-export const getUserTasks = async (user_id: string, status?: number) => {
+export const getUserTasks = async (user_id: string, status?: number): Promise<[unknown, Todo[]|null]> => {
   try {
     const res = status
       ? await fetch(`${API_BASE_URL}/todo/user/${user_id}/${status}`)
@@ -18,7 +18,7 @@ export const getUserTasks = async (user_id: string, status?: number) => {
   }
 };
 
-export const getAssignedTasks = async (user_id: string, status?: number) => {
+export const getAssignedTasks = async (user_id: string, status?: number): Promise<[unknown, Todo[]|null]> => {
   try {
     const res = status
       ? await fetch(`${API_BASE_URL}/todo/assigned/${user_id}/${status}`)
@@ -35,9 +35,30 @@ export const getAssignedTasks = async (user_id: string, status?: number) => {
   }
 };
 
-export const getTodoById = async (todo_id: string) => {
+export const getTodoById = async (todo_id: string): Promise<[unknown, Todo|null]> => {
   try {
     const res = await fetch(`${API_BASE_URL}/todo/id/${todo_id}`);
+    if (res.ok) {
+      const data = await res.json();
+      return [null, data];
+    } else {
+      const error = await res.json();
+      return [error, null];
+    }
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+export const editTodo = async (todo: Todo): Promise<[unknown, object|null]> => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/todo/id/${todo._id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(todo),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
     if (res.ok) {
       const data = await res.json();
       return [null, data];

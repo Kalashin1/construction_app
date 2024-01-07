@@ -40,23 +40,7 @@ const TodosDropdown = () => {
   return (
     <div className="w-64 absolute top-12 left-24" style={{ zIndex: '199999'}}>
       <div className="card p-4 sm:p-5">
-        <div className="flex items-center space-x-4">
-          <div className="avatar h-14 w-14">
-            <img
-              className="rounded-full"
-              src="images/100x100.png"
-              alt="avatar"
-            />
-          </div>
-          <div>
-            <h3
-              className="text-base font-medium text-slate-700 dark:text-navy-100"
-            >
-              Ibrahim Balde
-            </h3>
-            <p className="text-xs+">Admin</p>
-          </div>
-        </div>
+      
         <ul className="mt-6 space-y-1.5 font-inter font-medium">
           {links.map((l, i) => (
             <DropdownItem

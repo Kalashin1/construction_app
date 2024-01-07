@@ -1,17 +1,54 @@
-import { Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
-import { Button } from "./current-projects";
-import Pagination from "./pagination";
-import { TASK_STATUS, Todo } from "../../../types";
-import { Link } from "react-router-dom";
-import { addDays } from "../helper/dashboard";
-import { UserAuthContext } from "../../../App";
+import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
+import { Button } from "../../../../components/current-projects";
+import Pagination from "../../../../components/pagination";
+import { ReferrerType, User } from "../../../../../../types";
+import { useNavigate, useParams } from "react-router-dom";
+import { getUserById } from "../../../../helper/user";
 
-const ProjectSummaryTable = ({
-  todos
+const EmployeeRow = ({
+  employeeId
 }: {
-  todos: Todo[]
+  employeeId: string;
 }) => {
-  const dataTitles = ['Task', 'Project', 'Status', 'Due']
+  const [employee, setEmployee] = useState<User | null>(null);
+  useEffect(() => {
+    const getEmployee = async () => {
+      const [error, _employee] = await getUserById(employeeId);
+      if (error) {
+        console.log(error);
+      } else if (_employee) {
+        setEmployee(_employee);
+      }
+    }
+
+    getEmployee();
+  }, [employeeId])
+  return (
+    <tr className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">{employee?.first_name} {employee?.last_name}</td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+        {employee?.position}
+      </td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">{employee?.email}</td>
+      <td className="whitespace-nowrap px-4 py-3 sm:px-5">
+        <div className="avatar mr-3 hidden h-8 w-8 lg:flex">
+          <img
+            className="rounded-full"
+            src={employee && employee.avatar ? employee.avatar : "images/100x100.png"}
+            alt="avatar"
+          />
+        </div>
+      </td>
+    </tr>
+  )
+}
+
+const EmployeeSummaryTable = ({
+  employees
+}: {
+  employees: ReferrerType[]
+}) => {
+  const dataTitles = ['Name', 'Position', 'email', 'status']
   return (
     <div className="is-scrollbar-hidden min-w-full overflow-x-auto my-4">
       <table className="w-full text-left">
@@ -30,20 +67,8 @@ const ProjectSummaryTable = ({
           </tr>
         </thead>
         <tbody>
-          {todos && todos.map((todo, index) => (
-            <tr key={index} className="border border-transparent border-b-slate-200 dark:border-b-navy-500">
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{index + 1}</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">
-               {todo.type === "PROJECT" &&(<Link className="text-blue-500 underline" to={`/detail/${todo.object_id}`}>
-                  {todo.object_id.slice(0, 6)}
-                </Link>)}
-               {todo.type === "DRAFT" &&(<Link className="text-blue-500 underline" to={`/draft/${todo.object_id}`}>
-                  {todo.object_id.slice(0, 6)}
-                </Link>)}
-              </td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{todo.status}</td>
-              <td className="whitespace-nowrap px-4 py-3 sm:px-5">{addDays(todo.createdAt!, 3)}</td>
-            </tr>
+          {employees && employees.map((employee, index) => (
+            <EmployeeRow employeeId={employee?.id as string} key={index} />
           ))}
         </tbody>
 
@@ -86,20 +111,39 @@ export const TableSearch = () => (
   </label>
 )
 
-const ProjectSummary = ({
-  todos
+const EmployeeSummary = ({
+  owner_id
 }: {
-  todos: Todo[]
+  owner_id?: string
 }) => {
+  const navigate = useNavigate();
   const [numRows, setNumRows] = useState(0);
-  const {user} = useContext(UserAuthContext);
+
+  const { id } = useParams()
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const setUp = async () => {
+      let err, _user;
+      if (!owner_id) {
+        [err, _user] = await getUserById(id!);
+      } else {
+        [err, _user] = await getUserById(owner_id)
+      }
+      if (!_user || err) {
+        alert('error getting user')
+      }
+
+      if (_user) {
+        setUser(_user);
+      }
+    }
+
+    setUp()
+  }, [navigate, id, owner_id]);
   return (
     <div className="bg-white p-6 rounded-lg shadow-md dark:border-navy-700 dark:bg-navy-800 dark:text-white">
-      <div className="md:w-3/6 my-4">
-        {user && (<Link to={`/todo/${user._id}`} className="text-md font-bold underline">
-          System Tasks ({todos.filter((todo) => todo.status === TASK_STATUS[0]).length})
-        </Link>)}
-      </div>
+
 
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div className="sm:w-1/6 w-1/4 hidden md:block">
@@ -121,11 +165,11 @@ const ProjectSummary = ({
         </div>
       </div>
       <div>
-        <ProjectSummaryTable todos={todos.filter((todo) => todo.status === TASK_STATUS[0])} />
+        {user && (<EmployeeSummaryTable employees={user?.employees} />)}
         <Pagination />
       </div>
     </div>
   )
 }
 
-export default ProjectSummary;
+export default EmployeeSummary;

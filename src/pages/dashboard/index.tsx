@@ -15,7 +15,7 @@ import { SCREENS } from "../../navigation/constants";
 import { useContext, useEffect, useState } from "react";
 import { UserAuthContext } from "../../App";
 import { notify, NotificationComponent } from "./components/notification/toast";
-import { getUserTasks, getAssignedTasks } from "./helper/dashboard";
+import { getUserTasks } from "./helper/dashboard";
 import { Todo } from "../../types";
 
 const Dashboard = () => {
@@ -25,15 +25,12 @@ const Dashboard = () => {
 
   const { user } = useContext(UserAuthContext);
   const [todos, setTodos] = useState<Todo[]>([]);
-
+  // * there is a second component using this same exact function, 
+  // TODO: later extract this hook outside of this component so the two of them are importing from another file.
   useEffect(() => {
     const setUp = async () => {
-      let error, payload;
-      if (user?.role === 'contractor') {
-        [error, payload] = await getUserTasks(user?._id as string, -1);
-      } else if (user?.role === 'executor') {
-        [error, payload] = await getAssignedTasks(user?._id as string, -1);
-      }
+      const [error, payload] = await getUserTasks(user?._id as string, -1);
+    
       if (error) {
         notify(
           (<NotificationComponent message='Error fetching tasks' />),
@@ -43,7 +40,7 @@ const Dashboard = () => {
       }
 
       if (payload) {
-        console.log(payload)
+        console.log("todos", payload)
         setTodos(payload);
       }
     }

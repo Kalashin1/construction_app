@@ -5,6 +5,7 @@ import SidebarPanel from "../components/sidebar";
 import { SCREENS } from "../../../../../../navigation/constants";
 import BreadCrumb from "../../../../components/bread-crumb";
 import EmployeesOverview from "./employee-slider";
+import EmployeeSummary from "./employee-table";
 
 const Employee = () => {
   const {
@@ -30,18 +31,21 @@ const Employee = () => {
         )
       }
     >
-     <section className="p-8 md:p-20">
+      <section className="p-8 md:p-20">
 
-      <BreadCrumb
-        pageName="Contractor Details"
-        firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard' }}
-        secondLevel={{ link: SCREENS.CONTRACTORS, text: 'General Contractor' }}
-        thirdLevel={{ link: SCREENS.CONTRACTOR_DETAILS, text: 'General contractor details' }}
-      />
-      <main className="my-6">
-        <EmployeesOverview />
-      </main>
-     </section>
+        <BreadCrumb
+          pageName="Contractor Details"
+          firstLevel={{ link: SCREENS.DASHBOARD, text: 'Dashboard' }}
+          secondLevel={{ link: SCREENS.CONTRACTORS, text: 'General Contractor' }}
+          thirdLevel={{ link: SCREENS.CONTRACTOR_DETAILS, text: 'General contractor details' }}
+        />
+        <main className="my-6">
+          <EmployeesOverview />
+          <div className="my-4">
+            <EmployeeSummary />
+          </div>
+        </main>
+      </section>
     </Layout>
   )
 }

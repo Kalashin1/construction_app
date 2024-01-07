@@ -435,3 +435,11 @@ export function getDaysDifference(dateString: string): number {
 
   return differenceInDays;
 }
+
+export function padNumber(number: number): string {
+  const numberStr = number.toString();
+  const paddingLength = 4 - numberStr.length;
+  const padding = "0".repeat(paddingLength);
+  return `${padding}${numberStr}`;
+}
+

@@ -35,30 +35,10 @@ const Header = ({
               </div>
             )}
 
-            <div className="popper-root" data-popper-placement="bottom-start" style={{ position: 'absolute', inset: '0px auto auto 0px', margin: '0px', transform: 'translate(98px, 112px)' }}>
-              <div className="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
-                <ul>
-                  <li>
-                    <a href="#" className="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Action</a>
-                  </li>
-                  <li>
-                    <a href="#" className="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Another Action</a>
-                  </li>
-                  <li>
-                    <a href="#" className="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Something else</a>
-                  </li>
-                </ul>
-                <div className="my-1 h-px bg-slate-150 dark:bg-navy-500"></div>
-                <ul>
-                  <li>
-                    <a href="#" className="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Separated Link</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+           
           </div>
         </div>
-        <p className="mt-1 text-xs">Sunday, Sep. 14</p>
+        <p className="mt-1 text-xs">{new Date().toDateString()}</p>
       </div>
       <div className="flex items-center space-x-2">
         <label className="relative hidden sm:flex">

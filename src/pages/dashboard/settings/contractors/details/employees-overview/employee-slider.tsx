@@ -44,7 +44,7 @@ const EmployeesOverview = ({
         [err, _user] = await getUserById(owner_id)
       }
       if (!_user || err) {
-        alert('error getting user')
+        // alert('error getting user')
       }
 
       if (_user) {
