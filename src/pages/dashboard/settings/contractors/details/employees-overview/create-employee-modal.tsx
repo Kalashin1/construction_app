@@ -37,6 +37,8 @@ export const CreateEmployeeAccountModal = ({
       first_name: {value: first_name},
       last_name: {value: last_name},
     } = form;
+
+    
     const [err, employee] = await createAccount({
       email,
       password,
