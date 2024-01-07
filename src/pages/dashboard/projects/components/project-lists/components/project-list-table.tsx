@@ -47,7 +47,7 @@ const ProjectListTable = ({
   );
 };
 
-const ProjectTableRow = ({ project, index }: {
+const ProjectTableRow = ({ project  }: {
   project: IProject,
   index: number
 }) => {
