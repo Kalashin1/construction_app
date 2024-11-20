@@ -80,7 +80,7 @@ const MainOrderDropdown = ({
 
   //   }
   // }
-  const mainOrderLinks = [
+  const mainOrderLinks = [ 
     { text: 'In Progress', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "IN PROGRESS" },
     { text: 'Completed', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "COMPLETED" },
     { text: 'Not Feasible', action: type === 'position' ? updatePosition : updateProjectExtraPosition, status: "NOT_FEASIBLE" },

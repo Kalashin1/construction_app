@@ -372,3 +372,6 @@ export type CreateProductParam = {
   subCategory?: string;
   external_id: string;
 }
+
+export const PROJECT_POSITION_STATUS = ["IN-PROGRESS","COMPLETED","NOT-FEASIBLE"] as const;
+export const PROJECT_POSITION_TEXT = ['Completed', 'In Progress', 'Not Feasible'] as const;

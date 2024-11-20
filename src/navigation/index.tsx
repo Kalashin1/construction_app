@@ -1,4 +1,5 @@
 import {createBrowserRouter} from 'react-router-dom';
+import { SCREENS } from './constants';
 import Signup from '../pages/auth/signup';
 import Login from '../pages/auth/login';
 import Dashboard from '../pages/dashboard';
@@ -15,7 +16,6 @@ import OPSAdministration from '../pages/dashboard/bills/ops';
 import ProjectDetails from '../pages/dashboard/projects/details';
 import Profile from '../pages/dashboard/profie';
 import ChatApp from '../pages/dashboard/projects/chat';
-import { SCREENS } from './constants';
 import Todos from '../pages/dashboard/apps/todos';
 import AppPage from '../pages/dashboard/apps';
 import FileManager from '../pages/dashboard/apps/files';
@@ -41,6 +41,7 @@ import DraftDetails from '../pages/dashboard/bills/details';
 import AddAddenDum from '../pages/dashboard/projects/details/addendum/';
 import AddProductPage from '../pages/dashboard/shop/product/add';
 import ProductOverview from '../pages/dashboard/shop/product/overview';
+import AddendumDetail from '../pages/dashboard/projects/details/addendum/details';
 
 
 const router = createBrowserRouter([
@@ -208,6 +209,10 @@ const router = createBrowserRouter([
   {
     path: SCREENS.SHOP_PRODUCTS,
     element: (<ProductOverview />)
+  },
+  {
+    path: SCREENS.ADDENDUM_DETAIL,
+    element: (<AddendumDetail />)
   },
 ]);
 

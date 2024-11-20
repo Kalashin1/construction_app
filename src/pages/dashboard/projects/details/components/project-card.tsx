@@ -40,7 +40,7 @@ const UserModal = ({
 const ProjectCard = ({ project }: {
   project: IProject
 }) => {
-  const {user} = useContext(UserAuthContext);
+  const { user } = useContext(UserAuthContext);
   const getSubTotals = useCallback(() => {
     const keys = Object.keys(project.positions);
     const subTotals: { [key: string]: string, price: string }[] = [];
@@ -86,16 +86,15 @@ const ProjectCard = ({ project }: {
           if (position.price && (position.status === "BILLED" || position.billed)) {
             completedPrices += Math.ceil(Number(position?.price) * Number(position?.crowd));
           }
-          return Math.ceil(Number(position?.price) * Number(position?.crowd))   
+          return Math.ceil(Number(position?.price) * Number(position?.crowd))
         });
         if (mappedTotal[0] && (user?._id === project.positions[key].executor || user?._id === project.contractor)) {
           price += mappedTotal.reduce((prev, current) => prev + current);
         }
-        
+
       }
     }
-    console.log('completed', completedPrices)
-    return (completedPrices/price * (100)).toFixed(0);
+    return (completedPrices / price * (100)).toFixed(0);
   }, [project.contractor, project.positions, user?._id])
 
   const [showConstructionManager, updateShowConstructionManager] = useState(false);
@@ -110,7 +109,7 @@ const ProjectCard = ({ project }: {
           <div className="progress h-6 bg-slate-150 dark:bg-navy-500">
             <div
               className=" py-1 text-white rounded-full bg-success dark:bg-accent text-right px-4"
-              style={{ width: `${getProjectPercentage()}%`}}
+              style={{ width: `${getProjectPercentage()}%` }}
             ><p>{getProjectPercentage()}%</p></div>
           </div>
         </div>
@@ -214,6 +213,18 @@ const ProjectCard = ({ project }: {
             <h3 className="text-black font-bold">{getOrderVolume() ?? '0.00'}</h3>
           </div>
         </div>
+      </div>
+      <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
+      <div className="px-4 py-6 flex flex-col">
+        {
+          project.extraPositions && project.extraPositions.map((extraPos) => {
+            return (
+              <Link className="text-blue-500 underline font-bold" to={`/addendum-detail/${project._id}/${extraPos.id}`}>
+                Addendum - {extraPos.id.slice(0, 10)} - {new Date(extraPos.createdAt).toDateString()}
+              </Link>
+            )
+          })
+        }
       </div>
 
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>

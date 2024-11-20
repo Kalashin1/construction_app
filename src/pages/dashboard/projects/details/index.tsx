@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import Layout from "../../layout";
 import BreadCrumb from "../../components/bread-crumb";
@@ -104,35 +105,39 @@ const ProjectDetails = () => {
           })
 
           if (
-            _project.positions[key].accepted == false &&
-            _project.positions[key].executor === user?._id
+            _project.positions[key].executor &&
+            _project.positions[key].executor === user?._id &&
+            _project.positions[key].accepted === false
           ) {
+            console.log(_project.positions[key])
             _assingedPositions.push(key);
           }
 
           positions.push(..._positions);
         }
+        if (_project?.extraPositions) {
 
-        for (const extraPosition of _project.extraPositions) {
-          for (const key in extraPosition.positions) {
-            const _positions = extraPosition.positions[key].positions
-            _positions.forEach((pos) => {
-              pos.tradeName = key
-              pos.executor = _project.positions[key].executor
-            })
-            __extraPositions.push({ id: extraPosition.id, createdAt: extraPosition.createdAt, positions: [..._positions] })
+          for (const extraPosition of _project.extraPositions) {
+            for (const key in extraPosition.positions) {
+              const _positions = extraPosition.positions[key].positions
+              _positions.forEach((pos) => {
+                pos.tradeName = key
+                pos.executor = _project.positions[key].executor
+              })
+              __extraPositions.push({ id: extraPosition.id, createdAt: extraPosition.createdAt, positions: [..._positions] })
+            }
           }
         }
 
+        if (_assingedPositions.length > 1 && _assingedPositions[0]) {
+          console.log("_assingedPositions", _assingedPositions)
+          updateShowAcceptButton(true);
+        }
         setAssignedPositions(_assingedPositions)
         setPositions(positions)
         __setExtraPositions(__extraPositions)
         console.log('__extraPositions', __extraPositions)
 
-        if (_assingedPositions.length > 1 && _assingedPositions[0]) {
-          console.log(_assingedPositions)
-          updateShowAcceptButton(true);
-        }
       }
     }
     setUp();
@@ -147,34 +152,34 @@ const ProjectDetails = () => {
           secondLevel={{ link: SCREENS.PROJECTS, text: 'Project' }}
           thirdLevel={{ link: '', text: project?._id.slice(0, 10) as string }}
         />
-        {showAcceptButton ? (
-          <>
-            <AcceptProjectFloatingActionButton
-              action={() => interactWithProject(project?._id!, user?._id!, "accept")} 
-            />
-            <DeclineProjectFloatingActionButton 
-              action={() => interactWithProject(project?._id!, user?._id!, "reject")}
-               />
-          </>
-        ) : (<></>)}
+        {showAcceptButton && (
+          <AcceptProjectFloatingActionButton
+            action={() => interactWithProject(project?._id!, user?._id!, "accept")}
+          />
+        )}
+        {showAcceptButton && (
+          <DeclineProjectFloatingActionButton
+            action={() => interactWithProject(project?._id!, user?._id!, "reject")}
+          />
+        )}
         <div className="my-6">
 
           {project && (<ProjectCard project={project} />)}
           <ConstructionSchedule />
           <Documents />
 
-          {project && 
+          {project &&
             (
-              <ScopeOfService 
+              <ScopeOfService
                 project={project}
-                updatePositions={setPositions} 
+                updatePositions={setPositions}
               />
             )
           }
           {project && positions && (
-            <MainOrderItem 
+            <MainOrderItem
               positions={positions}
-              projectId={project._id} 
+              projectId={project._id}
             />
           )}
 
@@ -200,7 +205,7 @@ const ProjectDetails = () => {
         </div>
 
       </main>
-    </Layout>
+    </Layout >
   )
 }
 
