@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "react-router-dom";
@@ -5,12 +6,13 @@ import { IProject } from "../../../../../../types";
 import { useState } from "react";
 import AssignExecutorModal from "./assing-executor";
 import { TradeIcons } from '../../../details/helper';
+import { formatter } from "../../../../helper/tools";
 
 
 const ProjectListTable = ({
   projects
 }: {
-  projects: []
+  projects: IProject[]
 }) => {
   const dataTitles = ['Project', 'Status', 'Info', 'Completion', ' ']
 
@@ -46,7 +48,19 @@ const ProjectListTable = ({
 const ProjectTableRow = ({ project }: {
   project: IProject
 }) => {
-  const [showModal, updateShowModal] = useState(false)
+  const [showModal, updateShowModal] = useState(false);
+  const getOrderVolume = ( ) => {
+    const keys = Object.keys(project.positions);
+    let price = 0;
+    for (const key of keys) {
+      if (project.positions[key].executor) {
+        const positions = project.positions[key].positions;
+        // @ts-ignore
+        price += positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd))).reduce((prev, current) => prev + current);
+      }
+      return formatter.format(price);
+    }
+  }
   return (
     <>
       <td className="whitespace-nowrap px-4 py-3 sm:px-5">
@@ -83,7 +97,7 @@ const ProjectTableRow = ({ project }: {
         </p>
         <p className="text-sm flex flex-row justify-between">
           <span>OrderVolume:</span>
-          <span> 300</span>
+          <span> {getOrderVolume() ?? '0.00'}</span>
         </p>
         <p className="text-sm flex flex-row justify-between">
           <span>Construction Manager:</span>

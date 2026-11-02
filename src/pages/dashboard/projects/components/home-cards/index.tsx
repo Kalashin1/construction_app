@@ -68,23 +68,24 @@ const HomeCards = () => {
 
       if (_projects) {
         console.log(_projects);
-        setProjects(_projects);
+        setProjects(_projects.filter((pos) => pos !== null));
       }
     }
 
     setUp()
   }, [user?._id, user?.role])
+  console.log(projects)
   const cards = [
     {
       svg: ToolsIcon,
       text: 'New Project',
-      figure: projects ? projects?.filter((project) => project.status = PROJECT_STATUS[0]).length : 0,
+      figure: projects ? projects?.filter((project) => (project.status === PROJECT_STATUS[0])).length : 0,
       color: 'bg-blue-500'
     },
     {
       svg: CheckIcon,
       text: 'Assigned',
-      figure: '16.0',
+      figure: projects ? projects?.filter((project) => (project.status === PROJECT_STATUS[1])).length : 0,
       color: 'bg-yellow-500'
     },
     {

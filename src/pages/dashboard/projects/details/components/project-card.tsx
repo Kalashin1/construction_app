@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Link } from "react-router-dom";
 import EuroIcon from "../../../bills/ops/svg/euro";
 import { AdminIcon, CaretakerIcon, ContactPersonIcon, HouseIcon } from "../svgs";
 import { IProject } from "../../../../../types";
 import { Modal } from "../../../profie/components/account-settings";
 import { Dispatch, SetStateAction, useState } from "react";
+import { TradeIcons } from "../helper";
+import { formatter } from "../../../helper/tools";
 
 const UserModal = ({
   showModal,
@@ -36,7 +39,18 @@ const UserModal = ({
 const ProjectCard = ({ project }: {
   project: IProject
 }) => {
-  console.log(project)
+  const getOrderVolume = ( ) => {
+    const keys = Object.keys(project.positions);
+    let price = 0;
+    for (const key of keys) {
+      if (project.positions[key].executor) {
+        const positions = project.positions[key].positions;
+        // @ts-ignore
+        price += positions.map((position) => Math.ceil(Number(position?.price) * Number(position?.crowd))).reduce((prev, current) => prev + current);
+      }
+      return formatter.format(price);
+    }
+  }
   const [showConstructionManager, updateShowConstructionManager] = useState(false);
   const [showCareTakerModal, updateShowCareTaker] = useState(false);
   return (
@@ -122,15 +136,16 @@ const ProjectCard = ({ project }: {
         </div>
       </div>
       <div className="md:w-2/6 p-6">
-        <span className="py-1 px-4 bg-gray-950 text-white rounded shadow">MAGGA-97666-0</span>
+        <span className="py-1 px-4 bg-gray-950 text-white rounded shadow">MAGGA-{project._id.slice(0,6)}</span>
         <p className="text-md my-4">MAGGA LV - (as of January 1st, 2023)</p>
 
+
         <div className="flex flex-row">
-          <span className="bg-gray-200 py-1 px-2 text-black text-center rounded mx-1">5</span>
-          <span className="bg-warning py-1 px-2 text-white text-center rounded mx-1">0</span>
-          <span className="bg-success py-1 px-2 text-white text-center rounded mx-1">0</span>
-          <span className="bg-red-500 py-1 px-2 text-white text-center rounded mx-1">1</span>
-          <span className="bg-black py-1 px-2 text-white text-center rounded mx-1">50</span>
+          {project && Object.keys(project.positions).map((position) => {
+            if (project?.positions[position]?.positions?.length > 0) return (
+              <span className={`${TradeIcons[position]?.bg} ${TradeIcons[position]?.textColor} py-1 px-2 text-black text-center rounded mx-1`}>{project?.positions[position]?.positions?.length}</span>
+            )
+          })}
         </div>
       </div>
 
@@ -141,7 +156,7 @@ const ProjectCard = ({ project }: {
           </div>
           <div className="bg-gray-300 w-11/12 flex items-center flex-row justify-between py-1 px-4">
             <h3 className="text-black">Order Value:</h3>
-            <h3 className="text-black">&euro;00.00</h3>
+            <h3 className="text-black">{getOrderVolume() ?? '0.00'}</h3>
           </div>
         </div>
       </div>
@@ -156,7 +171,7 @@ const ProjectCard = ({ project }: {
       <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
       <div className="p-6">
         <h3>
-          <span className="text-black mr-2 dark:text-white">Noted:</span>
+          <span className="text-black mr-2 dark:text-white">Notes:</span>
           {project?.building.notes.split("\n").map((note, index) => (
             <span key={index}>{note}</span>
           ))}

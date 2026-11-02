@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import Layout from "../../layout";
 import BreadCrumb from "../../components/bread-crumb";
 import { SCREENS } from "../../../../navigation/constants";
@@ -14,9 +15,10 @@ import DownloadProjectActionButton from "./components/download-button";
 import ProjectDownloadAction from "./components/project-download-action";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { IProject, PROJECT_STATUS, ProjectPositions } from "../../../../types";
+import { IProject, ProjectPositions } from "../../../../types";
 import { getProject } from "../../helper/project";
 import { UserAuthContext } from "../../../../App";
+import { acceptProject } from "../helper";
 
 const ProjectDetails = () => {
 
@@ -24,8 +26,10 @@ const ProjectDetails = () => {
   const [showDownloadOption, updateShowDownloadOption] = useState(false);
   const [project, setProject] = useState<IProject | null>(null);
   const [positions, setPositions] = useState<ProjectPositions[] | null>(null);
+  const [isAccepted, updateIsAccepted] = useState(true)
   const { user } = useContext(UserAuthContext)
   const { id } = useParams();
+  const [assignedPositions, setAssignedPositions] = useState<string[]>([])
 
   useEffect(() => {
     const setUp = async () => {
@@ -34,23 +38,34 @@ const ProjectDetails = () => {
         alert('oops error getting project')
         console.log(error)
       } else if (_project) {
-        console.log(_project);
         setProject(_project);
         const positions: ProjectPositions[] = [];
         for (const key in _project.positions) {
           const _positions = _project.positions[key].positions
           _positions.forEach((pos) => {
             pos.tradeName = key
+            pos.executor = _project.positions[key].executor
           })
+          if (_project.positions[key].accepted &&
+            _project.positions[key].executor === user?._id) {
+            console.log('not accepted')
+          }
+
+          if (
+            _project.positions[key].accepted == false &&
+            _project.positions[key].executor === user?._id 
+          ) {
+            updateIsAccepted(false)
+            setAssignedPositions([...assignedPositions, key])
+          }
           positions.push(..._positions)
+          setAssignedPositions([...assignedPositions, key])
         }
         setPositions(positions)
       }
     }
-
-
     setUp();
-  }, [id])
+  }, [id, user?._id])
 
   return (
     <Layout>
@@ -61,10 +76,10 @@ const ProjectDetails = () => {
           secondLevel={{ link: SCREENS.PROJECTS, text: 'Project' }}
           thirdLevel={{ link: '', text: project?._id.slice(0, 10) as string }}
         />
-        {user && user.role === "executor" && project?.status === PROJECT_STATUS[0] && (
+        {user && (user.role === "executor") && (!isAccepted) && (
           <>
-            <AcceptProjectFloatingActionButton />
-            <DeclineProjectFloatingActionButton />
+            <AcceptProjectFloatingActionButton action={() => acceptProject(project?._id!, user?._id!, assignedPositions)} />
+            <DeclineProjectFloatingActionButton action={() => acceptProject(project?._id!, user?._id!, assignedPositions)} />
           </>
         )}
         <div className="my-6">
@@ -73,7 +88,7 @@ const ProjectDetails = () => {
           <ConstructionSchedule />
           <Documents />
           <ScopeOfService />
-          {project && positions && (<MainOrderItem positions={positions} />)}
+          {project && positions && (<MainOrderItem positions={positions} projectId={project._id} />)}
           <ExtraOrders />
           {showDownloadOption && (<ProjectDownloadAction />)}
           <FloatingActionButton
